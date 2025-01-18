@@ -1,7 +1,4 @@
-선결제 앱 기획 내용입니다.
 ## 0) 소개
-
----
 
 ## 1) 페르소나
 
@@ -11,8 +8,6 @@
 | 현재 상황 | 봉사를 나온 사람들을 위해 카페에서 음료수 한 잔씩 구매할 수 있도록 기부 하고 싶음 |
 | 문제 상황 | - 가게 사장이 선결제한 내역을 잘 이행하고 있는지 확인하고 싶다. 
 - 다른 사람들에게 선결제한 사실을 알리고 싶다.  |
-
----
 
 | 이름 | 경이현 |
 | --- | --- |
@@ -56,15 +51,15 @@
 
 ### 기사 스크랩
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/d2dfbf21-7b13-4422-8595-139cfc74e0fa/5761d71e-de77-450b-8f03-16cae430a0a1/image.png)
+![image.png](image/example1.png)
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/d2dfbf21-7b13-4422-8595-139cfc74e0fa/8d83bf74-280d-4fed-80b3-a71159bac195/image.png)
+![image.png](image/example2.png)
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/d2dfbf21-7b13-4422-8595-139cfc74e0fa/5a3df1b3-a237-4a04-800c-c0d74322f9a4/image.png)
+![image.png](image/example3.png)
 
 ## 4) 차별점
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/d2dfbf21-7b13-4422-8595-139cfc74e0fa/eb229d57-1158-4043-9e90-6d3f814b0fda/image.png)
+![image.png](image/example4.png)
 
 - 영수증을 제공해주는 기능
 - 모임원 모두 결제 내역을 확인하게 해주는 기능
@@ -96,10 +91,8 @@
 
 ## 🥈 요구 사항 명세서(기능 명세서)
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/d2dfbf21-7b13-4422-8595-139cfc74e0fa/c145b3c7-9fde-4655-80e4-8803d75f9ce3/image.png)
+![image.png](image/functionchart.png)
 
 # 🏅 1주차 스프린트
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/d2dfbf21-7b13-4422-8595-139cfc74e0fa/1a1dbbe9-1f88-4933-b0cf-146b5c3dba37/image.png)
-
-+
+![image.png](image/sprint.png)
