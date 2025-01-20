@@ -26,7 +26,6 @@ class ApplicationClass : Application() {
         val okHttpClient = OkHttpClient.Builder()
             .readTimeout(5000, TimeUnit.MILLISECONDS) // 읽기 시간 초과
             .connectTimeout(5000, TimeUnit.MILLISECONDS) // 연결 시간 초과
-            .addInterceptor(LocaleInterceptor()) // LocaleInterceptor 추가
             .build()
 
 
