@@ -5,10 +5,13 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.LoginActivity">
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/MainContainer"
+        android:id="@+id/LoginContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

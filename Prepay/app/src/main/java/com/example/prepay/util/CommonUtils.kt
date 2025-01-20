@@ -32,6 +32,11 @@ object CommonUtils {
         return format.format(Date(longDate))  // Long 값을 Date 객체로 변환 후 포맷 적용
     }
 
+    enum class LoginFragmentName(var str: String) {
+        LOGIN_FRAGMENT("LoginFragment"),
+        SIGNIN_FRAGMENT("SignInFragment"),
+    }
+
     enum class MainFragmentName(var str: String) {
         HOME_FRAGMENT("HomeFragment"),
         MYPAGE_FRAGMENT("MyPageFragment"),
