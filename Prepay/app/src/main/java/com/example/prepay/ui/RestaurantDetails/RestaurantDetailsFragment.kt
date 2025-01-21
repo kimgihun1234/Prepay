@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.prepay.BaseFragment
 import com.example.prepay.R
 import com.example.prepay.databinding.FragmentGroupDetailsBinding
@@ -19,9 +21,13 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         loginActivity = context as LoginActivity
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
     }
 }
