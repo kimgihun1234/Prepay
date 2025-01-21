@@ -38,15 +38,12 @@ object CommonUtils {
     }
 
     enum class MainFragmentName(var str: String) {
-        HOME_FRAGMENT("HomeFragment"),
         MYPAGE_FRAGMENT("MyPageFragment"),
-        ORDER_FRAGMENT("OrderFragment"),
-        PRODUCT_DETAIL_FRAGMENT("ProductDetailFragment"),
-        PRODUCT_LIST_FRAGMENT("ProductListFragment"),
-        TOUR_FRAGMENT("TourFragment"),
-        TOUR_COUPON_DETAIL_FRAGMENT("TourCouponDetailFragment"),
-        SHOPPING_CART_FRAGMENT("ShoppingCartFragment"),
-        ORDER_DETAIL_FRAGMENT("OrderDetailFragment")
+        CREATE_PRIVATE_GROUP_FRAGMENT("CreatePrivateGroupFragment"),
+        CREATE_PUBLIC_GROUP_FRAGMENT("CreatePublicGroupFragment"),
+        GROUP_DETAILS_FRAGMENT("GroupDetailsFragment"),
+        LOOK_GROUP_FRAGMENT("LookGroupFragment"),
+        RESTAURANT_DETAILS_FRAGMENT("TourCouponDetailFragment"),
     }
 
 }

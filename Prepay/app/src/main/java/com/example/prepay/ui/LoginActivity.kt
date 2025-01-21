@@ -1,5 +1,6 @@
 package com.example.prepay.ui
 
+import android.content.Intent
 import android.os.Bundle
 import com.example.prepay.BaseActivity
 import com.example.prepay.CommonUtils
@@ -15,6 +16,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         changeFragmentLogin(CommonUtils.LoginFragmentName.LOGIN_FRAGMENT)
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
     }
 
     fun changeFragmentLogin(name: CommonUtils.LoginFragmentName, num: Int = -1) {
