@@ -18,5 +18,5 @@ out/
 
 ### VS Code ###
 .vscode/
-BE/PrePay/src/main/resources/local.env
+*.env
 
