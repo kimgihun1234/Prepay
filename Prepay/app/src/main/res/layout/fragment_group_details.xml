@@ -134,9 +134,20 @@
         android:id="@+id/recyclerView"
         android:layout_width="271dp"
         android:layout_height="156dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="81dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    <Button
+        android:id="@+id/restaurant_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="식당"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.099"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
