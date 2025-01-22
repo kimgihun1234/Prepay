@@ -34,5 +34,11 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
             val intent = Intent(requireContext(), MainActivity::class.java)
             startActivity(intent)
         }
+        binding.findIdBtn.setOnClickListener {
+            loginActivity.changeFragmentLogin(CommonUtils.LoginFragmentName.FINDID_FRAGMENT)
+        }
+        binding.findPasswordBtn.setOnClickListener {
+            loginActivity.changeFragmentLogin(CommonUtils.LoginFragmentName.FINDPASSWORD_FRAGMENT)
+        }
     }
 }
