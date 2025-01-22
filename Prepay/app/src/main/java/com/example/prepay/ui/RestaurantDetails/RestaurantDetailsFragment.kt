@@ -1,5 +1,7 @@
 package com.example.prepay.ui.RestaurantDetails
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import com.example.prepay.BaseFragment
@@ -19,7 +21,18 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.button.setOnClickListener {
+            edit()
+        }
+    }
 
+    fun edit() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Test")
+            .setMessage("Real Test")
+            .setPositiveButton("확인", DialogInterface.OnClickListener{dialog, id ->  })
+            .setNegativeButton("취소", DialogInterface.OnClickListener{dialog, id ->  })
+        builder.show()
 
     }
 }

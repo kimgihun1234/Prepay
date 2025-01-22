@@ -8,6 +8,7 @@ import com.example.prepay.databinding.ActivityMainBinding
 import com.example.prepay.ui.GroupDetails.GroupDetailsFragment
 import com.example.prepay.ui.GroupSearch.GroupSearchFragment
 import com.example.prepay.ui.MyPage.MyPageFragment
+import com.example.prepay.ui.RestaurantDetails.RestaurantDetailsFragment
 
 private const val TAG = "MainActivity_싸피"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
@@ -35,7 +36,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 transaction.replace(R.id.main_container, GroupDetailsFragment())
             }
             CommonUtils.MainFragmentName.LOOK_GROUP_FRAGMENT -> TODO()
-            CommonUtils.MainFragmentName.RESTAURANT_DETAILS_FRAGMENT -> TODO()
+            CommonUtils.MainFragmentName.RESTAURANT_DETAILS_FRAGMENT -> {
+                transaction.replace(R.id.main_container, RestaurantDetailsFragment())
+            }
         }
         transaction.commit()
     }
