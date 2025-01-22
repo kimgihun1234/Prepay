@@ -59,4 +59,29 @@
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/LoginBtn" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/find_id_btn"
+        android:layout_width="298dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="44dp"
+        android:gravity="center"
+        android:text="아이디를 찾으시겠습니까?"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/JoinBtn" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/find_password_btn"
+        android:layout_width="298dp"
+        android:layout_height="34dp"
+        android:gravity="center"
+        android:text="비밀번호를 찾으시겠습니까?"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/find_id_btn" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
