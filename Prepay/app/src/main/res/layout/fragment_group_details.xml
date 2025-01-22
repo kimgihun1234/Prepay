@@ -84,7 +84,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/create_group_btn"
         android:layout_width="92dp"
         android:layout_height="86dp"
         android:layout_marginStart="16dp"

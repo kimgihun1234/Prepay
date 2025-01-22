@@ -1,16 +1,15 @@
-package com.example.prepay.ui.MyPage
+package com.example.prepay.ui.GroupSearch
 
 import android.os.Bundle
 import android.view.View
 import com.example.prepay.BaseFragment
-import com.example.prepay.CommonUtils
 import com.example.prepay.R
-import com.example.prepay.databinding.FragmentMyPageBinding
+import com.example.prepay.databinding.FragmentGroupSearchBinding
 import com.example.prepay.ui.MainActivity
 
-class MyPageFragment: BaseFragment<FragmentMyPageBinding>(
-    FragmentMyPageBinding::bind,
-    R.layout.fragment_my_page
+class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
+    FragmentGroupSearchBinding::bind,
+    R.layout.fragment_group_search
 ){
     private lateinit var mainActivity: MainActivity
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,13 +19,5 @@ class MyPageFragment: BaseFragment<FragmentMyPageBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initEvent()
     }
-
-    fun initEvent(){
-        binding.cardBtn.setOnClickListener {
-            mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.GROUP_DETAILS_FRAGMENT)
-        }
-    }
-
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_mypage"
+        android:enabled="true"
+        android:title="MyPage" />
+    <item
+        android:id="@+id/navigation_group_search"
+        android:enabled="true"
+        android:title="Group Search" />
+</menu>

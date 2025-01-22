@@ -1,58 +1,65 @@
 package com.example.prepay.ui
 
-import android.Manifest
-import android.app.AlertDialog
-import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothManager
-import android.content.Intent
-import android.graphics.Color
-import android.graphics.Region
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.TextView
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.ContextCompat.startActivity
-import com.example.prepay.ApplicationClass
 import com.example.prepay.BaseActivity
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.databinding.ActivityMainBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import org.intellij.lang.annotations.Identifier
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.prepay.ui.GroupDetails.GroupDetailsFragment
+import com.example.prepay.ui.GroupSearch.GroupSearchFragment
+import com.example.prepay.ui.MyPage.MyPageFragment
 
 private const val TAG = "MainActivity_싸피"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
+        initFragment()
+        initEvent()
     }
 
     fun changeFragmentMain(name: CommonUtils.MainFragmentName, num: Int = -1) {
         val transaction = supportFragmentManager.beginTransaction()
 
-        /*
-        when (name) {
-            CommonUtils.MainFragmentName.HOME_FRAGMENT -> {
 
-            }
+        when (name) {
             CommonUtils.MainFragmentName.MYPAGE_FRAGMENT -> {
-                transaction.replace(R.id.frame_layout_main, MyPageFragment())
+                transaction.replace(R.id.main_container, MyPageFragment())
             }
-        }*/
+            CommonUtils.MainFragmentName.GROUP_SEARCH_FRAGMENT -> {
+                transaction.replace(R.id.main_container, GroupSearchFragment())
+            }
+            CommonUtils.MainFragmentName.CREATE_PRIVATE_GROUP_FRAGMENT -> TODO()
+            CommonUtils.MainFragmentName.CREATE_PUBLIC_GROUP_FRAGMENT -> TODO()
+            CommonUtils.MainFragmentName.GROUP_DETAILS_FRAGMENT -> {
+                transaction.replace(R.id.main_container, GroupDetailsFragment())
+            }
+            CommonUtils.MainFragmentName.LOOK_GROUP_FRAGMENT -> TODO()
+            CommonUtils.MainFragmentName.RESTAURANT_DETAILS_FRAGMENT -> TODO()
+        }
         transaction.commit()
     }
 
+    fun initFragment(){
+        changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
+    }
+
+    fun initEvent() {
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_mypage -> {
+                    changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
+                    true
+                }
+
+                R.id.navigation_group_search -> {
+                    changeFragmentMain(CommonUtils.MainFragmentName.GROUP_SEARCH_FRAGMENT)
+                    true
+                }
+                else -> false
+            }
+        }
+    }
     companion object{
 
     }
