@@ -1,10 +1,15 @@
 package com.example.prepay.ui.MyPage
 
+import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
+import com.example.prepay.data.model.dto.PrePayCard
+import com.example.prepay.databinding.DialogVisitCodeBinding
 import com.example.prepay.databinding.FragmentMyPageBinding
 import com.example.prepay.ui.MainActivity
 
@@ -24,11 +29,29 @@ class MyPageFragment: BaseFragment<FragmentMyPageBinding>(
     }
 
     fun initEvent(){
-        binding.cardBtn.setOnClickListener {
-            mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.GROUP_DETAILS_FRAGMENT)
-        }
+        // 카드 데이터 생성
+        val cardList = listOf(
+            PrePayCard("SSAFY", "Private", "잔액 8,000,000 원", Color.parseColor("#7E57C2")),
+            PrePayCard("SSAFY 2", "Public", "잔액 5,000,000 원", Color.parseColor("#FF4081")),
+            PrePayCard("SSAFY 3", "Private", "잔액 1,000,000 원", Color.parseColor("#EF5350")),
+            PrePayCard("SSAFY", "Private", "잔액 8,000,000 원", Color.parseColor("#7E57C2")),
+            PrePayCard("SSAFY 2", "Public", "잔액 5,000,000 원", Color.parseColor("#FF4081")),
+            PrePayCard("SSAFY 3", "Private", "잔액 1,000,000 원", Color.parseColor("#EF5350"))
+        )
+
+        // 어댑터 설정
+        val cardAdapter = PrePayCardAdapter(cardList)
+        binding.viewPager.adapter = cardAdapter
+
+        // 스택 효과 추가
+        binding.viewPager.setPageTransformer(StackPageTransformer())
+        binding.viewPager.offscreenPageLimit = 5
+
         binding.createGroupBtn.setOnClickListener {
             mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.CREATE_PUBLIC_GROUP_FRAGMENT)
+        }
+        binding.enterGroupBtn.setOnClickListener {
+            mainActivity.enterDialog()
         }
         //내비게이션 바 생기게
         mainActivity.hideBottomNav(false)

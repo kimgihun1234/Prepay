@@ -1,11 +1,14 @@
 package com.example.prepay.ui
 
+import android.app.AlertDialog
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import com.example.prepay.BaseActivity
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.databinding.ActivityMainBinding
+import com.example.prepay.databinding.DialogVisitCodeBinding
 import com.example.prepay.ui.CreateGroup.CreatePrivateGroupFragment
 import com.example.prepay.ui.CreateGroup.CreatePublicGroupFragment
 import com.example.prepay.ui.GroupDetails.GroupDetailsFragment
@@ -57,6 +60,26 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     fun hideBottomNav(state : Boolean){
         if(state) binding.bottomNavigation.visibility = View.GONE
         else binding.bottomNavigation.visibility = View.VISIBLE
+    }
+
+    fun enterDialog(){
+        val binding = DialogVisitCodeBinding.inflate(LayoutInflater.from(this))
+        // AlertDialog 생성
+        val dialog = AlertDialog.Builder(this)
+            .setView(binding.root)
+            .create()
+
+        // '취소' 버튼 클릭 리스너
+        binding.btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        // '등록' 버튼 클릭 리스너
+        binding.btnRegister.setOnClickListener {
+            val code = binding.etCodeInput.toString()
+            // 코드 등록 로직 추가
+            dialog.dismiss()
+        }
+        dialog.show()
     }
 
     fun initEvent() {

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.MyPage.MyPageFragment">
-    
+
     <TextView
         android:id="@+id/my_page_hello1"
         android:layout_width="wrap_content"
@@ -76,13 +76,29 @@
 
     <Button
         android:id="@+id/card_btn"
-        android:layout_width="269dp"
-        android:layout_height="178dp"
+        android:layout_width="231dp"
+        android:layout_height="73dp"
         android:layout_marginTop="128dp"
         android:text="카드"
         android:textSize="64sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:clipToPadding="false"
+        android:clipChildren="false"
+        android:paddingStart="50dp"
+        android:paddingEnd="50dp"
+        android:paddingTop="100dp"
+        android:paddingBottom="100dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
