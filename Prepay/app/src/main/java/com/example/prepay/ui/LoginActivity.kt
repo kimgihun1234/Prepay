@@ -1,6 +1,5 @@
 package com.example.prepay.ui
 
-import android.content.Intent
 import android.os.Bundle
 import com.example.prepay.BaseActivity
 import com.example.prepay.CommonUtils
@@ -22,10 +21,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
         val transaction = supportFragmentManager.beginTransaction()
         when (name) {
             CommonUtils.LoginFragmentName.LOGIN_FRAGMENT -> {
-                transaction.replace(R.id.LoginContainer, LoginFragment())
+                transaction.replace(R.id.login_container, LoginFragment())
             }
             CommonUtils.LoginFragmentName.SIGNIN_FRAGMENT -> {
-                transaction.replace(R.id.LoginContainer, SignInFragment())
+                transaction.replace(R.id.login_container, SignInFragment())
             }
         }
         transaction.commit()
