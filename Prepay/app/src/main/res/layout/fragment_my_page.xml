@@ -12,8 +12,8 @@
         android:id="@+id/textView4"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="49dp"
-        tools:layout_editor_absoluteY="0dp" />
+        tools:layout_editor_absoluteX="-153dp"
+        tools:layout_editor_absoluteY="-94dp" />
 
     <TextView
         android:id="@+id/my_page_hello1"
