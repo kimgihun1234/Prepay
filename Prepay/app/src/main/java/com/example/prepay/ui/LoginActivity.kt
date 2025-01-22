@@ -16,8 +16,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         changeFragmentLogin(CommonUtils.LoginFragmentName.LOGIN_FRAGMENT)
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
     }
 
     fun changeFragmentLogin(name: CommonUtils.LoginFragmentName, num: Int = -1) {

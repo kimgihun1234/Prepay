@@ -35,7 +35,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        changeFragmentMain(CommonUtils.LoginFragmentName.LOGIN_FRAGMENT)
+        changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
     }
 
     fun changeFragmentMain(name: CommonUtils.MainFragmentName, num: Int = -1) {
