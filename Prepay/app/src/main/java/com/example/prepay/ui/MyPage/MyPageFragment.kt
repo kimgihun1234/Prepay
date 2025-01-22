@@ -27,6 +27,11 @@ class MyPageFragment: BaseFragment<FragmentMyPageBinding>(
         binding.cardBtn.setOnClickListener {
             mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.GROUP_DETAILS_FRAGMENT)
         }
+        binding.createGroupBtn.setOnClickListener {
+            mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.CREATE_PUBLIC_GROUP_FRAGMENT)
+        }
+        //내비게이션 바 생기게
+        mainActivity.hideBottomNav(false)
     }
 
 }

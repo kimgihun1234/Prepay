@@ -1,10 +1,13 @@
 package com.example.prepay.ui
 
 import android.os.Bundle
+import android.view.View
 import com.example.prepay.BaseActivity
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.databinding.ActivityMainBinding
+import com.example.prepay.ui.CreateGroup.CreatePrivateGroupFragment
+import com.example.prepay.ui.CreateGroup.CreatePublicGroupFragment
 import com.example.prepay.ui.GroupDetails.GroupDetailsFragment
 import com.example.prepay.ui.GroupSearch.GroupSearchFragment
 import com.example.prepay.ui.MyPage.MyPageFragment
@@ -29,8 +32,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             CommonUtils.MainFragmentName.GROUP_SEARCH_FRAGMENT -> {
                 transaction.replace(R.id.main_container, GroupSearchFragment())
             }
-            CommonUtils.MainFragmentName.CREATE_PRIVATE_GROUP_FRAGMENT -> TODO()
-            CommonUtils.MainFragmentName.CREATE_PUBLIC_GROUP_FRAGMENT -> TODO()
+            CommonUtils.MainFragmentName.CREATE_PRIVATE_GROUP_FRAGMENT -> {
+                transaction.replace(R.id.main_container, CreatePrivateGroupFragment())
+            }
+            CommonUtils.MainFragmentName.CREATE_PUBLIC_GROUP_FRAGMENT -> {
+                transaction.replace(R.id.main_container, CreatePublicGroupFragment())
+            }
             CommonUtils.MainFragmentName.GROUP_DETAILS_FRAGMENT -> {
                 transaction.replace(R.id.main_container, GroupDetailsFragment())
             }
@@ -42,6 +49,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     fun initFragment(){
         changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
+    }
+
+    fun hideBottomNav(state : Boolean){
+        if(state) binding.bottomNavigation.visibility = View.GONE
+        else binding.bottomNavigation.visibility = View.VISIBLE
     }
 
     fun initEvent() {
