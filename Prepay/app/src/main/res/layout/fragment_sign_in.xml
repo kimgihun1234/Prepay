@@ -11,15 +11,11 @@
         android:id="@+id/LogoView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="138dp"
+        android:layout_marginStart="148dp"
         android:layout_marginTop="48dp"
-        android:layout_marginEnd="145dp"
-        android:contentDescription="TODO"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:src="@drawable/ic_launcher_foreground"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_launcher_foreground" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/sign_in_id_text"
@@ -129,7 +125,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="92dp"
-        android:layout_marginTop="16dp"
         android:text="Email"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
