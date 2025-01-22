@@ -11,77 +11,142 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="148dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="40dp"
         android:src="@drawable/ic_launcher_foreground"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <EditText
         android:id="@+id/IdInput"
-        android:layout_width="249dp"
-        android:layout_height="54dp"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="260dp"
+        android:layout_width="362dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="192dp"
+        android:layout_marginEnd="36dp"
         android:hint="아이디를 입력하세요"
         android:text=""
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/PasswordInput"
-        android:layout_width="249dp"
-        android:layout_height="54dp"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="336dp"
-        android:hint="비밀번호를 입력하세요"
-        android:text=""
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <Button
-        android:id="@+id/LoginBtn"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="32dp"
-        android:text="로그인"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.521"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/PasswordInput" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/sns"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="116dp"
+        android:text="SNS 계정으로 간편 로그인"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.44"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LoginBtn" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:src="@drawable/ic_launcher_foreground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sns" />
 
     <Button
         android:id="@+id/JoinBtn"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginBottom="92dp"
         android:text="회원가입"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LoginBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/question_login" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/find_id_btn"
-        android:layout_width="298dp"
-        android:layout_height="34dp"
-        android:layout_marginTop="44dp"
+        android:layout_width="73dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="108dp"
+        android:layout_marginTop="12dp"
         android:gravity="center"
-        android:text="아이디를 찾으시겠습니까?"
+        android:text="아이디 찾기"
         android:textSize="8sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/JoinBtn" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/find_password_btn"
-        android:layout_width="298dp"
-        android:layout_height="34dp"
+        android:layout_width="80dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="12dp"
         android:gravity="center"
-        android:text="비밀번호를 찾으시겠습니까?"
+        android:text="비밀번호 찾기"
         android:textSize="8sp"
+        app:layout_constraintStart_toEndOf="@+id/find_id_btn"
+        app:layout_constraintTop_toBottomOf="@+id/JoinBtn" />
+
+    <Button
+        android:id="@+id/LoginBtn"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="36dp"
+        android:text="로그인"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/find_id_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/PasswordInput" />
+
+    <EditText
+        android:id="@+id/PasswordInput"
+        android:layout_width="355dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="36dp"
+        android:hint="비밀번호를 입력하세요"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.677"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/IdInput" />
+
+    <TextView
+        android:id="@+id/question_login"
+        android:layout_width="240dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="28dp"
+        android:gravity="center"
+        android:text="프리페이 회원이 아니신가요?"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+    <CheckBox
+        android:id="@+id/remember_id_checkbox"
+        android:layout_width="124dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="26dp"
+        android:text="아이디 기억하기"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/PasswordInput" />
+
+    <CheckBox
+        android:id="@+id/auto_login_checkbox"
+        android:layout_width="101dp"
+        android:layout_height="31dp"
+        android:layout_marginEnd="30dp"
+        android:text="자동 로그인"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/PasswordInput" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
