@@ -8,7 +8,6 @@ import com.example.prepay.R
 import com.example.prepay.databinding.FragmentStartBinding
 import com.example.prepay.ui.LoginActivity
 
-
 class StartLoginFragment : BaseFragment<FragmentStartBinding>(
     FragmentStartBinding::bind,
     R.layout.fragment_start
