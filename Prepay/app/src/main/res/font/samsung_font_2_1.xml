@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/samsung_font_2"
+        tools:targetApi="o" />
+</font-family>
