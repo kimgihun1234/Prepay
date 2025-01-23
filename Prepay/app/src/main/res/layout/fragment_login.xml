@@ -18,7 +18,7 @@
 
 
     <EditText
-        android:id="@+id/IdInput"
+        android:id="@+id/sign_in_id_text"
         android:layout_width="362dp"
         android:layout_height="60dp"
         android:layout_marginStart="36dp"
@@ -116,7 +116,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.677"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/IdInput" />
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_id_text" />
 
     <TextView
         android:id="@+id/question_login"

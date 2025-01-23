@@ -24,7 +24,7 @@ class SignInFragment: BaseFragment<FragmentSignInBinding>(
     }
 
     fun initEvent(){
-        binding.IdMakeBtn.setOnClickListener {
+        binding.signInComplete.setOnClickListener {
             loginActivity.changeFragmentLogin(CommonUtils.LoginFragmentName.LOGIN_FRAGMENT)
         }
     }
