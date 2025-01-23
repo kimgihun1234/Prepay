@@ -9,6 +9,7 @@ import com.example.prepay.ui.Login.FindIdFragment
 import com.example.prepay.ui.Login.FindPasswordFragment
 import com.example.prepay.ui.Login.LoginFragment
 import com.example.prepay.ui.Login.SignInFragment
+import com.example.prepay.ui.Login.StartLoginFragment
 import com.example.prepay.ui.Login.VerifyIdFragment
 
 
@@ -17,12 +18,15 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        changeFragmentLogin(CommonUtils.LoginFragmentName.LOGIN_FRAGMENT)
+        changeFragmentLogin(CommonUtils.LoginFragmentName.START_LOGIN_FRAGMENT)
     }
 
     fun changeFragmentLogin(name: CommonUtils.LoginFragmentName, num: Int = -1) {
         val transaction = supportFragmentManager.beginTransaction()
         when (name) {
+            CommonUtils.LoginFragmentName.START_LOGIN_FRAGMENT -> {
+                transaction.replace(R.id.login_container, StartLoginFragment())
+            }
             CommonUtils.LoginFragmentName.LOGIN_FRAGMENT -> {
                 transaction.replace(R.id.login_container, LoginFragment())
             }
