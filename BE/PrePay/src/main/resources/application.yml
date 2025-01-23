@@ -4,3 +4,12 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 
+  jpa:
+     show-sql: true
+     hibernate:
+       ddl-auto: update
+     properties:
+       hibernate:
+         format_sql: true
+
+
