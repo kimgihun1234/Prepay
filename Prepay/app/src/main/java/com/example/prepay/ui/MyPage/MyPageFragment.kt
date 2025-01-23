@@ -45,7 +45,7 @@ class MyPageFragment: BaseFragment<FragmentMyPageBinding>(
 
         // 스택 효과 추가
         binding.viewPager.setPageTransformer(StackPageTransformer())
-        binding.viewPager.offscreenPageLimit = 5
+        binding.viewPager.offscreenPageLimit = 4
 
         binding.createGroupBtn.setOnClickListener {
             mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.CREATE_PUBLIC_GROUP_FRAGMENT)

@@ -14,7 +14,7 @@ class PrePayCardAdapter(private val cardList: List<PrePayCard>) : RecyclerView.A
             binding.tvTitle.text = card.title
             binding.tvSubTitle.text = card.subTitle
             binding.tvBalance.text = card.balance
-            binding.root.setCardBackgroundColor(card.color)
+            binding.cardview.setCardBackgroundColor(card.color)
         }
     }
 

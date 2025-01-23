@@ -10,9 +10,9 @@ class StackPageTransformer : ViewPager2.PageTransformer {
         page.scaleY = scaleFactor
 
         val translationFactor = if (position < 0) {
-            -position * (page.height * 0.8f) // 80% 겹치게 설정
+            -position * (page.height * 0.9f) // 80% 겹치게 설정
         } else {
-            position * (page.height * 0.8f)
+            position * (page.height * 0.9f)
         }
 
         page.translationY = translationFactor
