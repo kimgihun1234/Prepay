@@ -13,96 +13,74 @@
         android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="92dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/ic_launcher_foreground" />
 
-    <TextView
-        android:id="@+id/logo_subtitle"
-        android:layout_width="183dp"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:text="선결제를 위한 새로운 바람"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo" />
-
-    <TextView
-        android:id="@+id/logo_name"
-        android:layout_width="135dp"
-        android:layout_height="72dp"
-        android:gravity="center"
-        android:text="프리페이"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.51"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo_subtitle" />
-
-    <TextView
-        android:id="@+id/email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="88dp"
-        android:text="Email"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.148"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo_name" />
-
     <EditText
         android:id="@+id/email_authentication_text"
-        android:layout_width="242dp"
-        android:layout_height="42dp"
+        android:layout_width="320dp"
+        android:layout_height="38dp"
         android:layout_marginStart="56dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:inputType="textEmailAddress"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email" />
 
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:text="Email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.162"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/authentication_btn"
-        android:layout_width="68dp"
-        android:layout_height="42dp"
-        android:layout_marginTop="112dp"
-        android:layout_marginEnd="33dp"
+        android:layout_width="116dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
         android:text="인증"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/email_authentication_text"
-        app:layout_constraintTop_toBottomOf="@+id/logo_name" />
+        app:layout_constraintTop_toBottomOf="@+id/email_authentication_text" />
+
+    <TextView
+        android:id="@+id/input_code"
+        android:layout_width="307dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="111dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email_authentication_text" />
+
 
     <EditText
         android:id="@+id/authentication_number_text"
         android:layout_width="240dp"
         android:layout_height="46dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="52dp"
         android:ems="10"
-        android:inputType="text"
         android:gravity="center"
+        android:inputType="text"
         android:text="인증번호"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email_authentication_text" />
+        app:layout_constraintTop_toBottomOf="@+id/input_code" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/authentication_confirm"
         android:layout_width="72dp"
         android:layout_height="46dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="29dp"
         android:text="확인"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/authentication_number_text"
-        app:layout_constraintTop_toBottomOf="@+id/authentication_btn" />
-
+        tools:layout_editor_absoluteY="505dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

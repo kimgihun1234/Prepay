@@ -8,85 +8,71 @@
     tools:context=".ui.Login.VerifyIdFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
     <ImageView
         android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="112dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/ic_launcher_foreground" />
 
     <TextView
-        android:id="@+id/logo_subtitle"
-        android:layout_width="183dp"
-        android:layout_height="40dp"
+        android:id="@+id/list_id_explain"
+        android:layout_width="321dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="28dp"
         android:gravity="center"
-        android:text="선결제를 위한 새로운 바람"
         android:textSize="16sp"
+        android:textStyle="bold"
+        android:text="고객님의 정보와 일치하는 아이디 목록입니다."
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo" />
 
     <TextView
-        android:id="@+id/logo_name"
-        android:layout_width="135dp"
-        android:layout_height="72dp"
+        android:id="@+id/explain_list"
+        android:layout_width="264dp"
+        android:layout_height="35dp"
         android:gravity="center"
-        android:text="프리페이"
-        android:textSize="32sp"
-        android:textStyle="bold"
+        android:text="아이디를 먼저 선택한 후,\n 로그인 또는 비밀번호 찾기 버튼을 눌러주세요"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo_subtitle" />
+        app:layout_constraintTop_toBottomOf="@+id/list_id_explain" />
 
-    <TextView
-        android:id="@+id/id_text"
-        android:layout_width="99dp"
-        android:layout_height="42dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="266dp"
-        android:text="아이디"
-        android:gravity="center"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo_name" />
-
-    <TextView
-        android:id="@+id/find_id"
-        android:layout_width="319dp"
-        android:layout_height="60dp"
-        android:text="찾은 아이디"
-        android:textSize="32sp"
-        android:gravity="center"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_id"
+        android:layout_width="313dp"
+        android:layout_height="186dp"
+        android:layout_marginTop="21dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/id_text" />
+        app:layout_constraintTop_toBottomOf="@+id/explain_list" />
 
-    <TextView
-        android:id="@+id/question_member"
-        android:layout_width="304dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="150dp"
-        android:gravity="center"
-        android:text="프리페이 회원이 아니신가요?"
+    <Button
+        android:id="@+id/login_btn"
+        android:layout_width="313dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="27dp"
+        android:text="로그인"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/find_id" />
+        app:layout_constraintTop_toBottomOf="@+id/list_id" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/signup_btn"
-        android:layout_width="310dp"
-        android:layout_height="39dp"
-        android:layout_marginTop="8dp"
+    <Button
+        android:id="@+id/find_password"
+        android:layout_width="313dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="10dp"
         android:text="회원가입"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/question_member" />
+        app:layout_constraintTop_toBottomOf="@+id/login_btn" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
