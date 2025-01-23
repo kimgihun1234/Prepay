@@ -89,16 +89,17 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:clipToPadding="false"
+        android:layout_marginTop="64dp"
         android:clipChildren="false"
-        android:paddingStart="50dp"
-        android:paddingEnd="50dp"
-        android:paddingTop="100dp"
-        android:paddingBottom="100dp"
+        android:clipToPadding="false"
         android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
+        android:paddingStart="50dp"
+        android:paddingTop="100dp"
+        android:paddingEnd="50dp"
+        android:paddingBottom="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

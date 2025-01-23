@@ -45,7 +45,9 @@ class MyPageFragment: BaseFragment<FragmentMyPageBinding>(
 
         // 스택 효과 추가
         binding.viewPager.setPageTransformer(StackPageTransformer())
-        binding.viewPager.offscreenPageLimit = 4
+        binding.viewPager.offscreenPageLimit = 5
+        binding.viewPager.setCurrentItem(5, false)
+        // 초기 화면에서 첫 번째 카드가 맨 앞으로 보이도록 설정
 
         binding.createGroupBtn.setOnClickListener {
             mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.CREATE_PUBLIC_GROUP_FRAGMENT)
