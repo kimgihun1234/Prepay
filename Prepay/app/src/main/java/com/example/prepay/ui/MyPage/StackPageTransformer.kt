@@ -11,7 +11,7 @@ class StackPageTransformer : ViewPager2.PageTransformer {
 
         val translationFactor = when {
             position < 0 -> { // 현재 페이지 또는 왼쪽에 있는 페이지
-                -position * (page.height * 0.80f) // 90% 겹치도록 설정
+                -position * (page.height * 0.8f) // 90% 겹치도록 설정
             }
             position > 0 -> { // 오른쪽에 있는 페이지
                 -position * (page.height * 0.8f)

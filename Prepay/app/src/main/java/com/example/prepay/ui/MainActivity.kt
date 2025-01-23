@@ -27,8 +27,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     fun changeFragmentMain(name: CommonUtils.MainFragmentName, num: Int = -1) {
         val transaction = supportFragmentManager.beginTransaction()
-
-
         when (name) {
             CommonUtils.MainFragmentName.MYPAGE_FRAGMENT -> {
                 transaction.replace(R.id.main_container, MyPageFragment())
@@ -41,9 +39,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
             CommonUtils.MainFragmentName.CREATE_PUBLIC_GROUP_FRAGMENT -> {
                 transaction.replace(R.id.main_container, CreatePublicGroupFragment())
+                transaction.addToBackStack(null)
             }
             CommonUtils.MainFragmentName.GROUP_DETAILS_FRAGMENT -> {
                 transaction.replace(R.id.main_container, GroupDetailsFragment())
+                transaction.addToBackStack(null)
             }
             CommonUtils.MainFragmentName.LOOK_GROUP_FRAGMENT -> TODO()
             CommonUtils.MainFragmentName.RESTAURANT_DETAILS_FRAGMENT -> {
