@@ -24,7 +24,10 @@ class CreatePublicGroupFragment: BaseFragment<FragmentCreatePublicGroupBinding>(
     }
 
     fun initEvent(){
-        binding.privateBtn.setOnClickListener {
+        binding.publicCheckbox.setOnClickListener {
+            mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.CREATE_PUBLIC_GROUP_FRAGMENT)
+        }
+        binding.privateCheckbox.setOnClickListener {
             mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.CREATE_PRIVATE_GROUP_FRAGMENT)
         }
         binding.registerBtn.setOnClickListener {
