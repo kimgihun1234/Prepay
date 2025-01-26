@@ -8,126 +8,192 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-
-    <androidx.appcompat.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/public_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
-        android:layout_marginTop="66dp"
-        android:background="@color/material_dynamic_tertiary40"
-        android:text="Public"
-        app:layout_constraintEnd_toStartOf="@+id/private_checkbox"
+        android:layout_marginStart="95dp"
+        android:layout_marginTop="40dp"
+        android:text="공개 그룹"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/private_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="66dp"
-        android:layout_marginEnd="120dp"
-        android:text="Private"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <EditText
-        android:id="@+id/group_name_text"
-        android:layout_width="232dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="216dp"
-        android:layout_marginEnd="35dp"
-        android:ems="10"
-        android:inputType="text"
-        android:text=""
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView15"
-        android:layout_width="108dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="3dp"
-        android:gravity="center"
-        android:text="개인 한도"
-        app:layout_constraintEnd_toStartOf="@+id/editTextText5"
-        app:layout_constraintHorizontal_bias="0.333"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
     <TextView
         android:id="@+id/group_name"
-        android:layout_width="108dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="216dp"
+        android:layout_width="79dp"
+        android:layout_height="21dp"
+        android:layout_marginTop="16dp"
         android:gravity="center"
-        android:text="그룹"
-        app:layout_constraintEnd_toStartOf="@+id/group_name_text"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:text="그룹 이름"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.069"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/public_checkbox" />
 
-    <EditText
-        android:id="@+id/editTextText5"
-        android:layout_width="232dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="35dp"
-        android:ems="10"
-        android:inputType="text"
-        android:text=""
+    <TextView
+        android:id="@+id/image"
+        android:layout_width="79dp"
+        android:layout_height="21dp"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:text="이미지 설정"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText4" />
-
-    <EditText
-        android:id="@+id/editTextText4"
-        android:layout_width="232dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="35dp"
-        android:ems="10"
-        android:inputType="text"
-        android:text=""
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.069"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/group_name_text" />
 
     <TextView
-        android:id="@+id/textView13"
-        android:layout_width="108dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="50dp"
+        android:id="@+id/limit_setting"
+        android:layout_width="79dp"
+        android:layout_height="21dp"
+        android:layout_marginTop="16dp"
         android:gravity="center"
-        android:text="횟수 제한"
-        app:layout_constraintEnd_toStartOf="@+id/editTextText4"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:text="일일 한도 설정"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.069"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_btn" />
+
+    <TextView
+        android:id="@+id/repeat"
+        android:layout_width="79dp"
+        android:layout_height="21dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="반복 사용"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.069"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/limit_setting_text" />
+
+    <TextView
+        android:id="@+id/text_input"
+        android:layout_width="79dp"
+        android:layout_height="21dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="텍스트 입력"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.069"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/private_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="98dp"
+        android:text="비공개 그룹"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/public_checkbox"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+    <EditText
+        android:id="@+id/group_name_text"
+        android:layout_width="365dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/group_name" />
 
-
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/cancel_btn"
-        android:layout_width="141dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="232dp"
-        android:layout_marginBottom="112dp"
-        android:text="취소"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:id="@+id/image_btn"
+        android:layout_width="365dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="이미지를 넣어주세요"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image" />
+
+    <EditText
+        android:id="@+id/limit_setting_text"
+        android:layout_width="365dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/limit_setting" />
+
+    <EditText
+        android:id="@+id/text_input_text"
+        android:layout_width="365dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text=""
+        android:hint="공개 그룹을 만드신 취지를 적어주세요"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_input" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/register_btn"
-        android:layout_width="141dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginBottom="112dp"
+        android:layout_width="365dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="48dp"
         android:text="등록"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_input_text" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/cancel_btn"
+        android:layout_width="365dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="1dp"
+        android:text="취소"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_btn" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="45dp"
+        android:src="@drawable/ic_launcher_foreground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="365dp"
+        android:layout_height="50dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/repeat" />
+
+    <CheckBox
+        android:id="@+id/possible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:text="가능"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/repeat" />
+
+    <CheckBox
+        android:id="@+id/impossible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:layout_marginEnd="120dp"
+        android:text="불가능"
+        app:layout_constraintBottom_toBottomOf="@+id/textView13"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.266"
+        app:layout_constraintStart_toEndOf="@+id/possible" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
