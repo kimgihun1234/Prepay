@@ -11,7 +11,7 @@ public class ChargeRequest {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "charge_request_id")
-    private long id;
+    private Long id;
     
     private RequestStatus requestStatus;
 

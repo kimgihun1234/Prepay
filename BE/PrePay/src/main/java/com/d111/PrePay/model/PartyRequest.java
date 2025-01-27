@@ -10,10 +10,9 @@ import lombok.Setter;
 public class PartyRequest {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "party_request_id")
-    private long id;
+    private Long id;
 
     private long requestDate;
-
 
     private RequestStatus requestStatus;
 

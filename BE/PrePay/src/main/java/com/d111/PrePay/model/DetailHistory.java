@@ -11,7 +11,7 @@ public class DetailHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "detail_history_id")
-    private long id;
+    private Long id;
 
     private String product;
 

@@ -10,7 +10,7 @@ import lombok.Setter;
 public class RefundRequest {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "refund_request_id")
-    public long id;
+    public Long id;
 
     private RequestStatus requestStatus;
 

@@ -13,7 +13,7 @@ public class TeamStore {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "team_store_id")
-    private long id;
+    private Long id;
 
     @ManyToOne
     private Team team;

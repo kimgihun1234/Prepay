@@ -1,6 +1,7 @@
 package com.d111.PrePay.model;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Getter @Setter
+@Builder
 public class UserTeam {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_team_id")
