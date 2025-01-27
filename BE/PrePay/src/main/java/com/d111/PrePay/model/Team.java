@@ -30,7 +30,7 @@ public class Team {
 
     private String teamMessage;
 
-    private long teamInitializer;
+    private Long teamInitializer;
 
     @OneToMany(mappedBy = "team")
     private List<UserTeam> userTeams = new ArrayList<>();

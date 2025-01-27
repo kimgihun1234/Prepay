@@ -32,6 +32,7 @@ public class TeamService {
                 .dailyPriceLimit(request.getDailyPriceLimit())
                 .countLimit(request.getCountLimit())
                 .teamMessage(request.getTeamMessage())
+                .teamInitializer(request.getUserId())
                 .build();
         Team savedTeam = teamRepository.save(team);
 
@@ -52,7 +53,7 @@ public class TeamService {
         return savedTeam;
     }
 
-    //랜던 비밀번호 생성
+    // 랜덤 비밀번호 생성
     public String generateRandomPassword(int length){
         SecureRandom random = new SecureRandom();
         byte[] bytes = new byte[length];
