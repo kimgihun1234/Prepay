@@ -3,11 +3,17 @@ package com.example.prepay.ui.RestaurantDetails
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.prepay.BaseFragment
 import com.example.prepay.R
+import com.example.prepay.databinding.DialogCostomBinding
 import com.example.prepay.databinding.FragmentRestaurantDetailsBinding
 import com.example.prepay.ui.MainActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.dialog.MaterialDialogs
 
 class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
     FragmentRestaurantDetailsBinding::bind,
@@ -22,17 +28,28 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.button.setOnClickListener {
-            edit()
+            customReceipt()
         }
     }
 
-    fun edit() {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Test")
-            .setMessage("Real Test")
-            .setPositiveButton("확인", DialogInterface.OnClickListener{dialog, id ->  })
-            .setNegativeButton("취소", DialogInterface.OnClickListener{dialog, id ->  })
-        builder.show()
+    fun customReceipt() {
+        val binding = DialogCostomBinding.inflate(LayoutInflater.from(requireContext()))
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setView(binding.root)
+            .create()
+        dialog.setOnShowListener {
+            val window = dialog.window
+            window?.setLayout(1000, 1500)
+        }
 
+        val countryList = listOf("South Korea", "USA", "Japan", "China", "Germany", "France","South Korea", "USA", "Japan", "China", "Germany", "France")
+        val adapter = CountryAdapter(countryList)
+
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            this.adapter = adapter
+        }
+
+        dialog.show()
     }
 }
