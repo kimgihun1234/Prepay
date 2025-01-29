@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="100dp"
     android:padding="15dp"
     android:orientation="vertical"
     android:background="#4EADFE">
@@ -11,8 +11,8 @@
     <TextView
         android:textColor="#FFFFFF"
         android:id="@+id/name"
-        android:layout_width="111dp"
-        android:layout_height="37dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
         android:layout_marginStart="28dp"
         android:layout_marginTop="4dp"
@@ -24,8 +24,8 @@
     <TextView
         android:textColor="#FFFFFF"
         android:id="@+id/date"
-        android:layout_width="61dp"
-        android:layout_height="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
@@ -35,28 +35,29 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:textColor="#FFFFFF"
         android:id="@+id/amount"
-        android:layout_width="145dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="12dp"
         android:gravity="center"
         android:text="500,000"
+        android:textColor="#FFFFFF"
         android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/name"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/imageButton"
         android:layout_width="54dp"
         android:layout_height="49dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/amount"
-        app:layout_constraintStart_toEndOf="@+id/amount"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/amount"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="?attr/actionModePasteDrawable" />
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
