@@ -11,6 +11,5 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @PostMapping("/history")
 
 }
