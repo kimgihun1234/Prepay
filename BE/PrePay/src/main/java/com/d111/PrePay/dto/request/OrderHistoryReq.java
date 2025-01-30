@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class OrderHistoryReq {
-    private Long groupId;
+    private Long teamId;
     private Long storeId;
 }

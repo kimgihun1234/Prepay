@@ -1,6 +1,7 @@
 package com.d111.PrePay.dto.respond;
 
 import com.d111.PrePay.RequestStatus;
+import com.d111.PrePay.model.OrderHistory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,15 @@ public class OrderHistoryRes {
     private long orderDate;
     private int totalPrice;
     private boolean isWithdraw;
-    private RequestStatus requestStatus;
+    private boolean refundRequested;
     private boolean isCompanyDinner;
+
+    public OrderHistoryRes(OrderHistory orderHistory) {
+        this.orderHistoryId = orderHistory.getId();
+        this.orderDate = orderHistory.getOrderDate();
+        this.totalPrice = orderHistory.getTotalPrice();
+        this.isWithdraw = orderHistory.isWithDraw();
+        this.refundRequested = orderHistory.isRefundRequested();
+        this.isCompanyDinner = orderHistory.isCompanyDinner();
+    }
 }
