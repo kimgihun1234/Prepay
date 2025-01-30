@@ -3,12 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.CreateGroup.CreatePrivateGroupFragment"
-    tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="106dp">
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
 
 
     <EditText
@@ -17,6 +13,7 @@
         android:layout_height="41dp"
         android:ems="10"
         android:inputType="text"
+        android:background="@drawable/round_background"
         android:text=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,6 +25,7 @@
         android:layout_height="41dp"
         android:ems="10"
         android:inputType="text"
+        android:background="@drawable/round_background"
         android:text=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,6 +38,7 @@
         android:layout_marginTop="46dp"
         android:gravity="center"
         android:text="그룹"
+        android:textColor="#0066CC"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.046"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,6 +50,7 @@
         android:layout_height="21dp"
         android:layout_marginTop="21dp"
         android:gravity="center"
+        android:textColor="#0066CC"
         android:text="일일 한도 설정"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.052"
@@ -62,7 +62,9 @@
         android:layout_width="377dp"
         android:layout_height="46dp"
         android:layout_marginTop="95dp"
+        android:background="@drawable/grouptext_round_backgound"
         android:text="등록"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/limit_setting_text" />
@@ -73,6 +75,8 @@
         android:layout_height="45dp"
         android:layout_marginTop="10dp"
         android:text="취소"
+        android:textColor="#0066CC"
+        android:background="@drawable/round_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_btn" />
@@ -83,6 +87,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="87dp"
+        android:textColor="#0066CC"
         android:text="비공개 그룹"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo" />
@@ -93,6 +98,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="95dp"
         android:layout_marginTop="40dp"
+        android:textColor="#0066CC"
         android:text="공개 그룹"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo" />

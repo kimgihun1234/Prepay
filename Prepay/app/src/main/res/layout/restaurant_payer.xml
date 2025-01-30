@@ -6,10 +6,10 @@
     android:layout_height="100dp"
     android:padding="15dp"
     android:orientation="vertical"
-    android:background="#4EADFE">
+    android:background="@drawable/round_background">
 
     <TextView
-        android:textColor="#FFFFFF"
+        android:textColor="@color/black"
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
         app:layout_constraintTop_toBottomOf="@+id/date" />
 
     <TextView
-        android:textColor="#FFFFFF"
+        android:textColor="@color/black"
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
         android:layout_marginStart="40dp"
         android:gravity="center"
         android:text="500,000"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/black"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/name"

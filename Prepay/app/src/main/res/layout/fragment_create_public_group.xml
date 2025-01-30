@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="95dp"
         android:layout_marginTop="40dp"
+        android:textColor="#0066CC"
         android:text="공개 그룹"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
@@ -25,6 +26,7 @@
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:text="그룹 이름"
+        android:textColor="#0066CC"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.069"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,6 +39,7 @@
         android:layout_marginTop="12dp"
         android:gravity="center"
         android:text="이미지 설정"
+        android:textColor="#0066CC"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.069"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,6 +52,7 @@
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:text="일일 한도 설정"
+        android:textColor="#0066CC"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.069"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,6 +65,7 @@
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:text="반복 사용"
+        android:textColor="#0066CC"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.069"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,6 +78,7 @@
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:text="텍스트 입력"
+        android:textColor="#0066CC"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.069"
         app:layout_constraintStart_toStartOf="parent"
@@ -86,6 +92,7 @@
         android:layout_marginTop="40dp"
         android:layout_marginEnd="98dp"
         android:text="비공개 그룹"
+        android:textColor="#0066CC"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/public_checkbox"
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
@@ -97,6 +104,7 @@
         android:ems="10"
         android:inputType="text"
         android:text=""
+        android:background="@drawable/round_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/group_name" />
@@ -108,6 +116,8 @@
         android:ems="10"
         android:inputType="text"
         android:text="이미지를 넣어주세요"
+        android:background="@drawable/round_background"
+        android:textColor="#0066CC"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image" />
@@ -119,6 +129,7 @@
         android:ems="10"
         android:inputType="text"
         android:text=""
+        android:background="@drawable/round_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/limit_setting" />
@@ -131,6 +142,8 @@
         android:inputType="text"
         android:text=""
         android:hint="공개 그룹을 만드신 취지를 적어주세요"
+        android:gravity="center"
+        android:background="@drawable/round_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_input" />
@@ -141,6 +154,8 @@
         android:layout_height="50dp"
         android:layout_marginTop="48dp"
         android:text="등록"
+        android:textColor="@color/white"
+        android:background="@drawable/grouptext_round_backgound"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_input_text" />
@@ -151,6 +166,8 @@
         android:layout_height="50dp"
         android:layout_marginTop="1dp"
         android:text="취소"
+        android:textColor="#0066CC"
+        android:background="@drawable/round_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_btn" />
@@ -170,6 +187,7 @@
         android:layout_width="365dp"
         android:layout_height="50dp"
         android:text="TextView"
+        android:background="@drawable/round_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/repeat" />
@@ -180,6 +198,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="120dp"
         android:text="가능"
+        android:textColor="#0066CC"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/repeat" />
 
@@ -190,6 +209,7 @@
         android:layout_marginStart="45dp"
         android:layout_marginEnd="120dp"
         android:text="불가능"
+        android:textColor="#0066CC"
         app:layout_constraintBottom_toBottomOf="@+id/textView13"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.266"

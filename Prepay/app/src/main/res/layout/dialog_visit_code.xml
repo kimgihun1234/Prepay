@@ -8,53 +8,58 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- 코드 입력 필드 -->
+
     <TextView
         android:id="@+id/tv_dialog_title"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="방문 코드를 입력해주세요"
-        android:textColor="@color/black"
+        android:layout_marginTop="20dp"
+        android:text="초대 코드 압력"
+        android:textColor="#0066CC"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/et_code_input"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.099"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- 코드 입력 필드 -->
-
     <EditText
         android:id="@+id/et_code_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:hint="Code"
+        android:layout_width="366dp"
+        android:layout_height="51dp"
+        android:background="@drawable/round_background"
+        android:gravity="center"
+        android:hint="초대 코드를 입력해주세요"
         android:padding="10dp"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_dialog_title" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="2dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/round_background"
         android:text="취소"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toStartOf="@+id/btn_register"
+        android:textColor="#0066CC"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_code_input" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="30dp"
-        android:text="등록"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/grouptext_round_backgound"
+        android:text="확인"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_cancel"
         app:layout_constraintTop_toBottomOf="@+id/et_code_input" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
