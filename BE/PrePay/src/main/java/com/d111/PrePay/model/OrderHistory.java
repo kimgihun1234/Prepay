@@ -1,7 +1,6 @@
 package com.d111.PrePay.model;
 
 
-import com.d111.PrePay.RequestStatus;
 import com.d111.PrePay.dto.request.DetailHistoryReq;
 import com.d111.PrePay.dto.request.OrderReq;
 import jakarta.persistence.*;

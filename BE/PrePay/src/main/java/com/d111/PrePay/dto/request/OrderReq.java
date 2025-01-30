@@ -1,6 +1,5 @@
 package com.d111.PrePay.dto.request;
 
-import com.d111.PrePay.model.DetailHistory;
 import lombok.Getter;
 import lombok.Setter;
 
