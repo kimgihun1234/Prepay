@@ -3,6 +3,8 @@ package com.example.prepay.ui.GroupDetails
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
@@ -11,6 +13,7 @@ import com.example.prepay.data.model.dto.Restaurant
 import com.example.prepay.databinding.FragmentGroupDetailsBinding
 import com.example.prepay.ui.MainActivity
 import com.example.prepay.ui.RestaurantDetails.RestaurantDetailsFragment
+import com.google.android.material.navigation.NavigationView
 
 class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     FragmentGroupDetailsBinding::bind,
@@ -19,6 +22,8 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     private lateinit var mainActivity: MainActivity
     private lateinit var adapter: RestaurantAdapter
     private lateinit var restaurantList: List<Restaurant>
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navigationView: NavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +35,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         super.onViewCreated(view, savedInstanceState)
         initEvent()
         initAdapter()
+        initDrawerLayout()
     }
 
     private fun initAdapter(){
@@ -43,7 +49,21 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         binding.recyclerView.adapter = adapter
     }
 
+    private fun initDrawerLayout(){
+        drawerLayout = binding.drawerLayout
+        navigationView = binding.navigationView
+        drawerLayout.openDrawer(GravityCompat.END)
+        binding.drawerLayout.setOnClickListener {
+            if (!drawerLayout.isDrawerOpen(GravityCompat.END)) {
+                drawerLayout.openDrawer(GravityCompat.END)
+            }
+        }
+    }
+
+
     private fun initEvent() {
 
     }
+
 }
+
