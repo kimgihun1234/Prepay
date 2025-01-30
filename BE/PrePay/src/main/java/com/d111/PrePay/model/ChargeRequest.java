@@ -12,7 +12,8 @@ public class ChargeRequest {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "charge_request_id")
     private long id;
-    
+
+    @Enumerated(EnumType.STRING)
     private RequestStatus requestStatus;
 
     private int requestPrice;

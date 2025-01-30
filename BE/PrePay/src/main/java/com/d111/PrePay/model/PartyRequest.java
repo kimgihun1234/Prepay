@@ -14,7 +14,7 @@ public class PartyRequest {
 
     private long requestDate;
 
-
+    @Enumerated(EnumType.STRING)
     private RequestStatus requestStatus;
 
     private long statusChangedDate;
