@@ -5,6 +5,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".ui.GroupDetails.GroupDetailsFragment">
 
     <!-- 메인 콘텐츠 영역 -->
@@ -186,6 +187,7 @@
             </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/group_invite_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_invite_background"
@@ -227,7 +229,7 @@
 
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/exit_btn"
+                android:id="@+id/group_exit_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_invite_background"
