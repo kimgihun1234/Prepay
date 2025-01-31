@@ -6,7 +6,7 @@ import android.view.View
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
-import com.example.prepay.data.model.dto.PrivateGroup
+import com.example.prepay.data.model.dto.PublicPrivateTeam
 import com.example.prepay.databinding.FragmentCreatePrivateGroupBinding
 import com.example.prepay.ui.MainActivity
 
@@ -27,15 +27,26 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
     }
 
     fun initEvent(){
-        binding.publicCheckbox.setOnClickListener {
-            mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.CREATE_PUBLIC_GROUP_FRAGMENT)
+        binding.publicCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                binding.privateCheckbox.isChecked = false
+                mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.CREATE_PUBLIC_GROUP_FRAGMENT)
+            }
+        }
+        binding.privateCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                binding.publicCheckbox.isChecked = false
+                mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.CREATE_PRIVATE_GROUP_FRAGMENT)
+            }
         }
         binding.registerBtn.setOnClickListener {
+            val privateTeam = if(binding.privateCheckbox.isChecked) 1 else 0
             val groupName = binding.groupNameText.text.toString()
             val limitAmount = binding.limitSettingText.text.toString()
 
             // POST로 데려가서 API에 저장할 것이다.
-            PrivateGroup(groupName, limitAmount.toInt())
+            PublicPrivateTeam(privateTeam, groupName, limitAmount.toInt())
+            Log.d(TAG, "privateTeam: $privateTeam")
             Log.d(TAG, "groupName: $groupName")
             Log.d(TAG, "limitAmount: $limitAmount")
 
