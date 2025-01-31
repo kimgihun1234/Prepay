@@ -1,5 +1,7 @@
 package com.d111.PrePay.service;
 
+import com.d111.PrePay.dto.request.TeamCreateStoreReq;
+import com.d111.PrePay.dto.request.TeamDetailReq;
 import com.d111.PrePay.dto.request.TeamCreateReq;
 import com.d111.PrePay.dto.respond.GetUserOfTeamRes;
 import com.d111.PrePay.dto.respond.StoresRes;
@@ -13,6 +15,8 @@ import com.d111.PrePay.repository.TeamRepository;
 import com.d111.PrePay.repository.TeamStoreRepository;
 import com.d111.PrePay.repository.UserRepository;
 import com.d111.PrePay.repository.UserTeamRepository;
+import com.d111.PrePay.model.*;
+import com.d111.PrePay.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,6 +35,18 @@ public class TeamService {
     private final UserRepository userRepository;
     private final UserTeamRepository userTeamRepository;
     private final TeamStoreRepository teamStoreRepository;
+    private final StoreRepository storeRepository;
+
+    // 팀 가맹점 추가
+    public TeamStore createStore(TeamCreateStoreReq req){
+        Team findTeam = teamRepository.findById(req.getTeamId()).orElseThrow();
+        Store findStore = storeRepository.findById(req.getStoreId()).orElseThrow();
+
+        TeamStore teamStore = new TeamStore(findTeam, findStore, req.getBalance());
+
+        return teamStoreRepository.save(teamStore);
+    }
+
 
     // 팀 유저 조회
     public List<GetUserOfTeamRes> getUsersOfTeam(Long teamId, Long userId) {
@@ -135,7 +151,6 @@ public class TeamService {
     // 랜덤 비밀번호 생성
     public String generateRandomPassword() {
         String password = UUID.randomUUID().toString();
-
         return password;
     }
 }
