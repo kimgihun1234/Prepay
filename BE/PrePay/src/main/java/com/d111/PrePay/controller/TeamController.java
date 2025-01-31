@@ -1,6 +1,7 @@
 package com.d111.PrePay.controller;
 
 
+import com.d111.PrePay.dto.request.ChangeDailyPriceLimitReq;
 import com.d111.PrePay.dto.request.InviteCodeReq;
 import com.d111.PrePay.dto.request.TeamCreateReq;
 import com.d111.PrePay.dto.request.TeamCreateStoreReq;
@@ -23,10 +24,15 @@ import java.util.List;
 public class TeamController {
     private final TeamService teamService;
 
+    @PostMapping("/limit")
+    public ResponseEntity<Team> changeDailyPriceLimit(@RequestHeader("userId") Long userId, @RequestBody ChangeDailyPriceLimitReq req){
+        return ResponseEntity.ok(teamService.changeDailyPriceLimit(req));
+    }
+
+
     @PostMapping("/code")
-    public String generateInviteCode(@RequestHeader("userId") Long userId, @RequestBody InviteCodeReq req) {
-        String password = teamService.generateInviteCode(userId, req.getTeamId());
-        return password;
+    public ResponseEntity<Team> generateInviteCode(@RequestHeader("userId") Long userId, @RequestBody InviteCodeReq req) {
+        return ResponseEntity.ok(teamService.generateInviteCode(userId, req));
     }
 
 

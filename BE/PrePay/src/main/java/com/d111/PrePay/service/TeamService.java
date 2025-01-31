@@ -1,8 +1,6 @@
 package com.d111.PrePay.service;
 
-import com.d111.PrePay.dto.request.TeamCreateStoreReq;
-import com.d111.PrePay.dto.request.TeamDetailReq;
-import com.d111.PrePay.dto.request.TeamCreateReq;
+import com.d111.PrePay.dto.request.*;
 import com.d111.PrePay.dto.respond.GetUserOfTeamRes;
 import com.d111.PrePay.dto.respond.StoresRes;
 import com.d111.PrePay.dto.respond.TeamDetailRes;
@@ -23,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -37,14 +36,22 @@ public class TeamService {
     private final TeamStoreRepository teamStoreRepository;
     private final StoreRepository storeRepository;
 
+    // 팀 한도 변경
+    public Team changeDailyPriceLimit(ChangeDailyPriceLimitReq req){
+        Team findTeam = teamRepository.findById(req.getTeamId()).orElseThrow();
+        findTeam.setDailyPriceLimit(req.getDailyPriceLimit());
+        teamRepository.save(findTeam);
+        return findTeam;
+    }
+
+
 
     // 팀 초대 코드 생성
-    public String generateInviteCode(Long userId, Long teamId){
-        Team team = teamRepository.findById(teamId).orElseThrow();
+    public Team generateInviteCode(Long userId, InviteCodeReq req){
+        Team team = teamRepository.findById(req.getTeamId()).orElseThrow();
         String password = generateRandomPassword();
         team.setTeamPassword(password);
-        teamRepository.save(team);
-        return password;
+        return teamRepository.save(team);
     }
 
 
