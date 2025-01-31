@@ -20,3 +20,4 @@ out/
 .vscode/
 *.env
 
+Prepay/local.properties
