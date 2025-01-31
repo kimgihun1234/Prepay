@@ -23,6 +23,7 @@ class CreatePublicGroupFragment: BaseFragment<FragmentCreatePublicGroupBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initEvent()
     }
 
