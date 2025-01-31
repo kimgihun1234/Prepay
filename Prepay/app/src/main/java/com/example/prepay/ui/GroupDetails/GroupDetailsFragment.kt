@@ -18,7 +18,7 @@ import com.google.android.material.navigation.NavigationView
 class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     FragmentGroupDetailsBinding::bind,
     R.layout.fragment_group_details
-){
+), RestaurantAdapter.OnRestaurantClickListener{
     private lateinit var mainActivity: MainActivity
     private lateinit var adapter: RestaurantAdapter
     private lateinit var restaurantList: List<Restaurant>
@@ -44,7 +44,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             Restaurant("싸피 식당", 20000),
             Restaurant("삼성 식당", 4000)
         )
-        adapter = RestaurantAdapter(restaurantList)
+        adapter = RestaurantAdapter(restaurantList,this)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
     }
@@ -63,6 +63,10 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
 
     private fun initEvent() {
 
+    }
+
+    override fun onRestaurantClick(restaurant: Restaurant) {
+        mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.RESTAURANT_DETAILS_FRAGMENT)
     }
 
 }
