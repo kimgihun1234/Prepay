@@ -3,65 +3,75 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
 
     <EditText
         android:id="@+id/group_name_text"
-        android:layout_width="377dp"
-        android:layout_height="41dp"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="65dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/round_background"
         android:ems="10"
         android:inputType="text"
-        android:background="@drawable/round_background"
         android:text=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/group_name" />
+        app:layout_constraintTop_toBottomOf="@+id/public_checkbox" />
 
     <EditText
         android:id="@+id/limit_setting_text"
-        android:layout_width="377dp"
-        android:layout_height="41dp"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="42dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/round_background"
         android:ems="10"
         android:inputType="text"
-        android:background="@drawable/round_background"
         android:text=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/limit_setting" />
+        app:layout_constraintTop_toBottomOf="@+id/group_name_text" />
 
     <TextView
         android:id="@+id/group_name"
-        android:layout_width="67dp"
+        android:background="@color/white"
+        android:layout_width="wrap_content"
         android:layout_height="19dp"
-        android:layout_marginTop="46dp"
+        android:layout_marginTop="56dp"
         android:gravity="center"
         android:text="그룹"
         android:textColor="#0066CC"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.046"
+        app:layout_constraintHorizontal_bias="0.116"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/public_checkbox" />
 
     <TextView
         android:id="@+id/limit_setting"
-        android:layout_width="109dp"
+        android:background="@color/white"
+        android:layout_width="wrap_content"
         android:layout_height="21dp"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="32dp"
         android:gravity="center"
-        android:textColor="#0066CC"
         android:text="일일 한도 설정"
+        android:textColor="#0066CC"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.052"
+        app:layout_constraintHorizontal_bias="0.132"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/group_name_text" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/register_btn"
-        android:layout_width="377dp"
-        android:layout_height="46dp"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="95dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/grouptext_round_backgound"
         android:text="등록"
         android:textColor="@color/white"
@@ -71,12 +81,14 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/cancel_btn"
-        android:layout_width="377dp"
-        android:layout_height="45dp"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/round_background"
         android:text="취소"
         android:textColor="#0066CC"
-        android:background="@drawable/round_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_btn" />
@@ -86,7 +98,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:layout_marginEnd="87dp"
+        android:layout_marginEnd="90dp"
         android:textColor="#0066CC"
         android:text="비공개 그룹"
         app:layout_constraintEnd_toEndOf="parent"
@@ -96,7 +108,7 @@
         android:id="@+id/public_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="95dp"
+        android:layout_marginStart="90dp"
         android:layout_marginTop="40dp"
         android:textColor="#0066CC"
         android:text="공개 그룹"

@@ -6,7 +6,7 @@ import android.view.View
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
-import com.example.prepay.data.model.dto.PublicGroup
+import com.example.prepay.data.model.dto.PublicPrivateTeam
 import com.example.prepay.databinding.FragmentCreatePublicGroupBinding
 import com.example.prepay.ui.MainActivity
 
@@ -27,13 +27,20 @@ class CreatePublicGroupFragment: BaseFragment<FragmentCreatePublicGroupBinding>(
     }
 
     fun initEvent(){
-        binding.publicCheckbox.setOnClickListener {
-            mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.CREATE_PUBLIC_GROUP_FRAGMENT)
+        binding.publicCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                binding.privateCheckbox.isChecked = false
+                mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.CREATE_PUBLIC_GROUP_FRAGMENT)
+            }
         }
-        binding.privateCheckbox.setOnClickListener {
-            mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.CREATE_PRIVATE_GROUP_FRAGMENT)
+        binding.privateCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                binding.publicCheckbox.isChecked = false
+                mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.CREATE_PRIVATE_GROUP_FRAGMENT)
+            }
         }
         binding.registerBtn.setOnClickListener {
+            val public_team = if (binding.publicCheckbox.isChecked) 0 else 1
             val team_name = binding.groupNameText.getText().toString()
             val image_url = binding.imageBtn.urls
             val daily_price_limit = binding.limitSettingText.getText().toString()
@@ -41,13 +48,14 @@ class CreatePublicGroupFragment: BaseFragment<FragmentCreatePublicGroupBinding>(
             val context_text = binding.textInputText.getText().toString()
 
             // POST로 넘기기
+            Log.d(TAG, "public_team: $public_team")
             Log.d(TAG, "team_name: $team_name")
             Log.d(TAG, "daily_price_limit: $daily_price_limit")
             Log.d(TAG, "repeat_use: $repeat_use")
             Log.d(TAG, "image_url: $image_url")
             Log.d(TAG, "context_text: $context_text")
 
-            PublicGroup(team_name, daily_price_limit.toInt(), repeat_use, image_url.toString(), context_text)
+            PublicPrivateTeam(public_team ,team_name, daily_price_limit.toInt(), repeat_use, image_url.toString(), context_text)
             mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
         }
         binding.cancelBtn.setOnClickListener {
