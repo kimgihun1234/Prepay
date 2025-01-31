@@ -1,18 +1,23 @@
 package com.d111.PrePay.model;
 
 
+import com.d111.PrePay.dto.request.UserCreateReq;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
+@NoArgsConstructor
 public class User {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 
@@ -35,4 +40,11 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<OrderHistory> orderHistories = new ArrayList<>();
 
+    public User(UserCreateReq req) {
+        this.userLoginId = req.getUserLoginId();
+        this.userName = req.getUserName();
+        this.email = req.getEmail();
+        this.userPassword = req.getPassword();
+        this.nickname = req.getNickname();
+    }
 }
