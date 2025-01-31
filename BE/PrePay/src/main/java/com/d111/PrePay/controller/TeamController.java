@@ -1,16 +1,8 @@
 package com.d111.PrePay.controller;
 
-import com.d111.PrePay.dto.request.InviteCodeReq;
 import com.d111.PrePay.dto.request.TeamCreateReq;
-<<<<<<< HEAD
-=======
 import com.d111.PrePay.dto.request.TeamCreateStoreReq;
-import com.d111.PrePay.dto.request.TeamDetailReq;
->>>>>>> e822273e26c945781d59f376ec1fdf4c719b5818
-import com.d111.PrePay.dto.respond.GetUserOfTeamRes;
-import com.d111.PrePay.dto.respond.StoresRes;
-import com.d111.PrePay.dto.respond.TeamDetailRes;
-import com.d111.PrePay.dto.respond.TeamRes;
+import com.d111.PrePay.dto.respond.*;
 import com.d111.PrePay.model.Team;
 import com.d111.PrePay.model.TeamStore;
 import com.d111.PrePay.service.TeamService;
@@ -69,5 +61,10 @@ public class TeamController {
     @GetMapping("/{teamId}/stores")
     public ResponseEntity<List<StoresRes>> getMyTeamStores(@RequestHeader("userId") Long userId, @PathVariable Long teamId) {
         return ResponseEntity.ok(teamService.getMyTeamStores(teamId, userId));
+    }
+
+    @GetMapping("/coordinate/{teamId}")
+    public ResponseEntity<List<StoresCorRes>> getStoresCor(@RequestHeader("userId") Long userId, @PathVariable Long teamId) {
+        return ResponseEntity.ok(teamService.getStoresCor(teamId, userId));
     }
 }

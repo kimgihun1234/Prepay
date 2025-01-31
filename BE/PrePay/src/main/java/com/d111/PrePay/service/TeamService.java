@@ -3,10 +3,7 @@ package com.d111.PrePay.service;
 import com.d111.PrePay.dto.request.TeamCreateStoreReq;
 import com.d111.PrePay.dto.request.TeamDetailReq;
 import com.d111.PrePay.dto.request.TeamCreateReq;
-import com.d111.PrePay.dto.respond.GetUserOfTeamRes;
-import com.d111.PrePay.dto.respond.StoresRes;
-import com.d111.PrePay.dto.respond.TeamDetailRes;
-import com.d111.PrePay.dto.respond.TeamRes;
+import com.d111.PrePay.dto.respond.*;
 import com.d111.PrePay.model.Team;
 import com.d111.PrePay.model.TeamStore;
 import com.d111.PrePay.model.User;
@@ -38,7 +35,7 @@ public class TeamService {
     private final StoreRepository storeRepository;
 
     // 팀 가맹점 추가
-    public TeamStore createStore(TeamCreateStoreReq req){
+    public TeamStore createStore(TeamCreateStoreReq req) {
         Team findTeam = teamRepository.findById(req.getTeamId()).orElseThrow();
         Store findStore = storeRepository.findById(req.getStoreId()).orElseThrow();
 
@@ -146,6 +143,20 @@ public class TeamService {
             resultList.add(storesRes);
         }
         return resultList;
+    }
+
+
+    //팀 가맹점의 좌표 조회
+    public List<StoresCorRes> getStoresCor(long teamId, long userId) {
+        Team team = teamRepository.findById(teamId).orElseThrow();
+        List<TeamStore> list = teamStoreRepository.findTeamStoresByTeam(team);
+        List<StoresCorRes> result = new ArrayList<>();
+        for (TeamStore teamStore : list) {
+            Store store = teamStore.getStore();
+            StoresCorRes storesCorRes = new StoresCorRes(store);
+            result.add(storesCorRes);
+        }
+        return result;
     }
 
     // 랜덤 비밀번호 생성
