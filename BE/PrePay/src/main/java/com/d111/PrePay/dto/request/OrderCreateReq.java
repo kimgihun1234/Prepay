@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class OrderReq {
+public class OrderCreateReq {
     private long userTeamId;
     private long storeId;
     private boolean companyDinner;

@@ -1,12 +1,14 @@
 package com.d111.PrePay.service;
 
 import com.d111.PrePay.dto.request.OrderHistoryReq;
+import com.d111.PrePay.dto.request.RefundRequestCreateReq;
 import com.d111.PrePay.dto.respond.DetailHistoryRes;
 import com.d111.PrePay.dto.respond.OrderHistoryRes;
-import com.d111.PrePay.model.DetailHistory;
-import com.d111.PrePay.model.OrderHistory;
+import com.d111.PrePay.model.*;
 import com.d111.PrePay.repository.DetailHistoryRepository;
 import com.d111.PrePay.repository.OrderHistoryRepository;
+import com.d111.PrePay.repository.RefundRequestRepository;
+import com.d111.PrePay.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ public class OrderService {
 
     private final OrderHistoryRepository orderHistoryRepository;
     private final DetailHistoryRepository detailHistoryRepository;
+    private final RefundRequestRepository refundRequestRepository;
+    private final UserRepository userRepository;
 
     public List<OrderHistoryRes> getOrderHistory(OrderHistoryReq req) {
         if (req.getStoreId() != null) {
@@ -49,5 +53,12 @@ public class OrderService {
             resultList.add(detailHistoryRes);
         }
         return resultList;
+    }
+
+    public Long makeRefundRequest(RefundRequestCreateReq req) {
+        OrderHistory orderHistory = orderHistoryRepository.findById(req.getOrderHistoryId()).orElseThrow();
+        RefundRequest refundRequest = new RefundRequest(orderHistory);
+        refundRequestRepository.save(refundRequest);
+        return refundRequest.id;
     }
 }

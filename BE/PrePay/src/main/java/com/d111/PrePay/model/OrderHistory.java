@@ -2,7 +2,7 @@ package com.d111.PrePay.model;
 
 
 import com.d111.PrePay.dto.request.DetailHistoryReq;
-import com.d111.PrePay.dto.request.OrderReq;
+import com.d111.PrePay.dto.request.OrderCreateReq;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,13 +47,13 @@ public class OrderHistory {
     @OneToMany(mappedBy = "orderHistory")
     private List<DetailHistory> detailHistories;
 
-    public OrderHistory(OrderReq orderReq) {
+    public OrderHistory(OrderCreateReq orderCreateReq) {
         this.orderDate = System.currentTimeMillis();
-        this.companyDinner = orderReq.isCompanyDinner();
+        this.companyDinner = orderCreateReq.isCompanyDinner();
         this.withDraw = true;
         this.totalPrice = 0;
         this.refundRequested = false;
-        for (DetailHistoryReq detailHistoryReq : orderReq.getDetails()) {
+        for (DetailHistoryReq detailHistoryReq : orderCreateReq.getDetails()) {
             this.totalPrice += detailHistoryReq.getDetailPrice() * detailHistoryReq.getQuantity();
         }
     }

@@ -1,6 +1,7 @@
 package com.d111.PrePay.controller;
 
 import com.d111.PrePay.dto.request.OrderHistoryReq;
+import com.d111.PrePay.dto.request.RefundRequestCreateReq;
 import com.d111.PrePay.dto.respond.DetailHistoryRes;
 import com.d111.PrePay.dto.respond.OrderHistoryRes;
 import com.d111.PrePay.service.OrderService;
@@ -25,5 +26,10 @@ public class OrderController {
     @GetMapping("/history/{detailHistoryId}")
     public ResponseEntity<List<DetailHistoryRes>> getDetailHistory(@PathVariable long detailHistoryId) {
         return ResponseEntity.ok(orderService.getDetailHistory(detailHistoryId));
+    }
+
+    @PostMapping("/refund")
+    public ResponseEntity<Long> makeRefundRequest(@RequestBody RefundRequestCreateReq req) {
+        return ResponseEntity.ok(orderService.makeRefundRequest(req));
     }
 }
