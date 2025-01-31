@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class TeamController {
     private final TeamService teamService;
 
+
+
     @PostMapping("/signup")
     public ResponseEntity<Void> createTeam(@RequestBody TeamRequestDTO request){
         Team team = teamService.createTeam(request);

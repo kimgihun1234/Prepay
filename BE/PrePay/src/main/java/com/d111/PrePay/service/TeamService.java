@@ -1,5 +1,6 @@
 package com.d111.PrePay.service;
 
+import com.d111.PrePay.dto.TeamDetailRequestDTO;
 import com.d111.PrePay.dto.TeamRequestDTO;
 import com.d111.PrePay.model.Team;
 import com.d111.PrePay.model.User;
@@ -22,6 +23,13 @@ public class TeamService {
     private final UserRepository userRepository;
     private final UserTeamRepository userTeamRepository;
    
+    public void getTeamDetails(TeamDetailRequestDTO request){
+        UserTeam userTeam = userTeamRepository.findByTeamIdAndUserId(request.getTeamId(), request.getUserId())
+                .orElseThrow(()-> new RuntimeException("유저팀을 찾을 수 없습니다."));
+    }
+
+
+
 
     // 팀 생성
     public Team createTeam(TeamRequestDTO request){
