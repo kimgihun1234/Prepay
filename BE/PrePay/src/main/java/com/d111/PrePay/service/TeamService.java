@@ -37,6 +37,17 @@ public class TeamService {
     private final TeamStoreRepository teamStoreRepository;
     private final StoreRepository storeRepository;
 
+
+    // 팀 초대 코드 생성
+    public String generateInviteCode(Long userId, Long teamId){
+        Team team = teamRepository.findById(teamId).orElseThrow();
+        String password = generateRandomPassword();
+        team.setTeamPassword(password);
+        teamRepository.save(team);
+        return password;
+    }
+
+
     // 팀 가맹점 추가
     public TeamStore createStore(TeamCreateStoreReq req){
         Team findTeam = teamRepository.findById(req.getTeamId()).orElseThrow();

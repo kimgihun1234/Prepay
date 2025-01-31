@@ -1,12 +1,9 @@
 package com.d111.PrePay.controller;
 
+
 import com.d111.PrePay.dto.request.InviteCodeReq;
 import com.d111.PrePay.dto.request.TeamCreateReq;
-<<<<<<< HEAD
-=======
 import com.d111.PrePay.dto.request.TeamCreateStoreReq;
-import com.d111.PrePay.dto.request.TeamDetailReq;
->>>>>>> e822273e26c945781d59f376ec1fdf4c719b5818
 import com.d111.PrePay.dto.respond.GetUserOfTeamRes;
 import com.d111.PrePay.dto.respond.StoresRes;
 import com.d111.PrePay.dto.respond.TeamDetailRes;
@@ -26,11 +23,11 @@ import java.util.List;
 public class TeamController {
     private final TeamService teamService;
 
-//    @PostMapping("/code")
-//    public String generateInviteCode(@RequestHeader("userId") Long userId, @RequestBody InviteCodeReq req) {
-//
-//        return password;
-//    }
+    @PostMapping("/code")
+    public String generateInviteCode(@RequestHeader("userId") Long userId, @RequestBody InviteCodeReq req) {
+        String password = teamService.generateInviteCode(userId, req.getTeamId());
+        return password;
+    }
 
 
     @PostMapping("/store-id")
