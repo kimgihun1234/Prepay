@@ -32,7 +32,7 @@ public class UserTeam {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany
+    @OneToMany(mappedBy = "userTeam")
     private List<PartyRequest> partyRequests = new ArrayList<>();
 
 

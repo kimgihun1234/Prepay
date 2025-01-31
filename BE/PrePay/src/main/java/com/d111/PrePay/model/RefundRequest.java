@@ -12,6 +12,7 @@ public class RefundRequest {
     @Column(name = "refund_request_id")
     public Long id;
 
+    @Enumerated(EnumType.STRING)
     private RequestStatus requestStatus;
 
     private int requestPrice;

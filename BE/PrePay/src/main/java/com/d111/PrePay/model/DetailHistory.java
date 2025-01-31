@@ -1,11 +1,15 @@
 package com.d111.PrePay.model;
 
+import com.d111.PrePay.dto.request.DetailHistoryReq;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
+@NoArgsConstructor
 public class DetailHistory {
 
     @Id
@@ -22,4 +26,9 @@ public class DetailHistory {
     @ManyToOne
     private OrderHistory orderHistory;
 
+    public DetailHistory(DetailHistoryReq detailHistoryReq) {
+        this.product = detailHistoryReq.getProduct();
+        this.detailPrice = detailHistoryReq.getDetailPrice();
+        this.quantity = detailHistoryReq.getQuantity();
+    }
 }
