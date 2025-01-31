@@ -20,6 +20,7 @@ public class PosService {
         OrderHistory orderHistory = new OrderHistory(orderReq);
         Store store = storeRepository.findById(orderReq.getStoreId()).orElseThrow(() -> new RuntimeException("가게 오류"));
         UserTeam userTeam = userTeamRepository.findById(orderReq.getUserTeamId()).orElseThrow();
+        userTeam.setUsedAmount(userTeam.getUsedAmount() + orderHistory.getTotalPrice());
         Team team = userTeam.getTeam();
         User user = userTeam.getUser();
         orderHistory.setStore(store);
