@@ -36,4 +36,5 @@ public class UserTeam {
     private List<PartyRequest> partyRequests = new ArrayList<>();
 
 
+
 }

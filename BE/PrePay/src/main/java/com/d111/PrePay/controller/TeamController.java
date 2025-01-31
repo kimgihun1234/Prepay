@@ -1,10 +1,13 @@
 package com.d111.PrePay.controller;
 
+import com.d111.PrePay.dto.request.InviteCodeReq;
 import com.d111.PrePay.dto.request.TeamCreateReq;
+import com.d111.PrePay.dto.request.TeamCreateStoreReq;
 import com.d111.PrePay.dto.request.TeamDetailReq;
 import com.d111.PrePay.dto.respond.GetUserOfTeamRes;
 import com.d111.PrePay.dto.respond.TeamDetailRes;
 import com.d111.PrePay.model.Team;
+import com.d111.PrePay.model.TeamStore;
 import com.d111.PrePay.service.TeamService;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,23 +23,37 @@ import java.util.List;
 public class TeamController {
     private final TeamService teamService;
 
+//    @PostMapping("/code")
+//    public String generateInviteCode(@RequestHeader("userId") Long userId, @RequestBody InviteCodeReq req) {
+//
+//        return password;
+//    }
+
+
+    @PostMapping("/store-id")
+    public Long createStore(@RequestHeader("userId") Long userId,
+                            @RequestBody TeamCreateStoreReq req) {
+        TeamStore teamStore = teamService.createStore(req);
+        return teamStore.getId();
+    }
+
+
     @GetMapping("/{teamId}/user")
     public List<GetUserOfTeamRes> getUserOfTeam(@PathVariable Long teamId,
-                                                @RequestHeader("userId") Long userId){
+                                                @RequestHeader("userId") Long userId) {
         return teamService.getUsersOfTeam(teamId, userId);
     }
 
 
-
     @GetMapping("/{teamId}")
     public TeamDetailRes getTeamDetails(@PathVariable Long teamId,
-                                        @RequestHeader("userId") Long userId){
-        return teamService.getTeamDetails(teamId,userId);
+                                        @RequestHeader("userId") Long userId) {
+        return teamService.getTeamDetails(teamId, userId);
     }
 
 
     @PostMapping("/signup")
-    public ResponseEntity<Long> createTeam(@RequestBody TeamCreateReq request){
+    public ResponseEntity<Long> createTeam(@RequestBody TeamCreateReq request) {
         Team team = teamService.createTeam(request);
         return ResponseEntity.ok(team.getId());
     }
