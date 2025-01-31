@@ -13,7 +13,11 @@ import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.User
 import com.example.prepay.data.model.dto.Restaurant
+import com.example.prepay.databinding.DialogAuthoritySettingBinding
+import com.example.prepay.databinding.DialogGroupExitBinding
+import com.example.prepay.databinding.DialogGroupResignBinding
 import com.example.prepay.databinding.DialogInviteCodeBinding
+import com.example.prepay.databinding.DialogQrDiningTogetherBinding
 import com.example.prepay.databinding.FragmentGroupDetailsBinding
 import com.example.prepay.ui.MainActivity
 import com.example.prepay.ui.RestaurantDetails.RestaurantDetailsFragment
@@ -22,7 +26,7 @@ import com.google.android.material.navigation.NavigationView
 class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     FragmentGroupDetailsBinding::bind,
     R.layout.fragment_group_details
-), RestaurantAdapter.OnRestaurantClickListener{
+), RestaurantAdapter.OnRestaurantClickListener, OnTeamUserActionListener{
     private lateinit var mainActivity: MainActivity
     private lateinit var restaurantAdapter: RestaurantAdapter
     private lateinit var teamUserAdapter: TeamUserAdapter
@@ -56,7 +60,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             User("김ㄹㄹ","ㄱㄱㄱ","ㅇㅇㅇ")
         )
         restaurantAdapter = RestaurantAdapter(restaurantList,this)
-        teamUserAdapter = TeamUserAdapter(teamUserList)
+        teamUserAdapter = TeamUserAdapter(teamUserList,this)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = restaurantAdapter
         binding.rvMemberList.layoutManager = LinearLayoutManager(requireContext())
@@ -76,14 +80,39 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
 
 
     private fun initEvent() {
+        binding.diningTogetherQrBtn.setOnClickListener {
+            showQrCodeDialog()
+        }
+
         binding.groupInviteBtn.setOnClickListener {
             showInviteCodeInputDialog()
+        }
+        binding.groupExitBtn.setOnClickListener {
+            showGroupExitDialog()
         }
     }
 
     override fun onRestaurantClick(restaurant: Restaurant) {
         mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.RESTAURANT_DETAILS_FRAGMENT)
     }
+
+    override fun onManageClick(user: User) {
+        showAuthoritySettingDialog()
+    }
+
+    override fun onResignClick(user: User) {
+        showGroupResignDialog()
+    }
+
+    private fun showQrCodeDialog(){
+        val binding = DialogQrDiningTogetherBinding.inflate(layoutInflater)
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(binding.root)
+            .create()
+        dialog.show()
+    }
+
+
 
     private fun showInviteCodeInputDialog() {
         val binding = DialogInviteCodeBinding.inflate(layoutInflater)
@@ -92,7 +121,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             .setView(binding.root)
             .create()
 
-        binding.confirmBtn.setOnClickListener {
+        binding.inviteCodeConfirmBtn.setOnClickListener {
             val code = binding.etInviteCode.text.toString()
             if (code.isNotEmpty()) {
                 Toast.makeText(requireContext(), "코드 입력: $code", Toast.LENGTH_SHORT).show()
@@ -102,12 +131,59 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             }
         }
 
-        binding.cancelBtn.setOnClickListener {
+        binding.inviteCodeCancelBtn.setOnClickListener {
             dialog.dismiss()
         }
 
         dialog.show()
     }
 
+    private fun showGroupExitDialog() {
+        val binding = DialogGroupExitBinding.inflate(layoutInflater)
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(binding.root)
+            .create()
+        binding.groupExitConfirmBtn.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        binding.groupExitCancelBtn.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+
+    private fun showGroupResignDialog() {
+        val binding = DialogGroupResignBinding.inflate(layoutInflater)
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(binding.root)
+            .create()
+        binding.groupResignConfirmBtn.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        binding.groupResignCancelBtn.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+
+    private fun showAuthoritySettingDialog() {
+        val binding = DialogAuthoritySettingBinding.inflate(layoutInflater)
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(binding.root)
+            .create()
+        binding.autoritySettingConfirmBtn.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        binding.autoritySettingCancelBtn.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
 }
 
