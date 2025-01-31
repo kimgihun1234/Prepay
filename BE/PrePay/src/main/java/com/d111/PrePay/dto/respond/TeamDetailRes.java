@@ -1,12 +1,14 @@
-package com.d111.PrePay.dto;
+package com.d111.PrePay.dto.respond;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class TeamDetailResponseDTO {
+@Builder
+public class TeamDetailRes {
     private Long teamId;
     private String teamName;
     private int dailyPriceLimit;

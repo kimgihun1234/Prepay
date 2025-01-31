@@ -1,7 +1,9 @@
 package com.d111.PrePay.service;
 
-import com.d111.PrePay.dto.TeamDetailRequestDTO;
-import com.d111.PrePay.dto.TeamRequestDTO;
+import com.d111.PrePay.dto.request.TeamDetailReq;
+import com.d111.PrePay.dto.request.TeamCreateReq;
+import com.d111.PrePay.dto.respond.GetUserOfTeamRes;
+import com.d111.PrePay.dto.respond.TeamDetailRes;
 import com.d111.PrePay.model.Team;
 import com.d111.PrePay.model.User;
 import com.d111.PrePay.model.UserTeam;
@@ -12,7 +14,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -22,26 +27,66 @@ public class TeamService {
     private final TeamRepository teamRepository;
     private final UserRepository userRepository;
     private final UserTeamRepository userTeamRepository;
-   
-    public void getTeamDetails(TeamDetailRequestDTO request){
-        UserTeam userTeam = userTeamRepository.findByTeamIdAndUserId(request.getTeamId(), request.getUserId())
-                .orElseThrow(()-> new RuntimeException("유저팀을 찾을 수 없습니다."));
+
+    // 팀 유저 조회
+    public List<GetUserOfTeamRes> getUsersOfTeam(Long teamId, Long userId){
+        Team findTeam = teamRepository.findById(teamId).orElseThrow();
+        List<UserTeam> findUserTeams = findTeam.getUserTeams();
+        List<GetUserOfTeamRes> result = new ArrayList<>();
+        for (UserTeam findUserTeam : findUserTeams) {
+            GetUserOfTeamRes getUserOfTeamRes = new GetUserOfTeamRes(findUserTeam);
+            result.add(getUserOfTeamRes);
+        }
+
+        return result;
+
     }
 
 
 
 
-    // 팀 생성
-    public Team createTeam(TeamRequestDTO request){
-        Team team = Team.builder()
-                .teamName(request.getTeamName())
-                .publicTeam(request.isPublicTeam())
-                .teamPassword(generateRandomPassword(8))
-                .dailyPriceLimit(request.getDailyPriceLimit())
-                .countLimit(request.getCountLimit())
-                .teamMessage(request.getTeamMessage())
-                .teamInitializer(request.getUserId())
+    // 팀 상세 조회
+    public TeamDetailRes getTeamDetails(Long teamId,Long userId){
+        UserTeam findUserTeam = userTeamRepository.findByTeamIdAndUserId(teamId, userId)
+                .orElseThrow(()-> new RuntimeException("유저팀을 찾을 수 없습니다."));
+
+        Team findTeam = teamRepository.findById(teamId)
+                .orElseThrow(()-> new RuntimeException("팀을 찾을 수 없습니다"));
+        TeamDetailRes res = TeamDetailRes.builder()
+                .teamId(teamId)
+                .teamName(findTeam.getTeamName())
+                .dailyPriceLimit(findTeam.getDailyPriceLimit())
+                .publicTeam(findTeam.isPublicTeam())
+                .countLimit(findTeam.getCountLimit())
+                .teamMessage(findTeam.getTeamMessage())
+                .position(findUserTeam.isPosition())
                 .build();
+
+        return res;
+    }
+
+
+    // 팀 생성
+    public Team createTeam(TeamCreateReq request){
+        String teamPassword;
+        if (!request.isPublicTeam()){
+            teamPassword = generateRandomPassword();
+        }
+        else {
+            teamPassword = null;
+        }
+
+        Team team = Team.builder()
+                    .teamName(request.getTeamName())
+                    .publicTeam(request.isPublicTeam())
+                    .teamPassword(teamPassword)
+                    .dailyPriceLimit(request.getDailyPriceLimit())
+                    .countLimit(request.getCountLimit())
+                    .teamMessage(request.getTeamMessage())
+                    .teamInitializer(request.getUserId())
+                    .build();
+
+
         Team savedTeam = teamRepository.save(team);
 
         User user = userRepository.findById(request.getUserId())
@@ -62,11 +107,9 @@ public class TeamService {
     }
 
     // 랜덤 비밀번호 생성
-    public String generateRandomPassword(int length){
-        SecureRandom random = new SecureRandom();
-        byte[] bytes = new byte[length];
-        random.nextBytes(bytes);
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+    public String generateRandomPassword(){
+        String password = UUID.randomUUID().toString();
 
+        return password;
     }
 }

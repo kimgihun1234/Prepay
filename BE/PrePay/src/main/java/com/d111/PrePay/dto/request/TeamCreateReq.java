@@ -1,4 +1,4 @@
-package com.d111.PrePay.dto;
+package com.d111.PrePay.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class TeamRequestDTO {
+public class TeamCreateReq {
     private Long userId;
     private boolean publicTeam;
     private String teamName;
