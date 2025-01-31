@@ -2,6 +2,7 @@ package com.d111.PrePay.controller;
 
 import com.d111.PrePay.dto.request.TeamCreateReq;
 import com.d111.PrePay.dto.respond.GetUserOfTeamRes;
+import com.d111.PrePay.dto.respond.StoresRes;
 import com.d111.PrePay.dto.respond.TeamDetailRes;
 import com.d111.PrePay.dto.respond.TeamRes;
 import com.d111.PrePay.model.Team;
@@ -41,5 +42,10 @@ public class TeamController {
     @GetMapping("/groups")
     public ResponseEntity<List<TeamRes>> getMyTeams(@RequestHeader("userId") Long userId) {
         return ResponseEntity.ok(teamService.getMyTeams(userId));
+    }
+
+    @GetMapping("/{teamId}/stores")
+    public ResponseEntity<List<StoresRes>> getMyTeamStores(@RequestHeader("userId") Long userId, @PathVariable Long teamId) {
+        return ResponseEntity.ok(teamService.getMyTeamStores(teamId, userId));
     }
 }

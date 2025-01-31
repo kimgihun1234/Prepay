@@ -2,15 +2,19 @@ package com.d111.PrePay.service;
 
 import com.d111.PrePay.dto.request.TeamCreateReq;
 import com.d111.PrePay.dto.respond.GetUserOfTeamRes;
+import com.d111.PrePay.dto.respond.StoresRes;
 import com.d111.PrePay.dto.respond.TeamDetailRes;
 import com.d111.PrePay.dto.respond.TeamRes;
 import com.d111.PrePay.model.Team;
+import com.d111.PrePay.model.TeamStore;
 import com.d111.PrePay.model.User;
 import com.d111.PrePay.model.UserTeam;
 import com.d111.PrePay.repository.TeamRepository;
+import com.d111.PrePay.repository.TeamStoreRepository;
 import com.d111.PrePay.repository.UserRepository;
 import com.d111.PrePay.repository.UserTeamRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,11 +24,13 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TeamService {
 
     private final TeamRepository teamRepository;
     private final UserRepository userRepository;
     private final UserTeamRepository userTeamRepository;
+    private final TeamStoreRepository teamStoreRepository;
 
     // 팀 유저 조회
     public List<GetUserOfTeamRes> getUsersOfTeam(Long teamId, Long userId) {
@@ -113,6 +119,18 @@ public class TeamService {
         return resultList;
     }
 
+
+    //팀의 가게 조회
+    public List<StoresRes> getMyTeamStores(long teamId, long userId) {
+        Team team = teamRepository.findById(teamId).orElseThrow();
+        List<TeamStore> teamStores = team.getTeamStores();
+        List<StoresRes> resultList = new ArrayList<>();
+        for (TeamStore teamStore : teamStores) {
+            StoresRes storesRes = new StoresRes(teamStore);
+            resultList.add(storesRes);
+        }
+        return resultList;
+    }
 
     // 랜덤 비밀번호 생성
     public String generateRandomPassword() {
