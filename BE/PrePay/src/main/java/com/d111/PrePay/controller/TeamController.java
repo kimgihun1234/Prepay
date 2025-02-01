@@ -6,6 +6,7 @@ import com.d111.PrePay.dto.respond.GetUserOfTeamRes;
 import com.d111.PrePay.dto.respond.StoresRes;
 import com.d111.PrePay.dto.respond.TeamDetailRes;
 import com.d111.PrePay.dto.respond.TeamRes;
+import com.d111.PrePay.model.ChargeRequest;
 import com.d111.PrePay.model.Team;
 import com.d111.PrePay.model.TeamStore;
 import com.d111.PrePay.model.UserTeam;
@@ -22,8 +23,15 @@ import java.util.List;
 public class TeamController {
     private final TeamService teamService;
 
+    @PostMapping("/charge")
+    public ResponseEntity<Void> chargeRequest(@RequestHeader("userId") Long userId,
+                                                       @RequestBody ChargeReq req){
+        return ResponseEntity.ok().build();
+    }
+
+
     @PostMapping("/signin")
-    public ResponseEntity<UserTeam> signinTeam(@RequestHeader("userId") Long userId,
+    public ResponseEntity<Void> signinTeam(@RequestHeader("userId") Long userId,
                                             @RequestBody SignInTeamReq req)   {
         teamService.signInTeam(userId, req);
         return ResponseEntity.ok().build();

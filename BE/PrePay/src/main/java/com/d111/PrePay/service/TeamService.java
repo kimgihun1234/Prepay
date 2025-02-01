@@ -1,5 +1,6 @@
 package com.d111.PrePay.service;
 
+import com.d111.PrePay.RequestStatus;
 import com.d111.PrePay.dto.request.*;
 import com.d111.PrePay.dto.respond.GetUserOfTeamRes;
 import com.d111.PrePay.dto.respond.StoresRes;
@@ -19,11 +20,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestHeader;
+
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 
@@ -37,6 +37,21 @@ public class TeamService {
     private final UserTeamRepository userTeamRepository;
     private final TeamStoreRepository teamStoreRepository;
     private final StoreRepository storeRepository;
+    private final ChargeRequestRepository chargeRequestRepository;
+
+    // 팀 가맹점 잔액 충전 요청
+    public ChargeRequest chargeRequest(ChargeReq req){
+        TeamStore findTeamStore = teamStoreRepository.findByTeamIdAndStoreId(req.getTeamId(), req.getStoreId())
+                .orElseThrow();
+        return chargeRequestRepository.save(ChargeRequest.builder()
+                .requestStatus(RequestStatus.Waiting)
+                .requestPrice(req.getRequestPrice())
+                .requestDate(System.currentTimeMillis())
+                .teamStore(findTeamStore)
+                .build());
+
+    }
+
 
     // 팀 비밀번호를 이용한 팀 가입
     public void signInTeam(Long userId, SignInTeamReq req){
