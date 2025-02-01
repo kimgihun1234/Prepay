@@ -23,6 +23,16 @@ import java.util.List;
 public class TeamController {
     private final TeamService teamService;
 
+    @PostMapping("/request-privilege")
+    public ResponseEntity<Void> privilegeRequest(@RequestHeader("userId") Long userId,
+                                             @RequestBody InviteCodeReq req){
+        teamService.privilegeRequest(userId, req);
+        return ResponseEntity.ok().build();
+    }
+
+
+
+
     @PostMapping("/charge")
     public ResponseEntity<Void> chargeRequest(@RequestHeader("userId") Long userId,
                                                        @RequestBody ChargeReq req){

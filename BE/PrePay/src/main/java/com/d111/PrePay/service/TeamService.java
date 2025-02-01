@@ -38,12 +38,31 @@ public class TeamService {
     private final TeamStoreRepository teamStoreRepository;
     private final StoreRepository storeRepository;
     private final ChargeRequestRepository chargeRequestRepository;
+    private final PartyRequestRepository partyRequestRepository;
+
+
+    // 팀 회식 권한 요청
+    public void privilegeRequest(Long userId, InviteCodeReq req){
+       UserTeam findUserTeam =  userTeamRepository.findByTeamIdAndUserId(req.getTeamId(),userId)
+               .orElseThrow();
+       partyRequestRepository.save(PartyRequest.builder()
+                       .requestDate(System.currentTimeMillis())
+                       .requestStatus(RequestStatus.Waiting)
+                       .statusChangedDate(0)
+                       .userTeam(findUserTeam)
+                        .build());
+    }
+
+
+
+
+
 
     // 팀 가맹점 잔액 충전 요청
-    public ChargeRequest chargeRequest(ChargeReq req){
+    public void chargeRequest(ChargeReq req){
         TeamStore findTeamStore = teamStoreRepository.findByTeamIdAndStoreId(req.getTeamId(), req.getStoreId())
                 .orElseThrow();
-        return chargeRequestRepository.save(ChargeRequest.builder()
+                chargeRequestRepository.save(ChargeRequest.builder()
                 .requestStatus(RequestStatus.Waiting)
                 .requestPrice(req.getRequestPrice())
                 .requestDate(System.currentTimeMillis())
