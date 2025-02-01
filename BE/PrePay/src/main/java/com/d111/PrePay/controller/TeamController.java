@@ -22,6 +22,14 @@ import java.util.List;
 public class TeamController {
     private final TeamService teamService;
 
+    @PostMapping("/privilege")
+    public ResponseEntity<Void> grantPrivilege(@RequestHeader("userId") Long userId,
+                                               @RequestBody GrantPrivilegeReq req){
+        teamService.grantPrivilege(req);
+        return ResponseEntity.ok().build();
+    }
+
+
 
     @PostMapping("/position")
     public ResponseEntity<Void> grantAdminPosition(@RequestHeader("userId") Long userId,

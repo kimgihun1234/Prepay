@@ -37,6 +37,16 @@ public class TeamService {
     private final TeamStoreRepository teamStoreRepository;
     private final StoreRepository storeRepository;
 
+    // 팀 회식 권한 부여
+    @Transactional
+    public void grantPrivilege(GrantPrivilegeReq req){
+        UserTeam findUserTeam = userTeamRepository.findByTeamIdAndUserId(req.getTeamId(), req.getChangeUserId())
+                .orElseThrow();
+        findUserTeam.setPrivilege(req.isPrivilege());
+    }
+
+
+
     // 팀 운영자 권한 부여
     @Transactional
     public void grantAdminPosition(GrantAdminPositionReq req){
