@@ -6,10 +6,8 @@ import com.d111.PrePay.dto.respond.GetUserOfTeamRes;
 import com.d111.PrePay.dto.respond.StoresRes;
 import com.d111.PrePay.dto.respond.TeamDetailRes;
 import com.d111.PrePay.dto.respond.TeamRes;
-import com.d111.PrePay.model.ChargeRequest;
 import com.d111.PrePay.model.Team;
 import com.d111.PrePay.model.TeamStore;
-import com.d111.PrePay.model.UserTeam;
 import com.d111.PrePay.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +20,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeamController {
     private final TeamService teamService;
+
+    @PostMapping("confirm-privilege")
+    public ResponseEntity<Void> confirmPrivilege(@RequestHeader("userId") Long userId,
+                                                 @RequestBody PartyConfirmReq req){
+        teamService.confirmPrivilege(req);
+        return ResponseEntity.ok().build();
+    }
+
+
+
 
     @PostMapping("/request-privilege")
     public ResponseEntity<Void> privilegeRequest(@RequestHeader("userId") Long userId,

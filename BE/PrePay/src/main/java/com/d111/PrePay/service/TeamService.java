@@ -40,6 +40,20 @@ public class TeamService {
     private final ChargeRequestRepository chargeRequestRepository;
     private final PartyRequestRepository partyRequestRepository;
 
+    // 팀 회식 권한 요청 처리
+    @Transactional
+    public void confirmPrivilege(PartyConfirmReq req){
+        PartyRequest findPartyRequest = partyRequestRepository.findById(req.getPartyRequestId())
+                .orElseThrow();
+        if(req.isAccept()){
+            findPartyRequest.setRequestStatus(RequestStatus.Approved);
+        }
+        else {
+            findPartyRequest.setRequestStatus(RequestStatus.Refused);
+        }
+    }
+
+
 
     // 팀 회식 권한 요청
     public void privilegeRequest(Long userId, InviteCodeReq req){
@@ -52,10 +66,6 @@ public class TeamService {
                        .userTeam(findUserTeam)
                         .build());
     }
-
-
-
-
 
 
     // 팀 가맹점 잔액 충전 요청
