@@ -22,6 +22,15 @@ import java.util.List;
 public class TeamController {
     private final TeamService teamService;
 
+    @PostMapping("/signin")
+    public ResponseEntity<UserTeam> signinTeam(@RequestHeader("userId") Long userId,
+                                            @RequestBody SignInTeamReq req)   {
+        teamService.signInTeam(userId, req);
+        return ResponseEntity.ok().build();
+
+    }
+
+
     @PostMapping("/privilege")
     public ResponseEntity<Void> grantPrivilege(@RequestHeader("userId") Long userId,
                                                @RequestBody GrantPrivilegeReq req){
