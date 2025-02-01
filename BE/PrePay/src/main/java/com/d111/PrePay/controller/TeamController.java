@@ -21,6 +21,15 @@ import java.util.List;
 public class TeamController {
     private final TeamService teamService;
 
+    @PostMapping("/exit")
+    public ResponseEntity<Void> exitTeam(@RequestHeader("userId") Long userId,
+                                         @RequestBody TeamIdReq req){
+        teamService.exitTeam(userId,req);
+        return ResponseEntity.ok().build();
+    }
+
+
+
     @PostMapping("confirm-privilege")
     public ResponseEntity<Void> confirmPrivilege(@RequestHeader("userId") Long userId,
                                                  @RequestBody PartyConfirmReq req){
@@ -33,7 +42,7 @@ public class TeamController {
 
     @PostMapping("/request-privilege")
     public ResponseEntity<Void> privilegeRequest(@RequestHeader("userId") Long userId,
-                                             @RequestBody InviteCodeReq req){
+                                             @RequestBody TeamIdReq req){
         teamService.privilegeRequest(userId, req);
         return ResponseEntity.ok().build();
     }
@@ -82,7 +91,7 @@ public class TeamController {
 
 
     @PostMapping("/code")
-    public ResponseEntity<Team> generateInviteCode(@RequestHeader("userId") Long userId, @RequestBody InviteCodeReq req) {
+    public ResponseEntity<Team> generateInviteCode(@RequestHeader("userId") Long userId, @RequestBody TeamIdReq req) {
         return ResponseEntity.ok(teamService.generateInviteCode(userId, req));
     }
 

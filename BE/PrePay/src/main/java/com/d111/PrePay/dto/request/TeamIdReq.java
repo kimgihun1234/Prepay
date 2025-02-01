@@ -5,6 +5,6 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class InviteCodeReq {
+public class TeamIdReq {
     private Long teamId;
 }

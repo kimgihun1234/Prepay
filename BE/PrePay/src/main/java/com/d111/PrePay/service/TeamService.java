@@ -40,6 +40,14 @@ public class TeamService {
     private final ChargeRequestRepository chargeRequestRepository;
     private final PartyRequestRepository partyRequestRepository;
 
+    // 팀 나가기
+    public void exitTeam(Long userId, TeamIdReq req){
+       UserTeam findUserTeam = userTeamRepository.findByTeamIdAndUserId(req.getTeamId(), userId)
+               .orElseThrow();
+       userTeamRepository.delete(findUserTeam);
+    }
+
+
     // 팀 회식 권한 요청 처리
     @Transactional
     public void confirmPrivilege(PartyConfirmReq req){
@@ -56,7 +64,7 @@ public class TeamService {
 
 
     // 팀 회식 권한 요청
-    public void privilegeRequest(Long userId, InviteCodeReq req){
+    public void privilegeRequest(Long userId, TeamIdReq req){
        UserTeam findUserTeam =  userTeamRepository.findByTeamIdAndUserId(req.getTeamId(),userId)
                .orElseThrow();
        partyRequestRepository.save(PartyRequest.builder()
@@ -138,7 +146,7 @@ public class TeamService {
 
 
     // 팀 초대 코드 생성
-    public Team generateInviteCode(Long userId, InviteCodeReq req){
+    public Team generateInviteCode(Long userId, TeamIdReq req){
         Team team = teamRepository.findById(req.getTeamId()).orElseThrow();
         String password = generateRandomPassword();
         team.setTeamPassword(password);
