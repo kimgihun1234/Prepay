@@ -1,16 +1,14 @@
 package com.d111.PrePay.controller;
 
 
-import com.d111.PrePay.dto.request.ChangeDailyPriceLimitReq;
-import com.d111.PrePay.dto.request.InviteCodeReq;
-import com.d111.PrePay.dto.request.TeamCreateReq;
-import com.d111.PrePay.dto.request.TeamCreateStoreReq;
+import com.d111.PrePay.dto.request.*;
 import com.d111.PrePay.dto.respond.GetUserOfTeamRes;
 import com.d111.PrePay.dto.respond.StoresRes;
 import com.d111.PrePay.dto.respond.TeamDetailRes;
 import com.d111.PrePay.dto.respond.TeamRes;
 import com.d111.PrePay.model.Team;
 import com.d111.PrePay.model.TeamStore;
+import com.d111.PrePay.model.UserTeam;
 import com.d111.PrePay.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +21,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeamController {
     private final TeamService teamService;
+
+
+    @PostMapping("/position")
+    public ResponseEntity<Void> grantAdminPosition(@RequestHeader("userId") Long userId,
+                                                       @RequestBody GrantAdminPositionReq req){
+        teamService.grantAdminPosition(req);
+        return ResponseEntity.ok().build();
+    }
+
+
 
     @PostMapping("/limit")
     public ResponseEntity<Team> changeDailyPriceLimit(@RequestHeader("userId") Long userId, @RequestBody ChangeDailyPriceLimitReq req){
@@ -37,10 +45,10 @@ public class TeamController {
 
 
     @PostMapping("/store-id")
-    public Long createStore(@RequestHeader("userId") Long userId,
+    public ResponseEntity<Long> createStore(@RequestHeader("userId") Long userId,
                             @RequestBody TeamCreateStoreReq req) {
         TeamStore teamStore = teamService.createStore(req);
-        return teamStore.getId();
+        return ResponseEntity.ok(teamStore.getId());
     }
 
 
@@ -52,9 +60,9 @@ public class TeamController {
 
 
     @GetMapping("/{teamId}")
-    public TeamDetailRes getTeamDetails(@PathVariable Long teamId,
+    public ResponseEntity<TeamDetailRes> getTeamDetails(@PathVariable Long teamId,
                                         @RequestHeader("userId") Long userId) {
-        return teamService.getTeamDetails(teamId, userId);
+        return ResponseEntity.ok(teamService.getTeamDetails(teamId, userId));
     }
 
 

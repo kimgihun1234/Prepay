@@ -15,6 +15,7 @@ import com.d111.PrePay.repository.UserRepository;
 import com.d111.PrePay.repository.UserTeamRepository;
 import com.d111.PrePay.model.*;
 import com.d111.PrePay.repository.*;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,11 +37,21 @@ public class TeamService {
     private final TeamStoreRepository teamStoreRepository;
     private final StoreRepository storeRepository;
 
+    // 팀 운영자 권한 부여
+    @Transactional
+    public void grantAdminPosition(GrantAdminPositionReq req){
+        UserTeam findUserTeam = userTeamRepository.findByTeamIdAndUserId(req.getTeamId(), req.getChangeUserId())
+                .orElseThrow();
+        findUserTeam.setPosition(req.isPosition());
+    }
+
+
+
     // 팀 한도 변경
+    @Transactional
     public Team changeDailyPriceLimit(ChangeDailyPriceLimitReq req){
         Team findTeam = teamRepository.findById(req.getTeamId()).orElseThrow();
         findTeam.setDailyPriceLimit(req.getDailyPriceLimit());
-        teamRepository.save(findTeam);
         return findTeam;
     }
 
