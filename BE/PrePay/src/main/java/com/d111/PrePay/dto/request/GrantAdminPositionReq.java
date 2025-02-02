@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class InviteCodeReq {
+public class GrantAdminPositionReq {
+    private Long changeUserId;
     private Long teamId;
+    private boolean position;
 }

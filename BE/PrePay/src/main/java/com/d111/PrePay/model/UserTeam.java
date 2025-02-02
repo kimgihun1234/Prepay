@@ -32,7 +32,7 @@ public class UserTeam {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "userTeam")
+    @OneToMany(mappedBy = "userTeam", cascade = CascadeType.REMOVE)
     private List<PartyRequest> partyRequests = new ArrayList<>();
 
 
