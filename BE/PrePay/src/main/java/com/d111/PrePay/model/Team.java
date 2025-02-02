@@ -31,6 +31,8 @@ public class Team {
 
     private String teamMessage;
 
+    private String teamImgUrl;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User teamInitializer;

@@ -12,6 +12,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+  servlet:
+    multipart:
+      enabled: true
 logging:
   level:
     root: INFO

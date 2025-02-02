@@ -44,13 +44,20 @@ public class TeamService {
     private final ChargeRequestRepository chargeRequestRepository;
     private final PartyRequestRepository partyRequestRepository;
 
+    // 팀 이미지 업로드
+    @Transactional
+    public void uploadImage(TeamIdReq req,String imgUrl) {
+        Team team = teamRepository.findById(req.getTeamId()).orElseThrow();
+        team.setTeamImgUrl(imgUrl);
+    }
+
+
     // 팀 사용자 추방
-    public void banUser(BanUserReq req){
+    public void banUser(BanUserReq req) {
         UserTeam findUserTeam = userTeamRepository.findByTeamIdAndUserId(req.getTeamId(), req.getBanUserId())
                 .orElseThrow();
         userTeamRepository.delete(findUserTeam);
     }
-
 
 
     // 팀 나가기
@@ -208,7 +215,7 @@ public class TeamService {
 
 
     // 팀 생성
-    public Team createTeam(TeamCreateReq request) {
+    public Team createTeam(TeamCreateReq request, Long userId) {
         String teamPassword;
         if (!request.isPublicTeam()) {
             teamPassword = generateRandomPassword();
@@ -223,13 +230,13 @@ public class TeamService {
                 .dailyPriceLimit(request.getDailyPriceLimit())
                 .countLimit(request.getCountLimit())
                 .teamMessage(request.getTeamMessage())
-                .teamInitializer(userRepository.findById(request.getUserId()).orElseThrow())
+                .teamInitializer(userRepository.findById(userId).orElseThrow())
                 .build();
 
 
         Team savedTeam = teamRepository.save(team);
 
-        User user = userRepository.findById(request.getUserId())
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
 
         UserTeam userTeam = UserTeam.builder()
@@ -314,4 +321,7 @@ public class TeamService {
         return password;
     }
 
+    public void save(Team team) {
+        teamRepository.save(team);
+    }
 }

@@ -7,7 +7,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class TeamCreateReq {
-    private Long userId;
     private boolean publicTeam;
     private String teamName;
     private int dailyPriceLimit;

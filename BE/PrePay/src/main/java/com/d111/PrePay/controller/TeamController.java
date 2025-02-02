@@ -11,22 +11,43 @@ import com.d111.PrePay.dto.respond.TeamDetailRes;
 import com.d111.PrePay.dto.respond.TeamRes;
 import com.d111.PrePay.model.Team;
 import com.d111.PrePay.model.TeamStore;
+import com.d111.PrePay.service.ImageService;
 import com.d111.PrePay.service.TeamService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/team")
 @RequiredArgsConstructor
+@Slf4j
 public class TeamController {
     private final TeamService teamService;
+    private final ImageService imageService;
+
+    // 팀 이미지 수정
+    @PostMapping("/image")
+    public ResponseEntity<Void> uploadImage(@RequestHeader("userId") Long userId,
+                                            @RequestPart("request") TeamIdReq req,
+                                            @RequestPart(value = "image", required = false) MultipartFile image) throws IOException {
+        if (image != null && !image.isEmpty()) {
+            String imgUrl = imageService.uploadImage(image, req.getTeamId());
+            teamService.uploadImage(req, imgUrl);
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
 
     @PostMapping("/ban")
-    private ResponseEntity<Void> banUser(@RequestHeader("userId") Long userId,
-                                         @RequestBody BanUserReq req){
+    public ResponseEntity<Void> banUser(@RequestHeader("userId") Long userId,
+                                        @RequestBody BanUserReq req) {
         teamService.banUser(req);
         return ResponseEntity.ok().build();
     }
@@ -122,9 +143,18 @@ public class TeamController {
     }
 
 
-    @PostMapping("/signup")
-    public ResponseEntity<Long> createTeam(@RequestBody TeamCreateReq request) {
-        Team team = teamService.createTeam(request);
+    @PostMapping(value = "/signup")
+    public ResponseEntity<Long> createTeam(@RequestPart("request") TeamCreateReq request,
+                                           @RequestPart(value = "image", required = false) MultipartFile image,
+                                           @RequestHeader("userId") Long userId) throws IOException {
+        Team team = teamService.createTeam(request, userId);
+
+        if (image != null && !image.isEmpty()) {
+            String imgUrl = imageService.uploadImage(image, team.getId());
+            team.setTeamImgUrl(imgUrl);
+            teamService.save(team);
+        }
+
         return ResponseEntity.ok(team.getId());
     }
 
@@ -152,4 +182,4 @@ public class TeamController {
     public ResponseEntity<List<PublicTeamsRes>> getPublicTeamsByKeyword(@PathVariable String keyword) {
         return ResponseEntity.ok(teamService.getPublicTeamsByKeyword(keyword));
     }
-    }
+}
