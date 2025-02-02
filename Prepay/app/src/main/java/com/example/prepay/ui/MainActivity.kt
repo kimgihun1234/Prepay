@@ -19,6 +19,9 @@ import com.example.prepay.ui.RestaurantDetails.RestaurantDetailsFragment
 private const val TAG = "MainActivity_싸피"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initFragment()
@@ -97,6 +100,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 else -> false
             }
         }
+
     }
     companion object{
 
