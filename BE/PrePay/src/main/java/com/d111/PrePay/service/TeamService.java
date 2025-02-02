@@ -97,7 +97,7 @@ public class TeamService {
                 .dailyPriceLimit(request.getDailyPriceLimit())
                 .countLimit(request.getCountLimit())
                 .teamMessage(request.getTeamMessage())
-                .teamInitializer(request.getUserId())
+                .teamInitializer(userRepository.findById(request.getUserId()).orElseThrow())
                 .build();
 
 
@@ -157,6 +157,18 @@ public class TeamService {
             result.add(storesCorRes);
         }
         return result;
+    }
+
+    //퍼블릭 팀 리스트 조회
+    public List<PublicTeamsRes> getPublicTeams() {
+        List<Team> teams = teamRepository.findTeamsByPublicTeam(true);
+        List<PublicTeamsRes> resultList = new ArrayList<>();
+        for (Team team : teams) {
+            PublicTeamsRes publicTeamsRes = new PublicTeamsRes(team);
+            publicTeamsRes.setTeamInitializerNickname(team.getTeamInitializer().getNickname());
+            resultList.add(publicTeamsRes);
+        }
+        return resultList;
     }
 
     // 랜덤 비밀번호 생성

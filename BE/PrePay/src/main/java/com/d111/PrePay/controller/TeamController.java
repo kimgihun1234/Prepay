@@ -67,4 +67,9 @@ public class TeamController {
     public ResponseEntity<List<StoresCorRes>> getStoresCor(@RequestHeader("userId") Long userId, @PathVariable Long teamId) {
         return ResponseEntity.ok(teamService.getStoresCor(teamId, userId));
     }
+
+    @GetMapping("/team/public-teams")
+    public ResponseEntity<List<PublicTeamsRes>> getPublicTeams() {
+        return ResponseEntity.ok(teamService.getPublicTeams());
+    }
 }
