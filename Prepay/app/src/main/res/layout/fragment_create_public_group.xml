@@ -69,6 +69,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/round_background"
         android:ems="10"
         android:inputType="text"
@@ -83,6 +84,7 @@
         android:id="@+id/image"
         android:layout_width="wrap_content"
         android:layout_height="21dp"
+        android:background="@color/white"
         android:layout_marginStart="48dp"
         android:layout_marginTop="24dp"
         android:gravity="center"
@@ -96,6 +98,7 @@
         android:id="@+id/limit_setting_text"
         android:layout_width="0dp"
         android:layout_height="50dp"
+        android:gravity="center"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
@@ -235,10 +238,10 @@
         android:layout_marginEnd="120dp"
         android:text="불가능"
         android:textColor="#0066CC"
-        app:layout_constraintBottom_toBottomOf="@+id/textView13"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.266"
-        app:layout_constraintStart_toEndOf="@+id/possible" />
+        app:layout_constraintStart_toEndOf="@+id/possible"
+        app:layout_constraintTop_toTopOf="@+id/textView13" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

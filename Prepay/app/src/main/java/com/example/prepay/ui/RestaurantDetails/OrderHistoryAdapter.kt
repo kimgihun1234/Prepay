@@ -54,6 +54,7 @@ class OrderHistoryAdapter(private val orderHistoryList: List<OrderHistory>) : Re
                 dialogBinding.useName.text = order.name
                 dialogBinding.restaurantAmount.text = NumberFormat.getNumberInstance(Locale.KOREA).format(order.total_price)
                 dialogBinding.receiptDate.text = order.date
+                dialogBinding.orderDate.text = "[주문] ${order.date}"
                 dialog.show()
             }
         }

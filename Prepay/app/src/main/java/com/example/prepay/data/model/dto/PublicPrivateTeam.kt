@@ -4,7 +4,7 @@ data class PublicPrivateTeam (
     val public_team : Int,
     val team_name : String,
     val daily_price_limit : Int,
-    val count_limit : String,
+    val count_limit : Int,
     val team_message : String,
     val image_url : String,
 ) {
@@ -16,7 +16,7 @@ data class PublicPrivateTeam (
         public_team,
         team_name,
         daily_price_limit,
-        "",
+        0,
         "",
         ""
     )
