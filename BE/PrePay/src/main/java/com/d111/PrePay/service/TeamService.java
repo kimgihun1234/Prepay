@@ -40,6 +40,15 @@ public class TeamService {
     private final ChargeRequestRepository chargeRequestRepository;
     private final PartyRequestRepository partyRequestRepository;
 
+    // 팀 사용자 추방
+    public void banUser(BanUserReq req){
+        UserTeam findUserTeam = userTeamRepository.findByTeamIdAndUserId(req.getTeamId(), req.getBanUserId())
+                .orElseThrow();
+        userTeamRepository.delete(findUserTeam);
+    }
+
+
+
     // 팀 나가기
     public void exitTeam(Long userId, TeamIdReq req){
        UserTeam findUserTeam = userTeamRepository.findByTeamIdAndUserId(req.getTeamId(), userId)

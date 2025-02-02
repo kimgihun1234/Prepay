@@ -21,6 +21,14 @@ import java.util.List;
 public class TeamController {
     private final TeamService teamService;
 
+    @PostMapping("/ban")
+    private ResponseEntity<Void> banUser(@RequestHeader("userId") Long userId,
+                                         @RequestBody BanUserReq req){
+        teamService.banUser(req);
+        return ResponseEntity.ok().build();
+    }
+
+
     @PostMapping("/exit")
     public ResponseEntity<Void> exitTeam(@RequestHeader("userId") Long userId,
                                          @RequestBody TeamIdReq req){
