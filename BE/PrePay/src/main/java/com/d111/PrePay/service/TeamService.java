@@ -6,6 +6,10 @@ import com.d111.PrePay.dto.respond.GetUserOfTeamRes;
 import com.d111.PrePay.dto.respond.StoresRes;
 import com.d111.PrePay.dto.respond.TeamDetailRes;
 import com.d111.PrePay.dto.respond.TeamRes;
+import com.d111.PrePay.dto.request.TeamCreateStoreReq;
+import com.d111.PrePay.dto.request.TeamDetailReq;
+import com.d111.PrePay.dto.request.TeamCreateReq;
+import com.d111.PrePay.dto.respond.*;
 import com.d111.PrePay.model.Team;
 import com.d111.PrePay.model.TeamStore;
 import com.d111.PrePay.model.User;
@@ -50,46 +54,44 @@ public class TeamService {
 
 
     // 팀 나가기
-    public void exitTeam(Long userId, TeamIdReq req){
-       UserTeam findUserTeam = userTeamRepository.findByTeamIdAndUserId(req.getTeamId(), userId)
-               .orElseThrow();
-       userTeamRepository.delete(findUserTeam);
+    public void exitTeam(Long userId, TeamIdReq req) {
+        UserTeam findUserTeam = userTeamRepository.findByTeamIdAndUserId(req.getTeamId(), userId)
+                .orElseThrow();
+        userTeamRepository.delete(findUserTeam);
     }
 
 
     // 팀 회식 권한 요청 처리
     @Transactional
-    public void confirmPrivilege(PartyConfirmReq req){
+    public void confirmPrivilege(PartyConfirmReq req) {
         PartyRequest findPartyRequest = partyRequestRepository.findById(req.getPartyRequestId())
                 .orElseThrow();
-        if(req.isAccept()){
+        if (req.isAccept()) {
             findPartyRequest.setRequestStatus(RequestStatus.Approved);
-        }
-        else {
+        } else {
             findPartyRequest.setRequestStatus(RequestStatus.Refused);
         }
     }
 
 
-
     // 팀 회식 권한 요청
-    public void privilegeRequest(Long userId, TeamIdReq req){
-       UserTeam findUserTeam =  userTeamRepository.findByTeamIdAndUserId(req.getTeamId(),userId)
-               .orElseThrow();
-       partyRequestRepository.save(PartyRequest.builder()
-                       .requestDate(System.currentTimeMillis())
-                       .requestStatus(RequestStatus.Waiting)
-                       .statusChangedDate(0)
-                       .userTeam(findUserTeam)
-                        .build());
+    public void privilegeRequest(Long userId, TeamIdReq req) {
+        UserTeam findUserTeam = userTeamRepository.findByTeamIdAndUserId(req.getTeamId(), userId)
+                .orElseThrow();
+        partyRequestRepository.save(PartyRequest.builder()
+                .requestDate(System.currentTimeMillis())
+                .requestStatus(RequestStatus.Waiting)
+                .statusChangedDate(0)
+                .userTeam(findUserTeam)
+                .build());
     }
 
 
     // 팀 가맹점 잔액 충전 요청
-    public void chargeRequest(ChargeReq req){
+    public void chargeRequest(ChargeReq req) {
         TeamStore findTeamStore = teamStoreRepository.findByTeamIdAndStoreId(req.getTeamId(), req.getStoreId())
                 .orElseThrow();
-                chargeRequestRepository.save(ChargeRequest.builder()
+        chargeRequestRepository.save(ChargeRequest.builder()
                 .requestStatus(RequestStatus.Waiting)
                 .requestPrice(req.getRequestPrice())
                 .requestDate(System.currentTimeMillis())
@@ -100,13 +102,13 @@ public class TeamService {
 
 
     // 팀 비밀번호를 이용한 팀 가입
-    public void signInTeam(Long userId, SignInTeamReq req){
+    public void signInTeam(Long userId, SignInTeamReq req) {
         Team findTeam = teamRepository.findByTeamPassword(req.getTeamPassword())
-                .orElseThrow(()-> new RuntimeException("일치하는 팀이 없습니다."));
+                .orElseThrow(() -> new RuntimeException("일치하는 팀이 없습니다."));
 
         User findUser = userRepository.findById(userId).orElseThrow();
 
-        if (userTeamRepository.existsByUserAndTeam(findUser,findTeam)){
+        if (userTeamRepository.existsByUserAndTeam(findUser, findTeam)) {
             throw new RuntimeException("이미 가입된 팀입니다.");
         }
         UserTeam userTeam = UserTeam.builder()
@@ -122,40 +124,35 @@ public class TeamService {
     }
 
 
-
-
     // 팀 회식 권한 부여
     @Transactional
-    public void grantPrivilege(GrantPrivilegeReq req){
+    public void grantPrivilege(GrantPrivilegeReq req) {
         UserTeam findUserTeam = userTeamRepository.findByTeamIdAndUserId(req.getTeamId(), req.getChangeUserId())
                 .orElseThrow();
         findUserTeam.setPrivilege(req.isPrivilege());
     }
 
 
-
     // 팀 운영자 권한 부여
     @Transactional
-    public void grantAdminPosition(GrantAdminPositionReq req){
+    public void grantAdminPosition(GrantAdminPositionReq req) {
         UserTeam findUserTeam = userTeamRepository.findByTeamIdAndUserId(req.getTeamId(), req.getChangeUserId())
                 .orElseThrow();
         findUserTeam.setPosition(req.isPosition());
     }
 
 
-
     // 팀 한도 변경
     @Transactional
-    public Team changeDailyPriceLimit(ChangeDailyPriceLimitReq req){
+    public Team changeDailyPriceLimit(ChangeDailyPriceLimitReq req) {
         Team findTeam = teamRepository.findById(req.getTeamId()).orElseThrow();
         findTeam.setDailyPriceLimit(req.getDailyPriceLimit());
         return findTeam;
     }
 
 
-
     // 팀 초대 코드 생성
-    public Team generateInviteCode(Long userId, TeamIdReq req){
+    public Team generateInviteCode(Long userId, TeamIdReq req) {
         Team team = teamRepository.findById(req.getTeamId()).orElseThrow();
         String password = generateRandomPassword();
         team.setTeamPassword(password);
@@ -164,7 +161,7 @@ public class TeamService {
 
 
     // 팀 가맹점 추가
-    public TeamStore createStore(TeamCreateStoreReq req){
+    public TeamStore createStore(TeamCreateStoreReq req) {
         Team findTeam = teamRepository.findById(req.getTeamId()).orElseThrow();
         Store findStore = storeRepository.findById(req.getStoreId()).orElseThrow();
 
@@ -226,7 +223,7 @@ public class TeamService {
                 .dailyPriceLimit(request.getDailyPriceLimit())
                 .countLimit(request.getCountLimit())
                 .teamMessage(request.getTeamMessage())
-                .teamInitializer(request.getUserId())
+                .teamInitializer(userRepository.findById(request.getUserId()).orElseThrow())
                 .build();
 
 
@@ -274,9 +271,47 @@ public class TeamService {
         return resultList;
     }
 
+
+    //팀 가맹점의 좌표 조회
+    public List<StoresCorRes> getStoresCor(long teamId, long userId) {
+        Team team = teamRepository.findById(teamId).orElseThrow();
+        List<TeamStore> list = teamStoreRepository.findTeamStoresByTeam(team);
+        List<StoresCorRes> result = new ArrayList<>();
+        for (TeamStore teamStore : list) {
+            Store store = teamStore.getStore();
+            StoresCorRes storesCorRes = new StoresCorRes(store);
+            result.add(storesCorRes);
+        }
+        return result;
+    }
+
+    //퍼블릭 팀 리스트 조회
+    public List<PublicTeamsRes> getPublicTeams() {
+        List<Team> teams = teamRepository.findTeamsByPublicTeam(true);
+        List<PublicTeamsRes> resultList = new ArrayList<>();
+        for (Team team : teams) {
+            PublicTeamsRes publicTeamsRes = new PublicTeamsRes(team);
+            publicTeamsRes.setTeamInitializerNickname(team.getTeamInitializer().getNickname());
+            resultList.add(publicTeamsRes);
+        }
+        return resultList;
+    }
+
+    public List<PublicTeamsRes> getPublicTeamsByKeyword(String keyword) {
+        List<Team> teams = teamRepository.findTeamsByTeamNameContaining(keyword);
+        List<PublicTeamsRes> resultList = new ArrayList<>();
+        for (Team team : teams) {
+            PublicTeamsRes publicTeamsRes = new PublicTeamsRes(team);
+            publicTeamsRes.setTeamInitializerNickname(team.getTeamInitializer().getNickname());
+            resultList.add(publicTeamsRes);
+        }
+        return resultList;
+    }
+
     // 랜덤 비밀번호 생성
     public String generateRandomPassword() {
         String password = UUID.randomUUID().toString();
         return password;
     }
+
 }

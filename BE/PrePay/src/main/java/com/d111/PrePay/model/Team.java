@@ -31,7 +31,9 @@ public class Team {
 
     private String teamMessage;
 
-    private Long teamInitializer;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User teamInitializer;
 
     @OneToMany(mappedBy = "team")
     private List<UserTeam> userTeams = new ArrayList<>();
