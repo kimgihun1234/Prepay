@@ -26,43 +26,38 @@ public class TeamController {
 
     @PostMapping("/exit")
     public ResponseEntity<Void> exitTeam(@RequestHeader("userId") Long userId,
-                                         @RequestBody TeamIdReq req){
-        teamService.exitTeam(userId,req);
+                                         @RequestBody TeamIdReq req) {
+        teamService.exitTeam(userId, req);
         return ResponseEntity.ok().build();
     }
 
 
-
     @PostMapping("confirm-privilege")
     public ResponseEntity<Void> confirmPrivilege(@RequestHeader("userId") Long userId,
-                                                 @RequestBody PartyConfirmReq req){
+                                                 @RequestBody PartyConfirmReq req) {
         teamService.confirmPrivilege(req);
         return ResponseEntity.ok().build();
     }
 
 
-
-
     @PostMapping("/request-privilege")
     public ResponseEntity<Void> privilegeRequest(@RequestHeader("userId") Long userId,
-                                             @RequestBody TeamIdReq req){
+                                                 @RequestBody TeamIdReq req) {
         teamService.privilegeRequest(userId, req);
         return ResponseEntity.ok().build();
     }
 
 
-
-
     @PostMapping("/charge")
     public ResponseEntity<Void> chargeRequest(@RequestHeader("userId") Long userId,
-                                                       @RequestBody ChargeReq req){
+                                              @RequestBody ChargeReq req) {
         return ResponseEntity.ok().build();
     }
 
 
     @PostMapping("/signin")
     public ResponseEntity<Void> signinTeam(@RequestHeader("userId") Long userId,
-                                            @RequestBody SignInTeamReq req)   {
+                                           @RequestBody SignInTeamReq req) {
         teamService.signInTeam(userId, req);
         return ResponseEntity.ok().build();
 
@@ -71,24 +66,22 @@ public class TeamController {
 
     @PostMapping("/privilege")
     public ResponseEntity<Void> grantPrivilege(@RequestHeader("userId") Long userId,
-                                               @RequestBody GrantPrivilegeReq req){
+                                               @RequestBody GrantPrivilegeReq req) {
         teamService.grantPrivilege(req);
         return ResponseEntity.ok().build();
     }
 
 
-
     @PostMapping("/position")
     public ResponseEntity<Void> grantAdminPosition(@RequestHeader("userId") Long userId,
-                                                       @RequestBody GrantAdminPositionReq req){
+                                                   @RequestBody GrantAdminPositionReq req) {
         teamService.grantAdminPosition(req);
         return ResponseEntity.ok().build();
     }
 
 
-
     @PostMapping("/limit")
-    public ResponseEntity<Team> changeDailyPriceLimit(@RequestHeader("userId") Long userId, @RequestBody ChangeDailyPriceLimitReq req){
+    public ResponseEntity<Team> changeDailyPriceLimit(@RequestHeader("userId") Long userId, @RequestBody ChangeDailyPriceLimitReq req) {
         return ResponseEntity.ok(teamService.changeDailyPriceLimit(req));
     }
 
@@ -101,7 +94,7 @@ public class TeamController {
 
     @PostMapping("/store-id")
     public ResponseEntity<Long> createStore(@RequestHeader("userId") Long userId,
-                            @RequestBody TeamCreateStoreReq req) {
+                                            @RequestBody TeamCreateStoreReq req) {
         TeamStore teamStore = teamService.createStore(req);
         return ResponseEntity.ok(teamStore.getId());
     }
@@ -116,7 +109,7 @@ public class TeamController {
 
     @GetMapping("/{teamId}")
     public ResponseEntity<TeamDetailRes> getTeamDetails(@PathVariable Long teamId,
-                                        @RequestHeader("userId") Long userId) {
+                                                        @RequestHeader("userId") Long userId) {
         return ResponseEntity.ok(teamService.getTeamDetails(teamId, userId));
     }
 
@@ -142,8 +135,13 @@ public class TeamController {
         return ResponseEntity.ok(teamService.getStoresCor(teamId, userId));
     }
 
-    @GetMapping("/team/public-teams")
+    @GetMapping("/public-teams")
     public ResponseEntity<List<PublicTeamsRes>> getPublicTeams() {
         return ResponseEntity.ok(teamService.getPublicTeams());
     }
-}
+
+    @GetMapping("/public-teams/{keyword}")
+    public ResponseEntity<List<PublicTeamsRes>> getPublicTeamsByKeyword(@PathVariable String keyword) {
+        return ResponseEntity.ok(teamService.getPublicTeamsByKeyword(keyword));
+    }
+    }

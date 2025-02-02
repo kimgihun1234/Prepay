@@ -12,4 +12,6 @@ public interface TeamRepository extends JpaRepository<Team,Long> {
     List<Team> findTeamsByPublicTeam(boolean publicTeam);
 
     Optional<Team> findByTeamPassword(String teamPassword);
+
+    List<Team> findTeamsByTeamNameContaining(String teamName);
 }
