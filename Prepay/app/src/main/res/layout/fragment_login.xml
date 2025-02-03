@@ -6,41 +6,134 @@
     android:layout_height="match_parent"
     tools:context=".ui.Login.LoginFragment">
 
-    <ImageView
-        android:id="@+id/imageView"
+    <TextView
+        android:id="@+id/login_appbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="148dp"
-        android:layout_marginTop="40dp"
-        android:src="@drawable/ic_launcher_foreground"
+        android:layout_marginTop="48dp"
+        android:fontFamily="@font/samsung_font_2"
+        android:text="로그인"
+        android:textColor="#394750"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/logo_image"
+        android:layout_width="133dp"
+        android:layout_height="133dp"
+        android:layout_marginTop="104dp"
+        android:contentDescription="logo_image"
+        android:src="@drawable/logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/catchphrase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:bufferType="spannable"
+        android:fontFamily="@font/samsung_font_2"
+        android:textColor="#394750"
+        android:text="선결제의 새로운 바람"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo_image" />
 
 
     <EditText
         android:id="@+id/sign_in_id_text"
-        android:layout_width="362dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="192dp"
-        android:layout_marginEnd="36dp"
+        android:layout_width="334dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="112dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/shape_all_round"
         android:hint="아이디를 입력하세요"
-        android:text=""
+        android:paddingLeft="24dp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.521"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/logo_image" />
+
+    <EditText
+        android:id="@+id/sign_in_password_text"
+        android:layout_width="334dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/shape_all_round"
+        android:paddingLeft="24dp"
+        android:hint="비밀번호를 입력하세요"
+        android:inputType="textPassword"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_id_text" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/LoginBtn"
+        android:layout_width="328dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="36dp"
+        android:background="@drawable/submit_button_style"
+        android:fontFamily="@font/samsung_font_2"
+        android:text="로그인"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_password_text" />
 
     <TextView
         android:id="@+id/sns"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="116dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="84dp"
         android:layout_marginEnd="116dp"
+        android:textColor="#394750"
         android:text="SNS 계정으로 간편 로그인"
+        android:fontFamily="@font/samsung_font_2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.44"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LoginBtn" />
+
+    <TextView
+        android:id="@+id/find_password_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        android:text="비밀번호 찾기"
+        android:textColor="#394750"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/sign_in_password_text"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_password_text" />
+
+    <TextView
+        android:id="@+id/JoinBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="회원가입"
+        android:textColor="#0066CC"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/LoginBtn" />
 
@@ -48,105 +141,24 @@
         android:id="@+id/imageView2"
         android:layout_width="42dp"
         android:layout_height="42dp"
-        android:src="@drawable/ic_launcher_foreground"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/google_icon"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sns" />
 
-    <Button
-        android:id="@+id/JoinBtn"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="13dp"
-        android:layout_marginBottom="92dp"
-        android:text="회원가입"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.486"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/question_login" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/find_id_btn"
-        android:layout_width="73dp"
-        android:layout_height="26dp"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="12dp"
-        android:gravity="center"
-        android:text="아이디 찾기"
-        android:textSize="8sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/JoinBtn" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/find_password_btn"
-        android:layout_width="80dp"
-        android:layout_height="26dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="12dp"
-        android:gravity="center"
-        android:text="비밀번호 찾기"
-        android:textSize="8sp"
-        app:layout_constraintStart_toEndOf="@+id/find_id_btn"
-        app:layout_constraintTop_toBottomOf="@+id/JoinBtn" />
-
-    <Button
-        android:id="@+id/LoginBtn"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="36dp"
-        android:text="로그인"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.461"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/PasswordInput" />
-
-    <EditText
-        android:id="@+id/PasswordInput"
-        android:layout_width="355dp"
-        android:layout_height="59dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="36dp"
-        android:hint="비밀번호를 입력하세요"
-        android:text=""
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.677"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_in_id_text" />
-
-    <TextView
-        android:id="@+id/question_login"
-        android:layout_width="240dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="28dp"
-        android:gravity="center"
-        android:text="프리페이 회원이 아니신가요?"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
-
     <CheckBox
         android:id="@+id/remember_id_checkbox"
-        android:layout_width="124dp"
-        android:layout_height="27dp"
-        android:layout_marginStart="26dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="아이디 기억하기"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/PasswordInput" />
+        android:textColor="#394750"
+        android:textSize="16sp"
 
-    <CheckBox
-        android:id="@+id/auto_login_checkbox"
-        android:layout_width="101dp"
-        android:layout_height="31dp"
-        android:layout_marginEnd="30dp"
-        android:text="자동 로그인"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/PasswordInput" />
+        app:layout_constraintStart_toStartOf="@+id/sign_in_password_text"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_password_text" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

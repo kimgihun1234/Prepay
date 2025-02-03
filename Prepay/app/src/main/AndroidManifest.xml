@@ -23,7 +23,6 @@
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">
-
         </activity>
     </application>
 
