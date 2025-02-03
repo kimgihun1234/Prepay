@@ -8,8 +8,6 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- 코드 입력 필드 -->
-
     <TextView
         android:id="@+id/tv_dialog_title"
         android:layout_width="wrap_content"
@@ -25,15 +23,16 @@
 
     <EditText
         android:id="@+id/et_code_input"
-        android:layout_width="366dp"
-        android:layout_height="51dp"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/round_background"
         android:gravity="center"
         android:hint="초대 코드를 입력해주세요"
         android:padding="10dp"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_dialog_title" />
 
