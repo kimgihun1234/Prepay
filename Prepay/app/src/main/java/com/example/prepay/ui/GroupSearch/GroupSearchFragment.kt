@@ -20,17 +20,17 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initEvent()
+        //initEvent()
     }
 
     fun initEvent(){
-        binding.createGroupBtn.setOnClickListener {
+        /*binding.createGroupBtn.setOnClickListener {
             mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.CREATE_PUBLIC_GROUP_FRAGMENT)
         }
         binding.enterGroupBtn.setOnClickListener {
             mainActivity.enterDialog()
         }
         //내비게이션 바 생기게
-        mainActivity.hideBottomNav(false)
+        mainActivity.hideBottomNav(false)*/
     }
 }
