@@ -11,17 +11,19 @@ import com.d111.PrePay.dto.respond.TeamDetailRes;
 import com.d111.PrePay.dto.respond.TeamRes;
 import com.d111.PrePay.model.Team;
 import com.d111.PrePay.model.TeamStore;
+import com.d111.PrePay.model.UserTeam;
 import com.d111.PrePay.service.ImageService;
 import com.d111.PrePay.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/team")
@@ -33,99 +35,100 @@ public class TeamController {
 
     // 팀 이미지 수정
     @PostMapping("/image")
-    public ResponseEntity<Void> uploadImage(@RequestHeader("userId") Long userId,
-                                            @RequestPart("request") TeamIdReq req,
-                                            @RequestPart(value = "image", required = false) MultipartFile image) throws IOException {
-        if (image != null && !image.isEmpty()) {
-            String imgUrl = imageService.uploadImage(image, req.getTeamId());
-            teamService.uploadImage(req, imgUrl);
-        }
+    public ResponseEntity<UploadImageRes> uploadImage(@RequestHeader("userId") Long userId,
+                                                      @RequestPart("request") TeamIdReq req,
+                                                      @RequestPart(value = "image", required = false) MultipartFile image) throws IOException {
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(teamService.uploadImage(req, image));
+
     }
 
 
     @PostMapping("/ban")
-    public ResponseEntity<Void> banUser(@RequestHeader("userId") Long userId,
+    public ResponseEntity<Map<String,String>> banUser(@RequestHeader("userId") Long userId,
                                         @RequestBody BanUserReq req) {
         teamService.banUser(req);
-        return ResponseEntity.ok().build();
+        String message = String.format("%d번팀에서 %d번 유저를 강퇴하였습니다.", req.getTeamId(), userId);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", message);
+        return ResponseEntity.ok(response);
     }
 
 
     @PostMapping("/exit")
-    public ResponseEntity<Void> exitTeam(@RequestHeader("userId") Long userId,
-                                         @RequestBody TeamIdReq req) {
+    public ResponseEntity<Map<String, String>> exitTeam(@RequestHeader("userId") Long userId,
+                                                        @RequestBody TeamIdReq req) {
         teamService.exitTeam(userId, req);
-        return ResponseEntity.ok().build();
+        String message = String.format("%d번팀에서 %d번 유저가 퇴장하였습니다.", req.getTeamId(), userId);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", message);
+        return ResponseEntity.ok(response);
     }
 
 
     @PostMapping("confirm-privilege")
-    public ResponseEntity<Void> confirmPrivilege(@RequestHeader("userId") Long userId,
-                                                 @RequestBody PartyConfirmReq req) {
-        teamService.confirmPrivilege(req);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<PartyConfirmRes> confirmPrivilege(@RequestHeader("userId") Long userId,
+                                                            @RequestBody PartyConfirmReq req) {
+        return ResponseEntity.ok(teamService.confirmPrivilege(req));
+
     }
 
 
     @PostMapping("/request-privilege")
-    public ResponseEntity<Void> privilegeRequest(@RequestHeader("userId") Long userId,
-                                                 @RequestBody TeamIdReq req) {
-        teamService.privilegeRequest(userId, req);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<PartyRequestRes> privilegeRequest(@RequestHeader("userId") Long userId,
+                                                            @RequestBody TeamIdReq req) {
+        return ResponseEntity.ok(teamService.privilegeRequest(userId, req));
+
     }
 
 
     @PostMapping("/charge")
-    public ResponseEntity<Void> chargeRequest(@RequestHeader("userId") Long userId,
-                                              @RequestBody ChargeReq req) {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ChargeRes> chargeRequest(@RequestHeader("userId") Long userId,
+                                                   @RequestBody ChargeReq req) {
+        return ResponseEntity.ok(teamService.chargeRequest(req));
+
     }
 
 
     @PostMapping("/signin")
-    public ResponseEntity<Void> signinTeam(@RequestHeader("userId") Long userId,
-                                           @RequestBody SignInTeamReq req) {
-        teamService.signInTeam(userId, req);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<GetUserOfTeamRes> signinTeam(@RequestHeader("userId") Long userId,
+                                                       @RequestBody SignInTeamReq req) {
+        return ResponseEntity.ok(teamService.signInTeam(userId, req));
 
     }
 
 
     @PostMapping("/privilege")
-    public ResponseEntity<Void> grantPrivilege(@RequestHeader("userId") Long userId,
-                                               @RequestBody GrantPrivilegeReq req) {
-        teamService.grantPrivilege(req);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<GrantPrivilegeRes> grantPrivilege(@RequestHeader("userId") Long userId,
+                                                            @RequestBody GrantPrivilegeReq req) {
+        return ResponseEntity.ok(teamService.grantPrivilege(req));
     }
 
 
     @PostMapping("/position")
-    public ResponseEntity<Void> grantAdminPosition(@RequestHeader("userId") Long userId,
-                                                   @RequestBody GrantAdminPositionReq req) {
-        teamService.grantAdminPosition(req);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<GrantAdminPositionRes> grantAdminPosition(@RequestHeader("userId") Long userId,
+                                                                    @RequestBody GrantAdminPositionReq req) {
+        return ResponseEntity.ok(teamService.grantAdminPosition(req));
+
     }
 
 
     @PostMapping("/limit")
-    public ResponseEntity<Team> changeDailyPriceLimit(@RequestHeader("userId") Long userId, @RequestBody ChangeDailyPriceLimitReq req) {
-        return ResponseEntity.ok(teamService.changeDailyPriceLimit(req));
+    public ResponseEntity<TeamDetailRes> changeDailyPriceLimit(@RequestHeader("userId") Long userId, @RequestBody ChangeDailyPriceLimitReq req) {
+        return ResponseEntity.ok(teamService.changeDailyPriceLimit(req, userId));
     }
 
 
     @PostMapping("/code")
-    public ResponseEntity<Team> generateInviteCode(@RequestHeader("userId") Long userId, @RequestBody TeamIdReq req) {
+    public ResponseEntity<TeamDetailRes> generateInviteCode(@RequestHeader("userId") Long userId, @RequestBody TeamIdReq req) {
         return ResponseEntity.ok(teamService.generateInviteCode(userId, req));
     }
 
 
     @PostMapping("/store-id")
-    public ResponseEntity<Long> createStore(@RequestHeader("userId") Long userId,
-                                            @RequestBody TeamCreateStoreReq req) {
-        TeamStore teamStore = teamService.createStore(req);
-        return ResponseEntity.ok(teamStore.getId());
+    public ResponseEntity<TeamCreateStoreRes> createStore(@RequestHeader("userId") Long userId,
+                                                          @RequestBody TeamCreateStoreReq req) {
+        return ResponseEntity.ok(teamService.createStore(req));
     }
 
 
@@ -144,18 +147,10 @@ public class TeamController {
 
 
     @PostMapping(value = "/signup")
-    public ResponseEntity<Long> createTeam(@RequestPart("request") TeamCreateReq request,
-                                           @RequestPart(value = "image", required = false) MultipartFile image,
-                                           @RequestHeader("userId") Long userId) throws IOException {
-        Team team = teamService.createTeam(request, userId);
-
-        if (image != null && !image.isEmpty()) {
-            String imgUrl = imageService.uploadImage(image, team.getId());
-            team.setTeamImgUrl(imgUrl);
-            teamService.save(team);
-        }
-
-        return ResponseEntity.ok(team.getId());
+    public ResponseEntity<TeamCreateRes> createTeam(@RequestPart("request") TeamCreateReq request,
+                                                    @RequestPart(value = "image", required = false) MultipartFile image,
+                                                    @RequestHeader("userId") Long userId) throws IOException {
+        return ResponseEntity.ok(teamService.createTeam(request, userId, image));
     }
 
     @GetMapping("/groups")

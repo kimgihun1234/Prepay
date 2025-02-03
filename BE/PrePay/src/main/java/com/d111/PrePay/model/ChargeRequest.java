@@ -2,13 +2,13 @@ package com.d111.PrePay.model;
 
 import com.d111.PrePay.RequestStatus;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ChargeRequest {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
