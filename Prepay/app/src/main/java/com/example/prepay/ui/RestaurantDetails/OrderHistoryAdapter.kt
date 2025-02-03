@@ -20,7 +20,10 @@ class OrderHistoryAdapter(private val orderHistoryList: List<OrderHistory>) : Re
             binding.name.text = order.name
             binding.amount.text = NumberFormat.getNumberInstance(Locale.KOREA).format(order.total_price)
             binding.date.text = order.date
+
+            // 영수증 버튼 클릭 시 다이얼로그 표시
             binding.imageButton.setOnClickListener {
+
                 val dialogBinding = DialogReceiptBinding.inflate(LayoutInflater.from(itemView.context))
                 val dialog = AlertDialog.Builder(itemView.context)
                     .setView(dialogBinding.root)
