@@ -7,14 +7,15 @@
     tools:context=".ui.CreateGroup.BootPayFragment">
 
 
-    <EditText
+    <androidx.appcompat.widget.SearchView
         android:id="@+id/restaurant_name_text"
         android:layout_width="317dp"
         android:layout_height="53dp"
         android:layout_marginTop="40dp"
         android:ems="10"
         android:inputType="text"
-        android:text="Name"
+        app:queryHint="식당을 입력하시오"
+        app:iconifiedByDefault="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,7 +27,7 @@
         android:layout_marginTop="42dp"
         android:ems="10"
         android:inputType="text"
-        android:text="Name"
+        android:text=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/restaurant_name_text" />

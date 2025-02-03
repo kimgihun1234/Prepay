@@ -3,6 +3,9 @@ package com.example.prepay.ui.CreateGroup
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import androidx.appcompat.widget.SearchView
 import com.example.prepay.BaseFragment
 import com.example.prepay.R
 import com.example.prepay.databinding.FragmentBootPayBinding
@@ -14,29 +17,41 @@ import kr.co.bootpay.android.models.BootItem
 import kr.co.bootpay.android.models.BootUser
 import kr.co.bootpay.android.models.Payload
 
+private const val TAG = "BootPayFragment"
 class BootPayFragment : BaseFragment<FragmentBootPayBinding>(
     FragmentBootPayBinding::bind,
     R.layout.fragment_boot_pay
 ) {
     private lateinit var mainActivity: MainActivity
+    private var restaurantName: String = ""
 
     val AppId = "67a0ae6c4fb27baaf86e5571"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivity = context as MainActivity
-
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val restaurantName = binding.restaurantNameText.text
+
+        binding.restaurantNameText.isSubmitButtonEnabled = true
+        binding.restaurantNameText.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                Log.d(TAG, "onQueryTextSubmit: $query")
+                restaurantName = query.toString()
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+        })
         val totalPrice = binding.totalPrice.text
         binding.button3.setOnClickListener {
-            goBootpayRequest(restaurantName.toString(), totalPrice.toString())
+            goBootpayRequest(restaurantName, totalPrice.toString())
         }
     }
 
-    fun goBootpayRequest(restaurantName: String, totalPrice:String) {
+    private fun goBootpayRequest(restaurantName: String?, totalPrice:String) {
         val user = BootUser().setPhone("010-1234-5678") // 구매자 정보
         val extra = BootExtra()
             .setCardQuota("0,2,3") // 일시불, 2개월, 3개월 할부 허용, 할부는 최대 12개월까지 사용됨 (5만원 이상 구매시 할부허용 범위)
@@ -53,8 +68,9 @@ class BootPayFragment : BaseFragment<FragmentBootPayBinding>(
         items.add(item1)
 
         val payload = Payload()
+        Log.d(TAG, "restaurantName: $restaurantName")
         payload.setApplicationId(AppId)
-            .setOrderName("부트페이 결제테스트")
+            .setOrderName(restaurantName)
             .setPg(pg)
             .setOrderId("1234")
             .setMethod(method)

@@ -7,9 +7,6 @@
     android:background="@color/white"
     tools:context=".ui.CreateGroup.CreatePublicGroupFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
-
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/public_checkbox"
         android:layout_width="wrap_content"
@@ -174,19 +171,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_btn" />
 
-<<<<<<< HEAD
-=======
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="45dp"
-        android:src="@drawable/logo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
->>>>>>> b88f1d283e45836da1bedc113481c848657d56cc
     <TextView
         android:id="@+id/textView13"
         android:layout_width="0dp"
