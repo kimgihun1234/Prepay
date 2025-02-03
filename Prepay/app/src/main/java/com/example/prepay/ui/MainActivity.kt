@@ -9,6 +9,7 @@ import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.databinding.ActivityMainBinding
 import com.example.prepay.databinding.DialogVisitCodeBinding
+import com.example.prepay.ui.CreateGroup.BootPayFragment
 import com.example.prepay.ui.CreateGroup.CreatePrivateGroupFragment
 import com.example.prepay.ui.CreateGroup.CreatePublicGroupFragment
 import com.example.prepay.ui.GroupDetails.GroupDetailsFragment
@@ -51,6 +52,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             CommonUtils.MainFragmentName.LOOK_GROUP_FRAGMENT -> TODO()
             CommonUtils.MainFragmentName.RESTAURANT_DETAILS_FRAGMENT -> {
                 transaction.replace(R.id.main_container, RestaurantDetailsFragment())
+            }
+            CommonUtils.MainFragmentName.BOOTPAY_FRAGMENT -> {
+                transaction.replace(R.id.main_container, BootPayFragment())
             }
         }
         transaction.commit()
