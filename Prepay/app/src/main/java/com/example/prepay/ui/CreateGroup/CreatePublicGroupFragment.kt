@@ -68,7 +68,6 @@ class CreatePublicGroupFragment: BaseFragment<FragmentCreatePublicGroupBinding>(
         binding.searchRestaurant.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 Log.d(TAG, "onQueryTextSubmit: $query")
-
                 return false
             }
 
