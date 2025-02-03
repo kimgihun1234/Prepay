@@ -334,7 +334,7 @@ public class TeamService {
         return teamCreateRes;
     }
 
-    //퍼블릭 팀 전체 조회
+    //나의 팀 전체 조회
     public List<TeamRes> getMyTeams(long userId) {
         User user = userRepository.findById(userId).orElseThrow();
         List<UserTeam> userTeams = user.getUserTeams();

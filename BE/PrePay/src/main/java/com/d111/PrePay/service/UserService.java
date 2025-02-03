@@ -24,7 +24,7 @@ public class UserService {
 
     public LoginRes userLogin(LoginReq loginReq) throws Exception {
         User user = userRepository.findUserByUserLoginId(loginReq.getUserLoginId());
-        if (user.getUserPassword() != loginReq.getPassword()) {
+        if (user.getUserPassword().equals(loginReq.getPassword())) {
             throw new Exception();
         }
         LoginRes loginRes = new LoginRes();
