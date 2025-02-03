@@ -3,6 +3,7 @@ package com.example.prepay.ui.CreateGroup
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.widget.SearchView
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
@@ -59,12 +60,29 @@ class CreatePublicGroupFragment: BaseFragment<FragmentCreatePublicGroupBinding>(
             isCheckingRepeatUse = false
         }
 
+        binding.test.setOnClickListener {
+            mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.BOOTPAY_FRAGMENT)
+        }
+
+        binding.searchRestaurant.isSubmitButtonEnabled = true
+        binding.searchRestaurant.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                Log.d(TAG, "onQueryTextSubmit: $query")
+
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+        })
 
         binding.registerBtn.setOnClickListener {
             var repeat_use_num = 0
             val public_team = if (binding.publicCheckbox.isChecked) 0 else 1
             val team_name = binding.groupNameText.getText().toString()
             val image_url = binding.imageBtn.urls
+            val search_restaurant = binding.searchRestaurant.toString()
             val daily_price_limit = binding.limitSettingText.getText().toString()
             val repeat_use_possible = binding.possible.isChecked
             val repeat_use_impossible = binding.impossible.isChecked
@@ -80,6 +98,7 @@ class CreatePublicGroupFragment: BaseFragment<FragmentCreatePublicGroupBinding>(
             // POST로 넘기기
             Log.d(TAG, "public_team: $public_team")
             Log.d(TAG, "team_name: $team_name")
+            Log.d(TAG, "search_restaurant: $search_restaurant")
             Log.d(TAG, "daily_price_limit: $daily_price_limit")
             Log.d(TAG, "repeat_use_possible: $repeat_use_possible")
             Log.d(TAG, "repeat_use_impossible: $repeat_use_impossible")
