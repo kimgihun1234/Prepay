@@ -31,7 +31,11 @@ public class Team {
 
     private String teamMessage;
 
-    private Long teamInitializer;
+    private String teamImgUrl;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User teamInitializer;
 
     @OneToMany(mappedBy = "team")
     private List<UserTeam> userTeams = new ArrayList<>();

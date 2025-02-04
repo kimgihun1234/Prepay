@@ -1,14 +1,15 @@
 package com.d111.PrePay.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class TeamStore {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +27,9 @@ public class TeamStore {
 
     private int teamStoreBalance;
 
+    public TeamStore(Team team, Store store, int balance) {
+        this.team = team;
+        this.store = store;
+        this.teamStoreBalance = balance;
+    }
 }

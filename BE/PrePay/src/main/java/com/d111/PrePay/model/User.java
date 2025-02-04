@@ -1,6 +1,7 @@
 package com.d111.PrePay.model;
 
 
+import com.d111.PrePay.dto.request.UserSignUpReq;
 import com.d111.PrePay.dto.request.UserCreateReq;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -40,6 +41,13 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<OrderHistory> orderHistories = new ArrayList<>();
 
+    public User(UserSignUpReq userSignUpReq) {
+        this.userLoginId = userSignUpReq.getUserLoginId();
+        this.userName = userSignUpReq.getUserName();
+        this.email = userSignUpReq.getEmail();
+        this.userPassword = userSignUpReq.getPassword();
+        this.nickname = userSignUpReq.getNickname();
+    }
     public User(UserCreateReq req) {
         this.userLoginId = req.getUserLoginId();
         this.userName = req.getUserName();

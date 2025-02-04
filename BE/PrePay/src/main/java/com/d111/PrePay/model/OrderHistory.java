@@ -32,13 +32,13 @@ public class OrderHistory {
     // 환불일 때 금액 추가임을 설정하는 t/f 추후 상속(소비, 환불)으로 분리해야함
     private boolean withDraw;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Team team;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Store store;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     @OneToOne(mappedBy = "orderHistory")

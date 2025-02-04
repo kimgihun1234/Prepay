@@ -23,10 +23,10 @@ public class RefundRequest {
 
     private long requestDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Store store;
 
     @OneToOne

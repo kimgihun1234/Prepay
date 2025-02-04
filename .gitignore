@@ -21,3 +21,5 @@ out/
 *.env
 
 Prepay/local.properties
+
+firebase-service-key.json
