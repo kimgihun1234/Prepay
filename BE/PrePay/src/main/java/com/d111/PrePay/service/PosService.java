@@ -16,10 +16,11 @@ public class PosService {
     private final StoreRepository storeRepository;
     private final UserTeamRepository userTeamRepository;
 
-    public Long makeOrder(OrderCreateReq orderCreateReq) {
-        OrderHistory orderHistory = new OrderHistory(orderCreateReq);
-        Store store = storeRepository.findById(orderCreateReq.getStoreId()).orElseThrow(() -> new RuntimeException("가게 오류"));
-        UserTeam userTeam = userTeamRepository.findById(orderCreateReq.getUserTeamId()).orElseThrow();
+    public Long makeOrder(OrderReq orderReq) {
+        OrderHistory orderHistory = new OrderHistory(orderReq);
+        Store store = storeRepository.findById(orderReq.getStoreId()).orElseThrow(() -> new RuntimeException("가게 오류"));
+        UserTeam userTeam = userTeamRepository.findById(orderReq.getUserTeamId()).orElseThrow();
+        userTeam.setUsedAmount(userTeam.getUsedAmount() + orderHistory.getTotalPrice());
         Team team = userTeam.getTeam();
         User user = userTeam.getUser();
         orderHistory.setStore(store);
@@ -27,7 +28,7 @@ public class PosService {
         orderHistory.setUser(user);
         orderHistoryRepository.save(orderHistory);
 
-        for (DetailHistoryReq detailHistoryReq : orderCreateReq.getDetails()) {
+        for (DetailHistoryReq detailHistoryReq : orderReq.getDetails()) {
             DetailHistory detailHistory = new DetailHistory(detailHistoryReq);
             detailHistory.setOrderHistory(orderHistory);
             detailHistoryRepository.save(detailHistory);
