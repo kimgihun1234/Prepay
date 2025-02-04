@@ -35,13 +35,6 @@ public class UserController {
     }
 
 
-    private final UserService userService;
-
-    @PostMapping("/signup")
-    public ResponseEntity<Long> makeUser(@RequestBody UserCreateReq req) {
-        return ResponseEntity.ok(userService.makeUser(req));
-    }
-
     @PostMapping("/login")
     public ResponseEntity<UserLoginRes> login(@RequestBody UserLoginReq request) {
         return ResponseEntity.ok(userService.login(request));

@@ -27,28 +27,6 @@ public class UserService {
         return "유저 " + user.getUserName() + "생성완료";
     }
 
-    public LoginRes userLogin(LoginReq loginReq) throws Exception {
-        User user = userRepository.findUserByUserLoginId(loginReq.getUserLoginId());
-        if (user.getUserPassword().equals(loginReq.getPassword())) {
-            throw new Exception();
-        }
-        LoginRes loginRes = new LoginRes();
-        loginRes.setUserName(user.getUserName());
-        loginRes.setJwtToken("token logic");
-        return loginRes;
-    }
-
-    private final UserRepository userRepository;
-
-    public Long makeUser(UserCreateReq req) {
-
-        User user = new User(req);
-
-        userRepository.save(user);
-
-        return user.getId();
-
-    }
 
     public UserLoginRes login(UserLoginReq req) {
         User user = userRepository.findUserByUserLoginIdAndUserPassword(req.getUserLoginId(), req.getPassword());
