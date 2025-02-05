@@ -138,7 +138,7 @@
         app:layout_constraintTop_toBottomOf="@+id/LoginBtn" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/google_login_btn"
         android:layout_width="42dp"
         android:layout_height="42dp"
         android:layout_marginTop="12dp"

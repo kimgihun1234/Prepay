@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id ("com.google.gms.google-services")
 }
 
 android {
@@ -52,9 +53,18 @@ dependencies {
     // https://github.com/square/retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
 
+    // firebase 사용에 필요한 의존성 추가 firebase + database
+    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    implementation("com.google.firebase:firebase-database-ktx")
+
+    // firebase auth 에서 필요한 의존성 추가
+    implementation ("com.google.firebase:firebase-auth-ktx")
+    implementation ("com.google.android.gms:play-services-auth:20.7.0")
+
     // https://github.com/square/okhttp
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
 
     // https://github.com/square/retrofit/tree/master/retrofit-converters/gson
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
 }

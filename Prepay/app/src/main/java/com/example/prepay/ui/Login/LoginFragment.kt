@@ -10,6 +10,7 @@ import android.text.SpannableString
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
@@ -22,6 +23,18 @@ import com.example.prepay.databinding.FragmentLoginBinding
 import com.example.prepay.test_db.UserDBHelper
 import com.example.prepay.ui.LoginActivity
 import com.example.prepay.ui.MainActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class LoginFragment: BaseFragment<FragmentLoginBinding>(
     FragmentLoginBinding::bind,
@@ -29,9 +42,22 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
 ){
     private lateinit var loginActivity: LoginActivity
     private lateinit var DB: UserDBHelper
+
+    //구글 로그인
+    private lateinit var auth: FirebaseAuth
+    private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var currentuser: FirebaseUser
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         loginActivity = context as LoginActivity
+        //구글 로그인
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
+        auth = Firebase.auth
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,10 +83,11 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
             loginActivity.changeFragmentLogin(CommonUtils.LoginFragmentName.SIGNIN_FRAGMENT)
         }
 
-
-
         binding.findPasswordBtn.setOnClickListener {
             loginActivity.changeFragmentLogin(CommonUtils.LoginFragmentName.FINDPASSWORD_FRAGMENT)
+        }
+        binding.googleLoginBtn.setOnClickListener {
+            signIn()
         }
     }
 
@@ -135,4 +162,45 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                if (account != null) {
+                    firebaseAuthWithGoogle(account.idToken!!)
+                }
+            } catch (e: ApiException) {
+                Log.w("LoginFragment", "Google sign in failed", e)
+                Toast.makeText(requireContext(), "구글 로그인 실패", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(requireActivity()) { task ->
+                if (task.isSuccessful) {
+                    val user = auth.currentUser
+                    val intent = Intent(requireContext(), MainActivity::class.java)
+                    startActivity(intent)
+                    activity?.finish()  // 로그인 후 이전 액티비티 종료
+                } else {
+                    Log.w("LoginFragment", "signInWithCredential:failure", task.exception)
+                    Toast.makeText(requireContext(), "구글 로그인 실패", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+    private fun signIn() {
+        val signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+
+    companion object {
+        private const val RC_SIGN_IN = 9001
+        // Notification Channel ID
+    }
 }
