@@ -1,0 +1,127 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE = credentials('DOCKER_IMAGE')
+        DOCKER_CONTAINER = credentials('DOCKER_CONTAINER')
+        DOCKER_PORT = credentials('DOCKER_INNER_PORT')
+        DOCKER_PATH = '/home/ubuntu/jenkins' // EC2 서버의 Docker 저장 경로
+
+        EC2_USER = credentials('EC2_USER')
+        EC2_IP = credentials('EC2_IP')
+        SSH_KEY = credentials('EC2_PEM')
+
+        SPRING_PROFILES_ACTIVE = 'prod'
+        DB_PROD_URL = credentials('DB_URL')
+        DB_PROD_USERNAME = credentials('DB_USERNAME')
+        DB_PROD_PASSWORD = credentials('DB_PASSWORD')
+
+        GOOGLE_SERVICES_JSON = credentials('FIREBASE-SERVICE-KEY.JSON')
+
+        JAVA_HOME = '/opt/java/openjdk'
+        GRADLE_HOME = '/opt/gradle/gradle-8.11.1'
+        PATH = "${JAVA_HOME}/bin:${GRADLE_HOME}/bin:${env.PATH}"
+    }
+
+    tools {
+        jdk 'JDK 17'
+        gradle 'Gralde 8.11.1'
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                echo 'Cloning the repository...'
+                git branch: 'backend',
+                    url: 'https://lab.example.com/project-sub1/my-project.git',
+                    credentialsId: 'GitLab-PAT'
+            }
+        }
+        stage('Copy Google Services JSON') {
+            steps {
+                echo 'Copying google-services.json to resources directory...'
+                withCredentials([file(credentialsId: 'FIREBASE-SERVICE-KEY.JSON', variable: 'GOOGLE_SERVICES_JSON')]) {
+                    sh 'cp $GOOGLE_SERVICES_JSON backend/My-project/src/main/resources/google-services.json'
+                }
+            }
+        }
+        stage('Build Application') {
+            steps {
+                echo 'Building the application with Gradle Wrapper...'
+                dir('backend/My-project') {
+                    sh 'gradle clean build'
+                    sh 'ls -al $(pwd)/build/libs'
+                }
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                echo 'Building the Docker image...'
+                dir('backend/My-project') {
+                    sh 'cp build/libs/my-project-0.0.1-SNAPSHOT.jar .'
+                    sh 'docker build -t ${DOCKER_IMAGE}:latest .'
+                }
+            }
+        }
+        stage('Save and Transfer Docker Image') {
+            steps {
+                echo 'Saving and transferring Docker image to EC2...'
+                sh """
+                docker save ${DOCKER_IMAGE}:latest | gzip > my-project-0.0.1-SNAPSHOT.tar.gz
+                """
+                sshPublisher(publishers: [
+                    sshPublisherDesc(
+                        configName: 'EC2-Server',
+                        transfers: [
+                            sshTransfer(
+                                sourceFiles: 'my-project-0.0.1-SNAPSHOT.tar.gz'
+                            )
+                        ]
+                    )
+                ])
+            }
+        }
+        stage('Deploy to EC2') {
+            steps {
+                echo 'Deploying the application on EC2...'
+                sshPublisher(publishers: [
+                    sshPublisherDesc(
+                        configName: 'EC2-Server',
+                        transfers: [
+                            sshTransfer(
+                                execCommand: """
+                                    mkdir -p ${DOCKER_PATH}
+                                    docker stop ${DOCKER_CONTAINER} || true
+                                    docker rm ${DOCKER_CONTAINER} || true
+                                    docker rmi ${DOCKER_IMAGE}:latest || true
+                                    docker load < ${DOCKER_PATH}/my-project-0.0.1-SNAPSHOT.tar.gz
+                                    docker run -d --name ${DOCKER_CONTAINER} \
+                                      -p ${DOCKER_PORT}:${DOCKER_PORT} \
+                                      -e SPRING_PROFILES_ACTIVE=prod \
+                                      -e SERVER_PORT=${DOCKER_PORT} \
+                                      -e DB_URL=${DB_URL} \
+                                      -e DB_USERNAME=${DB_USERNAME} \
+                                      -e DB_PASSWORD=${DB_PASSWORD} \
+                                      ${DOCKER_IMAGE}:latest
+                                """.stripIndent()
+                            )
+                        ]
+                    )
+                ])
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Cleaning workspace...'
+            cleanWs()
+        }
+        success {
+            echo 'Deployment successful!'
+        }
+        failure {
+            echo 'Deployment failed.'
+        }
+    }
+}
