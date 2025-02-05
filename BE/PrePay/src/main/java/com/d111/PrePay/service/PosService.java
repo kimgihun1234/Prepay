@@ -16,7 +16,7 @@ public class PosService {
     private final StoreRepository storeRepository;
     private final UserTeamRepository userTeamRepository;
 
-    public Long makeOrder(OrderReq orderReq) {
+    public Long makeOrder(OrderCreateReq orderReq) {
         OrderHistory orderHistory = new OrderHistory(orderReq);
         Store store = storeRepository.findById(orderReq.getStoreId()).orElseThrow(() -> new RuntimeException("가게 오류"));
         UserTeam userTeam = userTeamRepository.findById(orderReq.getUserTeamId()).orElseThrow();
