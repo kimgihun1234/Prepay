@@ -16,7 +16,7 @@ pipeline {
         DB_PROD_USERNAME = credentials('DB_USERNAME')
         DB_PROD_PASSWORD = credentials('DB_PASSWORD')
 
-        
+        GOOGLE_SERVICES_JSON = credentials('FIREBASE-SERVICE-KEY.JSON')
 
         JAVA_HOME = '/opt/java/openjdk'
         GRADLE_HOME = '/opt/gradle/gradle-8.11.1'
@@ -35,6 +35,14 @@ pipeline {
                 git branch: 'backend',
                     url: 'https://lab.example.com/project-sub1/my-project.git',
                     credentialsId: 'GitLab-PAT'
+            }
+        }
+        stage('Copy Google Services JSON') {
+            steps {
+                echo 'Copying google-services.json to resources directory...'
+                withCredentials([file(credentialsId: 'FIREBASE-SERVICE-KEY.JSON', variable: 'GOOGLE_SERVICES_JSON')]) {
+                    sh 'cp $GOOGLE_SERVICES_JSON backend/My-project/src/main/resources/google-services.json'
+                }
             }
         }
         stage('Build Application') {
