@@ -3,8 +3,10 @@ package com.example.prepay.ui.RestaurantDetails
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.prepay.BaseFragment
+import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.data.model.dto.OrderHistory
 import com.example.prepay.databinding.DialogReceiptBinding
@@ -24,8 +26,16 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initEvent()
         initAdapter()
 
+    }
+    private fun initEvent() {
+        binding.payBootpay.setOnClickListener {
+            val restaurant = ViewModelProvider(requireActivity()).get(RestaurantViewModel::class.java)
+            restaurant.sendRestaurantData(binding.restaurantNameBootpay.text.toString())
+            mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.DETAIL_RESTAURANT_FRAGMENT)
+        }
     }
 
     private fun initAdapter() {
