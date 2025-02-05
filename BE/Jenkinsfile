@@ -25,7 +25,7 @@ pipeline {
 
     tools {
         jdk 'JDK 17'
-        gradle 'Gradle 8.11.1'
+        gradle 'Gralde 8.11.1'
     }
 
     stages {
