@@ -32,7 +32,7 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
     }
     private fun initEvent() {
         binding.payBootpay.setOnClickListener {
-            val restaurant = ViewModelProvider(requireActivity()).get(RestaurantViewModel::class.java)
+            val restaurant = ViewModelProvider(requireActivity()).get(RestaurantDetailsViewModel::class.java)
             restaurant.sendRestaurantData(binding.restaurantNameBootpay.text.toString())
             mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.DETAIL_RESTAURANT_FRAGMENT)
         }

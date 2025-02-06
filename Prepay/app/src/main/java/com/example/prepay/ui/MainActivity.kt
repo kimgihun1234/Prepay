@@ -15,7 +15,7 @@ import com.example.prepay.ui.GroupDetails.AddRestaurantFragment
 import com.example.prepay.ui.GroupDetails.GroupDetailsFragment
 import com.example.prepay.ui.GroupSearch.GroupSearchFragment
 import com.example.prepay.ui.MyPage.MyPageFragment
-import com.example.prepay.ui.RestaurantDetails.DetailRestaurantFragment
+import com.example.prepay.ui.RestaurantDetails.AddDetailRestaurantFragment
 import com.example.prepay.ui.RestaurantDetails.RestaurantDetailsFragment
 
 private const val TAG = "MainActivity_싸피"
@@ -58,7 +58,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 transaction.replace(R.id.main_container, AddRestaurantFragment())
             }
             CommonUtils.MainFragmentName.DETAIL_RESTAURANT_FRAGMENT -> {
-                transaction.replace(R.id.main_container, DetailRestaurantFragment())
+                transaction.replace(R.id.main_container, AddDetailRestaurantFragment())
             }
         }
         transaction.commit()

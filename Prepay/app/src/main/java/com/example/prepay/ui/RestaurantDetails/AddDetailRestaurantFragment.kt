@@ -11,7 +11,7 @@ import com.example.prepay.ui.MainActivity
 import com.example.prepay.util.BootPayManager
 
 private const val TAG = "DetailRestaurantFragmen"
-class DetailRestaurantFragment: BaseFragment<FragmentDetailRestaurantBinding>(
+class AddDetailRestaurantFragment: BaseFragment<FragmentDetailRestaurantBinding>(
     FragmentDetailRestaurantBinding::bind,
     R.layout.fragment_detail_restaurant
 ) {
@@ -27,7 +27,7 @@ class DetailRestaurantFragment: BaseFragment<FragmentDetailRestaurantBinding>(
     }
 
     private fun initEvent() {
-        val restaurant = ViewModelProvider(requireActivity()).get(RestaurantViewModel::class.java)
+        val restaurant = ViewModelProvider(requireActivity()).get(RestaurantDetailsViewModel::class.java)
 
         Log.d(TAG, "initEvent: ${restaurant.restaurantData.value}")
         binding.requestRestaurantName.text = restaurant.restaurantData.value
