@@ -9,9 +9,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class StandardRes {
     private String message;
-    private String statusCode;
+    private int statusCode;
 
-    public StandardRes(String message, String statusCode) {
+    public StandardRes(String message, int statusCode) {
         this.message = message;
         this.statusCode = statusCode;
     }
