@@ -129,6 +129,7 @@ pipeline {
                     channel: 'D111팀 젠킨스 현황'
                         )
                     }
+            sh """ curl -v -X POST -H 'Content-Type: application/json' -d '{"text":"빌드 성공"}' https://meeting.ssafy.com/hooks/7a4x37w5c7yh8nk7he171i7ano """
         }
         failure {
             echo 'Deployment failed.'
@@ -140,6 +141,7 @@ pipeline {
                     channel: 'D111팀 젠킨스 현황'
                         )
             }
+            sh """ curl -v -X POST -H 'Content-Type: application/json' -d '{"text":"빌드 실패"}' https://meeting.ssafy.com/hooks/7a4x37w5c7yh8nk7he171i7ano """
         }
     }
 }
