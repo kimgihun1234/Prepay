@@ -32,7 +32,7 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 echo 'Cloning the repository...'
-                git branch: 'BE/jenkins',
+                git branch: 'develope-back',
                     url: 'https://lab.ssafy.com/s12-webmobile4-sub1/S12P11D111.git',
                     credentialsId: 'GITLAB-PAT'
             }
