@@ -1,8 +1,10 @@
 package com.d111.PrePay.controller;
 
-import com.d111.PrePay.dto.request.UserCreateReq;
+import com.d111.PrePay.dto.request.FcmTokenReq;
 import com.d111.PrePay.dto.request.UserLoginReq;
+import com.d111.PrePay.dto.respond.StandardRes;
 import com.d111.PrePay.dto.respond.UserLoginRes;
+import com.d111.PrePay.service.FCMService;
 import com.d111.PrePay.dto.respond.UserSignUpRes;
 import com.d111.PrePay.service.UserService;
 import com.d111.PrePay.dto.request.UserSignUpReq;
@@ -39,5 +41,10 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<UserLoginRes> login(@RequestBody UserLoginReq request) {
         return ResponseEntity.ok(userService.login(request));
+    }
+
+    @PostMapping("/fcmToken")
+    public ResponseEntity<StandardRes> updateFcmToken(@RequestBody FcmTokenReq fcmTokenReq) {
+        return ResponseEntity.ok(userService.updateToken(fcmTokenReq));
     }
 }
