@@ -36,7 +36,6 @@ object CommonUtils {
         START_LOGIN_FRAGMENT("StartLoginFragment"),
         LOGIN_FRAGMENT("LoginFragment"),
         SIGNIN_FRAGMENT("SignInFragment"),
-        FINDID_FRAGMENT("FindIdFragment"),
         FINDPASSWORD_FRAGMENT("FindPasswordFragment"),
         VERIFYID_FRAGMENT("VerifyIdFragment"),
     }

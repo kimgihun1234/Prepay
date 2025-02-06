@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 class ApplicationClass : Application() {
 
 //    val SERVER_URL = "http://192.168.32.98:9987/"
-    val SERVER_URL = "http://192.168.0.3:9987/"
+    val SERVER_URL = "http://i12d111.p.ssafy.io:8080/"
 //    val SERVER_URL = "http://192.168.0.8:9987/"
     //GSon은 엄격한 json type을 요구하는데, 느슨하게 하기 위한 설정.
     // success, fail등 문자로 리턴될 경우 오류 발생한다. json 문자열이 아니라고..

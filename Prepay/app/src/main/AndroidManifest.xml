@@ -16,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Prepay"
         tools:targetApi="31"
+        android:name=".ApplicationClass"
         android:usesCleartextTraffic="true">
 
         <activity
