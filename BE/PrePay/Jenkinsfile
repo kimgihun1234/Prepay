@@ -44,7 +44,7 @@ pipeline {
                 withCredentials([file(credentialsId: 'FIREBASE-SERVICE-KEY.JSON', variable: 'GOOGLE_SERVICES_JSON')]) {
                     sh 'cp $GOOGLE_SERVICES_JSON BE/PrePay/src/main/resources/firebase-service-key.json'
                 }
-                withCredentials([file(credentialsId: 'FIREBASE-SERVICE-KEY.JSON', variable: 'GOOGLE_SERVICES_JSON')]) {
+                withCredentials([file(credentialsId: 'FCM_SERVICE_KEY_JSON', variable: 'GOOGLE_SERVICES_JSON')]) {
                     sh 'cp $FCM_SERVICE_KEY.JSON BE/PrePay/src/main/resources/fcm-google-services.json'
                 }
             }
