@@ -36,6 +36,9 @@ public class TeamController {
 
     // 팀 이미지 수정
     @PostMapping("/image")
+    @Operation(summary = "팀 이미지 수정", description = "<b>Header access : accessToken" +
+            "<br>long : teamId" +
+            "<br>requestpart : image")
     public ResponseEntity<UploadImageRes> uploadImage(@RequestHeader("userId") Long userId,
                                                       @RequestPart("request") TeamIdReq req,
                                                       @RequestPart(value = "image", required = false) MultipartFile image) throws IOException {
@@ -46,6 +49,9 @@ public class TeamController {
 
 
     @PostMapping("/ban")
+    @Operation(summary = "팀에서 유저 강퇴", description = "<b>Header access : accessToken" +
+            "<br>long : banUserId" +
+            "<br>long : teamId")
     public ResponseEntity<Map<String,String>> banUser(@RequestHeader("userId") Long userId,
                                         @RequestBody BanUserReq req) {
         teamService.banUser(req);
@@ -57,6 +63,8 @@ public class TeamController {
 
 
     @PostMapping("/exit")
+    @Operation(summary = "팀에서 나가기", description = "<b>Header" +
+            "<br>long teamId")
     public ResponseEntity<Map<String, String>> exitTeam(@RequestHeader("userId") Long userId,
                                                         @RequestBody TeamIdReq req) {
         teamService.exitTeam(userId, req);
@@ -68,6 +76,9 @@ public class TeamController {
 
 
     @PostMapping("confirm-privilege")
+    @Operation(summary = "회식 권한 수락",description = "<b>헤더" +
+            "<br>long : partyRequestId" +
+            "<br> boolean : accept ->true면 허가")
     public ResponseEntity<PartyConfirmRes> confirmPrivilege(@RequestHeader("userId") Long userId,
                                                             @RequestBody PartyConfirmReq req) {
         return ResponseEntity.ok(teamService.confirmPrivilege(req));
@@ -76,6 +87,8 @@ public class TeamController {
 
 
     @PostMapping("/request-privilege")
+    @Operation(summary = "회식 권한 요청", description = "<b>헤더" +
+            "<br>long teamId")
     public ResponseEntity<PartyRequestRes> privilegeRequest(@RequestHeader("userId") Long userId,
                                                             @RequestBody TeamIdReq req) {
         return ResponseEntity.ok(teamService.privilegeRequest(userId, req));
@@ -84,6 +97,11 @@ public class TeamController {
 
 
     @PostMapping("/charge")
+    @Operation(summary = "충전요청", description = "<b>헤더" +
+            "<br>long : chargeRequestId" +
+            "<br>String : requestStatus -> Waiting, Refused, Approved" +
+            "<br>int requestPrice" +
+            "<br> long requestDate")
     public ResponseEntity<ChargeRes> chargeRequest(@RequestHeader("userId") Long userId,
                                                    @RequestBody ChargeReq req) {
         return ResponseEntity.ok(teamService.chargeRequest(req));
