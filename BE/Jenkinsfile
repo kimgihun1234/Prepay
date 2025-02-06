@@ -128,7 +128,7 @@ pipeline {
                     endpoint: 'https://meeting.ssafy.com/hooks/9bu64b4netdnpkh6m474wtps3e',
                     channel: 'asdfasdffdsa'
                         )
-                        curl -v -X POST -H 'Content-Type: application/json' -d '{"text":"빌드 성공: ${env.JOB_NAME} #${env.BUILD_NUMBER}\n(<${env.BUILD_URL}|Details>"}' https://meeting.ssafy.com/hooks/7a4x37w5c7yh8nk7he171i7ano
+                        sh """curl -v -X POST -H 'Content-Type: application/json' -d '{"text":"빌드 성공: ${env.JOB_NAME} #${env.BUILD_NUMBER}\n(<${env.BUILD_URL}|Details>"}' https://meeting.ssafy.com/hooks/7a4x37w5c7yh8nk7he171i7ano """
             }
 
         }
