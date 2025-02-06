@@ -3,12 +3,15 @@ package com.example.prepay.ui.CreateGroup
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.widget.SearchView
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.data.model.dto.PublicPrivateTeam
 import com.example.prepay.databinding.FragmentCreatePublicGroupBinding
 import com.example.prepay.ui.MainActivity
+import com.example.prepay.util.BootPayManager
+import kr.co.bootpay.android.Bootpay
 
 private const val TAG = "CreatePublicGroupFragme"
 class CreatePublicGroupFragment: BaseFragment<FragmentCreatePublicGroupBinding>(
@@ -65,6 +68,8 @@ class CreatePublicGroupFragment: BaseFragment<FragmentCreatePublicGroupBinding>(
             val public_team = if (binding.publicCheckbox.isChecked) 0 else 1
             val team_name = binding.groupNameText.getText().toString()
             val image_url = binding.imageBtn.urls
+            val search_restaurant = binding.searchRestaurant.text.toString()
+            val boot_pay_amount = binding.bootpayAmount.text.toString()
             val daily_price_limit = binding.limitSettingText.getText().toString()
             val repeat_use_possible = binding.possible.isChecked
             val repeat_use_impossible = binding.impossible.isChecked
@@ -80,6 +85,8 @@ class CreatePublicGroupFragment: BaseFragment<FragmentCreatePublicGroupBinding>(
             // POST로 넘기기
             Log.d(TAG, "public_team: $public_team")
             Log.d(TAG, "team_name: $team_name")
+            Log.d(TAG, "search_restaurant: $search_restaurant")
+            Log.d(TAG, "boot_pay_amount: $boot_pay_amount")
             Log.d(TAG, "daily_price_limit: $daily_price_limit")
             Log.d(TAG, "repeat_use_possible: $repeat_use_possible")
             Log.d(TAG, "repeat_use_impossible: $repeat_use_impossible")
@@ -88,6 +95,8 @@ class CreatePublicGroupFragment: BaseFragment<FragmentCreatePublicGroupBinding>(
             Log.d(TAG, "context_text: $context_text")
 
             PublicPrivateTeam(public_team ,team_name, daily_price_limit.toInt(), repeat_use_num, image_url.toString(), context_text)
+
+            BootPayManager.startPayment(requireActivity(), search_restaurant, boot_pay_amount)
             mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
         }
         binding.cancelBtn.setOnClickListener {

@@ -67,4 +67,6 @@ dependencies {
     // https://github.com/square/retrofit/tree/master/retrofit-converters/gson
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
+    implementation("io.github.bootpay:android:4.9.0")
+
 }
