@@ -3,6 +3,7 @@ package com.d111.PrePay.service;
 import com.d111.PrePay.dto.request.LoginReq;
 import com.d111.PrePay.dto.request.UserSignUpReq;
 import com.d111.PrePay.dto.respond.LoginRes;
+import com.d111.PrePay.dto.respond.UserSignUpRes;
 import com.d111.PrePay.model.User;
 import com.d111.PrePay.repository.UserRepository;
 import com.d111.PrePay.dto.request.UserCreateReq;
@@ -21,10 +22,14 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public String userSignUp(UserSignUpReq userSignUpReq) {
+    public UserSignUpRes userSignUp(UserSignUpReq userSignUpReq) {
         User user = new User(userSignUpReq);
         userRepository.save(user);
-        return "유저 " + user.getUserName() + "생성완료";
+        UserSignUpRes userSignUpRes = UserSignUpRes.builder()
+                .success(true)
+                .message("회원가입이 완료되었습니다.")
+                .build();
+        return userSignUpRes;
     }
 
 
