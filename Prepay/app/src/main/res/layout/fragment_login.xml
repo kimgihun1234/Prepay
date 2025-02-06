@@ -49,22 +49,23 @@
 
 
     <EditText
-        android:id="@+id/sign_in_id_text"
+        android:id="@+id/login_id_text"
         android:layout_width="334dp"
         android:layout_height="54dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="112dp"
+        android:layout_marginTop="108dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/shape_all_round"
         android:hint="아이디를 입력하세요"
         android:paddingLeft="24dp"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.538"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo_image" />
 
     <EditText
-        android:id="@+id/sign_in_password_text"
+        android:id="@+id/log_in_password_text"
         android:layout_width="334dp"
         android:layout_height="54dp"
         android:layout_marginStart="32dp"
@@ -74,15 +75,15 @@
         android:paddingLeft="24dp"
         android:hint="비밀번호를 입력하세요"
         android:inputType="textPassword"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_in_id_text" />
+        app:layout_constraintTop_toBottomOf="@+id/login_id_text" />
 
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/LoginBtn"
-        android:layout_width="328dp"
+        android:layout_width="334dp"
         android:layout_height="56dp"
         android:layout_marginStart="36dp"
         android:layout_marginTop="80dp"
@@ -95,7 +96,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_in_password_text" />
+        app:layout_constraintTop_toBottomOf="@+id/log_in_password_text" />
 
     <TextView
         android:id="@+id/sns"
@@ -121,8 +122,9 @@
         android:text="비밀번호 찾기"
         android:textColor="#394750"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/sign_in_password_text"
-        app:layout_constraintTop_toBottomOf="@+id/sign_in_password_text" />
+        android:fontFamily="@font/samsung_font_2"
+        app:layout_constraintEnd_toEndOf="@+id/log_in_password_text"
+        app:layout_constraintTop_toBottomOf="@+id/log_in_password_text" />
 
     <TextView
         android:id="@+id/JoinBtn"
@@ -155,10 +157,11 @@
         android:layout_marginTop="8dp"
         android:text="아이디 기억하기"
         android:textColor="#394750"
-        android:textSize="16sp"
+        android:textSize="15sp"
+        android:fontFamily="@font/samsung_font_2"
 
-        app:layout_constraintStart_toStartOf="@+id/sign_in_password_text"
-        app:layout_constraintTop_toBottomOf="@+id/sign_in_password_text" />
+        app:layout_constraintStart_toStartOf="@+id/log_in_password_text"
+        app:layout_constraintTop_toBottomOf="@+id/log_in_password_text" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
