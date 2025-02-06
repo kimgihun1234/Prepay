@@ -1,12 +1,12 @@
 package com.example.prepay.ui.GroupDetails
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
@@ -20,8 +20,8 @@ import com.example.prepay.databinding.DialogInviteCodeBinding
 import com.example.prepay.databinding.DialogQrDiningTogetherBinding
 import com.example.prepay.databinding.FragmentGroupDetailsBinding
 import com.example.prepay.ui.MainActivity
-import com.example.prepay.ui.RestaurantDetails.RestaurantDetailsFragment
 import com.google.android.material.navigation.NavigationView
+import javax.sql.DataSource
 
 class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     FragmentGroupDetailsBinding::bind,
@@ -90,6 +90,13 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         binding.groupExitBtn.setOnClickListener {
             showGroupExitDialog()
         }
+        binding.addRestaurant.setOnClickListener {
+            addRestaurantClick()
+        }
+    }
+
+    private fun addRestaurantClick() {
+        mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.ADD_RESTAURANT_FRAGMENT)
     }
 
     override fun onRestaurantClick(restaurant: Restaurant) {

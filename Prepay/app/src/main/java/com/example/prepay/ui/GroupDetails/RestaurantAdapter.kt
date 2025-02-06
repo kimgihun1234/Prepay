@@ -2,6 +2,7 @@ package com.example.prepay.ui.GroupDetails
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepay.data.model.dto.Restaurant
 import com.example.prepay.databinding.ItemRestaurantBinding

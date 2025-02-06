@@ -49,6 +49,8 @@ object CommonUtils {
         GROUP_DETAILS_FRAGMENT("GroupDetailsFragment"),
         LOOK_GROUP_FRAGMENT("LookGroupFragment"),
         RESTAURANT_DETAILS_FRAGMENT("RestaurantDetailsFragment"),
+        ADD_RESTAURANT_FRAGMENT("AddRestaurantFragment"),
+        DETAIL_RESTAURANT_FRAGMENT("DetailRestaurantFragment")
     }
 
 }
