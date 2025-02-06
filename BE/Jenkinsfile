@@ -128,6 +128,7 @@ pipeline {
                     endpoint: 'https://meeting.ssafy.com/hooks/7a4x37w5c7yh8nk7he171i7ano',
                     channel: 'D111팀 젠킨스 현황'
                         )
+                    }
         }
         failure {
             echo 'Deployment failed.'
