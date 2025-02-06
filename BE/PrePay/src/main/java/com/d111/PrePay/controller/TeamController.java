@@ -135,18 +135,21 @@ public class TeamController {
 
 
     @PostMapping("/limit")
+    @Operation(summary = "일일 결제 한도 변경")
     public ResponseEntity<TeamDetailRes> changeDailyPriceLimit(@RequestHeader("userId") Long userId, @RequestBody ChangeDailyPriceLimitReq req) {
         return ResponseEntity.ok(teamService.changeDailyPriceLimit(req, userId));
     }
 
 
     @PostMapping("/code")
+    @Operation(summary = "팀 초대 코드 생성")
     public ResponseEntity<TeamDetailRes> generateInviteCode(@RequestHeader("userId") Long userId, @RequestBody TeamIdReq req) {
         return ResponseEntity.ok(teamService.generateInviteCode(userId, req));
     }
 
 
     @PostMapping("/store")
+    @Operation(summary = "팀 가맹점 추가")
     public ResponseEntity<TeamCreateStoreRes> createStore(@RequestHeader("userId") Long userId,
                                                           @RequestBody TeamCreateStoreReq req) {
         return ResponseEntity.ok(teamService.createStore(req));
@@ -174,7 +177,8 @@ public class TeamController {
         return ResponseEntity.ok(teamService.createTeam(request, userId, image));
     }
 
-    @GetMapping("/groups")
+    @GetMapping("/myTeams")
+    @Operation(summary = "<b>나의 팀 리스트")
     public ResponseEntity<List<TeamRes>> getMyTeams(@RequestHeader("userId") Long userId) {
         return ResponseEntity.ok(teamService.getMyTeams(userId));
     }
@@ -190,11 +194,13 @@ public class TeamController {
     }
 
     @GetMapping("/public-teams")
+    @Operation(summary = "<b>퍼블릭 팀 리스트 조회")
     public ResponseEntity<List<PublicTeamsRes>> getPublicTeams() {
         return ResponseEntity.ok(teamService.getPublicTeams());
     }
 
     @GetMapping("/public-teams/{keyword}")
+    @Operation(summary = "<b>퍼블릭 팀 검색")
     public ResponseEntity<List<PublicTeamsRes>> getPublicTeamsByKeyword(@PathVariable String keyword) {
         return ResponseEntity.ok(teamService.getPublicTeamsByKeyword(keyword));
     }
