@@ -22,8 +22,6 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
-    private String userLoginId;
-
     private String userName;
 
     private String email;
@@ -31,6 +29,7 @@ public class User {
     private String userPassword;
 
     private String nickname;
+
 
     @OneToMany(mappedBy = "user")
     private List<UserTeam> userTeams = new ArrayList<>();
@@ -42,14 +41,12 @@ public class User {
     private List<OrderHistory> orderHistories = new ArrayList<>();
 
     public User(UserSignUpReq userSignUpReq) {
-        this.userLoginId = userSignUpReq.getUserLoginId();
         this.userName = userSignUpReq.getUserName();
         this.email = userSignUpReq.getEmail();
         this.userPassword = userSignUpReq.getPassword();
         this.nickname = userSignUpReq.getNickname();
     }
     public User(UserCreateReq req) {
-        this.userLoginId = req.getUserLoginId();
         this.userName = req.getUserName();
         this.email = req.getEmail();
         this.userPassword = req.getPassword();
