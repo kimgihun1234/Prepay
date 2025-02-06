@@ -7,7 +7,6 @@ import lombok.Setter;
 @Setter
 public class UserCreateReq {
     private String userName;
-    private String userLoginId;
     private String password;
     private String email;
     private String nickname;
