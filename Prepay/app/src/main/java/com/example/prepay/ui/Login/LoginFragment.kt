@@ -5,12 +5,16 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.os.Bundle
+import android.text.Editable
+import android.text.Html
 import android.text.Spannable
 import android.text.SpannableString
+import android.text.TextWatcher
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.util.Log
+import android.util.TypedValue
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
@@ -41,12 +45,17 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
     R.layout.fragment_login
 ){
     private lateinit var loginActivity: LoginActivity
+
     private lateinit var DB: UserDBHelper
 
     //구글 로그인
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var currentuser: FirebaseUser
+
+    private lateinit var dbHelper: UserDBHelper
+    private lateinit var editTexts: List<EditText>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,16 +71,24 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        editTexts = listOf(
+            view.findViewById(R.id.login_id_text),
+            view.findViewById(R.id.log_in_password_text)
+        )
+
+
         initEvent()
 
         setStyleCatchphrase(view)
-        initFocusChangeListener(view)
+        initFocusChangeListener()
+        setUpTextWatcher()
 
         // --- login 관련 기능 ---
-        DB = UserDBHelper(requireContext())
+        dbHelper = UserDBHelper(requireContext())
 
         binding.LoginBtn.setOnClickListener {
-//            login()
+
             val intent = Intent(requireContext(), MainActivity::class.java)
             startActivity(intent)
         }
@@ -128,13 +145,9 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
     }
 
     // editView focus 이벤트 설정
-    private fun initFocusChangeListener(view: View) {
-        val editTexts = listOf<EditText>(
-            view.findViewById(R.id.sign_in_id_text),
-            view.findViewById(R.id.sign_in_password_text)
-        )
+    private fun initFocusChangeListener() {
         editTexts.forEach {
-            it.setOnFocusChangeListener { v, isFocus ->
+            it.setOnFocusChangeListener { _, isFocus ->
                 if (isFocus) {
                     it.setBackgroundResource(R.drawable.focus_shape_alll_round)
                 } else {
@@ -144,17 +157,35 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
         }
     }
 
+    // TextView 크기 변환 이벤트
+    private fun setUpTextWatcher() {
+        editTexts.forEach {
+            it.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    if (s.isNullOrEmpty()) {
+                        it.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+                    } else {
+                        it.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
+                    }
+                }
+                override fun afterTextChanged(s: Editable?) {
+                }
+            })
+        }
+    }
+
     // 로그인 함수
     private fun login() {
-        val id = binding.signInIdText.text.toString().trim()
-        val password = binding.signInPasswordText.text.toString().trim()
+        val id = binding.loginIdText.text.toString().trim()
+        val password = binding.logInPasswordText.text.toString().trim()
 
         if (id.isEmpty() || password.isEmpty()) {
             Toast.makeText(requireContext(), "아이디와 비밀번호를 모두 입력해주세요.", Toast.LENGTH_SHORT).show()
             return
         }
 
-        if (DB.checkUserPassword(id, password)) {
+        if (dbHelper.checkUserPassword(id, password)) {
             val intent = Intent(requireContext(), MainActivity::class.java)
             startActivity(intent)
         } else {
