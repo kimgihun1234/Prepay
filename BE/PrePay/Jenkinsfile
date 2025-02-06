@@ -16,6 +16,8 @@ pipeline {
         DB_USERNAME = credentials('DB_USERNAME')
         DB_PASSWORD = credentials('DB_PASSWORD')
 
+        GOOGLE_SERVICES_JSON = credentials('FIREBASE-SERVICE-KEY.JSON')
+        FCM_SERVICE_KEY_JSON = credentials('FCM_SERVICE_KEY.JSON')
 
         JAVA_HOME = '/opt/java/openjdk'
         GRADLE_HOME = '/opt/gradle/gradle-8.11.1'
