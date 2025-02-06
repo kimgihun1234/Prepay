@@ -11,10 +11,12 @@ import com.d111.PrePay.model.User;
 import com.d111.PrePay.repository.UserRepository;
 import com.d111.PrePay.dto.respond.UserLoginRes;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -45,6 +47,7 @@ public class UserService {
     public StandardRes updateToken(FcmTokenReq fcmTokenReq) {
         User user = userRepository.findUserByEmail(fcmTokenReq.getEmail());
         user.setFcmToken(fcmTokenReq.getToken());
-        return new StandardRes("토큰 업데이트 완료","201");
+        log.info("유저명 : {}, 토큰 : {}",user.getUserName(),user.getFcmToken());
+        return new StandardRes("토큰 업데이트 완료",200);
     }
 }

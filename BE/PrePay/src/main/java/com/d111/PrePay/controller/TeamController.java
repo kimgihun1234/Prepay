@@ -146,7 +146,7 @@ public class TeamController {
     }
 
 
-    @PostMapping("/store-id")
+    @PostMapping("/store")
     public ResponseEntity<TeamCreateStoreRes> createStore(@RequestHeader("userId") Long userId,
                                                           @RequestBody TeamCreateStoreReq req) {
         return ResponseEntity.ok(teamService.createStore(req));
