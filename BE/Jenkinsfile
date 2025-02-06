@@ -121,27 +121,12 @@ pipeline {
         }
         success {
             echo 'Deployment successful!'
-            
-            script {
-                mattermostSend(color: 'good',
-                    message: "빌드 성공: ${env.JOB_NAME} #${env.BUILD_NUMBER}\n(<${env.BUILD_URL}|Details>)",
-                    endpoint: 'https://meeting.ssafy.com/hooks/7ypscq6ytbrxfybgcqcyrdb7ur',
-                    channel: 'D111 젠킨스 알림이'
-                        )
-                    }
-            sh """ curl -v -X POST -H 'Content-Type: application/json' -d '{"text":"빌드 성공"}' https://meeting.ssafy.com/hooks/7a4x37w5c7yh8nk7he171i7ano """
+         
+            sh """ curl -v -X POST -H 'Content-Type: application/json' -d '{"text":"빌드 성공: ${env.JOB_NAME} #${env.BUILD_NUMBER}\n(<${env.BUILD_URL}|Details>)"}' https://meeting.ssafy.com/hooks/7a4x37w5c7yh8nk7he171i7ano """
         }
         failure {
             echo 'Deployment failed.'
-            script {
-                
-                mattermostSend(color: 'danger',
-                    message: "빌드 실패: ${env.JOB_NAME} #${env.BUILD_NUMBER}\n(<${env.BUILD_URL}|Details>)",
-                    endpoint: 'https://meeting.ssafy.com/hooks/7ypscq6ytbrxfybgcqcyrdb7ur',
-                    channel: 'D111 젠킨스 알림이'
-                        )
-            }
-            sh """ curl -v -X POST -H 'Content-Type: application/json' -d '{"text":"빌드 실패"}' https://meeting.ssafy.com/hooks/7a4x37w5c7yh8nk7he171i7ano """
+            sh """ curl -v -X POST -H 'Content-Type: application/json' -d '{"text":"빌드 실패: ${env.JOB_NAME} #${env.BUILD_NUMBER}\n(<${env.BUILD_URL}|Details>)"}' https://meeting.ssafy.com/hooks/7a4x37w5c7yh8nk7he171i7ano """
         }
     }
 }
