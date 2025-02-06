@@ -17,6 +17,7 @@ pipeline {
         DB_PASSWORD = credentials('DB_PASSWORD')
 
         GOOGLE_SERVICES_JSON = credentials('FIREBASE-SERVICE-KEY.JSON')
+        FCM_SERVICE_KEY_JSON = credentials('FCM-SERVICE-KEY.JSON')
 
         JAVA_HOME = '/opt/java/openjdk'
         GRADLE_HOME = '/opt/gradle/gradle-8.11.1'
@@ -37,11 +38,14 @@ pipeline {
                     credentialsId: 'GITLAB-PAT'
             }
         }
-        stage('Copy Google Services JSON') {
+        stage('Copy Google Services JSONs') {
             steps {
                 echo 'Copying google-services.json to resources directory...'
                 withCredentials([file(credentialsId: 'FIREBASE-SERVICE-KEY.JSON', variable: 'GOOGLE_SERVICES_JSON')]) {
                     sh 'cp $GOOGLE_SERVICES_JSON BE/PrePay/src/main/resources/firebase-service-key.json'
+                }
+                withCredentials([file(credentialsId: 'FIREBASE-SERVICE-KEY.JSON', variable: 'GOOGLE_SERVICES_JSON')]) {
+                    sh 'cp $FCM_SERVICE_KEY.JSON BE/PrePay/src/main/resources/fcm-google-services.json'
                 }
             }
         }
