@@ -31,7 +31,7 @@ public class UserService {
 
 
     public UserLoginRes login(UserLoginReq req) {
-        User user = userRepository.findByEmailAndUserPassword(req.getUserLoginId(), req.getPassword());
+        User user = userRepository.findByEmailAndUserPasswordEquals(req.getUserLoginId(), req.getPassword());
         if (user != null) {
             UserLoginRes res = new UserLoginRes();
             res.setJwtToken(String.valueOf(user.getId()));
