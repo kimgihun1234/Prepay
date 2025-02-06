@@ -3,7 +3,7 @@ package com.example.prepay.ui.RestaurantDetails
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class RestaurantViewModel: ViewModel() {
+class RestaurantDetailsViewModel: ViewModel() {
 
     val restaurantData = MutableLiveData<String>()
 
