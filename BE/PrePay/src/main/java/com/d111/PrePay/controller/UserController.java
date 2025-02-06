@@ -1,7 +1,6 @@
 package com.d111.PrePay.controller;
 
 import com.d111.PrePay.dto.request.FcmTokenReq;
-import com.d111.PrePay.dto.request.UserCreateReq;
 import com.d111.PrePay.dto.request.UserLoginReq;
 import com.d111.PrePay.dto.respond.StandardRes;
 import com.d111.PrePay.dto.respond.UserLoginRes;
