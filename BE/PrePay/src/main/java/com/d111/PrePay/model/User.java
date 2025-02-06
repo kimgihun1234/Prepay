@@ -32,6 +32,8 @@ public class User {
 
     private String nickname;
 
+    private String fcmToken;
+
     @OneToMany(mappedBy = "user")
     private List<UserTeam> userTeams = new ArrayList<>();
 
