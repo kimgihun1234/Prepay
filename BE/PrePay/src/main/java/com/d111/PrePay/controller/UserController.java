@@ -3,6 +3,7 @@ package com.d111.PrePay.controller;
 import com.d111.PrePay.dto.request.UserCreateReq;
 import com.d111.PrePay.dto.request.UserLoginReq;
 import com.d111.PrePay.dto.respond.UserLoginRes;
+import com.d111.PrePay.dto.respond.UserSignUpRes;
 import com.d111.PrePay.service.UserService;
 import com.d111.PrePay.dto.request.UserSignUpReq;
 import com.d111.PrePay.service.UserService;
@@ -28,10 +29,10 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<Map<String, String>> signup(@RequestBody UserSignUpReq userSignUpReq) {
+    public ResponseEntity<UserSignUpRes> signup(@RequestBody UserSignUpReq userSignUpReq) {
         Map<String, String> response = new HashMap<>();
-        response.put("message", userService.userSignUp(userSignUpReq));
-        return ResponseEntity.ok(response);
+        UserSignUpRes userSignUpRes = userService.userSignUp(userSignUpReq);
+        return ResponseEntity.ok(userSignUpRes);
     }
 
 
