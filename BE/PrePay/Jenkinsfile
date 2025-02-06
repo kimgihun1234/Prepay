@@ -108,6 +108,7 @@ pipeline {
                                       -e DB_PROD_URL=${DB_URL} \
                                       -e DB_PROD_USERNAME=${DB_USERNAME} \
                                       -e DB_PROD_PASSWORD=${DB_PASSWORD} \
+                                      -e TZ=Asia/Seoul\
                                       ${DOCKER_IMAGE}:latest
                                 """.stripIndent()
                             )
