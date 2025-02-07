@@ -8,6 +8,7 @@ import com.example.prepay.data.response.SignInTeamReq
 import com.example.prepay.data.response.Team
 import com.example.prepay.data.response.TeamDetailRes
 import com.example.prepay.data.response.TeamIdReq
+import com.example.prepay.data.response.TeamIdStoreRes
 import com.example.prepay.data.response.TeamStoreReq
 import com.example.prepay.data.response.TeamStoreRes
 import okhttp3.MultipartBody
@@ -54,6 +55,11 @@ interface TeamService {
     //특정 팀의 사용자 목록을 가져옵니다.
     @GET("/team/{teamId}/user")
     suspend fun getUserOfTeam(@Header("userId") userId: Long, @Path("teamId") teamId: Long): List<GetUserOfTeamRes>
+
+
+    //특정 팀의 식당 목록을 가져옵니다.
+    @GET("/team/{teamId}/stores")
+    suspend fun getStoreOfTeam(@Header("userId") userId: Long, @Path("teamId") teamId: Long): List<TeamIdStoreRes>
 
     //공개된 모든 팀 목록을 가져옵니다.
     @GET("/team/public-teams")
