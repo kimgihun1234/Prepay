@@ -2,6 +2,7 @@ package com.example.prepay.ui.MyPage
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
@@ -9,6 +10,7 @@ import com.example.prepay.R
 import com.example.prepay.databinding.FragmentMyPageBinding
 import com.example.prepay.ui.GroupDetails.MyPageFragmentViewModel
 import com.example.prepay.ui.MainActivity
+import com.example.prepay.ui.MainActivityViewModel
 
 private const val TAG = "MyPageFragment"
 class MyPageFragment: BaseFragment<FragmentMyPageBinding>(
@@ -18,6 +20,7 @@ class MyPageFragment: BaseFragment<FragmentMyPageBinding>(
     private lateinit var mainActivity: MainActivity
     private lateinit var cardAdapter: TeamCardAdapter
     private val viewModel: MyPageFragmentViewModel by viewModels()
+    private val activityViewModel: MainActivityViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +46,8 @@ class MyPageFragment: BaseFragment<FragmentMyPageBinding>(
         viewModel.getAllTeamList()
 
         cardAdapter.itemClickListener = object :TeamCardAdapter.ItemClickListener{
-            override fun onClick(productId: Int) {
+            override fun onClick(teamId: Int) {
+                activityViewModel.setTeamId(teamId.toLong())
                 mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.GROUP_DETAILS_FRAGMENT)
             }
         }

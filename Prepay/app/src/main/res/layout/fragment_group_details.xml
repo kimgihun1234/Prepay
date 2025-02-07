@@ -36,7 +36,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/usePossiblePriceTxt"
         android:layout_width="116dp"
         android:layout_height="29dp"
         android:layout_marginStart="80dp"
