@@ -17,12 +17,16 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.prepay.ApplicationClass
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.PermissionChecker
 import com.example.prepay.R
+import com.example.prepay.RetrofitUtil
 import com.example.prepay.User
 import com.example.prepay.data.model.dto.Restaurant
 import com.example.prepay.databinding.DialogAuthoritySettingBinding
@@ -32,6 +36,7 @@ import com.example.prepay.databinding.DialogInviteCodeBinding
 import com.example.prepay.databinding.DialogQrDiningTogetherBinding
 import com.example.prepay.databinding.FragmentGroupDetailsBinding
 import com.example.prepay.ui.MainActivity
+import com.example.prepay.ui.MainActivityViewModel
 import javax.sql.DataSource
 import com.example.prepay.ui.RestaurantDetails.RestaurantDetailsFragment
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -48,9 +53,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.Locale
 
+private const val TAG = "GroupDetailsFragment_싸피"
 class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     FragmentGroupDetailsBinding::bind,
     R.layout.fragment_group_details
@@ -62,6 +69,8 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     private lateinit var teamUserList: List<User>
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
+    //activityViewModel
+    private val activityViewModel: MainActivityViewModel by activityViewModels()
 
     //GPS관련 변수
     private var mMap: GoogleMap? = null
@@ -78,7 +87,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivity= context as MainActivity
-
+        Log.d(TAG, activityViewModel.teamId.value.toString())
     }
 
     override fun onStart() {
@@ -99,6 +108,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         initEvent()
         initAdapter()
         initDrawerLayout()
+        initModelView()
         //GPS 관련 ㅋ코드
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
@@ -431,6 +441,18 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                         "위치 서비스가 꺼져 있어, 현재 위치를 확인할 수 없습니다.",
                         Toast.LENGTH_SHORT).show()
                 }
+        }
+    }
+
+    fun initModelView(){
+        lifecycleScope.launch{
+            kotlin.runCatching {
+                RetrofitUtil.teamService.getTeamDetails(1,activityViewModel.teamId.value!!)
+            }.onSuccess {
+                binding.usePossiblePriceTxt.text = it.dailyPriceLimit.toString()
+            }.onFailure {
+                Log.d(TAG,"실패하였습니다")
+            }
         }
     }
 }
