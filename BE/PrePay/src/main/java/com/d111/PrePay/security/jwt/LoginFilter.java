@@ -80,7 +80,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
 
         String email = authentication.getName();
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findUserByEmail(email);
         Long userId = user.getId();
 
 
