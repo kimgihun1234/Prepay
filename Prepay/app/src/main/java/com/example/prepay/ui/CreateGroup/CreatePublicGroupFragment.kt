@@ -13,13 +13,17 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.data.model.dto.PublicPrivateTeam
+import com.example.prepay.databinding.FragmentCreatePrivateGroupBinding
 import com.example.prepay.databinding.FragmentCreatePublicGroupBinding
 import com.example.prepay.ui.MainActivity
+import com.example.prepay.util.BootPayManager
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -29,17 +33,18 @@ import java.io.File
 
 private const val TAG = "CreatePublicGroupFragme"
 
-class CreatePublicGroupFragment : Fragment(R.layout.fragment_create_public_group) {
-    private var _binding: FragmentCreatePublicGroupBinding? = null
-    private val binding get() = _binding!!
+class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>(
+    FragmentCreatePublicGroupBinding::bind,
+    R.layout.fragment_create_public_group
+) {
     private lateinit var mainActivity: MainActivity
+    private val fragmentScope = lifecycleScope
     private var isCheckingRepeatUse = false
     private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
     private var selectedImageMultipart: MultipartBody.Part? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentCreatePublicGroupBinding.bind(view)
         mainActivity = requireActivity() as MainActivity
         imagePickerLauncher = getImagePickerLauncher()
         initEvent()
@@ -105,6 +110,7 @@ class CreatePublicGroupFragment : Fragment(R.layout.fragment_create_public_group
 
                 if (response.isSuccessful) {
                     Toast.makeText(requireContext(), "팀이 성공적으로 생성되었습니다.", Toast.LENGTH_SHORT).show()
+//                    BootPayManager.startPayment(requireActivity(),binding.groupNameText.text.toString(), binding.bootpayAmount.toString())
                     mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
                 } else {
                     Log.e(TAG, "팀 생성 실패: ${response.code()}")
@@ -147,9 +153,8 @@ class CreatePublicGroupFragment : Fragment(R.layout.fragment_create_public_group
             }
         }
     }
-
     override fun onDestroyView() {
-        _binding = null
+        fragmentScope.coroutineContext.cancelChildren()
         super.onDestroyView()
     }
 }
