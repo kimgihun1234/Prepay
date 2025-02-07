@@ -82,6 +82,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests((auth) ->
                 auth.requestMatchers("/user/login", "/", "/user/signup").permitAll()
                         .requestMatchers("/reissue").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
                         .anyRequest().authenticated());
 
         http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
