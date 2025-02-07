@@ -156,13 +156,36 @@ class SignupFragment: BaseFragment<FragmentSignUpBinding>(
             if (insertSuccess) {
                 loginActivity.changeFragmentLogin(CommonUtils.LoginFragmentName.LOGIN_FRAGMENT)
             } else {
-              showToast("입력된 정보를 다시 확인하세요.")
-            }
-        } else {
-            showToast("입력된 정보를 다시 확인하세요.")
-        }
-    }
+                showToast("입력된 정보를 다시 확인하세요.")
+                lifecycleScope.launch {
+                    try {
+                        val signupRequest = SignupRequest(userId, password, nickname)
+                        val response = RetrofitUtil.userService.signup(signupRequest)
 
+                        if (response.isSuccessful) {
+                            showToast("회원가입에 성공했습니다.")
+                            val signupResponse = response.body()
+                            if (signupResponse != null && signupResponse.success) {
+                                loginActivity.changeFragmentLogin(CommonUtils.LoginFragmentName.LOGIN_FRAGMENT)
+                            } else {
+                                // 서버에서 실패 메시지를 전달한 경우
+                                showToast(signupResponse?.message ?: "회원가입에 실패했습니다.")
+                            }
+                        } else {
+                            // HTTP 오류 응답 (예: 400, 500 등)
+                            showToast("서버 오류: ${response.code()}")
+                        }
+
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        showToast("네트워크 오류가 발생했습니다.")
+                    }
+                }
+            } }
+            else {
+                showToast("입력된 정보를 다시 확인하세요.")
+            }
+    }
     private fun checkUserID() {
         val userId = binding.signUpIdText.text.toString().trim()
         val idPattern = android.util.Patterns.EMAIL_ADDRESS
