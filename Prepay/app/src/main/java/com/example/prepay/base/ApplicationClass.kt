@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit
 
 class ApplicationClass : Application() {
 
+
 //    val SERVER_URL = "http://192.168.32.98:9987/"
     val SERVER_URL = "http://i12d111.p.ssafy.io:8080/"
 //    val SERVER_URL = "http://192.168.0.8:9987/"
