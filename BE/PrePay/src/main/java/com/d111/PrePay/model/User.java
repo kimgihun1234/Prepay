@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +22,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
-
-    private String userName;
 
     private String email;
 
@@ -41,13 +40,11 @@ public class User {
     private List<OrderHistory> orderHistories = new ArrayList<>();
 
     public User(UserSignUpReq userSignUpReq) {
-        this.userName = userSignUpReq.getUserName();
         this.email = userSignUpReq.getEmail();
         this.userPassword = userSignUpReq.getPassword();
         this.nickname = userSignUpReq.getNickname();
     }
-    public User(UserCreateReq req) {
-        this.userName = req.getUserName();
+    public User(UserCreateReq req) {;
         this.email = req.getEmail();
         this.userPassword = req.getPassword();
         this.nickname = req.getNickname();

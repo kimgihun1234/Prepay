@@ -12,6 +12,7 @@ import com.d111.PrePay.dto.respond.TeamRes;
 import com.d111.PrePay.model.Team;
 import com.d111.PrePay.model.TeamStore;
 import com.d111.PrePay.model.UserTeam;
+import com.d111.PrePay.security.dto.CustomUserDetails;
 import com.d111.PrePay.service.ImageService;
 import com.d111.PrePay.service.TeamService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,7 +40,7 @@ public class TeamController {
 
     // 팀 이미지 수정
     @PostMapping("/image")
-    public ResponseEntity<UploadImageRes> uploadImage(@RequestHeader("userId") Long userId,
+    public ResponseEntity<UploadImageRes> uploadImage(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                       @RequestPart("request") TeamIdReq req,
                                                       @RequestPart(value = "image", required = false) MultipartFile image) throws IOException {
 
@@ -48,9 +50,10 @@ public class TeamController {
 
 
     @PostMapping("/ban")
-    public ResponseEntity<Map<String,String>> banUser(@RequestHeader("userId") Long userId,
+    public ResponseEntity<Map<String,String>> banUser(@AuthenticationPrincipal CustomUserDetails userDetails,
                                         @RequestBody BanUserReq req) {
         teamService.banUser(req);
+        Long userId = userDetails.getUserId();
         String message = String.format("%d번팀에서 %d번 유저를 강퇴하였습니다.", req.getTeamId(), userId);
         Map<String, String> response = new HashMap<>();
         response.put("message", message);
@@ -59,8 +62,9 @@ public class TeamController {
 
 
     @PostMapping("/exit")
-    public ResponseEntity<Map<String, String>> exitTeam(@RequestHeader("userId") Long userId,
+    public ResponseEntity<Map<String, String>> exitTeam(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                         @RequestBody TeamIdReq req) {
+        Long userId = userDetails.getUserId();
         teamService.exitTeam(userId, req);
         String message = String.format("%d번팀에서 %d번 유저가 퇴장하였습니다.", req.getTeamId(), userId);
         Map<String, String> response = new HashMap<>();
@@ -70,7 +74,7 @@ public class TeamController {
 
 
     @PostMapping("confirm-privilege")
-    public ResponseEntity<PartyConfirmRes> confirmPrivilege(@RequestHeader("userId") Long userId,
+    public ResponseEntity<PartyConfirmRes> confirmPrivilege(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                             @RequestBody PartyConfirmReq req) {
         return ResponseEntity.ok(teamService.confirmPrivilege(req));
 
@@ -78,38 +82,41 @@ public class TeamController {
 
 
     @PostMapping("/request-privilege")
-    public ResponseEntity<PartyRequestRes> privilegeRequest(@RequestHeader("userId") Long userId,
+    public ResponseEntity<PartyRequestRes> privilegeRequest(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                             @RequestBody TeamIdReq req) {
+        Long userId = userDetails.getUserId();
         return ResponseEntity.ok(teamService.privilegeRequest(userId, req));
 
     }
 
 
     @PostMapping("/charge")
-    public ResponseEntity<ChargeRes> chargeRequest(@RequestHeader("userId") Long userId,
+    public ResponseEntity<ChargeRes> chargeRequest(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                    @RequestBody ChargeReq req) {
+        Long userId = userDetails.getUserId();
         return ResponseEntity.ok(teamService.chargeRequest(req));
 
     }
 
 
     @PostMapping("/signin")
-    public ResponseEntity<GetUserOfTeamRes> signinTeam(@RequestHeader("userId") Long userId,
+    public ResponseEntity<GetUserOfTeamRes> signinTeam(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                        @RequestBody SignInTeamReq req) {
+        Long userId = userDetails.getUserId();
         return ResponseEntity.ok(teamService.signInTeam(userId, req));
 
     }
 
 
     @PostMapping("/privilege")
-    public ResponseEntity<GrantPrivilegeRes> grantPrivilege(@RequestHeader("userId") Long userId,
+    public ResponseEntity<GrantPrivilegeRes> grantPrivilege(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                             @RequestBody GrantPrivilegeReq req) {
         return ResponseEntity.ok(teamService.grantPrivilege(req));
     }
 
 
     @PostMapping("/position")
-    public ResponseEntity<GrantAdminPositionRes> grantAdminPosition(@RequestHeader("userId") Long userId,
+    public ResponseEntity<GrantAdminPositionRes> grantAdminPosition(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                                     @RequestBody GrantAdminPositionReq req) {
         return ResponseEntity.ok(teamService.grantAdminPosition(req));
 
@@ -117,19 +124,22 @@ public class TeamController {
 
 
     @PostMapping("/limit")
-    public ResponseEntity<TeamDetailRes> changeDailyPriceLimit(@RequestHeader("userId") Long userId, @RequestBody ChangeDailyPriceLimitReq req) {
+    public ResponseEntity<TeamDetailRes> changeDailyPriceLimit(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody ChangeDailyPriceLimitReq req) {
+        Long userId = userDetails.getUserId();
         return ResponseEntity.ok(teamService.changeDailyPriceLimit(req, userId));
     }
 
 
     @PostMapping("/code")
-    public ResponseEntity<TeamDetailRes> generateInviteCode(@RequestHeader("userId") Long userId, @RequestBody TeamIdReq req) {
+    public ResponseEntity<TeamDetailRes> generateInviteCode(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody TeamIdReq req) {
+        Long userId = userDetails.getUserId();
         return ResponseEntity.ok(teamService.generateInviteCode(userId, req));
+
     }
 
 
     @PostMapping("/store-id")
-    public ResponseEntity<TeamCreateStoreRes> createStore(@RequestHeader("userId") Long userId,
+    public ResponseEntity<TeamCreateStoreRes> createStore(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                           @RequestBody TeamCreateStoreReq req) {
         return ResponseEntity.ok(teamService.createStore(req));
     }
@@ -137,14 +147,16 @@ public class TeamController {
 
     @GetMapping("/{teamId}/user")
     public List<GetUserOfTeamRes> getUserOfTeam(@PathVariable Long teamId,
-                                                @RequestHeader("userId") Long userId) {
+                                                @AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long userId = userDetails.getUserId();
         return teamService.getUsersOfTeam(teamId, userId);
     }
 
 
     @GetMapping("/{teamId}")
     public ResponseEntity<TeamDetailRes> getTeamDetails(@PathVariable Long teamId,
-                                                        @RequestHeader("userId") Long userId) {
+                                                        @AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long userId = userDetails.getUserId();
         return ResponseEntity.ok(teamService.getTeamDetails(teamId, userId));
     }
 
@@ -152,22 +164,27 @@ public class TeamController {
     @PostMapping(value = "/signup",consumes = MediaType.MULTIPART_FORM_DATA_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<TeamCreateRes> createTeam(@RequestPart("request") TeamCreateReq request,
                                                     @RequestPart(value = "image", required = false) MultipartFile image,
-                                                    @RequestHeader("userId") Long userId) throws IOException {
+                                                    @AuthenticationPrincipal CustomUserDetails userDetails) throws IOException {
+
+        Long userId = userDetails.getUserId();
         return ResponseEntity.ok(teamService.createTeam(request, userId, image));
     }
 
     @GetMapping("/groups")
-    public ResponseEntity<List<TeamRes>> getMyTeams(@RequestHeader("userId") Long userId) {
+    public ResponseEntity<List<TeamRes>> getMyTeams(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long userId = userDetails.getUserId();
         return ResponseEntity.ok(teamService.getMyTeams(userId));
     }
 
     @GetMapping("/{teamId}/stores")
-    public ResponseEntity<List<StoresRes>> getMyTeamStores(@RequestHeader("userId") Long userId, @PathVariable Long teamId) {
+    public ResponseEntity<List<StoresRes>> getMyTeamStores(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long teamId) {
+        Long userId = userDetails.getUserId();
         return ResponseEntity.ok(teamService.getMyTeamStores(teamId, userId));
     }
 
     @GetMapping("/coordinate/{teamId}")
-    public ResponseEntity<List<StoresCorRes>> getStoresCor(@RequestHeader("userId") Long userId, @PathVariable Long teamId) {
+    public ResponseEntity<List<StoresCorRes>> getStoresCor(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long teamId) {
+        Long userId = userDetails.getUserId();
         return ResponseEntity.ok(teamService.getStoresCor(teamId, userId));
     }
 
