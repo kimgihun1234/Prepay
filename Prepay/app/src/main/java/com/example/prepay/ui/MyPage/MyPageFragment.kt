@@ -1,23 +1,24 @@
 package com.example.prepay.ui.MyPage
 
-import android.app.AlertDialog
-import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
+import androidx.fragment.app.viewModels
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
-import com.example.prepay.data.model.dto.PrePayCard
-import com.example.prepay.databinding.DialogVisitCodeBinding
 import com.example.prepay.databinding.FragmentMyPageBinding
+import com.example.prepay.ui.GroupDetails.MyPageFragmentViewModel
 import com.example.prepay.ui.MainActivity
 
+private const val TAG = "MyPageFragment"
 class MyPageFragment: BaseFragment<FragmentMyPageBinding>(
     FragmentMyPageBinding::bind,
     R.layout.fragment_my_page
 ){
     private lateinit var mainActivity: MainActivity
+    private lateinit var cardAdapter: TeamCardAdapter
+    private val viewModel: MyPageFragmentViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivity = context as MainActivity
@@ -30,19 +31,18 @@ class MyPageFragment: BaseFragment<FragmentMyPageBinding>(
     }
 
     fun initAdapter(){
-        // 카드 데이터 생성
-        val cardList = listOf(
-            PrePayCard("SSAFY", "Private", "잔액 8,000,000 원", Color.parseColor("#7E57C2")),
-            PrePayCard("SSAFY 2", "Public", "잔액 5,000,000 원", Color.parseColor("#FF4081")),
-            PrePayCard("SSAFY 3", "Private", "잔액 1,000,000 원", Color.parseColor("#EF5350")),
-            PrePayCard("SSAFY", "Private", "잔액 8,000,000 원", Color.parseColor("#7E57C2")),
-            PrePayCard("SSAFY 2", "Public", "잔액 5,000,000 원", Color.parseColor("#FF4081")),
-            PrePayCard("SSAFY 3", "Private", "잔액 1,000,000 원", Color.parseColor("#EF5350"))
-        )
-        val cardAdapter = PrePayCardAdapter(cardList)
+        cardAdapter = TeamCardAdapter(arrayListOf())
         binding.viewPager.adapter = cardAdapter
+        viewModel.teamListInfo.observe(viewLifecycleOwner){ it ->
+            cardAdapter.teamList = it
+            if (cardAdapter.teamList.isNotEmpty()) {
+                binding.viewPager.setCurrentItem(cardAdapter.itemCount - 1, false)
+            }
+            cardAdapter.notifyDataSetChanged()
+        }
+        viewModel.getAllTeamList()
 
-        cardAdapter.itemClickListener = object :PrePayCardAdapter.ItemClickListener{
+        cardAdapter.itemClickListener = object :TeamCardAdapter.ItemClickListener{
             override fun onClick(productId: Int) {
                 mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.GROUP_DETAILS_FRAGMENT)
             }
@@ -50,8 +50,7 @@ class MyPageFragment: BaseFragment<FragmentMyPageBinding>(
         // 스택 효과 추가
         binding.viewPager.setPageTransformer(StackPageTransformer())
         binding.viewPager.offscreenPageLimit = 5
-        binding.viewPager.setCurrentItem(5, false)
-        // 초기 화면에서 첫 번째 카드가 맨 앞으로 보이도록 설정
+        binding.viewPager.setCurrentItem(0, false)
     }
 
     fun initEvent(){
