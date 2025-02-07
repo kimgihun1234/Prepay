@@ -1,24 +1,28 @@
 package com.example.prepay.data.model.dto
 
+import okhttp3.MultipartBody
+
 data class PublicPrivateTeam (
-    val public_team : Int,
-    val team_name : String,
-    val daily_price_limit : Int,
-    val count_limit : Int,
-    val team_message : String,
-    val image_url : String,
+    val publicTeam : Boolean,
+    val teamName : String,
+    val dailyPriceLimit : Int,
+    val countLimit : Int,
+    val teamMessage : String,
 ) {
     constructor(
-        public_team: Int,
-        team_name: String,
-        daily_price_limit: Int,
+        publicTeam: Boolean,
+        teamName: String,
+        dailyPriceLimit: Int,
     ) : this(
-        public_team,
-        team_name,
-        daily_price_limit,
+        publicTeam,
+        teamName,
+        dailyPriceLimit,
         0,
         "",
-        ""
     )
 }
+data class ImageRequest (
+    val imageUrl: MultipartBody.Part?
+)
+
 
