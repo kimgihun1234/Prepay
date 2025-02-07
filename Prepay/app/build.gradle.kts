@@ -70,7 +70,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     implementation("io.github.bootpay:android:4.9.0")
-    
+
     // 서버에서 이미지 가지고 오기 위해서 Gilde 사용
     implementation("com.github.bumptech.glide:glide:4.12.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
