@@ -50,7 +50,7 @@ class AddRestaurantFragment : BaseFragment<FragmentAddRestaurantBinding>(
         })
         binding.confirm.setOnClickListener {
             val totalPrice = binding.totalPrice.text.toString()
-            BootPayManager.startPayment(requireActivity(), restaurantName, totalPrice)
+//            BootPayManager.startPayment(requireActivity(), restaurantName, totalPrice)
         }
     }
 }

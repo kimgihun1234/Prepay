@@ -55,7 +55,7 @@ class ApplicationClass : Application() {
             Manifest.permission.CAMERA,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE
-            
+
         )
         // 주문 준비 완료 확인 시간 1분
         const val ORDER_COMPLETED_TIME = 60*1000
