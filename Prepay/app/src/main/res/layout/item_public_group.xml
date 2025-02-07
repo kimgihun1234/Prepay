@@ -13,14 +13,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
-        android:text="꿀맛 식당"
+        android:text="식당이름"
         android:textColor="#000000"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/restaurant_prepay_money3"
-        app:layout_constraintStart_toEndOf="@+id/imageView6"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toEndOf="@+id/group_image"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/public_address"
@@ -28,28 +26,24 @@
         android:layout_height="18dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
         android:text="대구광역시 중구 동성로"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView6"
-        app:layout_constraintTop_toBottomOf="@+id/public_name"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toEndOf="@+id/group_image"
+        app:layout_constraintTop_toBottomOf="@+id/public_name" />
 
     <TextView
-        android:id="@+id/restaurant_prepay_money3"
+        android:id="@+id/public_distance"
         android:layout_width="50dp"
         android:layout_height="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
         android:text="10km"
         android:textColor="#807F7F"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/public_address"
         app:layout_constraintStart_toEndOf="@+id/public_address" />
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/group_image"
         android:layout_width="74dp"
         android:layout_height="74dp"
         android:layout_marginStart="16dp"
@@ -59,7 +53,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@drawable/dog_logo" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
