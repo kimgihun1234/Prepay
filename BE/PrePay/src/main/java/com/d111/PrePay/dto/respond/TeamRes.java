@@ -12,8 +12,10 @@ public class TeamRes {
     private String teamName;
     private boolean publicTeam;
     private int balance;
+    private Long teamId;
 
     public TeamRes(UserTeam userTeam) {
+        this.teamId = userTeam.getTeam().getId();
         this.teamName = userTeam.getTeam().getTeamName();
         this.publicTeam = userTeam.getTeam().isPublicTeam();
         this.balance = userTeam.getTeam().getDailyPriceLimit() - userTeam.getUsedAmount();
