@@ -158,7 +158,7 @@ class SignupFragment: BaseFragment<FragmentSignUpBinding>(
 
                     if (response.
                         isSuccessful) {
-                        showToast(ㅕ"회원가입에 성공했습니다.")
+                        showToast("회원가입에 성공했습니다.")
                         val signupResponse = response.body()
                         if (signupResponse != null && signupResponse.success) {
                             loginActivity.changeFragmentLogin(CommonUtils.LoginFragmentName.LOGIN_FRAGMENT)
