@@ -17,6 +17,7 @@ pipeline {
         DB_PASSWORD = credentials('DB_PASSWORD')
 
         GOOGLE_SERVICES_JSON = credentials('FIREBASE-SERVICE-KEY.JSON')
+        FCM_SERVICE_KEY_JSON = credentials('FCM_SERVICE_KEY.JSON')
 
         JAVA_HOME = '/opt/java/openjdk'
         GRADLE_HOME = '/opt/gradle/gradle-8.11.1'
@@ -32,16 +33,19 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 echo 'Cloning the repository...'
-                git branch: 'BE/jenkins',
+                git branch: 'develope-back',
                     url: 'https://lab.ssafy.com/s12-webmobile4-sub1/S12P11D111.git',
                     credentialsId: 'GITLAB-PAT'
             }
         }
-        stage('Copy Google Services JSON') {
+        stage('Copy Google Services JSONs') {
             steps {
                 echo 'Copying google-services.json to resources directory...'
                 withCredentials([file(credentialsId: 'FIREBASE-SERVICE-KEY.JSON', variable: 'GOOGLE_SERVICES_JSON')]) {
                     sh 'cp $GOOGLE_SERVICES_JSON BE/PrePay/src/main/resources/firebase-service-key.json'
+                }
+                withCredentials([file(credentialsId: 'FCM_SERVICE_KEY.JSON', variable: 'GOOGLE_SERVICES_JSON')]) {
+                    sh 'cp $FCM_SERVICE_KEY_JSON BE/PrePay/src/main/resources/fcm-google-services.json'
                 }
             }
         }
@@ -104,6 +108,7 @@ pipeline {
                                       -e DB_PROD_URL=${DB_URL} \
                                       -e DB_PROD_USERNAME=${DB_USERNAME} \
                                       -e DB_PROD_PASSWORD=${DB_PASSWORD} \
+                                      -e TZ=Asia/Seoul\
                                       ${DOCKER_IMAGE}:latest
                                 """.stripIndent()
                             )
@@ -121,9 +126,12 @@ pipeline {
         }
         success {
             echo 'Deployment successful!'
+         
+            sh """ curl -v -X POST -H 'Content-Type: application/json' -d '{"text":"빌드 성공: ${env.JOB_NAME} #${env.BUILD_NUMBER}\n(<${env.BUILD_URL}|Details>)"}' https://meeting.ssafy.com/hooks/7a4x37w5c7yh8nk7he171i7ano """
         }
         failure {
             echo 'Deployment failed.'
+            sh """ curl -v -X POST -H 'Content-Type: application/json' -d '{"text":"빌드 실패: ${env.JOB_NAME} #${env.BUILD_NUMBER}\n(<${env.BUILD_URL}|Details>)"}' https://meeting.ssafy.com/hooks/7a4x37w5c7yh8nk7he171i7ano """
         }
     }
 }

@@ -2,7 +2,6 @@ package com.d111.PrePay.model;
 
 
 import com.d111.PrePay.dto.request.UserSignUpReq;
-import com.d111.PrePay.dto.request.UserCreateReq;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +28,7 @@ public class User {
 
     private String nickname;
 
+    private String fcmToken;
 
     @OneToMany(mappedBy = "user")
     private List<UserTeam> userTeams = new ArrayList<>();
@@ -44,9 +44,5 @@ public class User {
         this.userPassword = userSignUpReq.getPassword();
         this.nickname = userSignUpReq.getNickname();
     }
-    public User(UserCreateReq req) {;
-        this.email = req.getEmail();
-        this.userPassword = req.getPassword();
-        this.nickname = req.getNickname();
-    }
+
 }

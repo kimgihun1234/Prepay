@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 
@@ -143,6 +144,7 @@ public class TeamService {
 
 
     // 팀 비밀번호를 이용한 팀 가입
+    // 확인
     public GetUserOfTeamRes signInTeam(Long userId, SignInTeamReq req) {
         Team findTeam = teamRepository.findByTeamPassword(req.getTeamPassword())
                 .orElseThrow(() -> new RuntimeException("일치하는 팀이 없습니다."));
@@ -184,6 +186,7 @@ public class TeamService {
 
 
     // 팀 운영자 권한 부여
+    // 확인
     @Transactional
     public GrantAdminPositionRes grantAdminPosition(GrantAdminPositionReq req) {
         UserTeam findUserTeam = userTeamRepository.findByTeamIdAndUserId(req.getTeamId(), req.getChangeUserId())
@@ -200,6 +203,7 @@ public class TeamService {
 
 
     // 팀 한도 변경
+    // 확인
     @Transactional
     public TeamDetailRes changeDailyPriceLimit(ChangeDailyPriceLimitReq req, Long userId) {
         Team findTeam = teamRepository.findById(req.getTeamId()).orElseThrow();
@@ -213,6 +217,8 @@ public class TeamService {
 
 
     // 팀 초대 코드 생성
+    // 확인
+    @Transactional
     public TeamDetailRes generateInviteCode(Long userId, TeamIdReq req) {
         Team team = teamRepository.findById(req.getTeamId()).orElseThrow();
         String password = generateRandomPassword();
@@ -232,6 +238,8 @@ public class TeamService {
 
 
     // 팀 가맹점 추가
+    // 확인
+    @Transactional
     public TeamCreateStoreRes createStore(TeamCreateStoreReq req) {
         Team findTeam = teamRepository.findById(req.getTeamId()).orElseThrow();
         Store findStore = storeRepository.findById(req.getStoreId()).orElseThrow();
@@ -251,6 +259,7 @@ public class TeamService {
 
 
     // 팀 유저 조회
+    // 확인
     public List<GetUserOfTeamRes> getUsersOfTeam(Long teamId, Long userId) {
         Team findTeam = teamRepository.findById(teamId).orElseThrow();
         List<UserTeam> findUserTeams = findTeam.getUserTeams();
@@ -266,6 +275,7 @@ public class TeamService {
 
 
     // 팀 상세 조회
+    // 확인
     public TeamDetailRes getTeamDetails(Long teamId, Long userId) {
         UserTeam findUserTeam = userTeamRepository.findByTeamIdAndUserId(teamId, userId)
                 .orElseThrow(() -> new RuntimeException("유저팀을 찾을 수 없습니다."));
@@ -288,6 +298,7 @@ public class TeamService {
 
 
     // 팀 생성
+    // 확인
     public TeamCreateRes createTeam(TeamCreateReq request, Long userId, MultipartFile image) throws IOException {
         String teamPassword;
         if (!request.isPublicTeam()) {
@@ -303,7 +314,7 @@ public class TeamService {
                 .dailyPriceLimit(request.getDailyPriceLimit())
                 .countLimit(request.getCountLimit())
                 .teamMessage(request.getTeamMessage())
-                .teamInitializer(userRepository.findById(userId).orElseThrow())
+                .teamInitializer(userRepository.findById(userId).orElseThrow(() ->new NoSuchElementException("유저를 찾을 수 없습니다.")))
                 .build();
 
 
@@ -316,7 +327,7 @@ public class TeamService {
         }
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NoSuchElementException("유저를 찾을 수 없습니다."));
 
         UserTeam userTeam = UserTeam.builder()
                 .team(savedTeam)
@@ -335,6 +346,7 @@ public class TeamService {
     }
 
     //나의 팀 전체 조회
+    //확인
     public List<TeamRes> getMyTeams(long userId) {
         User user = userRepository.findById(userId).orElseThrow();
         List<UserTeam> userTeams = user.getUserTeams();
@@ -348,6 +360,7 @@ public class TeamService {
 
 
     //팀의 가게 조회
+    //확인
     public List<StoresRes> getMyTeamStores(long teamId, long userId) {
         Team team = teamRepository.findById(teamId).orElseThrow();
         List<TeamStore> teamStores = team.getTeamStores();
@@ -374,6 +387,7 @@ public class TeamService {
     }
 
     //퍼블릭 팀 리스트 조회
+    // 완료
     public List<PublicTeamsRes> getPublicTeams() {
         List<Team> teams = teamRepository.findTeamsByPublicTeam(true);
         List<PublicTeamsRes> resultList = new ArrayList<>();
@@ -385,6 +399,7 @@ public class TeamService {
         return resultList;
     }
 
+    //완료
     public List<PublicTeamsRes> getPublicTeamsByKeyword(String keyword) {
         List<Team> teams = teamRepository.findTeamsByTeamNameContaining(keyword);
         List<PublicTeamsRes> resultList = new ArrayList<>();

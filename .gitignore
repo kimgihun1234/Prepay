@@ -23,3 +23,4 @@ out/
 Prepay/local.properties
 
 firebase-service-key.json
+BE/PrePay/src/main/resources/fcm-google-services.json
