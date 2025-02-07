@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit
 
 class ApplicationClass : Application() {
 
+
 //    val SERVER_URL = "http://192.168.32.98:9987/"
     val SERVER_URL = "http://i12d111.p.ssafy.io:8080/"
 //    val SERVER_URL = "http://192.168.0.8:9987/"
@@ -50,7 +51,11 @@ class ApplicationClass : Application() {
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.BLUETOOTH_SCAN,
             Manifest.permission.BLUETOOTH_ADVERTISE,
-            Manifest.permission.BLUETOOTH_CONNECT
+            Manifest.permission.BLUETOOTH_CONNECT,
+            Manifest.permission.CAMERA,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+
         )
         // 주문 준비 완료 확인 시간 1분
         const val ORDER_COMPLETED_TIME = 60*1000

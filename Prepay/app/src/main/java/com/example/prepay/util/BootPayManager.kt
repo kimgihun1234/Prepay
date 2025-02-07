@@ -17,12 +17,11 @@ object BootPayManager {
     private const val TAG = "BootPayManager"
 
 
-    fun startPayment(activity: FragmentActivity, restaurantName: String, totalPrice: String) {
+    fun startPayment(activity: FragmentActivity, restaurantName: String, totalPrice: String, onPaymentSuccess: (String, Int) -> Unit) {
         val bootPayKey = activity.getString(R.string.bootPayApiKey)  // Context 사용해서 가져오기
         val user = BootUser().setPhone("010-1234-5678")
         val extra = BootExtra().setCardQuota("0,2,3")
         val price = totalPrice.toDoubleOrNull() ?: 0.0
-        Log.d(TAG, "price: $price")
         val item = BootItem().setName(restaurantName)
             .setId("ITEM_CODE")
             .setQty(1)
@@ -69,8 +68,12 @@ object BootPayManager {
                     Log.d("done", data)
                     try {
                         val jsonObject = JSONObject(data)
-                        val receiptId = jsonObject.getString("receipt_id")
+                        val dataObject = jsonObject.getJSONObject("data")
+                        val receiptId = dataObject.getString("receipt_id")
+                        val price = dataObject.getString("price")
                         Log.d("receipt ID", receiptId)
+                        Log.d("price", price)
+                        onPaymentSuccess(receiptId, price.toInt())
                     } catch (e: Exception) {
                         Log.e("JSON Error", "Failed to parse receipt_id: ${e.message}")
                     }
