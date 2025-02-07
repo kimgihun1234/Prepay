@@ -22,7 +22,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public UserSignUpRes userSignUp(UserSignUpReq userSignUpReq) {
         User user = new User(userSignUpReq);
