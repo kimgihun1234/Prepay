@@ -8,7 +8,6 @@ import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.databinding.FragmentMyPageBinding
-import com.example.prepay.ui.GroupDetails.MyPageFragmentViewModel
 import com.example.prepay.ui.MainActivity
 import com.example.prepay.ui.MainActivityViewModel
 

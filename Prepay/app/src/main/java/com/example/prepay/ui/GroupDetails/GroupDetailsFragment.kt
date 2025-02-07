@@ -18,17 +18,16 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.prepay.ApplicationClass
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.PermissionChecker
 import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.User
-import com.example.prepay.data.model.dto.Restaurant
+import com.example.prepay.data.response.TeamIdStoreRes
 import com.example.prepay.databinding.DialogAuthoritySettingBinding
 import com.example.prepay.databinding.DialogGroupExitBinding
 import com.example.prepay.databinding.DialogGroupResignBinding
@@ -37,8 +36,6 @@ import com.example.prepay.databinding.DialogQrDiningTogetherBinding
 import com.example.prepay.databinding.FragmentGroupDetailsBinding
 import com.example.prepay.ui.MainActivity
 import com.example.prepay.ui.MainActivityViewModel
-import javax.sql.DataSource
-import com.example.prepay.ui.RestaurantDetails.RestaurantDetailsFragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -65,12 +62,13 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     private lateinit var mainActivity: MainActivity
     private lateinit var restaurantAdapter: RestaurantAdapter
     private lateinit var teamUserAdapter: TeamUserAdapter
-    private lateinit var restaurantList: List<Restaurant>
+    private lateinit var restaurantList: List<TeamIdStoreRes>
     private lateinit var teamUserList: List<User>
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
     //activityViewModel
     private val activityViewModel: MainActivityViewModel by activityViewModels()
+    private val viewModel: GroupDetailsFragmentViewModel by viewModels()
 
     //GPS관련 변수
     private var mMap: GoogleMap? = null
@@ -116,22 +114,30 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     }
 
     private fun initAdapter(){
-        restaurantList = listOf(
+        /*restaurantList = listOf(
             Restaurant("꿀맛 식당", 10000),
             Restaurant("싸피 식당", 20000),
             Restaurant("삼성 식당", 4000)
-        )
+        )*/
         teamUserList = listOf(
             User("김싸피","ㅇㅇㅇㄹ","ㅇㅇㅇ"),
             User("김ㄷㄷㄷ","ㄹㄹㄹ","ㅇㅇㅇ"),
             User("김ㄹㄹ","ㄱㄱㄱ","ㅇㅇㅇ")
         )
+        restaurantList = emptyList()
         restaurantAdapter = RestaurantAdapter(restaurantList,this)
         teamUserAdapter = TeamUserAdapter(teamUserList,this)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = restaurantAdapter
         binding.rvMemberList.layoutManager = LinearLayoutManager(requireContext())
         binding.rvMemberList.adapter = teamUserAdapter
+
+
+        viewModel.storeListInfo.observe(viewLifecycleOwner){ it->
+            restaurantAdapter.teamIdStoreResList = it
+            restaurantAdapter.notifyDataSetChanged()
+        }
+        viewModel.getMyTeamRestaurantList(1,activityViewModel.teamId.value!!)
     }
 
     private fun initDrawerLayout(){
@@ -144,7 +150,6 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             }
         }
     }
-
 
     private fun initEvent() {
         binding.diningTogetherQrBtn.setOnClickListener {
@@ -166,7 +171,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.ADD_RESTAURANT_FRAGMENT)
     }
 
-    override fun onRestaurantClick(restaurant: Restaurant) {
+    override fun onRestaurantClick(teamIdStoreResId: Int) {
         mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.RESTAURANT_DETAILS_FRAGMENT)
     }
 
