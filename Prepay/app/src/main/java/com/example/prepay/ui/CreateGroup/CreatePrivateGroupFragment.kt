@@ -13,8 +13,10 @@ import com.example.prepay.data.model.dto.PublicPrivateTeam
 import com.example.prepay.data.model.dto.ImageRequest
 import com.example.prepay.databinding.FragmentCreatePrivateGroupBinding
 import com.example.prepay.ui.MainActivity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.withContext
 
 private const val TAG = "CreatePrivateGroupFragm"
 
@@ -98,18 +100,21 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
     }
 
     private fun makeTeam(teamMakeRequest: PublicPrivateTeam) {
-        viewLifecycleOwner.lifecycleScope.launch {
+        lifecycleScope.launch {
             try {
                 binding.privateRegisterBtn.isEnabled = false
-                binding.progressBar.visibility = View.VISIBLE
-                val header: String   = "1"
-                RetrofitUtil.teamService.makeTeam(header, teamMakeRequest, null)
+                val header: String = "1"
 
+                val response = withContext(Dispatchers.IO) {
+                    RetrofitUtil.teamService.makeTeam(header, teamMakeRequest, null)
+                }
                 Log.d(TAG, "makeTeam: 성공")
 
-                if (isAdded) {  // Fragment가 아직 활성 상태인지 확인
+                if (response.isSuccessful) {  // Fragment가 아직 활성 상태인지 확인
                     Toast.makeText(requireContext(), "팀이 성공적으로 생성되었습니다.", Toast.LENGTH_SHORT).show()
                     mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
+                } else {
+                    Log.e(TAG, "팀 생성 실패: ${response.code()}")
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "teamMakeRequest 실패, 예외 메시지: ${e.message}", e)
@@ -117,10 +122,7 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
                     Toast.makeText(requireContext(), "팀 생성 실패: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             } finally {
-                if (isAdded && view != null) {
-                    binding.privateRegisterBtn.isEnabled = true
-                    binding.progressBar.visibility = View.GONE
-                }
+                binding.privateRegisterBtn.isEnabled = true
             }
         }
     }
