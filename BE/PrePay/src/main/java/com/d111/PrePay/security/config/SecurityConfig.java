@@ -82,7 +82,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests((auth) ->
                 auth.requestMatchers("/user/login", "/", "/user/signup").permitAll()
                         .requestMatchers("/reissue").permitAll()
-                        .requestMatchers( "/","/swagger-ui/", "/v3/api-docs/").permitAll()
+                        .requestMatchers( "/","/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated());
 
         http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
