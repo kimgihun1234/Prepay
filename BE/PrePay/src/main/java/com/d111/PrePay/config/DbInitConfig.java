@@ -30,7 +30,7 @@ public class DbInitConfig implements ApplicationRunner {
 
     private void initData() {
         for (int i = 1; i < 15; i++) {
-            String k = "user" + i;
+            String k = "user" + i + "@google.com";
             userService.userSignUp(new UserSignUpReq(k, k, k, k));
         }
         log.info("유저 삽입 완료");
