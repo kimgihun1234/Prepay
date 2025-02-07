@@ -11,6 +11,8 @@ pipeline {
         EC2_IP = credentials('EC2_IP')
         SSH_KEY = credentials('EC2_PEM')
 
+        JWT_SECRET = credentials('JWT_SECRET')
+
         SPRING_PROFILES_ACTIVE = 'prod'
         DB_URL = credentials('DB_URL')
         DB_USERNAME = credentials('DB_USERNAME')
@@ -108,6 +110,7 @@ pipeline {
                                       -e DB_PROD_URL=${DB_URL} \
                                       -e DB_PROD_USERNAME=${DB_USERNAME} \
                                       -e DB_PROD_PASSWORD=${DB_PASSWORD} \
+                                      -e JWT_SECRET=${JWT_SECRET} \
                                       -e TZ=Asia/Seoul\
                                       ${DOCKER_IMAGE}:latest
                                 """.stripIndent()
