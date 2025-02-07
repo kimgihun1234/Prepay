@@ -26,7 +26,7 @@ public class BootpayService {
             throw new RuntimeException(e);
         }
 
-        return false;
+        return true;
     }
 
     public void setBootpayToken() {
