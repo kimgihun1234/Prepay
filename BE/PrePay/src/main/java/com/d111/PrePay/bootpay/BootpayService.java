@@ -20,8 +20,6 @@ public class BootpayService {
             HttpResponse res = api.verify(String.valueOf(bootChargeReq.getReceiptId()));
             String str = StreamUtils.copyToString(res.getEntity().getContent(), StandardCharsets.UTF_8);
             log.info("검증 : {}", str);
-
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
