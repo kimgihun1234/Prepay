@@ -13,6 +13,8 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
+  jwt:
+    secret: ${JWT_SECRET}
   servlet:
     multipart:
       enabled: true
@@ -22,3 +24,4 @@ logging:
     org.springframework.web: DEBUG
     org.hibernate.SQL: debug
     org.hibernate.orm.jdbc.bind: trace
+

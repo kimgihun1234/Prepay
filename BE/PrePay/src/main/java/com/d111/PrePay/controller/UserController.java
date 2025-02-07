@@ -33,10 +33,11 @@ public class UserController {
         response.put("message", userService.userSignUp(userSignUpReq));
         return ResponseEntity.ok(response);
     }
-
-
-    @PostMapping("/login")
-    public ResponseEntity<UserLoginRes> login(@RequestBody UserLoginReq request) {
-        return ResponseEntity.ok(userService.login(request));
-    }
 }
+
+
+//    @PostMapping("/login")
+//    public ResponseEntity<UserLoginRes> login(@RequestBody UserLoginReq request) {
+//        return ResponseEntity.ok(userService.login(request));
+//    }
+//}

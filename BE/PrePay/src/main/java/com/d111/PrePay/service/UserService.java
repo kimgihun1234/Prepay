@@ -11,6 +11,7 @@ import com.d111.PrePay.dto.respond.UserLoginRes;
 import com.d111.PrePay.model.User;
 import com.d111.PrePay.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,11 +21,14 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public String userSignUp(UserSignUpReq userSignUpReq) {
-        User user = new User(userSignUpReq);
+        User user = new User();
+        user.setUserPassword(bCryptPasswordEncoder.encode(userSignUpReq.getPassword()));
+        user.setEmail(userSignUpReq.getEmail());
         userRepository.save(user);
-        return "유저 " + user.getUserName() + "생성완료";
+        return "유저 " + "생성완료";
     }
 
 
@@ -33,7 +37,6 @@ public class UserService {
         if (user != null) {
             UserLoginRes res = new UserLoginRes();
             res.setJwtToken(String.valueOf(user.getId()));
-            res.setUserName(user.getUserName());
             return res;
         } else {
             throw new RuntimeException(); // 로그인 실패 예외처리

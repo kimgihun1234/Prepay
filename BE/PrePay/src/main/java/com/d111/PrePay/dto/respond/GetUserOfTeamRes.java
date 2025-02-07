@@ -19,7 +19,6 @@ public class GetUserOfTeamRes {
     public GetUserOfTeamRes(UserTeam userTeam) {
         User user = userTeam.getUser();
         Team team = userTeam.getTeam();
-        this.userName = user.getUserName();
         this.nickName = user.getNickname();
         this.position = userTeam.isPosition();
         this.privilege = userTeam.isPrivilege();
