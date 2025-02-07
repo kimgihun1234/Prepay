@@ -110,7 +110,7 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
                 }
                 Log.d(TAG, "makeTeam: 성공")
 
-                if (response.isSuccessful) {  // Fragment가 아직 활성 상태인지 확인
+                if (response.isSuccessful) {
                     Toast.makeText(requireContext(), "팀이 성공적으로 생성되었습니다.", Toast.LENGTH_SHORT).show()
                     mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
                 } else {
@@ -118,7 +118,7 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "teamMakeRequest 실패, 예외 메시지: ${e.message}", e)
-                if (isAdded) {  // Fragment가 아직 활성 상태인지 확인
+                if (isAdded) {
                     Toast.makeText(requireContext(), "팀 생성 실패: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             } finally {

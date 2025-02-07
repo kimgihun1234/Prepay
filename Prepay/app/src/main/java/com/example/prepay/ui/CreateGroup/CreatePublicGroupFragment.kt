@@ -11,14 +11,13 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
+import com.example.prepay.data.model.dto.BootPayCharge
 import com.example.prepay.data.model.dto.PublicPrivateTeam
-import com.example.prepay.databinding.FragmentCreatePrivateGroupBinding
 import com.example.prepay.databinding.FragmentCreatePublicGroupBinding
 import com.example.prepay.ui.MainActivity
 import com.example.prepay.util.BootPayManager
@@ -42,6 +41,9 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
     private var isCheckingRepeatUse = false
     private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
     private var selectedImageMultipart: MultipartBody.Part? = null
+
+    private lateinit var receiptIdText: String
+    private lateinit var priceText: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -86,10 +88,14 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
             }
         }
 
-        binding.registerBtn.setOnClickListener { registerTeam() }
+        binding.registerBtn.setOnClickListener {
+            registerTeam()
+        }
+
         binding.cancelBtn.setOnClickListener { mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT) }
         mainActivity.hideBottomNav(true)
     }
+
 
     private fun registerTeam() {
         val teamMakeRequest = PublicPrivateTeam(
@@ -100,20 +106,50 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
             teamMessage = binding.textInputText.text.toString()
         )
 
+        BootPayManager.startPayment(requireActivity(), binding.groupNameText.text.toString(), binding.bootpayAmount.text.toString()) { receiptId, price ->
+
+            lifecycleScope.launch {
+                try {
+                    binding.registerBtn.isEnabled = false
+                    receiptIdText = receiptId
+                    priceText = price.toString()
+
+                    Log.d(TAG, "receiptId: $receiptId")
+                    Log.d(TAG, "price: $price")
+                    Log.d(TAG, "registerTeam: $selectedImageMultipart")
+                    val response = withContext(Dispatchers.IO) {
+                        RetrofitUtil.teamService.makeTeam("1", teamMakeRequest, selectedImageMultipart)
+                    }
+
+                    if (response.isSuccessful) {
+                        Toast.makeText(requireContext(), "팀이 성공적으로 생성되었습니다.", Toast.LENGTH_SHORT).show()
+                        registerReceipt()
+                    } else {
+                        Log.e(TAG, "팀 생성 실패: ${response.code()}")
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "네트워크 요청 실패: ${e.localizedMessage}", e)
+                } finally {
+                    binding.registerBtn.isEnabled = true
+                }
+            }
+        }
+    }
+    private fun registerReceipt() {
         lifecycleScope.launch {
             try {
-                binding.registerBtn.isEnabled = false
-
+                val chargeReceipt = BootPayCharge(1, 1, priceText.toInt(), receiptIdText)
                 val response = withContext(Dispatchers.IO) {
-                    RetrofitUtil.teamService.makeTeam("1", teamMakeRequest, selectedImageMultipart)
+                    RetrofitUtil.bootPayService.getBootPay(chargeReceipt)
                 }
 
                 if (response.isSuccessful) {
-                    Toast.makeText(requireContext(), "팀이 성공적으로 생성되었습니다.", Toast.LENGTH_SHORT).show()
-//                    BootPayManager.startPayment(requireActivity(),binding.groupNameText.text.toString(), binding.bootpayAmount.toString())
+                    Toast.makeText(requireContext(), "영수증이 성공적으로 들어갔습니다.", Toast.LENGTH_SHORT).show()
+                    // 영수증 올리고 그다음 프레그먼트 이동
                     mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
+
                 } else {
-                    Log.e(TAG, "팀 생성 실패: ${response.code()}")
+                    Log.e(TAG, "영수증 올리기 실패: ${response.code()}")
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "네트워크 요청 실패: ${e.localizedMessage}", e)
@@ -122,6 +158,7 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
             }
         }
     }
+
 
     private fun getFileNameFromUri(uri: Uri): String {
         var fileName = ""

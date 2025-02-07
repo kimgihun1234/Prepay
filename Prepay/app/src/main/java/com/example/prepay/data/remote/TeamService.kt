@@ -20,4 +20,5 @@ interface TeamService {
     // 전체 팀정보 조회
     @GET("/team/myTeams")
     suspend fun getTeamList(@Header("userId")  userId: Long): List<Team>
+
 }
