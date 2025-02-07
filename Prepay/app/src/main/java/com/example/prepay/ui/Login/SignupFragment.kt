@@ -13,6 +13,7 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.util.TypedValue
 import android.view.View
+import android.widget.ScrollView
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -66,7 +67,7 @@ class SignupFragment: BaseFragment<FragmentSignUpBinding>(
         binding.signUpPasswordText.doAfterTextChanged { checkPassword() }
         binding.signUpPasswordConfirmText.doAfterTextChanged {checkRePassword()} // 비밀번호 재입력 유효성 검사
         binding.signUpNickText.doAfterTextChanged {checkUserNick()}
-        binding.signUpSubmit.setOnClickListener { signUp() }
+        binding.signUpSubmit.setOnClickListener { signIn() }
     }
 
     // editView focus 이벤트 설정
@@ -139,7 +140,7 @@ class SignupFragment: BaseFragment<FragmentSignUpBinding>(
     }
 
 
-    private fun signUp() {
+    private fun signIn() {
         val userId = binding.signUpIdText.text.toString().trim()
         val password = binding.signUpPasswordText.text.toString().trim()
         val nickname = binding.signUpNickText.text.toString().trim()
@@ -151,36 +152,16 @@ class SignupFragment: BaseFragment<FragmentSignUpBinding>(
         }
         // 유효성 검사 (ID, 비밀번호, 닉네임 모두 통과해야 함)
         if (!checkId || checkPassword || !checkNickname) {
-            lifecycleScope.launch {
-                try {
-                    val signupRequest = SignupRequest(userId, password, nickname)
-                    val response = RetrofitUtil.userService.signup(signupRequest)
-
-                    if (response.
-                        isSuccessful) {
-                        showToast(ㅕ"회원가입에 성공했습니다.")
-                        val signupResponse = response.body()
-                        if (signupResponse != null && signupResponse.success) {
-                            loginActivity.changeFragmentLogin(CommonUtils.LoginFragmentName.LOGIN_FRAGMENT)
-                        } else {
-                            // 서버에서 실패 메시지를 전달한 경우
-                            showToast(signupResponse?.message ?: "회원가입에 실패했습니다.")
-                        }
-                    } else {
-                        // HTTP 오류 응답 (예: 400, 500 등)
-                        showToast("서버 오류: ${response.code()}")
-                    }
-
-                }catch (e: Exception) {
-                    e.printStackTrace()
-                    showToast("네트워크 오류가 발생했습니다.")
-                }
+            val insertSuccess = dbHelper.insertData(userId, password, nickname)
+            if (insertSuccess) {
+                loginActivity.changeFragmentLogin(CommonUtils.LoginFragmentName.LOGIN_FRAGMENT)
+            } else {
+              showToast("입력된 정보를 다시 확인하세요.")
             }
         } else {
             showToast("입력된 정보를 다시 확인하세요.")
         }
     }
-
 
     private fun checkUserID() {
         val userId = binding.signUpIdText.text.toString().trim()
