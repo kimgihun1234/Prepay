@@ -4,9 +4,12 @@ import com.example.prepay.data.model.dto.PublicPrivateTeam
 import com.example.prepay.data.response.BanUserReq
 import com.example.prepay.data.response.GetUserOfTeamRes
 import com.example.prepay.data.response.PublicTeamsRes
+import com.example.prepay.data.response.SignInTeamReq
 import com.example.prepay.data.response.Team
 import com.example.prepay.data.response.TeamDetailRes
 import com.example.prepay.data.response.TeamIdReq
+import com.example.prepay.data.response.TeamStoreReq
+import com.example.prepay.data.response.TeamStoreRes
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -19,12 +22,20 @@ import retrofit2.http.Path
 
 interface TeamService {
 
+    //팀 가맹점 추가
+    @POST("/team/store")
+    suspend fun createStore(@Header("userId") userId: Long, @Body request: TeamStoreReq): TeamStoreRes
     //팀을 생성하는 과정
     @Multipart
     @POST("team/signup")
     suspend fun makeTeam(@Header("userId") userId: String,
                          @Part("request") request: PublicPrivateTeam,
                          @Part image: MultipartBody.Part?) : Response<PublicPrivateTeam>
+
+    //팀 가맹점 추가
+    @POST("/team/signin")
+    suspend fun signInTeam(@Header("userId") userId: Long, @Body request: SignInTeamReq): GetUserOfTeamRes
+
     // 본인의 전체 팀정보 조회
     @GET("/team/myTeams")
     suspend fun getTeamList(@Header("userId")  userId: Long): List<Team>
@@ -34,7 +45,7 @@ interface TeamService {
 
     //특정 사용자를 팀에서 강퇴합니다.
     @POST("/team/ban")
-    suspend fun banUser(@Header("userId") userId: Long, @Body request: BanUserReq): Map<String, String>
+    suspend fun banUser(@Header("userId") userId: Long, @Body request: BanUserReq): Map<String,String>
 
     //사용자가 팀을 탈퇴합니다.
     @POST("/team/exit")
