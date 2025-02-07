@@ -150,6 +150,7 @@ public class TeamService {
 
     // 팀 비밀번호를 이용한 팀 가입
     // 확인
+    @Transactional
     public GetUserOfTeamRes signInTeam(Long userId, SignInTeamReq req) {
         Team findTeam = teamRepository.findByTeamPassword(req.getTeamPassword())
                 .orElseThrow(() -> new RuntimeException("일치하는 팀이 없습니다."));
@@ -158,7 +159,7 @@ public class TeamService {
 
         if (userTeamRepository.existsByUserAndTeam(findUser, findTeam)) {
             log.error("이미 가입된 팀입니다.");
-            return null;
+            throw new RuntimeException();
         }
         UserTeam userTeam = UserTeam.builder()
                 .team(findTeam)

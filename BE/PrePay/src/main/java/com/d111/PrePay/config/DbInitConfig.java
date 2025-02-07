@@ -1,11 +1,7 @@
 package com.d111.PrePay.config;
 
 import com.d111.PrePay.dto.request.*;
-import com.d111.PrePay.model.Team;
-import com.d111.PrePay.model.User;
-import com.d111.PrePay.repository.TeamRepository;
 import com.d111.PrePay.repository.UserRepository;
-import com.d111.PrePay.repository.UserTeamRepository;
 import com.d111.PrePay.service.StoreService;
 import com.d111.PrePay.service.TeamService;
 import com.d111.PrePay.service.UserService;
@@ -29,7 +25,7 @@ public class DbInitConfig implements ApplicationRunner {
     @Override
     @Transactional
     public void run(ApplicationArguments args) throws Exception {
-        /*if (userRepository.count() == 0)*/ initData();
+        if (userRepository.count() == 0) initData();
     }
 
     private void initData() {
@@ -71,11 +67,11 @@ public class DbInitConfig implements ApplicationRunner {
         log.info("식당 팀에 삽입 완료");
 
         for (long i = 1; i < 3; i++) {
-            for (long j = i + 2; j < i + 5; j++) {
-                TeamIdReq teamId = new TeamIdReq(i+2);
+            for (long j = 5; j < 8; j++) {
+                TeamIdReq teamId = new TeamIdReq(i);
                 SignInTeamReq signInTeamReq = new SignInTeamReq();
-                signInTeamReq.setTeamPassword(teamService.generateInviteCode(1L+i,teamId).getTeamPassword());
-                teamService.signInTeam(1L+i, signInTeamReq );
+                signInTeamReq.setTeamPassword(teamService.generateInviteCode(1L + i, teamId).getTeamPassword());
+                teamService.signInTeam(1L + j, signInTeamReq);
             }
         }
         log.info("사람 팀에 삽입 완료");
