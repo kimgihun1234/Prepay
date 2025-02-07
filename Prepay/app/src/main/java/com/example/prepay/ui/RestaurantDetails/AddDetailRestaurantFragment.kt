@@ -10,7 +10,7 @@ import com.example.prepay.databinding.FragmentDetailRestaurantBinding
 import com.example.prepay.ui.MainActivity
 import com.example.prepay.util.BootPayManager
 
-private const val TAG = "DetailRestaurantFragmen"
+private const val TAG = "DetailRestaurantFragment"
 class AddDetailRestaurantFragment: BaseFragment<FragmentDetailRestaurantBinding>(
     FragmentDetailRestaurantBinding::bind,
     R.layout.fragment_detail_restaurant
