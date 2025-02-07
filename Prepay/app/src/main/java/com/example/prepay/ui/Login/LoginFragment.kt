@@ -139,7 +139,7 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
         )
         // 텍스트 크기 적용
         spannableString.setSpan(
-            AbsoluteSizeSpan(21, true),
+            AbsoluteSizeSpan(22, true),
             start,
             end,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -151,6 +151,7 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
 
     // editView focus 이벤트 설정
     private fun initFocusChangeListener() {
+
         editTexts.forEach {
             it.setOnFocusChangeListener { _, isFocus ->
                 if (isFocus) {

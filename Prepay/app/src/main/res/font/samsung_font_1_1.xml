@@ -6,4 +6,5 @@
         android:fontWeight="400"
         android:font="@font/samsung_font_1"
         tools:targetApi="o" />
+
 </font-family>
