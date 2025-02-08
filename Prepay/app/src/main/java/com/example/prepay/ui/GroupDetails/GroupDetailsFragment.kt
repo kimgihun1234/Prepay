@@ -109,7 +109,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         initData()
         initDrawerLayout()
         initModelView()
-        //GPS 관련 ㅋ코드
+        //GPS 관련 코드
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(readyCallback)
@@ -128,11 +128,12 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
 
         viewModel.storeListInfo.observe(viewLifecycleOwner){ it->
             restaurantAdapter.teamIdStoreResList = it
-            restaurantAdapter.notifyDataSetChanged()
-            it.forEach { store ->
-                val latLng = LatLng(store.latitude, store.longitude)  // store에서 받은 lat, long을 LatLng로 변환
-                addMarker(latLng, store.storeName)  // 마커 추가
+            restaurantList = it
+            Log.d(TAG,restaurantList.toString())
+            if (mMap != null) {
+                addStoreMarkers(it) // 마커 추가
             }
+            restaurantAdapter.notifyDataSetChanged()
         }
         viewModel.teamUserListInfo.observe(viewLifecycleOwner){it->
             teamUserAdapter.teamUserResList = it
@@ -140,6 +141,17 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         }
         viewModel.getMyTeamRestaurantList(1,activityViewModel.teamId.value!!)
         viewModel.getMyTeamUserList(1,activityViewModel.teamId.value!!);
+    }
+
+    private fun updateMarkers(storeList: List<TeamIdStoreRes>) {
+        mMap?.clear()  // 기존 마커 제거
+        storeList.forEach { store ->
+            mMap?.addMarker(
+                MarkerOptions()
+                    .position(LatLng(store.latitude, store.longitude))
+                    .title(store.storeName)
+            )
+        }
     }
 
     private fun initData(){
@@ -155,6 +167,28 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             if (!drawerLayout.isDrawerOpen(GravityCompat.END)) {
                 drawerLayout.openDrawer(GravityCompat.END)
             }
+        }
+    }
+
+    private fun addStoreMarkers(stores: List<TeamIdStoreRes>) {
+        mMap!!.clear()  // 기존 마커 삭제
+
+        for (store in stores) {
+            val storeLocation = LatLng(store.latitude, store.longitude)
+
+            val markerOptions = MarkerOptions().apply {
+                position(storeLocation)
+                title(store.storeName)
+                snippet("위도: ${store.latitude}, 경도: ${store.longitude}")
+            }
+            mMap!!.addMarker(markerOptions)
+        }
+
+        // 첫 번째 상점 위치로 카메라 이동
+        if (stores.isNotEmpty()) {
+            val firstStoreLocation = LatLng(stores[0].latitude, stores[0].longitude)
+            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(firstStoreLocation, 15f)
+            mMap!!.animateCamera(cameraUpdate)
         }
     }
 
@@ -297,6 +331,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                     loc.longitude = it.longitude
                     setCurrentLocation(loc)
                 }
+                viewModel.storeListInfo.value?.let { addStoreMarkers(it) }
             }
         }
     }
@@ -344,32 +379,26 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         setCurrentLocation(location, markerTitle, markerSnippet)
     }
 
-    fun addMarker(latLng: LatLng, title: String?) {
-        val markerOptions = MarkerOptions().apply {
-            position(latLng)
-            title(title)
-            snippet("위도: ${latLng.latitude}, 경도: ${latLng.longitude}")
-        }
-        mMap?.addMarker(markerOptions)
-    }
     fun setCurrentLocation(location: Location, markerTitle: String?, markerSnippet: String?) {
         currentMarker?.remove()
 
-        val currentLatLng = LatLng(location.latitude+0.002, location.longitude+0.002)
+        // 첫 번째 마커 위치
+        val currentLatLng1 = LatLng(location.latitude + 0.002, location.longitude + 0.002)
+        val marker1 = ResourcesCompat.getDrawable(resources, R.drawable.logo, requireActivity().theme)?.toBitmap(150, 150)
 
-        val marker = ResourcesCompat.getDrawable(resources,R.drawable.logo,requireActivity().theme)?.toBitmap(150,150)
-
-        val markerOptions = MarkerOptions().apply{
-            position(currentLatLng)
+        // 마커 옵션 1
+        val markerOptions1 = MarkerOptions().apply {
+            position(currentLatLng1)
             title("싸피벅스")
             snippet(markerSnippet)
             draggable(true)
-            icon(BitmapDescriptorFactory.fromBitmap(marker!!))
+            icon(BitmapDescriptorFactory.fromBitmap(marker1!!))
         }
 
-        currentMarker = mMap?.addMarker(markerOptions)
+        // 첫 번째 마커 추가
+        mMap?.addMarker(markerOptions1)
 
-        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f)
+        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLatLng1, 15f)
         mMap?.animateCamera(cameraUpdate)
     }
 
