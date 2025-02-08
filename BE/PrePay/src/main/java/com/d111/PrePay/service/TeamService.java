@@ -1,6 +1,6 @@
 package com.d111.PrePay.service;
 
-import com.d111.PrePay.RequestStatus;
+import com.d111.PrePay.value.RequestStatus;
 import com.d111.PrePay.dto.request.*;
 import com.d111.PrePay.dto.respond.GetUserOfTeamRes;
 import com.d111.PrePay.dto.respond.StoresRes;

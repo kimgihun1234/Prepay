@@ -26,7 +26,13 @@ public class OrderService {
 
     public List<OrderHistoryRes> getOrderHistory(OrderHistoryReq req) {
         if (req.getStoreId() == 0 && req.getTeamId() == 0) {
-            throw new RuntimeException("둘 다 0이면 안됨");
+            List<OrderHistory> originalList = orderHistoryRepository.findAll();
+            List<OrderHistoryRes> resultList = new ArrayList<>();
+            for (OrderHistory orderHistory : originalList) {
+                OrderHistoryRes result = new OrderHistoryRes(orderHistory);
+                resultList.add(result);
+            }
+            return resultList;
         } else if (req.getStoreId() == 0) {
             List<OrderHistory> originalList = orderHistoryRepository.findOrderHistoriesByStoreIdEquals(req.getTeamId());
             List<OrderHistoryRes> resultList = new ArrayList<>();
