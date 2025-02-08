@@ -10,4 +10,6 @@ public interface OrderHistoryRepository extends JpaRepository<OrderHistory,Long>
     List<OrderHistory> findOrderHistoriesByStoreIdEquals(long store_id);
 
     List<OrderHistory> findOrderHistoriesByTeamIdEquals(long team_id);
+
+    List<OrderHistory> findOrderHistoriesByTeamIdEqualsAndStoreIdEquals(long team_id,long store_id);
 }
