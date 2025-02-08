@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class BanUserReq {
-    private Long banUserId;
+    private String banUserEmail;
     private Long teamId;
 
 }
