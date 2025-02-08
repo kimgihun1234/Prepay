@@ -1,6 +1,6 @@
 package com.d111.PrePay.model;
 
-import com.d111.PrePay.RequestStatus;
+import com.d111.PrePay.value.RequestStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

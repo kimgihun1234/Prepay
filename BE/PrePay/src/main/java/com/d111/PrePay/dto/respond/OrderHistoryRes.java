@@ -1,6 +1,5 @@
 package com.d111.PrePay.dto.respond;
 
-import com.d111.PrePay.RequestStatus;
 import com.d111.PrePay.model.OrderHistory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

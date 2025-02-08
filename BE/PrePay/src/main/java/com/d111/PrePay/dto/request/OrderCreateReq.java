@@ -11,5 +11,6 @@ public class OrderCreateReq {
     private long userTeamId;
     private long storeId;
     private boolean companyDinner;
+    private String qrUUID;
     private List<DetailHistoryReq> details;
 }
