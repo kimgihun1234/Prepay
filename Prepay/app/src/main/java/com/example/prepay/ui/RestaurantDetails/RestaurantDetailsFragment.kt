@@ -3,6 +3,7 @@ package com.example.prepay.ui.RestaurantDetails
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.prepay.BaseFragment
@@ -19,6 +20,10 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
 ){
     private lateinit var mainActivity: MainActivity
     private lateinit var receiptbinding : DialogReceiptBinding
+
+    private lateinit var orderHistoryAdapter: OrderHistoryAdapter
+    private val viewModel : OrderHistoryViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivity= context as MainActivity
@@ -39,6 +44,13 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
     }
 
     private fun initAdapter() {
+        // 데이터 받아오기
+        orderHistoryAdapter = OrderHistoryAdapter(arrayListOf())
+        binding.recyclerView.adapter = orderHistoryAdapter
+        viewModel.orderHistoryListInfo.observe(viewLifecycleOwner) { it->
+            orderHistoryAdapter
+        }
+
         val orderHistoryList = listOf(
             OrderHistory("2025.01.26","김기훈", 100000),
             OrderHistory("2025.01.13","김성수", 50000),
@@ -55,8 +67,12 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
         )
 
         receiptbinding = DialogReceiptBinding.inflate(LayoutInflater.from(context))
-        val orderHistoryAdapter = OrderHistoryAdapter(orderHistoryList)
+        orderHistoryAdapter = OrderHistoryAdapter(arrayListOf())
         binding.recyclerView.adapter = orderHistoryAdapter
+        viewModel.orderHistoryListInfo.observe(viewLifecycleOwner) { it->
+            orderHistoryAdapter.orderHistoryList = it
+        }
+        viewModel.getAllOrderHistoryList()
         binding.recyclerView.layoutManager = LinearLayoutManager(binding.root.context)
     }
 }

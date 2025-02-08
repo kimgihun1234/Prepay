@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.prepay.RetrofitUtil
 import com.example.prepay.data.model.dto.OrderHistory
 import com.example.prepay.data.model.dto.Receipt
 import com.example.prepay.databinding.DialogReceiptBinding
@@ -13,7 +14,7 @@ import java.text.NumberFormat
 import java.util.Locale
 
 private const val TAG = "OrderHistoryAdapter"
-class OrderHistoryAdapter(private val orderHistoryList: List<OrderHistory>) : RecyclerView.Adapter<OrderHistoryAdapter.orderHistoryViewHolder>() {
+class OrderHistoryAdapter(var orderHistoryList: List<OrderHistory>) : RecyclerView.Adapter<OrderHistoryAdapter.orderHistoryViewHolder>() {
     inner class orderHistoryViewHolder(private val binding : RestaurantPayerBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(order: OrderHistory) {
@@ -36,18 +37,22 @@ class OrderHistoryAdapter(private val orderHistoryList: List<OrderHistory>) : Re
 
 
                 // 영수증 데이터 추가
+
+//                RetrofitUtil.orderService.getDetailReceipt(1,1)
+
+
                 val countryList = listOf(
-                    Receipt("망고주스", 2000,5),
-                    Receipt("크림파스타", 12000,4),
-                    Receipt("김치찌개", 8000,3),
-                    Receipt("제육볶음", 9000,1),
-                    Receipt("돈까스", 15000,2),
-                    Receipt("닭한마리칼국수", 7000,3),
-                    Receipt("아메리카노", 1500,1),
-                    Receipt("잡채", 3000,3),
-                    Receipt("떡국", 6000,2),
-                    Receipt("오징어볶음", 13000,4),
-                    Receipt("김치", 1000,1),
+                    Receipt(1,"망고주스", 2000,5),
+                    Receipt(1,"크림파스타", 12000,4),
+                    Receipt(1,"김치찌개", 8000,3),
+                    Receipt(1,"제육볶음", 9000,1),
+                    Receipt(1,"돈까스", 15000,2),
+                    Receipt(1,"닭한마리칼국수", 7000,3),
+                    Receipt(1,"아메리카노", 1500,1),
+                    Receipt(1,"잡채", 3000,3),
+                    Receipt(1,"떡국", 6000,2),
+                    Receipt(1,"오징어볶음", 13000,4),
+                    Receipt(1,"김치", 1000,1),
                 )
 
                 // RecyclerView 어댑터 설정
