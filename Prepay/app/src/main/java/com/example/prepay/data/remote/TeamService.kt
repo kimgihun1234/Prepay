@@ -5,6 +5,7 @@ import com.example.prepay.data.response.BanUserReq
 import com.example.prepay.data.response.GetUserOfTeamRes
 import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.data.response.SignInTeamReq
+import com.example.prepay.data.response.StoreLocation
 import com.example.prepay.data.response.Team
 import com.example.prepay.data.response.TeamDetailRes
 import com.example.prepay.data.response.TeamIdReq
@@ -57,7 +58,6 @@ interface TeamService {
     @GET("/team/{teamId}/user")
     suspend fun getUserOfTeam(@Header("userId") userId: Long, @Path("teamId") teamId: Long): List<TeamUserRes>
 
-
     //특정 팀의 식당 목록을 가져옵니다.
     @GET("/team/{teamId}/stores")
     suspend fun getStoreOfTeam(@Header("userId") userId: Long, @Path("teamId") teamId: Long): List<TeamIdStoreRes>
@@ -69,4 +69,9 @@ interface TeamService {
     //특정 키워드로 공개된 팀을 검색합니다.
     @GET("/team/public-teams/{keyword}")
     suspend fun getPublicTeamsByKeyword(@Path("keyword") keyword: String): List<PublicTeamsRes>
+
+    //식당의 위치를 가져옵니다.
+    @GET("/team/coordinate/{teamId}")
+    suspend fun getTeamStore(@Header("userId") userId: Long, @Path("teamId") teamId: Long) : List<StoreLocation>
+
 }

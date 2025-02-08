@@ -1,6 +1,6 @@
 package com.example.prepay.data.response
 
 data class BanUserReq(
-    val banUserId: Int,
+    val banUserEmail: String,
     val teamId: Int
 )
