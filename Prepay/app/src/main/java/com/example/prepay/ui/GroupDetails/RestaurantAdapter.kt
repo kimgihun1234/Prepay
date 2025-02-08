@@ -14,7 +14,7 @@ class RestaurantAdapter(var teamIdStoreResList: List<TeamIdStoreRes>, private va
         fun bind(teamIdStoreRes: TeamIdStoreRes) {
             binding.restaurantName.text = teamIdStoreRes.storeName
             binding.restaurantPrepayMoney.text = teamIdStoreRes.balance.toString()+"원"
-
+            binding.restaurantDistance.text = teamIdStoreRes.latitude.toString()
             binding.restaurantDetailBtn.setOnClickListener {
                 listener.onRestaurantClick(teamIdStoreRes.storeId)
             }

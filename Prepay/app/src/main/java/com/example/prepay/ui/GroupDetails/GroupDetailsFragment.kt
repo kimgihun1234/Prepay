@@ -26,6 +26,7 @@ import com.example.prepay.CommonUtils
 import com.example.prepay.PermissionChecker
 import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
+import com.example.prepay.data.response.BanUserReq
 import com.example.prepay.data.response.TeamIdStoreRes
 import com.example.prepay.data.response.TeamUserRes
 import com.example.prepay.databinding.DialogAuthoritySettingBinding
@@ -105,6 +106,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         super.onViewCreated(view, savedInstanceState)
         initEvent()
         initAdapter()
+        initData()
         initDrawerLayout()
         initModelView()
         //GPS 관련 ㅋ코드
@@ -127,6 +129,10 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         viewModel.storeListInfo.observe(viewLifecycleOwner){ it->
             restaurantAdapter.teamIdStoreResList = it
             restaurantAdapter.notifyDataSetChanged()
+            it.forEach { store ->
+                val latLng = LatLng(store.latitude, store.longitude)  // store에서 받은 lat, long을 LatLng로 변환
+                addMarker(latLng, store.storeName)  // 마커 추가
+            }
         }
         viewModel.teamUserListInfo.observe(viewLifecycleOwner){it->
             teamUserAdapter.teamUserResList = it
@@ -134,6 +140,11 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         }
         viewModel.getMyTeamRestaurantList(1,activityViewModel.teamId.value!!)
         viewModel.getMyTeamUserList(1,activityViewModel.teamId.value!!);
+    }
+
+    private fun initData(){
+
+
     }
 
     private fun initDrawerLayout(){
@@ -235,6 +246,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             .setView(binding.root)
             .create()
         binding.groupResignConfirmBtn.setOnClickListener {
+
             dialog.dismiss()
         }
 
@@ -332,6 +344,14 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         setCurrentLocation(location, markerTitle, markerSnippet)
     }
 
+    fun addMarker(latLng: LatLng, title: String?) {
+        val markerOptions = MarkerOptions().apply {
+            position(latLng)
+            title(title)
+            snippet("위도: ${latLng.latitude}, 경도: ${latLng.longitude}")
+        }
+        mMap?.addMarker(markerOptions)
+    }
     fun setCurrentLocation(location: Location, markerTitle: String?, markerSnippet: String?) {
         currentMarker?.remove()
 
@@ -407,7 +427,6 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                 || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
     }
 
-
     /******** 위치서비스 활성화 여부 check *********/
     private val GPS_ENABLE_REQUEST_CODE = 2001
     private var needRequest = false
@@ -441,6 +460,18 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                         "위치 서비스가 꺼져 있어, 현재 위치를 확인할 수 없습니다.",
                         Toast.LENGTH_SHORT).show()
                 }
+        }
+    }
+
+    fun TeamResign(ban: BanUserReq){
+        lifecycleScope.launch{
+            kotlin.runCatching {
+                RetrofitUtil.teamService.banUser(1,ban)
+            }.onSuccess {
+                Log.d(TAG,"성공하였습니다")
+            }.onFailure {
+                Log.d(TAG,"실패하였습니다")
+            }
         }
     }
 

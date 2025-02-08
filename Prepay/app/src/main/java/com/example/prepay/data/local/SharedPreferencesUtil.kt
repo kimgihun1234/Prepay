@@ -2,6 +2,7 @@ package com.example.prepay
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.prepay.data.response.TeamUserRes
 
 private const val TAG = "SharedPreferencesUtil_싸피"
 
@@ -13,6 +14,7 @@ class SharedPreferencesUtil(context: Context) {
         context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
 
     //사용자 정보 저장
+    /*
     fun addUser(teamUserRes: TeamUserRes){
         val editor = preferences.edit()
         editor.putString("id", teamUserRes.id)
@@ -28,7 +30,7 @@ class SharedPreferencesUtil(context: Context) {
         } else {
             return TeamUserRes()
         }
-    }
+    }*/
 
     fun deleteUser(){
         //preference 지우기
