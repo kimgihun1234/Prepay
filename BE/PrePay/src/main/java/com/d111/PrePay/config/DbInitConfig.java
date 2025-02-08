@@ -66,11 +66,11 @@ public class DbInitConfig implements ApplicationRunner {
         }
         log.info("식당 팀에 삽입 완료");
 
-        for (long i = 1; i < 3; i++) {
-            for (long j = 5; j < 8; j++) {
+        for (long i = 1; i < 5; i++) {
+            for (long j = 7; j < 10; j++) {
                 TeamIdReq teamId = new TeamIdReq(i);
                 SignInTeamReq signInTeamReq = new SignInTeamReq();
-                Long userId = userRepository.findUserByEmail("user" + (++i) + "@gmail.com").getId();
+                Long userId = userRepository.findUserByEmail("user" + j + "@gmail.com").getId();
                 signInTeamReq.setTeamPassword(teamService.generateInviteCode(1L + i, teamId).getTeamPassword());
                 teamService.signInTeam(1L + j, signInTeamReq);
             }

@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class GetUserOfTeamRes {
     private Long teamId;
     private String email;
+    private String nickname;
     private boolean position;
     private boolean privilege;
 
@@ -22,5 +23,6 @@ public class GetUserOfTeamRes {
         this.position = userTeam.isPosition();
         this.privilege = userTeam.isPrivilege();
         this.teamId = team.getId();
+        this.nickname = user.getNickname();
     }
 }
