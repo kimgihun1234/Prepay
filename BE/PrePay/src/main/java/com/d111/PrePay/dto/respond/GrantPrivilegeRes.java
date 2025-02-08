@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class GrantPrivilegeRes {
-    private Long changeUserId;
+    private String changeUserEmail;
     private Long teamId;
     private boolean privilege;
 

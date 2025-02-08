@@ -179,12 +179,12 @@ public class TeamService {
     // 팀 회식 권한 부여
     @Transactional
     public GrantPrivilegeRes grantPrivilege(GrantPrivilegeReq req) {
-        UserTeam findUserTeam = userTeamRepository.findByTeamIdAndUserId(req.getTeamId(), req.getChangeUserId())
+        UserTeam findUserTeam = userTeamRepository.findByTeamIdAndUser_Email(req.getTeamId(), req.getChangeUserEmail())
                 .orElseThrow();
         findUserTeam.setPrivilege(req.isPrivilege());
 
         GrantPrivilegeRes grantPrivilegeRes = GrantPrivilegeRes.builder()
-                .changeUserId(req.getChangeUserId())
+                .changeUserEmail(req.getChangeUserEmail())
                 .teamId(req.getTeamId())
                 .privilege(findUserTeam.isPrivilege())
                 .build();
