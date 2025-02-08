@@ -74,7 +74,8 @@ public class TeamService {
 
     // 팀 사용자 추방
     public void banUser(BanUserReq req) {
-        UserTeam findUserTeam = userTeamRepository.findByTeamIdAndUserId(req.getTeamId(), req.getBanUserId())
+
+        UserTeam findUserTeam = userTeamRepository.findByTeam_IdAndUser_Email(req.getTeamId(), req.getBanUserEmail())
                 .orElseThrow();
         userTeamRepository.delete(findUserTeam);
     }

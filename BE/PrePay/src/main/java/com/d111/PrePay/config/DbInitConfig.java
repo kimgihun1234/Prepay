@@ -28,10 +28,10 @@ public class DbInitConfig implements ApplicationRunner {
         if (userRepository.count() == 0) initData();
     }
 
-    private void initData() {
+    public void initData() {
         for (int i = 1; i < 15; i++) {
-            String k = "user" + i + "@google.com";
-            userService.userSignUp(new UserSignUpReq(k, k, k, k));
+            String email = "user" + i + "@gmail.com";
+            userService.userSignUp(new UserSignUpReq(email, email, "user" + i));
         }
         log.info("유저 삽입 완료");
         for (int i = 1; i < 6; i++) {
@@ -46,12 +46,12 @@ public class DbInitConfig implements ApplicationRunner {
 
         for (long i = 1; i < 6; i++) {
             String k = "team" + i;
-            teamService.createTeam(new TeamCreateReq(k, false, 10000, 0, "테스트메시지"), i, null);
+            teamService.createTeam(new TeamCreateReq(k, false, 10000, 0, k+"테스트메시지"), i, null);
         }
 
         for (long i = 6; i < 11; i++) {
             String k = "team" + i;
-            teamService.createTeam(new TeamCreateReq(k, true, 5000, 0, "테스트메시지2"), i, null);
+            teamService.createTeam(new TeamCreateReq(k, true, 5000, 0, k+"publicteam 테스트메시지2"), i, null);
         }
         log.info("team 삽입 완료");
 
@@ -70,6 +70,7 @@ public class DbInitConfig implements ApplicationRunner {
             for (long j = 5; j < 8; j++) {
                 TeamIdReq teamId = new TeamIdReq(i);
                 SignInTeamReq signInTeamReq = new SignInTeamReq();
+                Long userId = userRepository.findUserByEmail("user" + (++i) + "@gmail.com").getId();
                 signInTeamReq.setTeamPassword(teamService.generateInviteCode(1L + i, teamId).getTeamPassword());
                 teamService.signInTeam(1L + j, signInTeamReq);
             }
