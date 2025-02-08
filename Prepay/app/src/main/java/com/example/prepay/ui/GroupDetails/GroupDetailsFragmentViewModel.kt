@@ -4,8 +4,10 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.example.prepay.RetrofitUtil
+import com.example.prepay.data.response.BanUserReq
 import com.example.prepay.data.response.Team
 import com.example.prepay.data.response.TeamIdStoreRes
 import com.example.prepay.data.response.TeamUserRes
@@ -29,6 +31,20 @@ class GroupDetailsFragmentViewModel : ViewModel() {
                 _storeListInfo.value = it
             }.onFailure { e ->
                 _storeListInfo.value = emptyList()
+            }
+        }
+    }
+
+    fun TeamResign(ban: BanUserReq){
+        viewModelScope.launch {
+            kotlin.runCatching {
+                RetrofitUtil.teamService.banUser(1,ban)
+            }.onSuccess {
+                val currentList = _teamUserListInfo.value?.toMutableList() ?: mutableListOf()
+                val updatedList = currentList.filter { it.email != ban.banUserEmail } // 삭제된 사용자를 제외한 리스트
+                _teamUserListInfo.value = updatedList
+            }.onFailure {
+
             }
         }
     }

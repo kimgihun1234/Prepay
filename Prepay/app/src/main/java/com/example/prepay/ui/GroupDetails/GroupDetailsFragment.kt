@@ -129,7 +129,6 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         viewModel.storeListInfo.observe(viewLifecycleOwner){ it->
             restaurantAdapter.teamIdStoreResList = it
             restaurantList = it
-            Log.d(TAG,restaurantList.toString())
             if (mMap != null) {
                 addStoreMarkers(it) // 마커 추가
             }
@@ -141,17 +140,6 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         }
         viewModel.getMyTeamRestaurantList(1,activityViewModel.teamId.value!!)
         viewModel.getMyTeamUserList(1,activityViewModel.teamId.value!!);
-    }
-
-    private fun updateMarkers(storeList: List<TeamIdStoreRes>) {
-        mMap?.clear()  // 기존 마커 제거
-        storeList.forEach { store ->
-            mMap?.addMarker(
-                MarkerOptions()
-                    .position(LatLng(store.latitude, store.longitude))
-                    .title(store.storeName)
-            )
-        }
     }
 
     private fun initData(){
@@ -221,7 +209,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     }
 
     override fun onResignClick(teamUserRes: TeamUserRes) {
-        showGroupResignDialog()
+        showGroupResignDialog(teamUserRes)
     }
 
     private fun showQrCodeDialog(){
@@ -273,14 +261,15 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         dialog.show()
     }
 
-    private fun showGroupResignDialog() {
+    private fun showGroupResignDialog(ban: TeamUserRes) {
         val binding = DialogGroupResignBinding.inflate(layoutInflater)
 
         val dialog = AlertDialog.Builder(requireContext())
             .setView(binding.root)
             .create()
         binding.groupResignConfirmBtn.setOnClickListener {
-
+            val banUser = BanUserReq(ban.email,ban.teamId)
+            viewModel.TeamResign(banUser)
             dialog.dismiss()
         }
 
@@ -489,18 +478,6 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                         "위치 서비스가 꺼져 있어, 현재 위치를 확인할 수 없습니다.",
                         Toast.LENGTH_SHORT).show()
                 }
-        }
-    }
-
-    fun TeamResign(ban: BanUserReq){
-        lifecycleScope.launch{
-            kotlin.runCatching {
-                RetrofitUtil.teamService.banUser(1,ban)
-            }.onSuccess {
-                Log.d(TAG,"성공하였습니다")
-            }.onFailure {
-                Log.d(TAG,"실패하였습니다")
-            }
         }
     }
 
