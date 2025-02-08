@@ -26,8 +26,8 @@ import com.example.prepay.CommonUtils
 import com.example.prepay.PermissionChecker
 import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
-import com.example.prepay.User
 import com.example.prepay.data.response.TeamIdStoreRes
+import com.example.prepay.data.response.TeamUserRes
 import com.example.prepay.databinding.DialogAuthoritySettingBinding
 import com.example.prepay.databinding.DialogGroupExitBinding
 import com.example.prepay.databinding.DialogGroupResignBinding
@@ -63,7 +63,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     private lateinit var restaurantAdapter: RestaurantAdapter
     private lateinit var teamUserAdapter: TeamUserAdapter
     private lateinit var restaurantList: List<TeamIdStoreRes>
-    private lateinit var teamUserList: List<User>
+    private lateinit var teamTeamUserResList: List<TeamUserRes>
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
     //activityViewModel
@@ -114,30 +114,26 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     }
 
     private fun initAdapter(){
-        /*restaurantList = listOf(
-            Restaurant("꿀맛 식당", 10000),
-            Restaurant("싸피 식당", 20000),
-            Restaurant("삼성 식당", 4000)
-        )*/
-        teamUserList = listOf(
-            User("김싸피","ㅇㅇㅇㄹ","ㅇㅇㅇ"),
-            User("김ㄷㄷㄷ","ㄹㄹㄹ","ㅇㅇㅇ"),
-            User("김ㄹㄹ","ㄱㄱㄱ","ㅇㅇㅇ")
-        )
+        teamTeamUserResList = emptyList()
         restaurantList = emptyList()
         restaurantAdapter = RestaurantAdapter(restaurantList,this)
-        teamUserAdapter = TeamUserAdapter(teamUserList,this)
+        teamUserAdapter = TeamUserAdapter(teamTeamUserResList,this)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
         binding.recyclerView.adapter = restaurantAdapter
         binding.rvMemberList.layoutManager = LinearLayoutManager(requireContext())
         binding.rvMemberList.adapter = teamUserAdapter
-
 
         viewModel.storeListInfo.observe(viewLifecycleOwner){ it->
             restaurantAdapter.teamIdStoreResList = it
             restaurantAdapter.notifyDataSetChanged()
         }
+        viewModel.teamUserListInfo.observe(viewLifecycleOwner){it->
+            teamUserAdapter.teamUserResList = it
+            teamUserAdapter.notifyDataSetChanged()
+        }
         viewModel.getMyTeamRestaurantList(1,activityViewModel.teamId.value!!)
+        viewModel.getMyTeamUserList(1,activityViewModel.teamId.value!!);
     }
 
     private fun initDrawerLayout(){
@@ -175,11 +171,11 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.RESTAURANT_DETAILS_FRAGMENT)
     }
 
-    override fun onManageClick(user: User) {
+    override fun onManageClick(teamUserRes: TeamUserRes) {
         showAuthoritySettingDialog()
     }
 
-    override fun onResignClick(user: User) {
+    override fun onResignClick(teamUserRes: TeamUserRes) {
         showGroupResignDialog()
     }
 
@@ -190,7 +186,6 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             .create()
         dialog.show()
     }
-
 
 
     private fun showInviteCodeInputDialog() {

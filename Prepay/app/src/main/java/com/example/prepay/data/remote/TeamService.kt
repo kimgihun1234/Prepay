@@ -11,6 +11,7 @@ import com.example.prepay.data.response.TeamIdReq
 import com.example.prepay.data.response.TeamIdStoreRes
 import com.example.prepay.data.response.TeamStoreReq
 import com.example.prepay.data.response.TeamStoreRes
+import com.example.prepay.data.response.TeamUserRes
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -54,7 +55,7 @@ interface TeamService {
 
     //특정 팀의 사용자 목록을 가져옵니다.
     @GET("/team/{teamId}/user")
-    suspend fun getUserOfTeam(@Header("userId") userId: Long, @Path("teamId") teamId: Long): List<GetUserOfTeamRes>
+    suspend fun getUserOfTeam(@Header("userId") userId: Long, @Path("teamId") teamId: Long): List<TeamUserRes>
 
 
     //특정 팀의 식당 목록을 가져옵니다.
