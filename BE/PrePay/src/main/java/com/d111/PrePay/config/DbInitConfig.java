@@ -1,7 +1,9 @@
 package com.d111.PrePay.config;
 
 import com.d111.PrePay.dto.request.*;
-import com.d111.PrePay.repository.UserRepository;
+import com.d111.PrePay.model.DetailHistory;
+import com.d111.PrePay.model.OrderHistory;
+import com.d111.PrePay.repository.*;
 import com.d111.PrePay.service.StoreService;
 import com.d111.PrePay.service.TeamService;
 import com.d111.PrePay.service.UserService;
@@ -21,6 +23,10 @@ public class DbInitConfig implements ApplicationRunner {
     private final TeamService teamService;
     private final UserRepository userRepository;
     private final StoreService storeService;
+    private final OrderHistoryRepository orderHistoryRepository;
+    private final StoreRepository storeRepository;
+    private final TeamRepository teamRepository;
+    private final DetailHistoryRepository detailHistoryRepository;
 
     @Override
     @Transactional
@@ -76,5 +82,33 @@ public class DbInitConfig implements ApplicationRunner {
             }
         }
         log.info("사람 팀에 삽입 완료");
+
+        for (long i = 1; i < 5; i++) {
+            for (long k = 1; k < 5; k++) {
+                OrderHistory orderHistory = new OrderHistory();
+                orderHistory.setStore(storeRepository.getReferenceById(k));
+                orderHistory.setUser(userRepository.findById(i).orElseThrow());
+                orderHistory.setOrderDate(System.currentTimeMillis()-1000*60*60-i);
+                orderHistory.setTeam(teamRepository.findById(i).orElseThrow());
+                orderHistory.setRefundRequested(false);
+                orderHistory.setCompanyDinner(false);
+                orderHistory.setWithDraw(false);
+                orderHistory.setTotalPrice(21000);
+                orderHistoryRepository.save(orderHistory);
+                for (int j = 1; j < 6; j++) {
+                    DetailHistory detailHistory = new DetailHistory();
+                    detailHistory.setOrderHistory(orderHistory);
+                    detailHistory.setProduct("제품명"+j);
+                    detailHistory.setDetailPrice (j*1000);
+                    detailHistory.setQuantity(j);
+                    detailHistoryRepository.save(detailHistory);
+                }
+            }
+
+
+        }
+
+        log.info("주문 내역 삽입 완료");
+
     }
 }
