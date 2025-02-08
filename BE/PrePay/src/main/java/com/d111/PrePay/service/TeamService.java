@@ -49,11 +49,16 @@ public class TeamService {
 
     // 팀 이미지 업로드
     @Transactional
-    public UploadImageRes uploadImage(TeamIdReq req, MultipartFile image) throws IOException {
+    public UploadImageRes uploadImage(TeamIdReq req, MultipartFile image) {
         Team team = teamRepository.findById(req.getTeamId()).orElseThrow();
         if (image != null && !image.isEmpty()) {
-            String imgUrl = imageService.uploadImage(image, req.getTeamId());
-            imageService.uploadImage(image, team.getId());
+            String imgUrl;
+            try {
+                imgUrl = imageService.uploadImage(image, req.getTeamId());
+                imageService.uploadImage(image, team.getId());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             team.setTeamImgUrl(imgUrl);
         }
 
@@ -145,6 +150,7 @@ public class TeamService {
 
     // 팀 비밀번호를 이용한 팀 가입
     // 확인
+    @Transactional
     public GetUserOfTeamRes signInTeam(Long userId, SignInTeamReq req) {
         Team findTeam = teamRepository.findByTeamPassword(req.getTeamPassword())
                 .orElseThrow(() -> new RuntimeException("일치하는 팀이 없습니다."));
@@ -152,7 +158,8 @@ public class TeamService {
         User findUser = userRepository.findById(userId).orElseThrow();
 
         if (userTeamRepository.existsByUserAndTeam(findUser, findTeam)) {
-            throw new RuntimeException("이미 가입된 팀입니다.");
+            log.error("이미 가입된 팀입니다.");
+            throw new RuntimeException();
         }
         UserTeam userTeam = UserTeam.builder()
                 .team(findTeam)
@@ -299,7 +306,7 @@ public class TeamService {
 
     // 팀 생성
     // 확인
-    public TeamCreateRes createTeam(TeamCreateReq request, Long userId, MultipartFile image) throws IOException {
+    public TeamCreateRes createTeam(TeamCreateReq request, Long userId, MultipartFile image) {
         String teamPassword;
         if (!request.isPublicTeam()) {
             teamPassword = generateRandomPassword();
@@ -321,7 +328,13 @@ public class TeamService {
         Team savedTeam = teamRepository.save(team);
 
         if (image != null && !image.isEmpty()) {
-            String imgUrl = imageService.uploadImage(image, team.getId());
+            String imgUrl =null;
+            try{
+               imgUrl = imageService.uploadImage(image, team.getId());
+            }catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
             team.setTeamImgUrl(imgUrl);
             teamRepository.save(team);
         }
