@@ -14,14 +14,14 @@ public class QrController {
 
     private final QrService qrService;
 
-    @GetMapping("/{teamId}/party-qr")
+    @GetMapping("/{teamId}/party")
     @Operation(summary = "회식용 qr 생성")
     public ResponseEntity<StandardRes> getPartyQr(@RequestHeader String userEmail, @PathVariable Long teamId) {
         StandardRes result = qrService.getPartyQr(userEmail, teamId);
         return ResponseEntity.status(result.getStatusCode()).body(result);
     }
 
-    @PostMapping("/private-qr")
+    @PostMapping("/private")
     @Operation(summary = "개인용 qr 생성")
     public ResponseEntity<StandardRes> getPrivateQr(@RequestHeader String userEmail){
         return ResponseEntity.ok(qrService.getPrivateQr(userEmail));
