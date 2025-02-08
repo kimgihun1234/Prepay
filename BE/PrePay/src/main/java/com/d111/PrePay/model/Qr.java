@@ -1,10 +1,7 @@
 package com.d111.PrePay.model;
 
 import com.d111.PrePay.value.QrType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,9 +23,13 @@ public class Qr {
 
     private QrType type;
 
-    public Qr(QrType type) {
-        this.type=type;
-        this.genDate=System.currentTimeMillis();
+    @ManyToOne
+    private User user;
+
+    public Qr(QrType type, User user) {
+        this.type = type;
+        this.genDate = System.currentTimeMillis();
         this.uuid = UUID.randomUUID().toString();
+        this.user = user;
     }
 }
