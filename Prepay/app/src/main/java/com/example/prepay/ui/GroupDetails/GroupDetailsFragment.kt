@@ -27,6 +27,7 @@ import com.example.prepay.PermissionChecker
 import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.data.response.BanUserReq
+import com.example.prepay.data.response.PrivilegeUserReq
 import com.example.prepay.data.response.TeamIdStoreRes
 import com.example.prepay.data.response.TeamUserRes
 import com.example.prepay.databinding.DialogAuthoritySettingBinding
@@ -205,7 +206,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     }
 
     override fun onManageClick(teamUserRes: TeamUserRes) {
-        showAuthoritySettingDialog()
+        showAuthoritySettingDialog(teamUserRes)
     }
 
     override fun onResignClick(teamUserRes: TeamUserRes) {
@@ -279,13 +280,15 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         dialog.show()
     }
 
-    private fun showAuthoritySettingDialog() {
+    private fun showAuthoritySettingDialog(privilege : TeamUserRes) {
         val binding = DialogAuthoritySettingBinding.inflate(layoutInflater)
 
         val dialog = AlertDialog.Builder(requireContext())
             .setView(binding.root)
             .create()
         binding.autoritySettingConfirmBtn.setOnClickListener {
+            val pr = PrivilegeUserReq(privilege.email,true,privilege.teamId)
+            privilegeUser(pr)
             dialog.dismiss()
         }
 
@@ -294,6 +297,19 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         }
         dialog.show()
     }
+
+    fun privilegeUser(pr:PrivilegeUserReq){
+        lifecycleScope.launch {
+            runCatching {
+              RetrofitUtil.teamService.privilegeUser(1,pr)
+            }.onSuccess {
+
+            }.onFailure {
+
+            }
+        }
+    }
+
 
     private val readyCallback: OnMapReadyCallback by lazy{
         object: OnMapReadyCallback {
