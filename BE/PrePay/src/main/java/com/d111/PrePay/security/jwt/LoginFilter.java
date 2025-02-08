@@ -92,6 +92,11 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         response.setHeader("access", access);
         response.addCookie(createCookie("refresh", refresh));
         response.setStatus(HttpStatus.OK.value());
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{\"nickname\":\"" + user.getNickname() + "\", \"message\":\"로그인 성공\"}");
+        response.getWriter().flush();
+
 
     }
 
