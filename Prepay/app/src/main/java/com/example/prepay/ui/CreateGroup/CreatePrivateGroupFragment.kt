@@ -10,7 +10,6 @@ import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.data.model.dto.PublicPrivateTeam
-import com.example.prepay.data.model.dto.ImageRequest
 import com.example.prepay.databinding.FragmentCreatePrivateGroupBinding
 import com.example.prepay.ui.MainActivity
 import kotlinx.coroutines.Dispatchers
