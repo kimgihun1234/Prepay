@@ -3,6 +3,7 @@ package com.example.prepay.data.remote
 import com.example.prepay.data.model.dto.PublicPrivateTeam
 import com.example.prepay.data.response.BanUserReq
 import com.example.prepay.data.response.GetUserOfTeamRes
+import com.example.prepay.data.response.PrivilegeUserReq
 import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.data.response.SignInTeamReq
 import com.example.prepay.data.response.StoreLocation
@@ -49,6 +50,10 @@ interface TeamService {
     //특정 사용자를 팀에서 강퇴합니다.
     @POST("/team/ban")
     suspend fun banUser(@Header("userId") userId: Long, @Body request: BanUserReq): Map<String,String>
+
+    //특정 사용자를 팀에서 강퇴합니다.
+    @POST("/team/privilege")
+    suspend fun privilegeUser(@Header("userId") userId: Long, @Body request: PrivilegeUserReq): Map<String,String>
 
     //사용자가 팀을 탈퇴합니다.
     @POST("/team/exit")
