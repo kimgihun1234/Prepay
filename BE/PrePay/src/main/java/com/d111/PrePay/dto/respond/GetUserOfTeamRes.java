@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class GetUserOfTeamRes {
     private Long teamId;
-    private String userName;
     private String nickName;
     private boolean position;
     private boolean privilege;

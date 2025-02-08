@@ -45,7 +45,7 @@ public class TeamController {
             "<br>requestpart : image")
     public ResponseEntity<UploadImageRes> uploadImage(@RequestHeader Long userId,
                                                       @RequestPart("request") TeamIdReq req,
-                                                      @RequestPart(value = "image", required = false) MultipartFile image) throws IOException {
+                                                      @RequestPart(value = "image", required = false) MultipartFile image){
 
         return ResponseEntity.ok(teamService.uploadImage(req, image));
 
