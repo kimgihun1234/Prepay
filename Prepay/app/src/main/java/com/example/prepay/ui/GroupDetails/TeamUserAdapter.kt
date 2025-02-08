@@ -13,7 +13,7 @@ class TeamUserAdapter(var teamUserResList: List<TeamUserRes>,
     class TeamUserViewHolder(private val binding: ItemTeamUserBinding,private val actionListener: OnTeamUserActionListener) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(teamUserRes: TeamUserRes) {
-            binding.teamUserName.text = teamUserRes.nickName
+            binding.teamUserName.text = teamUserRes.nickname
             binding.manageBtn.setOnClickListener {
                 actionListener.onManageClick(teamUserRes)
             }
