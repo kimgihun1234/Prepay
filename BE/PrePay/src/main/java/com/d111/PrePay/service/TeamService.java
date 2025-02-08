@@ -381,6 +381,8 @@ public class TeamService {
         List<StoresRes> resultList = new ArrayList<>();
         for (TeamStore teamStore : teamStores) {
             StoresRes storesRes = new StoresRes(teamStore);
+            storesRes.setLatitude(teamStore.getStore().getLatitude());
+            storesRes.setLongitude(teamStore.getStore().getLongitude());
             resultList.add(storesRes);
         }
         return resultList;
