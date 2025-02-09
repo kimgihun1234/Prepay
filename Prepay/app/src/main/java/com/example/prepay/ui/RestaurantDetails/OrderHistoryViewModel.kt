@@ -18,7 +18,7 @@ class OrderHistoryViewModel : ViewModel() {
     fun getAllOrderHistoryList(userId:Int, teamId:Long, storeId : Long) {
         viewModelScope.launch {
             runCatching {
-                RetrofitUtil.orderService.getDetailHistory(userId, OrderHistoryReq(teamId,storeId))
+                RetrofitUtil.orderService.getDetailHistory(userId, OrderHistoryReq(teamId, storeId))
             } .onSuccess { response ->
                 _orderHistoryListInfo.postValue(response)
                 Log.d("OrderHistoryList", "getAllOrderHistoryList: 팀리스트 가져오기 성공: $response")

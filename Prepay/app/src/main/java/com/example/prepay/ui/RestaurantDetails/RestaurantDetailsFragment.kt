@@ -46,10 +46,10 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
 
     private fun initAdapter() {
 
-        val restaurant = ViewModelProvider(requireActivity()).get(RestaurantDetailsViewModel::class.java)
-        restaurant.sendRestaurantData(binding.restaurantNameBootpay.text.toString())
-
         receiptbinding = DialogReceiptBinding.inflate(LayoutInflater.from(context))
+
+        receiptbinding.restaurantName.text = binding.restaurantNameBootpay.text
+        Log.d("receiptbinding.restaurantName.text", "receiptbinding.restaurantName.text: ${receiptbinding.restaurantName.text}")
         binding.recyclerView.layoutManager = LinearLayoutManager(binding.root.context)
         orderHistoryAdapter = OrderHistoryAdapter(arrayListOf(), ReceiptViewModel, this)
         binding.recyclerView.adapter = orderHistoryAdapter
@@ -58,7 +58,7 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
             orderHistoryAdapter.orderHistoryList = it
             orderHistoryAdapter.notifyDataSetChanged()
         }
-        viewModel.getAllOrderHistoryList(1,1,1)
+        viewModel.getAllOrderHistoryList(1,0,1)
         Log.d("RestaurantDetailsFragment", "getAllOrderHistoryList() 호출됨")
     }
 }
