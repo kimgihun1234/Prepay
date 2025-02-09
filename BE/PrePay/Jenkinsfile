@@ -21,6 +21,9 @@ pipeline {
         GOOGLE_SERVICES_JSON = credentials('FIREBASE-SERVICE-KEY.JSON')
         FCM_SERVICE_KEY_JSON = credentials('FCM_SERVICE_KEY.JSON')
 
+        BOOTPAY_PRIVATE_KEY=credentials('BOOTPAY_PRIVATE_KEY')
+        BOOTPAY_APPID=credentials('BOOTPAY_APPID')
+
         JAVA_HOME = '/opt/java/openjdk'
         GRADLE_HOME = '/opt/gradle/gradle-8.11.1'
         PATH = "${JAVA_HOME}/bin:${GRADLE_HOME}/bin:${env.PATH}"
@@ -111,6 +114,8 @@ pipeline {
                                       -e DB_PROD_USERNAME=${DB_USERNAME} \
                                       -e DB_PROD_PASSWORD=${DB_PASSWORD} \
                                       -e JWT_SECRET=${JWT_SECRET} \
+                                      -e BOOTPAY_PRIVATE_KEY=${BOOTPAY_PRIVATE_KEY} \
+                                      -e BOOTPAY_APPID=${BOOTPAY_APPID} \
                                       -e TZ=Asia/Seoul\
                                       ${DOCKER_IMAGE}:latest
                                 """.stripIndent()
