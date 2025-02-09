@@ -1,5 +1,6 @@
 package com.example.prepay.ui.GroupDetails
 
+import android.location.Location
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -21,6 +22,13 @@ class GroupDetailsFragmentViewModel : ViewModel() {
     private val _teamUserListInfo = MutableLiveData<List<TeamUserRes>>()
     val teamUserListInfo: LiveData<List<TeamUserRes>>
         get() = _teamUserListInfo
+
+    private val _userLocation = MutableLiveData<Location>()
+    val userLocation: LiveData<Location> get() = _userLocation
+
+    fun updateLocation(location: Location) {
+        _userLocation.value = location
+    }
 
     fun getMyTeamRestaurantList(userId:Long,teamId: Long) {
         viewModelScope.launch {
