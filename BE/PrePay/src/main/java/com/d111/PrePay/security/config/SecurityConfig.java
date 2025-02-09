@@ -5,11 +5,14 @@ import com.d111.PrePay.security.jwt.CustomLogoutFilter;
 import com.d111.PrePay.security.jwt.JWTFilter;
 import com.d111.PrePay.security.jwt.JWTUtil;
 import com.d111.PrePay.security.jwt.LoginFilter;
+import com.d111.PrePay.security.oauth2.CustomSuccessHandler;
 import com.d111.PrePay.security.repository.RefreshRepository;
+import com.d111.PrePay.security.service.CustomOAuth2UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,14 +34,20 @@ public class SecurityConfig {
     private final JWTUtil jwtUtil;
     private final UserRepository userRepository;
     private RefreshRepository refreshRepository;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomSuccessHandler customSuccessHandler;
 
     public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil,
                           UserRepository userRepository,
-                          RefreshRepository refreshRepository) {
+                          RefreshRepository refreshRepository,
+                          CustomOAuth2UserService customOAuth2UserService,
+                          CustomSuccessHandler customSuccessHandler) {
         this.authenticationConfiguration = authenticationConfiguration;
         this.jwtUtil = jwtUtil;
         this.userRepository = userRepository;
         this.refreshRepository = refreshRepository;
+        this.customOAuth2UserService = customOAuth2UserService;
+        this.customSuccessHandler = customSuccessHandler;
     }
 
 
@@ -55,28 +64,33 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-//        http.cors((cors)->
-//                cors.configurationSource(new CorsConfigurationSource() {
-//                    @Override
-//                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-//
-//                        CorsConfiguration configuration = new CorsConfiguration();
-//
-//                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
-//                        configuration.setAllowedMethods(Collections.singletonList("*"));
-//                        configuration.setAllowCredentials(true);
-//                        configuration.setAllowedHeaders(Collections.singletonList("*"));
-//                        configuration.setMaxAge(3600L);
-//
-//                        return configuration;
-//                    }
-//                }));
+        http.cors((cors)->
+                cors.configurationSource(new CorsConfigurationSource() {
+                    @Override
+                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+
+                        CorsConfiguration configuration = new CorsConfiguration();
+
+                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                        configuration.setAllowedMethods(Collections.singletonList("*"));
+                        configuration.setAllowCredentials(true);
+                        configuration.setAllowedHeaders(Collections.singletonList("*"));
+                        configuration.setMaxAge(3600L);
+
+                        return configuration;
+                    }
+                }));
 
         http.csrf((auth) -> auth.disable());
 
         http.formLogin((auth) -> auth.disable());
 
         http.httpBasic((auth) -> auth.disable());
+
+        http.oauth2Login((oauth2)->oauth2
+                .userInfoEndpoint((userInfoEndpointConfig) ->userInfoEndpointConfig
+                        .userService(customOAuth2UserService))
+                .successHandler(customSuccessHandler));
 
 
         http.authorizeHttpRequests((auth) ->
