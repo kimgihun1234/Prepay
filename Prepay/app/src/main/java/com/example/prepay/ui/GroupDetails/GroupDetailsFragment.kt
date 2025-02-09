@@ -29,6 +29,7 @@ import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.data.response.BanUserReq
 import com.example.prepay.data.response.PrivilegeUserReq
+import com.example.prepay.data.response.TeamIdReq
 import com.example.prepay.data.response.TeamIdStoreRes
 import com.example.prepay.data.response.TeamUserRes
 import com.example.prepay.databinding.DialogAuthoritySettingBinding
@@ -266,6 +267,9 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             .setView(binding.root)
             .create()
         binding.groupExitConfirmBtn.setOnClickListener {
+            val tr = TeamIdReq(teamId = activityViewModel.teamId.value!!.toInt())
+            exitTeam(tr)
+            mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
             dialog.dismiss()
         }
 
@@ -323,6 +327,17 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         }
     }
 
+    fun exitTeam(tr: TeamIdReq){
+        lifecycleScope.launch {
+            runCatching {
+                RetrofitUtil.teamService.exitTeam(1,tr)
+            }.onSuccess {
+
+            }.onFailure {
+
+            }
+        }
+    }
 
     private val readyCallback: OnMapReadyCallback by lazy{
         object: OnMapReadyCallback {
