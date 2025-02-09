@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.data.model.dto.OrderHistory
+import com.example.prepay.data.model.dto.OrderHistoryReq
 import kotlinx.coroutines.launch
 
 class OrderHistoryViewModel : ViewModel() {
@@ -18,10 +19,12 @@ class OrderHistoryViewModel : ViewModel() {
     fun getAllOrderHistoryList() {
         viewModelScope.launch {
             runCatching {
-                RetrofitUtil.orderService.getDetailReceipt(1,1,)
-            } .onSuccess {
-                Log.d("OrderHistoryList", "getAllOrderHistoryList: 팀리스트 가져오기 성공: $it")
+                RetrofitUtil.orderService.getDetailHistory(1, OrderHistoryReq(1,0))
+            } .onSuccess { response ->
+                _orderHistoryListInfo.postValue(response)
+                Log.d("OrderHistoryList", "getAllOrderHistoryList: 팀리스트 가져오기 성공: $response")
             } .onFailure { e ->
+                Log.d("getAllOrderHistoryList","getAllOrderHistoryList: ${e.message}")
                 _orderHistoryListInfo.value = emptyList()
             }
         }
