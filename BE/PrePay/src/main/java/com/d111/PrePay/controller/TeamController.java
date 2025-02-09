@@ -40,12 +40,10 @@ public class TeamController {
 
     // 팀 이미지 수정
     @PostMapping("/image")
-    @Operation(summary = "팀 이미지 수정", description = "<b>Header access : accessToken" +
-            "<br>long : teamId" +
-            "<br>requestpart : image")
+    @Operation(summary = "팀 이미지 수정")
     public ResponseEntity<UploadImageRes> uploadImage(@RequestHeader Long userId,
                                                       @RequestPart("request") TeamIdReq req,
-                                                      @RequestPart(value = "image", required = false) MultipartFile image) throws IOException {
+                                                      @RequestPart(value = "image", required = false) MultipartFile image){
 
         return ResponseEntity.ok(teamService.uploadImage(req, image));
 
@@ -53,9 +51,7 @@ public class TeamController {
 
 
     @PostMapping("/ban")
-    @Operation(summary = "팀에서 유저 강퇴", description = "<b>Header access : accessToken" +
-            "<br>long : banUserId" +
-            "<br>long : teamId")
+    @Operation(summary = "팀에서 유저 강퇴")
     public ResponseEntity<Map<String,String>> banUser(@RequestHeader Long userId,
                                         @RequestBody BanUserReq req) {
         teamService.banUser(req);
@@ -83,9 +79,7 @@ public class TeamController {
 
 
     @PostMapping("confirm-privilege")
-    @Operation(summary = "회식 권한 수락",description = "<b>헤더" +
-            "<br>long : partyRequestId" +
-            "<br> boolean : accept ->true면 허가")
+    @Operation(summary = "회식 권한 요청 수락")
     public ResponseEntity<PartyConfirmRes> confirmPrivilege(@RequestHeader Long userId,
                                                             @RequestBody PartyConfirmReq req) {
         return ResponseEntity.ok(teamService.confirmPrivilege(req));
@@ -119,6 +113,7 @@ public class TeamController {
 
 
     @PostMapping("/signin")
+    @Operation(summary = "팀 생성")
     public ResponseEntity<GetUserOfTeamRes> signinTeam(@RequestHeader Long userId,
                                                        @RequestBody SignInTeamReq req) {
 //        Long userId = accessToken.getUserId();
@@ -128,6 +123,7 @@ public class TeamController {
 
 
     @PostMapping("/privilege")
+    @Operation(summary = "회식 권한 부여")
     public ResponseEntity<GrantPrivilegeRes> grantPrivilege(@RequestHeader Long userId,
                                                             @RequestBody GrantPrivilegeReq req) {
         return ResponseEntity.ok(teamService.grantPrivilege(req));
@@ -135,6 +131,7 @@ public class TeamController {
 
 
     @PostMapping("/position")
+    @Operation(summary = "운영자 권한 부여")
     public ResponseEntity<GrantAdminPositionRes> grantAdminPosition(@RequestHeader Long userId,
                                                                     @RequestBody GrantAdminPositionReq req) {
         return ResponseEntity.ok(teamService.grantAdminPosition(req));
@@ -168,6 +165,7 @@ public class TeamController {
 
 
     @GetMapping("/{teamId}/user")
+    @Operation(summary = "팀 유저 조회")
     public List<GetUserOfTeamRes> getUserOfTeam(@PathVariable Long teamId,
                                                 @RequestHeader Long userId) {
 //        Long userId = accessToken.getUserId();
@@ -176,6 +174,7 @@ public class TeamController {
 
 
     @GetMapping("/{teamId}")
+    @Operation(summary = "팀 상세 정보 조회")
     public ResponseEntity<TeamDetailRes> getTeamDetails(@PathVariable Long teamId,
                                                         @RequestHeader Long userId) {
 //        Long userId = accessToken.getUserId();
@@ -184,6 +183,7 @@ public class TeamController {
 
 
     @PostMapping(value = "/signup",consumes = MediaType.MULTIPART_FORM_DATA_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "팀 생성")
     public ResponseEntity<TeamCreateRes> createTeam(@RequestPart("request") TeamCreateReq request,
                                                     @RequestPart(value = "image", required = false) MultipartFile image,
                                                     @RequestHeader Long userId) throws IOException {
@@ -200,6 +200,7 @@ public class TeamController {
     }
 
     @GetMapping("/{teamId}/stores")
+    @Operation(summary = "팀 가맹점 조회")
     public ResponseEntity<List<StoresRes>> getMyTeamStores(@RequestHeader Long userId, @PathVariable Long teamId) {
 //        Long userId = userDetails.getUserId();
         return ResponseEntity.ok(teamService.getMyTeamStores(teamId, userId));

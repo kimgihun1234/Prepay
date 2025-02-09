@@ -8,7 +8,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create-drop
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
@@ -20,3 +20,6 @@ logging:
     org.springframework.web: DEBUG
     org.hibernate.SQL: debug
     org.hibernate.orm.jdbc.bind: trace
+bootpay:
+  key: ${BOOTPAY_PRIVATE_KEY}
+  appid: ${BOOTPAY_APPID}

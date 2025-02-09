@@ -11,17 +11,18 @@ import lombok.NoArgsConstructor;
 @Getter
 public class GetUserOfTeamRes {
     private Long teamId;
-    private String userName;
-    private String nickName;
+    private String email;
+    private String nickname;
     private boolean position;
     private boolean privilege;
 
     public GetUserOfTeamRes(UserTeam userTeam) {
         User user = userTeam.getUser();
         Team team = userTeam.getTeam();
-        this.nickName = user.getNickname();
+        this.email = user.getEmail();
         this.position = userTeam.isPosition();
         this.privilege = userTeam.isPrivilege();
         this.teamId = team.getId();
+        this.nickname = user.getNickname();
     }
 }

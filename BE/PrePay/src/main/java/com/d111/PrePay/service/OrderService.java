@@ -25,8 +25,24 @@ public class OrderService {
     private final UserRepository userRepository;
 
     public List<OrderHistoryRes> getOrderHistory(OrderHistoryReq req) {
-        if (req.getStoreId() != null) {
-            List<OrderHistory> originalList = orderHistoryRepository.findOrderHistoriesByStoreIdEquals(req.getStoreId());
+        if (req.getStoreId() == 0 && req.getTeamId() == 0) {
+            List<OrderHistory> originalList = orderHistoryRepository.findAll();
+            List<OrderHistoryRes> resultList = new ArrayList<>();
+            for (OrderHistory orderHistory : originalList) {
+                OrderHistoryRes result = new OrderHistoryRes(orderHistory);
+                resultList.add(result);
+            }
+            return resultList;
+        } else if (req.getStoreId() == 0) {
+            List<OrderHistory> originalList = orderHistoryRepository.findOrderHistoriesByStoreIdEquals(req.getTeamId());
+            List<OrderHistoryRes> resultList = new ArrayList<>();
+            for (OrderHistory orderHistory : originalList) {
+                OrderHistoryRes result = new OrderHistoryRes(orderHistory);
+                resultList.add(result);
+            }
+            return resultList;
+        } else if (req.getTeamId() == 0) {
+            List<OrderHistory> originalList = orderHistoryRepository.findOrderHistoriesByTeamIdEquals(req.getStoreId());
             List<OrderHistoryRes> resultList = new ArrayList<>();
             for (OrderHistory orderHistory : originalList) {
                 OrderHistoryRes result = new OrderHistoryRes(orderHistory);
@@ -34,7 +50,7 @@ public class OrderService {
             }
             return resultList;
         } else {
-            List<OrderHistory> originalList = orderHistoryRepository.findOrderHistoriesByTeamIdEquals(req.getTeamId());
+            List<OrderHistory> originalList = orderHistoryRepository.findOrderHistoriesByTeamIdEqualsAndStoreIdEquals(req.getTeamId(), req.getStoreId());
             List<OrderHistoryRes> resultList = new ArrayList<>();
             for (OrderHistory orderHistory : originalList) {
                 OrderHistoryRes result = new OrderHistoryRes(orderHistory);

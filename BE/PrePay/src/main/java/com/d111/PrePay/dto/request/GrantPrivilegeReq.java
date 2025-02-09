@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class GrantPrivilegeReq {
-    private Long changeUserId;
+    private String changeUserEmail;
     private Long teamId;
     private boolean privilege;
 

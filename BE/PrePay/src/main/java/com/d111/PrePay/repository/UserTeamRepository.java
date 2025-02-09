@@ -15,5 +15,7 @@ public interface UserTeamRepository extends JpaRepository<UserTeam,Long> {
 
     boolean existsByUserAndTeam(User user, Team team);
 
-    UserTeam findUserTeamByTeamAndUser(Team team, User teamInitializer);
+    Optional<UserTeam> findByTeam_IdAndUser_Email(Long teamId, String userEmail);
+
+    Optional<UserTeam> findByTeamIdAndUser_Email(Long teamId, String changeUserEmail);
 }
