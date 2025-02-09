@@ -19,6 +19,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.prepay.BaseFragment
@@ -68,6 +69,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     private lateinit var teamTeamUserResList: List<TeamUserRes>
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
+    private lateinit var currentLocation: Location
     //activityViewModel
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val viewModel: GroupDetailsFragmentViewModel by viewModels()
@@ -76,6 +78,11 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     private var mMap: GoogleMap? = null
     private var currentMarker: Marker? = null
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
+    private var isUserLocationSet = false
+    private var location = Location("dummy").apply {
+        latitude = 1.0
+        longitude = 1.0
+    }
 
     /** permission check **/
     private val checker = PermissionChecker(this)
@@ -119,7 +126,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     private fun initAdapter(){
         teamTeamUserResList = emptyList()
         restaurantList = emptyList()
-        restaurantAdapter = RestaurantAdapter(restaurantList,this)
+        restaurantAdapter = RestaurantAdapter(restaurantList,this,location)
         teamUserAdapter = TeamUserAdapter(teamTeamUserResList,this)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -141,6 +148,12 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         }
         viewModel.getMyTeamRestaurantList(1,activityViewModel.teamId.value!!)
         viewModel.getMyTeamUserList(1,activityViewModel.teamId.value!!);
+
+        viewModel.userLocation.observe(viewLifecycleOwner) { curlocation ->
+            // 위치 정보가 변경될 때마다 호출
+            restaurantAdapter = RestaurantAdapter(restaurantList, this, curlocation)
+            restaurantAdapter.notifyDataSetChanged()
+        }
     }
 
     private fun initData(){
@@ -329,13 +342,6 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                 } else { //이미 전체 권한이 있는 경우
                     startLocationUpdates()
                 }
-                /** permission check **/
-                mMap?.setOnMapLongClickListener {
-                    val loc = Location("")
-                    loc.latitude = it.latitude
-                    loc.longitude = it.longitude
-                    setCurrentLocation(loc)
-                }
                 viewModel.storeListInfo.value?.let { addStoreMarkers(it) }
             }
         }
@@ -369,7 +375,12 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             val locationList = locationResult.locations
             if (locationList.size > 0) {
                 val location = locationList[locationList.size - 1]
-
+                if(!isUserLocationSet){
+                    //여기에 추가
+                    isUserLocationSet = true
+                    viewModel.updateLocation(location)
+                }
+                Log.d(TAG,location.toString())
                 //현재 위치에 마커 생성하고 이동
                 setCurrentLocation(location)
             }
@@ -379,7 +390,6 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     fun setCurrentLocation(location: Location){
         val markerTitle: String = getCurrentAddress(location)
         val markerSnippet = "위도: ${location.latitude.toString()}, 경도: ${location.longitude }"
-
         //현재 위치에 마커 생성하고 이동
         setCurrentLocation(location, markerTitle, markerSnippet)
     }
