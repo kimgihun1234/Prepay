@@ -115,7 +115,7 @@ pipeline {
                                       -e DB_PROD_PASSWORD=${DB_PASSWORD} \
                                       -e JWT_SECRET=${JWT_SECRET} \
                                       -e BOOTPAY_PRIVATE_KEY=${BOOTPAY_PRIVATE_KEY} \
-                                      -3 BOOTPAY_APPID=${BOOTPAY_APPID} \
+                                      -e BOOTPAY_APPID=${BOOTPAY_APPID} \
                                       -e TZ=Asia/Seoul\
                                       ${DOCKER_IMAGE}:latest
                                 """.stripIndent()
