@@ -63,7 +63,6 @@ class OrderHistoryAdapter(var orderHistoryList: List<OrderHistory>,
 
                 dialogBinding.recyclerView.layoutManager = LinearLayoutManager(itemView.context)
                 dialogBinding.useName.text = order.orderHistoryId.toString()
-
                 dialogBinding.restaurantAmount.text = NumberFormat.getNumberInstance(Locale.KOREA).format(order.totalPrice)
                 dialogBinding.receiptDate.text = order.orderDate
                 dialogBinding.orderDate.text = "[주문] ${order.orderDate}"
