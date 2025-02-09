@@ -23,9 +23,9 @@ public class PosService {
     public Long makeOrder(OrderCreateReq orderReq) {
         Qr qr = qrRepository.findByUuid(orderReq.getQrUUID());
 
-        /*if (qr.getGenDate() > System.currentTimeMillis() - 1000 * 30) {
-            추후 error handleing 구현 후 에러 만들 것
-        }*/
+        if (qr.getGenDate() < System.currentTimeMillis() - 1000 * 60) {
+            throw new RuntimeException("시간 초과");
+        }
 
         OrderHistory orderHistory = new OrderHistory(orderReq);
         Store store = storeRepository.findById(orderReq.getStoreId()).orElseThrow(() -> new RuntimeException("가게 오류"));
@@ -33,11 +33,7 @@ public class PosService {
         userTeam.setUsedAmount(userTeam.getUsedAmount() + orderHistory.getTotalPrice());
         Team team = userTeam.getTeam();
         User user = userTeam.getUser();
-        if(qr.getType()== QrType.PRIVATE){
-            orderHistory.setCompanyDinner(false);
-        }else{
-            orderHistory.setCompanyDinner(true);
-        }
+        orderHistory.setCompanyDinner(qr.getType() != QrType.PRIVATE);
         orderHistory.setStore(store);
         orderHistory.setTeam(team);
         orderHistory.setUser(user);

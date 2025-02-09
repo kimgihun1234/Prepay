@@ -24,6 +24,7 @@ public class QrController {
     @PostMapping("/private")
     @Operation(summary = "개인용 qr 생성")
     public ResponseEntity<StandardRes> getPrivateQr(@RequestHeader String userEmail){
+
         return ResponseEntity.ok(qrService.getPrivateQr(userEmail));
     }
 
