@@ -8,6 +8,7 @@ import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -45,11 +46,23 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
     private lateinit var receiptIdText: String
     private lateinit var priceText: String
 
+    private lateinit var editTexts: List<EditText>
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainActivity = requireActivity() as MainActivity
         imagePickerLauncher = getImagePickerLauncher()
+
+        editTexts = listOf(
+            binding.groupNameText,
+            binding.searchRestaurant,
+            binding.bootpayAmount,
+            binding.limitSettingText,
+            binding.textInputText
+        )
+
         initEvent()
+        initFocusChangeListener()
     }
 
     private fun initEvent() {
@@ -98,6 +111,10 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
 
 
     private fun registerTeam() {
+        if (!validateInputs()) {
+            return
+        }
+
         val teamMakeRequest = PublicPrivateTeam(
             publicTeam = binding.publicCheckbox.isChecked,
             teamName = binding.groupNameText.text.toString(),
@@ -193,5 +210,51 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
     override fun onDestroyView() {
         fragmentScope.coroutineContext.cancelChildren()
         super.onDestroyView()
+    }
+
+    // 효과
+    private fun initFocusChangeListener() {
+        editTexts.forEach {
+            it.setOnFocusChangeListener { _, isFocus ->
+                if (isFocus) {
+                    it.setBackgroundResource(R.drawable.focus_shape_alll_round)
+                } else {
+                    it.setBackgroundResource(R.drawable.shape_all_round)
+                }
+            }
+        }
+    }
+
+    private fun validateInputs(): Boolean {
+        if (binding.groupNameText.text.isNullOrBlank()) {
+            showToast("그룹명을 입력해주세요.")
+            return false
+        }
+        if (binding.searchRestaurant.text.isNullOrBlank()) {
+            showToast("식당을 검색해주세요.")
+            return false
+        }
+        if (binding.bootpayAmount.text.isNullOrBlank() || binding.bootpayAmount.text.toString().toIntOrNull() == null || binding.bootpayAmount.text.toString().toInt() < 1000) {
+            showToast("올바른 결제 금액을 입력해주세요.")
+            return false
+        }
+        if (binding.limitSettingText.text.isNullOrBlank() || binding.limitSettingText.text.toString().toIntOrNull() == null) {
+            showToast("일일 제한 금액을 입력해주세요.")
+            return false
+        }
+        if (!binding.possible.isChecked && !binding.impossible.isChecked) {
+            showToast("반복 사용을 체크해주세요.")
+            return false
+        }
+        if (binding.textInputText.text.isNullOrBlank()) {
+            showToast("팀 메시지를 입력해주세요.")
+            return false
+        }
+        if (selectedImageMultipart == null) {
+            showToast("이미지를 선택해주세요.")
+            return false
+        }
+
+        return true
     }
 }

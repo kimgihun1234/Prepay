@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepay.R
 import com.example.prepay.data.model.dto.OrderHistory
-import com.example.prepay.data.model.dto.Receipt
 import com.example.prepay.databinding.DialogReceiptBinding
 import com.example.prepay.databinding.RestaurantPayerBinding
 import java.text.NumberFormat
@@ -54,15 +53,17 @@ class OrderHistoryAdapter(var orderHistoryList: List<OrderHistory>,
 
                 receiptHistoryAdapter = ReceiptHistoryAdapter(arrayListOf())
                 dialogBinding.recyclerView.adapter = receiptHistoryAdapter
+
                 viewModel.receiptListInfo.observe(lifecycleOwner) {
                     it -> receiptHistoryAdapter.receiptList = it
                     receiptHistoryAdapter.notifyDataSetChanged()
                 }
 
-                viewModel.getAllReceiptList()
+                viewModel.getAllReceiptList(1,1)
 
                 dialogBinding.recyclerView.layoutManager = LinearLayoutManager(itemView.context)
-                dialogBinding.restaurantName.text = order.orderHistoryId.toString()
+                dialogBinding.useName.text = order.orderHistoryId.toString()
+
                 dialogBinding.restaurantAmount.text = NumberFormat.getNumberInstance(Locale.KOREA).format(order.totalPrice)
                 dialogBinding.receiptDate.text = order.orderDate
                 dialogBinding.orderDate.text = "[주문] ${order.orderDate}"

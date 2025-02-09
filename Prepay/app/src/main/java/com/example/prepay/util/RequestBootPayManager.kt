@@ -12,7 +12,7 @@ import kr.co.bootpay.android.models.Payload
 import org.json.JSONObject
 import java.lang.Exception
 
-object BootPayManager {
+object RequestBootPayManager {
     private const val TAG = "BootPayManager"
 
 
