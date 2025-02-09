@@ -20,6 +20,7 @@ import com.example.prepay.PermissionChecker
 import com.example.prepay.R
 import com.example.prepay.data.model.dto.Public
 import com.example.prepay.databinding.FragmentGroupSearchBinding
+import com.example.prepay.ui.GroupSearchDetails.AddPublicGroupDetailsFragment
 import com.example.prepay.ui.MainActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -86,9 +87,9 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
 
     private fun initAdapter(){
         publicList = listOf(
-            Public(1, "A 카페", "대구광역시 동성로",10, "https://fastly.picsum.photos/id/221/200/300.jpg?hmac=vFrrajnPFCrr5ttjepVTsUDWzoo-orpnXOsqdqAd0LU"),
-            Public(2, "B 카페", "구미시 진평동", 20, "https://fastly.picsum.photos/id/875/200/300.jpg?hmac=9NSoqXHP89pGlq4Sz3OgGxjx5c91YHJkcIOBFgNJ8xA"),
-            Public(2, "C 카페", "서울특별시 강남구", 30,"https://fastly.picsum.photos/id/729/200/300.jpg?hmac=VbcZBxFYzQK1ro1MTLLmwHNQ0kuIJSagOeue4JMymUY")
+            Public(1, "A 카페", "대구광역시 동성로",10, 1000000, "https://fastly.picsum.photos/id/221/200/300.jpg?hmac=vFrrajnPFCrr5ttjepVTsUDWzoo-orpnXOsqdqAd0LU"),
+            Public(2, "B 카페", "구미시 진평동", 20, 500000, "https://fastly.picsum.photos/id/875/200/300.jpg?hmac=9NSoqXHP89pGlq4Sz3OgGxjx5c91YHJkcIOBFgNJ8xA"),
+            Public(2, "C 카페", "서울특별시 강남구", 30,800000, "https://fastly.picsum.photos/id/729/200/300.jpg?hmac=VbcZBxFYzQK1ro1MTLLmwHNQ0kuIJSagOeue4JMymUY")
         )
         publicSearchAdapter = PublicSearchAdapter(publicList, this)
 
@@ -97,6 +98,7 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
     }
 
     override fun onGroupClick(publicgroup: Public) {
+        val fragment = AddPublicGroupDetailsFragment.newInstance(publicgroup)
         mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.PUBLIC_GROUP_DETAILS_FRAGMENT)
     }
 
