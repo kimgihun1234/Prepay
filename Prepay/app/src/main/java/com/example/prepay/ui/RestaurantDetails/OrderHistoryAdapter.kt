@@ -1,11 +1,13 @@
 package com.example.prepay.ui.RestaurantDetails
 
 import android.app.AlertDialog
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.prepay.RetrofitUtil
+import com.example.prepay.R
 import com.example.prepay.data.model.dto.OrderHistory
 import com.example.prepay.data.model.dto.Receipt
 import com.example.prepay.databinding.DialogReceiptBinding
@@ -14,13 +16,27 @@ import java.text.NumberFormat
 import java.util.Locale
 
 private const val TAG = "OrderHistoryAdapter"
-class OrderHistoryAdapter(var orderHistoryList: List<OrderHistory>) : RecyclerView.Adapter<OrderHistoryAdapter.orderHistoryViewHolder>() {
+class OrderHistoryAdapter(var orderHistoryList: List<OrderHistory>,
+                          private val viewModel: ReceiptViewModel,
+                          private val lifecycleOwner: LifecycleOwner
+) : RecyclerView.Adapter<OrderHistoryAdapter.orderHistoryViewHolder>() {
+
+    private lateinit var receiptHistoryAdapter: ReceiptHistoryAdapter
+
     inner class orderHistoryViewHolder(private val binding : RestaurantPayerBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun bind(order: OrderHistory) {
-            binding.name.text = order.name
-            binding.amount.text = NumberFormat.getNumberInstance(Locale.KOREA).format(order.total_price)
-            binding.date.text = order.date
+            Log.d(TAG, "bind: ")
+            if (order.companyDinner) {
+                binding.root.setBackgroundResource(R.drawable.round_background)
+            } else {
+                // 다른 색
+                binding.root.setBackgroundResource(R.drawable.round_background)
+            }
+            binding.name.text = order.orderHistoryId.toString()
+            binding.amount.text = NumberFormat.getNumberInstance(Locale.KOREA).format(order.totalPrice)
+            binding.date.text = order.orderDate
 
             // 영수증 버튼 클릭 시 다이얼로그 표시
             binding.imageButton.setOnClickListener {
@@ -32,37 +48,24 @@ class OrderHistoryAdapter(var orderHistoryList: List<OrderHistory>) : RecyclerVi
 
                 dialog.setOnShowListener {
                     val window = dialog.window
-                    window?.setLayout(1100, 1600)
+                    window?.setLayout(1000, 1600)
+                    window?.setBackgroundDrawableResource(R.drawable.receipt_rounded_dialog)
                 }
 
-
-                // 영수증 데이터 추가
-
-//                RetrofitUtil.orderService.getDetailReceipt(1,1)
-
-
-                val countryList = listOf(
-                    Receipt(1,"망고주스", 2000,5),
-                    Receipt(1,"크림파스타", 12000,4),
-                    Receipt(1,"김치찌개", 8000,3),
-                    Receipt(1,"제육볶음", 9000,1),
-                    Receipt(1,"돈까스", 15000,2),
-                    Receipt(1,"닭한마리칼국수", 7000,3),
-                    Receipt(1,"아메리카노", 1500,1),
-                    Receipt(1,"잡채", 3000,3),
-                    Receipt(1,"떡국", 6000,2),
-                    Receipt(1,"오징어볶음", 13000,4),
-                    Receipt(1,"김치", 1000,1),
-                )
-
-                // RecyclerView 어댑터 설정
-                val receiptHistoryAdapter = ReceiptHistoryAdapter(countryList)
-                dialogBinding.recyclerView.layoutManager = LinearLayoutManager(itemView.context)
+                receiptHistoryAdapter = ReceiptHistoryAdapter(arrayListOf())
                 dialogBinding.recyclerView.adapter = receiptHistoryAdapter
-                dialogBinding.useName.text = order.name
-                dialogBinding.restaurantAmount.text = NumberFormat.getNumberInstance(Locale.KOREA).format(order.total_price)
-                dialogBinding.receiptDate.text = order.date
-                dialogBinding.orderDate.text = "[주문] ${order.date}"
+                viewModel.receiptListInfo.observe(lifecycleOwner) {
+                    it -> receiptHistoryAdapter.receiptList = it
+                    receiptHistoryAdapter.notifyDataSetChanged()
+                }
+
+                viewModel.getAllReceiptList()
+
+                dialogBinding.recyclerView.layoutManager = LinearLayoutManager(itemView.context)
+                dialogBinding.restaurantName.text = order.orderHistoryId.toString()
+                dialogBinding.restaurantAmount.text = NumberFormat.getNumberInstance(Locale.KOREA).format(order.totalPrice)
+                dialogBinding.receiptDate.text = order.orderDate
+                dialogBinding.orderDate.text = "[주문] ${order.orderDate}"
                 dialog.show()
             }
         }

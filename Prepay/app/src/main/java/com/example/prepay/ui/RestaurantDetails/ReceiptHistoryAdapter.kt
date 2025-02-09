@@ -9,7 +9,7 @@ import java.text.NumberFormat
 import java.util.Locale
 
 private const val TAG = "ReceiptHistoryAdapter"
-class ReceiptHistoryAdapter(private val countryList: List<Receipt>) : RecyclerView.Adapter<ReceiptHistoryAdapter.ReceiptViewHolder>() {
+class ReceiptHistoryAdapter(var receiptList: List<Receipt>) : RecyclerView.Adapter<ReceiptHistoryAdapter.ReceiptViewHolder>() {
     inner class ReceiptViewHolder(private val binding: ReceiptListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(receipt: Receipt) {
             binding.foodName.text = receipt.product
@@ -24,10 +24,10 @@ class ReceiptHistoryAdapter(private val countryList: List<Receipt>) : RecyclerVi
     }
 
     override fun onBindViewHolder(holder: ReceiptViewHolder, position: Int) {
-        holder.bind(countryList[position])
+        holder.bind(receiptList[position])
     }
 
     override fun getItemCount(): Int {
-        return countryList.size
+        return receiptList.size
     }
 }
