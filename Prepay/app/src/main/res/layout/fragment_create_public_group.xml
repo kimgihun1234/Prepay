@@ -258,7 +258,7 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/round_background"
             android:focusable="true"
-
+            android:gravity="center"
             app:iconifiedByDefault="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

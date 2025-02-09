@@ -1,6 +1,5 @@
 package com.example.prepay.ui.RestaurantDetails
 
-
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,10 +15,10 @@ class OrderHistoryViewModel : ViewModel() {
     val orderHistoryListInfo : LiveData<List<OrderHistory>>
         get() = _orderHistoryListInfo
 
-    fun getAllOrderHistoryList() {
+    fun getAllOrderHistoryList(userId:Int, teamId:Long, storeId : Long) {
         viewModelScope.launch {
             runCatching {
-                RetrofitUtil.orderService.getDetailHistory(1, OrderHistoryReq(1,0))
+                RetrofitUtil.orderService.getDetailHistory(userId, OrderHistoryReq(teamId,storeId))
             } .onSuccess { response ->
                 _orderHistoryListInfo.postValue(response)
                 Log.d("OrderHistoryList", "getAllOrderHistoryList: 팀리스트 가져오기 성공: $response")

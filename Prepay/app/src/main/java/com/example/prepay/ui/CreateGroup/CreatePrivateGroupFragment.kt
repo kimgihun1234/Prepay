@@ -3,6 +3,7 @@ package com.example.prepay.ui.CreateGroup
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.prepay.BaseFragment
@@ -25,6 +26,7 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
 ) {
     private lateinit var mainActivity: MainActivity
     private val fragmentScope = lifecycleScope
+    private lateinit var editTexts: List<EditText>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +35,13 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        editTexts = listOf(
+            binding.groupNameText,
+            binding.limitSettingText
+        )
+
         initEvent()
+        initFocusChangeListener()
     }
 
     private fun initEvent() {
@@ -129,5 +137,18 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
     override fun onDestroyView() {
         fragmentScope.coroutineContext.cancelChildren()
         super.onDestroyView()
+    }
+
+    // 효과
+    private fun initFocusChangeListener() {
+        editTexts.forEach {
+            it.setOnFocusChangeListener { _, isFocus ->
+                if (isFocus) {
+                    it.setBackgroundResource(R.drawable.focus_shape_alll_round)
+                } else {
+                    it.setBackgroundResource(R.drawable.shape_all_round)
+                }
+            }
+        }
     }
 }

@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
-import com.example.prepay.data.model.dto.OrderHistory
 import com.example.prepay.databinding.DialogReceiptBinding
 import com.example.prepay.databinding.FragmentRestaurantDetailsBinding
 import com.example.prepay.ui.MainActivity
@@ -46,6 +45,10 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
     }
 
     private fun initAdapter() {
+
+        val restaurant = ViewModelProvider(requireActivity()).get(RestaurantDetailsViewModel::class.java)
+        restaurant.sendRestaurantData(binding.restaurantNameBootpay.text.toString())
+
         receiptbinding = DialogReceiptBinding.inflate(LayoutInflater.from(context))
         binding.recyclerView.layoutManager = LinearLayoutManager(binding.root.context)
         orderHistoryAdapter = OrderHistoryAdapter(arrayListOf(), ReceiptViewModel, this)
@@ -55,7 +58,7 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
             orderHistoryAdapter.orderHistoryList = it
             orderHistoryAdapter.notifyDataSetChanged()
         }
-        viewModel.getAllOrderHistoryList()
+        viewModel.getAllOrderHistoryList(1,1,1)
         Log.d("RestaurantDetailsFragment", "getAllOrderHistoryList() 호출됨")
     }
 }
