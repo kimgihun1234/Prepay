@@ -7,5 +7,6 @@ data class Public (
     val name :String,
     val address: String,
     val distance: Int,
+    val leftMoney: Int,
     val imageURL: String
     )

@@ -10,21 +10,22 @@
         android:id="@+id/public_detail_qr_btn"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/round_button"
         android:padding="16dp"
         android:scaleType="fitCenter"
         android:src="@drawable/qr_code"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/public_detail_location" />
+        app:layout_constraintTop_toBottomOf="@+id/left_money_tag" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/public_detail_map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="0dp"
-        android:layout_height="240dp"
+        android:layout_height="246dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,6 +40,37 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/public_detail_image"
         app:layout_constraintStart_toEndOf="@+id/public_detail_image" />
+
+    <TextView
+        android:id="@+id/left_money_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="현재 잔액"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/public_detail_location" />
+
+    <TextView
+        android:id="@+id/won_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="원"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/left_money_info"
+        app:layout_constraintStart_toEndOf="@+id/left_money_info" />
+
+    <TextView
+        android:id="@+id/left_money_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="800,000"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/left_money_tag"
+        app:layout_constraintStart_toEndOf="@+id/left_money_tag" />
 
     <TextView
         android:id="@+id/public_detail_text"
