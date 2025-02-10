@@ -106,7 +106,6 @@ public class BootpayObject {
 
         if(resToken.status == 200)
             this.token = resToken.data.token;
-
         return res;
     }
 }

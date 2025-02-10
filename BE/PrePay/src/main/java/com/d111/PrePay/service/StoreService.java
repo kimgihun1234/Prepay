@@ -1,22 +1,27 @@
 package com.d111.PrePay.service;
 
-import com.d111.PrePay.dto.request.CoordinatesReq;
 import com.d111.PrePay.dto.request.CreateStoreReq;
+import com.d111.PrePay.dto.request.StoresReq;
 import com.d111.PrePay.dto.respond.StoresRes;
 import com.d111.PrePay.model.Store;
+import com.d111.PrePay.model.TeamStore;
+import com.d111.PrePay.model.UserTeam;
 import com.d111.PrePay.repository.StoreRepository;
+import com.d111.PrePay.repository.UserTeamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class StoreService {
     private final StoreRepository storeRepository;
+    private final UserTeamRepository userTeamRepository;
 
     public void makeStore(CreateStoreReq createStoreReq) {
         Store store = new Store(createStoreReq);
@@ -24,12 +29,29 @@ public class StoreService {
 
     }
 
-    public List<StoresRes> getNearStores(CoordinatesReq coordinatesReq) {
+    public List<StoresRes> getNewNearStores(StoresReq coordinatesReq, String email) {
         List<Store> stores = storeRepository.findAll();
+        UserTeam userTeam = userTeamRepository.findByTeamIdAndUser_Email(coordinatesReq.getTeamId(), email).orElseThrow();
+        List<TeamStore> teamStores = userTeam.getTeam().getTeamStores();
         List<StoresRes> result = new ArrayList<>();
+        for (TeamStore teamStore : teamStores) {
+            StoresRes storesRes = new StoresRes(teamStore);
+            storesRes.setLatitude(teamStore.getStore().getLatitude());
+            storesRes.setLongitude(teamStore.getStore().getLongitude());
+            storesRes.setMyteam(true);
+            result.add(storesRes);
+        }
         for (Store store : stores) {
             if (calDistance(store.getLongitude(), store.getLatitude(), coordinatesReq.getLongitude(), coordinatesReq.getLatitude())) {
+                boolean check = false;
+                for (TeamStore teamStore : teamStores) {
+                    if (teamStore.getStore() == store) {
+                        check=true;
+                    }
+                }
+                if(check)continue;
                 StoresRes storesRes = new StoresRes(store);
+                storesRes.setMyteam(false);
                 storesRes.setLongitude(store.getLongitude());
                 storesRes.setLatitude(store.getLatitude());
                 result.add(storesRes);

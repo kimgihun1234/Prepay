@@ -1,12 +1,14 @@
 package com.d111.PrePay.controller;
 
 import com.d111.PrePay.dto.request.CoordinatesReq;
+import com.d111.PrePay.dto.request.StoresReq;
 import com.d111.PrePay.dto.respond.StoresRes;
 import com.d111.PrePay.service.StoreService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,8 +20,10 @@ import java.util.List;
 public class StoreController {
 
     private final StoreService storeService;
+
     @PostMapping("/stores")
-    public ResponseEntity<List<StoresRes>>getNearStores(CoordinatesReq coordinatesReq) {
-        return ResponseEntity.ok(storeService.getNearStores(coordinatesReq));
+    @Operation(summary = "팀 가맹점 추가용 가맹점 리스트 조회")
+    public ResponseEntity<List<StoresRes>> getNewNearStores(StoresReq req, @RequestHeader String email) {
+        return ResponseEntity.ok(storeService.getNewNearStores(req,email));
     }
 }
