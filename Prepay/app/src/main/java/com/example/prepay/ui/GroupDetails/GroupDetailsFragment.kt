@@ -84,6 +84,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         latitude = 36.107097
         longitude = 128.416369
     }
+    private var userposition = true
 
     /** permission check **/
     private val checker = PermissionChecker(this)
@@ -128,13 +129,11 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         teamTeamUserResList = emptyList()
         restaurantList = emptyList()
         restaurantAdapter = RestaurantAdapter(restaurantList,this,location)
-        teamUserAdapter = TeamUserAdapter(teamTeamUserResList,this)
+        teamUserAdapter = TeamUserAdapter(teamTeamUserResList,this, userposition)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
         binding.recyclerView.adapter = restaurantAdapter
         binding.rvMemberList.layoutManager = LinearLayoutManager(requireContext())
         binding.rvMemberList.adapter = teamUserAdapter
-
         viewModel.storeListInfo.observe(viewLifecycleOwner){ it->
             restaurantAdapter.teamIdStoreResList = it
             restaurantList = it
@@ -145,6 +144,10 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         }
         viewModel.teamUserListInfo.observe(viewLifecycleOwner){it->
             teamUserAdapter.teamUserResList = it
+            teamUserAdapter.notifyDataSetChanged()
+        }
+        viewModel.userposition.observe(viewLifecycleOwner){it->
+            teamUserAdapter.userposition = it
             teamUserAdapter.notifyDataSetChanged()
         }
         viewModel.getMyTeamRestaurantList(1,activityViewModel.teamId.value!!)
@@ -532,6 +535,8 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                 RetrofitUtil.teamService.getTeamDetails(1,activityViewModel.teamId.value!!)
             }.onSuccess {
                 binding.usePossiblePriceTxt.text = it.dailyPriceLimit.toString()
+                viewModel.updatePosition(it.position)
+                Log.d(TAG,"숫자 출려"+it.position.toString())
             }.onFailure {
                 Log.d(TAG,"실패하였습니다")
             }
