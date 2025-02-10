@@ -11,12 +11,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.Login.SignupFragment">
-    
+
+        <ImageButton
+            android:id="@+id/back_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="24dp"
+            android:background="#00ff0000"
+            android:src="@drawable/arrow_down_sign_to_navigate"
+            app:layout_constraintEnd_toStartOf="@+id/sign_up_title"
+            app:layout_constraintHorizontal_bias="0.205"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
         <TextView
-            android:id="@+id/sign_up_appbar"
+            android:id="@+id/sign_up_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="32dp"
             android:fontFamily="@font/samsung_font_2"
             android:text="회원가입"
             android:textColor="#394750"
@@ -27,7 +40,7 @@
             app:layout_constraintTop_toTopOf="parent" />
     
         <TextView
-            android:id="@+id/sign_up_id_title"
+            android:id="@+id/sign_up_id_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/samsung_font_2"
@@ -68,7 +81,7 @@
             app:layout_constraintTop_toBottomOf="@+id/sign_up_id_text" />
     
         <TextView
-            android:id="@+id/sign_up_password"
+            android:id="@+id/sign_up_password_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -95,7 +108,7 @@
             app:layout_constraintTop_toBottomOf="@id/sign_up_id_text" />
     
         <TextView
-            android:id="@+id/sign_up_password2"
+            android:id="@+id/sign_up_rePassword_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -135,7 +148,7 @@
             app:layout_constraintTop_toBottomOf="@+id/sign_up_password_confirm_text" />
     
         <TextView
-            android:id="@+id/sign_up_nick"
+            android:id="@+id/sign_up_nick_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -195,7 +208,7 @@
             android:id="@+id/logo_image"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:layout_marginTop="96dp"
+            android:layout_marginTop="88dp"
             android:contentDescription="logo_image"
             android:src="@drawable/logo"
             app:layout_constraintEnd_toEndOf="parent"

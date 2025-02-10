@@ -7,7 +7,8 @@ data class SignupRequest(
 ) {
     constructor() : this("", "", "")
 }
-data class SignupResponse(
+data class
+SignupResponse(
     val success: Boolean,
     val message: String
 )
