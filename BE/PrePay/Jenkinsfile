@@ -98,7 +98,6 @@ pipeline {
         stage('Deploy to EC2') {
             steps {
                 echo 'Deploying the application on EC2...'
-                echo 'DB_URL: ${DB_URL}' 
                 sshPublisher(publishers: [
                     sshPublisherDesc(
                         configName: 'EC2-Server',
