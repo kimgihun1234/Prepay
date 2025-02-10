@@ -1,24 +1,41 @@
 package com.example.prepay.ui.GroupDetails
 
+import android.location.Location
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.example.prepay.data.model.dto.Restaurant
+import com.example.prepay.data.response.TeamIdStoreRes
 import com.example.prepay.databinding.ItemRestaurantBinding
 
-class RestaurantAdapter(private val restaurantList: List<Restaurant>,private val listener: OnRestaurantClickListener) :
+class RestaurantAdapter(var teamIdStoreResList: List<TeamIdStoreRes>, private val listener: OnRestaurantClickListener,private val userLocation: Location) :
     RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder>() {
 
     class RestaurantViewHolder(private val binding: ItemRestaurantBinding,private val listener: OnRestaurantClickListener) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(restaurant: Restaurant) {
-            binding.restaurantName.text = restaurant.name
-            binding.restaurantPrepayMoney.text = restaurant.prepayMoney.toString()+"원"
-
+        fun bind(teamIdStoreRes: TeamIdStoreRes, userLocation: Location) {
+            binding.restaurantName.text = teamIdStoreRes.storeName
+            binding.restaurantPrepayMoney.text = teamIdStoreRes.balance.toString()+"원"
+            // 거리 계산
+            val distance = calculateDistance(
+                userLocation.latitude, userLocation.longitude,
+                teamIdStoreRes.latitude, teamIdStoreRes.longitude
+            )
+            binding.restaurantDistance.text = "%.1f km".format(distance)
             binding.restaurantDetailBtn.setOnClickListener {
-                listener.onRestaurantClick(restaurant)
+                listener.onRestaurantClick(teamIdStoreRes.storeId)
             }
+        }
+        private fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+            val R = 6371.0 // 지구 반경 (단위: km)
+            val dLat = Math.toRadians(lat2 - lat1)
+            val dLon = Math.toRadians(lon2 - lon1)
+
+            val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                    Math.sin(dLon / 2) * Math.sin(dLon / 2)
+            val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+
+            return R * c // 두 지점 간의 거리 (단위: km)
         }
     }
 
@@ -30,16 +47,15 @@ class RestaurantAdapter(private val restaurantList: List<Restaurant>,private val
 
     // view에 바인딩
     override fun onBindViewHolder(holder: RestaurantViewHolder, position: Int) {
-        val currentRestaurant = restaurantList[position]
-        holder.bind(currentRestaurant)
+        holder.bind(teamIdStoreResList[position],userLocation)
     }
 
     // 갯수 반환
     override fun getItemCount(): Int {
-        return restaurantList.size
+        return teamIdStoreResList.size
     }
 
     interface OnRestaurantClickListener {
-        fun onRestaurantClick(restaurant: Restaurant)
+        fun onRestaurantClick(teamIdStoreResId: Int)
     }
 }

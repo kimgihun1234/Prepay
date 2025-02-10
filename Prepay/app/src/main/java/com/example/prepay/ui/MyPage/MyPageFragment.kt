@@ -11,13 +11,14 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.View
 import android.widget.TextView
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.databinding.FragmentMyPageBinding
-import com.example.prepay.ui.GroupDetails.MyPageFragmentViewModel
 import com.example.prepay.ui.MainActivity
+import com.example.prepay.ui.MainActivityViewModel
 
 private const val TAG = "MyPageFragment"
 class MyPageFragment: BaseFragment<FragmentMyPageBinding>(
@@ -27,6 +28,7 @@ class MyPageFragment: BaseFragment<FragmentMyPageBinding>(
     private lateinit var mainActivity: MainActivity
     private lateinit var cardAdapter: TeamCardAdapter
     private val viewModel: MyPageFragmentViewModel by viewModels()
+    private val activityViewModel: MainActivityViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,15 +62,20 @@ class MyPageFragment: BaseFragment<FragmentMyPageBinding>(
 
         cardAdapter.itemClickListener = object : TeamCardAdapter.ItemClickListener {
             override fun onClick(productId: Int) {
-                mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.GROUP_DETAILS_FRAGMENT)
+                cardAdapter.itemClickListener = object : TeamCardAdapter.ItemClickListener {
+                    override fun onClick(teamId: Int) {
+                        activityViewModel.setTeamId(teamId.toLong())
+                        mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.GROUP_DETAILS_FRAGMENT)
+                    }
+                }
+
+                // 스택 효과 추가
+                binding.viewPager.setPageTransformer(StackPageTransformer())
+                binding.viewPager.offscreenPageLimit = 5
+                binding.viewPager.setCurrentItem(0, false)
             }
         }
-        // 스택 효과 추가
-        binding.viewPager.setPageTransformer(StackPageTransformer())
-        binding.viewPager.offscreenPageLimit = 5
-        binding.viewPager.setCurrentItem(0, false)
     }
-
     fun initEvent() {
 
         binding.createGroupBtn.setOnClickListener {
@@ -80,5 +87,4 @@ class MyPageFragment: BaseFragment<FragmentMyPageBinding>(
         //내비게이션 바 생기게
         mainActivity.hideBottomNav(false)
     }
-
 }
