@@ -80,10 +80,16 @@ public class TeamService {
 
 
     // 팀 나가기
+    @Transactional
     public void exitTeam(Long userId, TeamIdReq req) {
         UserTeam findUserTeam = userTeamRepository.findByTeamIdAndUserId(req.getTeamId(), userId)
                 .orElseThrow();
-        userTeamRepository.delete(findUserTeam);
+        if(findUserTeam.isPosition()){
+            userTeamRepository.deleteByTeam_Id(req.getTeamId());
+        }else{
+            userTeamRepository.delete(findUserTeam);
+        }
+
     }
 
 
