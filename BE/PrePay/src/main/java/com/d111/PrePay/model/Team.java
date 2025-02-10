@@ -33,6 +33,8 @@ public class Team {
 
     private String teamImgUrl;
 
+    private long codeGenDate;
+
 
 
     @ManyToOne

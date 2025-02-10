@@ -155,11 +155,17 @@ public class TeamController {
 
     }
 
+    @GetMapping("/code")
+    @Operation(summary = "팀 초대코드 조회")
+    public ResponseEntity<StandardRes> getInviteCode(@RequestHeader String email, @RequestParam long teamId) {
+        return ResponseEntity.ok(teamService.getTeamInviteCode(email, teamId));
+    }
 
     @PostMapping("/store")
     @Operation(summary = "팀 가맹점 추가")
     public ResponseEntity<TeamCreateStoreRes> createStore(@RequestHeader Long userId,
                                                           @RequestBody TeamCreateStoreReq req) {
+
         return ResponseEntity.ok(teamService.createStore(req));
     }
 

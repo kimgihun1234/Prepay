@@ -28,10 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.UUID;
+import java.util.*;
 
 
 @Service
@@ -232,6 +229,7 @@ public class TeamService {
         Team team = teamRepository.findById(req.getTeamId()).orElseThrow();
         String password = generateRandomPassword();
         team.setTeamPassword(password);
+        team.setCodeGenDate(System.currentTimeMillis());
         TeamDetailRes teamDetailRes = TeamDetailRes.builder()
                 .teamId(team.getId())
                 .teamName(team.getTeamName())
@@ -323,17 +321,17 @@ public class TeamService {
                 .dailyPriceLimit(request.getDailyPriceLimit())
                 .countLimit(request.getCountLimit())
                 .teamMessage(request.getTeamMessage())
-                .teamInitializer(userRepository.findById(userId).orElseThrow(() ->new NoSuchElementException("유저를 찾을 수 없습니다.")))
+                .teamInitializer(userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("유저를 찾을 수 없습니다.")))
                 .build();
 
 
         Team savedTeam = teamRepository.save(team);
 
         if (image != null && !image.isEmpty()) {
-            String imgUrl =null;
-            try{
-               imgUrl = imageService.uploadImage(image, team.getId());
-            }catch (IOException e) {
+            String imgUrl = null;
+            try {
+                imgUrl = imageService.uploadImage(image, team.getId());
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
@@ -437,4 +435,12 @@ public class TeamService {
     }
 
 
+    public StandardRes getTeamInviteCode(String email, long teamId) {
+        Team team = teamRepository.findById(teamId).orElseThrow();
+        String teamPassword = team.getTeamPassword();
+        if (teamPassword == null || System.currentTimeMillis() - (1000 * 60 * 60 * 24) > team.getCodeGenDate()) {
+            return new StandardRes("팀 코드가 없습니다. 관리자를 통해 재발급 받으세요", 200);
+        }
+        return new StandardRes(teamPassword, 200);
+    }
 }
