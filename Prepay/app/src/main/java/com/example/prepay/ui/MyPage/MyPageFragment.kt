@@ -61,20 +61,15 @@ class MyPageFragment: BaseFragment<FragmentMyPageBinding>(
         viewModel.getAllTeamList()
 
         cardAdapter.itemClickListener = object : TeamCardAdapter.ItemClickListener {
-            override fun onClick(productId: Int) {
-                cardAdapter.itemClickListener = object : TeamCardAdapter.ItemClickListener {
-                    override fun onClick(teamId: Int) {
-                        activityViewModel.setTeamId(teamId.toLong())
-                        mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.GROUP_DETAILS_FRAGMENT)
-                    }
-                }
-
-                // 스택 효과 추가
-                binding.viewPager.setPageTransformer(StackPageTransformer())
-                binding.viewPager.offscreenPageLimit = 5
-                binding.viewPager.setCurrentItem(0, false)
+            override fun onClick(teamId: Int) {
+                activityViewModel.setTeamId(teamId.toLong())
+                mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.GROUP_DETAILS_FRAGMENT)
             }
         }
+        // 스택 효과 추가
+        binding.viewPager.setPageTransformer(StackPageTransformer())
+        binding.viewPager.offscreenPageLimit = 5
+        binding.viewPager.setCurrentItem(0, false)
     }
     fun initEvent() {
 
