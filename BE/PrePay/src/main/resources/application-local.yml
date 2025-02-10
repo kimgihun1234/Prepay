@@ -20,7 +20,7 @@ spring:
           google:
             client-name: google
             client-id: 202764704036-eveuh9apr9ipii0rdrnijv31dbkrhcsc.apps.googleusercontent.com
-            client-secret:  
+            client-secret: ${client_secret}
             redirect-uri: http://localhost:8080/login/oauth2/code/google
             authorization-grant-type: authorization_code
             scope:
