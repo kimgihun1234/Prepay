@@ -23,7 +23,7 @@ public class DetailHistory {
 
     private int quantity;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private OrderHistory orderHistory;
 
     public DetailHistory(DetailHistoryReq detailHistoryReq) {

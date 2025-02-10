@@ -19,6 +19,7 @@ import com.d111.PrePay.repository.UserRepository;
 import com.d111.PrePay.repository.UserTeamRepository;
 import com.d111.PrePay.model.*;
 import com.d111.PrePay.repository.*;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -415,9 +416,11 @@ public class TeamService {
         return resultList;
     }
 
+    //퍼브릭 팀 검색 리스트
     //완료
     public List<PublicTeamsRes> getPublicTeamsByKeyword(String keyword) {
-        List<Team> teams = teamRepository.findTeamsByTeamNameContaining(keyword);
+//        List<Team> teams = teamRepository.findTeamsByTeamNameContaining(keyword);
+        List<Team> teams = teamRepository.findTeamsbyKeywordNoN(keyword);
         List<PublicTeamsRes> resultList = new ArrayList<>();
         for (Team team : teams) {
             PublicTeamsRes publicTeamsRes = new PublicTeamsRes(team);
