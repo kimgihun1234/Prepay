@@ -48,7 +48,7 @@ public class PosService {
         }
 
         try{
-            fcmService.sendDataMessageTo(user.getFcmToken(),"주문이 완료되었습니다.");
+            fcmService.sendDataMessageTo(user.getFcmToken(),"완료","주문이 완료되었습니다.");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

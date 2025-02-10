@@ -42,3 +42,5 @@ logging:
 bootpay:
   key: ${BOOTPAY_PRIVATE_KEY}
   appid: ${BOOTPAY_APPID}
+fcm:
+  url: ${FCM_API_URL}

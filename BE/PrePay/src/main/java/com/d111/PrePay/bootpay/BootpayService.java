@@ -28,6 +28,7 @@ public class BootpayService {
     private final UserRepository userRepository;
     private final TeamStoreRepository teamStoreRepository;
     private Long bootpayTokenDate = null;
+    private String bootpayToken;
     @Value("${bootpay.appid}")
     private String REST_APPLICATION_ID;
     @Value("${bootpay.key}")
@@ -58,8 +59,9 @@ public class BootpayService {
         String storeName = teamStore.getStore().getStoreName();
         String teamName = teamStore.getTeam().getTeamName();
         User user = userRepository.findUserByEmail(email);
+        log.info(user.getFcmToken());
         try {
-            fcmService.sendDataMessageTo(user.getFcmToken(), "금액 : " + response.getData().getPrice() + "원 " + teamName + " 그룹의 " + storeName + " 가게에 " + "충전이 완료되었습니다.");
+            fcmService.sendDataMessageTo(user.getFcmToken(),"완료" ,"금액 : " + response.getData().getPrice() + "원 " + teamName + " 그룹의 " + storeName + " 가게에 " + "충전이 완료되었습니다.");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -71,11 +73,12 @@ public class BootpayService {
     public void setBootpayToken(Bootpay api) {
         if (api.token != null) {
             return;
-        } else if (bootpayTokenDate != null && bootpayTokenDate + (1800 * 1000) > System.currentTimeMillis()) {
+        } /*else if (bootpayTokenDate != null && bootpayTokenDate + (1800 * 1000) > System.currentTimeMillis()) {
             return;
-        }
+        }*/
         try {
             api.getAccessToken();
+            bootpayToken=api.token;
             log.info("bootpay access token : {}", api.token);
             bootpayTokenDate = System.currentTimeMillis();
 
