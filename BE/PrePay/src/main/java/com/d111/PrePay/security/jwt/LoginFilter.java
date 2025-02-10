@@ -5,6 +5,7 @@ import com.d111.PrePay.model.User;
 import com.d111.PrePay.repository.UserRepository;
 import com.d111.PrePay.security.entity.Refresh;
 import com.d111.PrePay.security.repository.RefreshRepository;
+import com.d111.PrePay.service.FCMService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -47,6 +48,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         this.jwtUtil = jwtUtil;
         this.userRepository = userRepository;
         this.refreshRepository = refreshRepository;
+
     }
 
     @Override
@@ -86,6 +88,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String access = jwtUtil.createJWT("access", email, 600000L, userId);
         String refresh = jwtUtil.createJWT("refresh", email, 86400000L, userId);
+
 
         addRefresh(email, refresh, 86400000L);
 
