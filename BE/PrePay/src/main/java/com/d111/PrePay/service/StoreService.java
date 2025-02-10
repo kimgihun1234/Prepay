@@ -24,7 +24,7 @@ public class StoreService {
 
     }
 
-    public List<StoresRes> getNearStores(CoordinatesReq coordinatesReq) {
+    public List<StoresRes> getNewNearStores(CoordinatesReq coordinatesReq) {
         List<Store> stores = storeRepository.findAll();
         List<StoresRes> result = new ArrayList<>();
         for (Store store : stores) {
