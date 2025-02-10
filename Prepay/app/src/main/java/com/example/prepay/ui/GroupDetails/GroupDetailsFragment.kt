@@ -84,7 +84,6 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         latitude = 36.107097
         longitude = 128.416369
     }
-    private var userposition = true
 
     /** permission check **/
     private val checker = PermissionChecker(this)
@@ -129,7 +128,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         teamTeamUserResList = emptyList()
         restaurantList = emptyList()
         restaurantAdapter = RestaurantAdapter(restaurantList,this,location)
-        teamUserAdapter = TeamUserAdapter(teamTeamUserResList,this, userposition)
+        teamUserAdapter = TeamUserAdapter(teamTeamUserResList,this, true)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = restaurantAdapter
         binding.rvMemberList.layoutManager = LinearLayoutManager(requireContext())
@@ -215,7 +214,16 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         }
 
         binding.qrBtn.setOnClickListener {
-            mainActivity.broadcast("hello","hello")
+            lifecycleScope.launch {
+                runCatching {
+                    RetrofitUtil.qrService.qrPrivateCreate("user1@gmail.com")
+                }.onSuccess {
+                    Log.d(TAG,it.message.toString())
+                }.onFailure {
+
+                }
+            }
+            //mainActivity.broadcast("hello","hello")
         }
     }
 
