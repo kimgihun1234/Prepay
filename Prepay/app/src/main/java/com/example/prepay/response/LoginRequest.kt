@@ -6,7 +6,6 @@ data class LoginRequest (
 ){
     constructor() : this("", "")
 }
-data class LoginResponse(
-    val nickname : String,
-    val jwtToken : String
-)
+//data class LoginResponse(
+//    val nickname : String
+//)

@@ -27,7 +27,6 @@ import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.databinding.FragmentLoginBinding
 import com.example.prepay.response.LoginRequest
-import com.example.prepay.response.LoginResponse
 import com.example.prepay.test_db.UserDBHelper
 import com.example.prepay.ui.LoginActivity
 import com.example.prepay.ui.MainActivity
@@ -45,6 +44,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+private const val TAG = "LoginFragment_싸피"
 class LoginFragment: BaseFragment<FragmentLoginBinding>(
     FragmentLoginBinding::bind,
     R.layout.fragment_login
@@ -104,12 +104,14 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
         binding.JoinBtn.setOnClickListener {
             loginActivity.changeFragmentLogin(CommonUtils.LoginFragmentName.SIGNIN_FRAGMENT)
         }
-
         binding.findPasswordBtn.setOnClickListener {
             loginActivity.changeFragmentLogin(CommonUtils.LoginFragmentName.FINDPASSWORD_FRAGMENT)
         }
         binding.googleLoginBtn.setOnClickListener {
-            signIn()
+            goSignup()
+        }
+        binding.backBtn.setOnClickListener {
+            loginActivity.changeFragmentLogin(CommonUtils.LoginFragmentName.START_LOGIN_FRAGMENT)
         }
     }
 
@@ -139,7 +141,7 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
         )
         // 텍스트 크기 적용
         spannableString.setSpan(
-            AbsoluteSizeSpan(22, true),
+            AbsoluteSizeSpan(20, true),
             start,
             end,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -190,27 +192,30 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
             Toast.makeText(requireContext(), "아이디와 비밀번호를 모두 입력해주세요.", Toast.LENGTH_SHORT).show()
             return
         }
-
         lifecycleScope.launch {
             try {
                 val loginRequest = LoginRequest(id, password)
-                val response = RetrofitUtil.userService.login(loginRequest)
-                println(response)
-                if (response.isSuccessful) {
-                    val loginResponse = response.body()
-                    if (loginResponse != null) {
-                        // 예: 토큰 저장, 메인 액티비티 전환 등 후속 처리
-                        // ApplicationClass.sharedPreferencesUtil.saveToken(loginResponse.jwtToken)
-                        // 예시로, 로그인 성공 메시지 출력
-                        Toast.makeText(requireContext(), "로그인 성공", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(requireContext(), MainActivity::class.java)
-                        startActivity(intent)
-                    } else {
-                        Toast.makeText(requireContext(), "로그인 실패: 응답 데이터가 없습니다.", Toast.LENGTH_SHORT).show()
-                    }
-                } else {
-                    Toast.makeText(requireContext(), "로그인 실패: ${response.code()}", Toast.LENGTH_SHORT).show()
-                }
+                RetrofitUtil.userService.login(loginRequest)
+                Toast.makeText(requireContext(), "로그인 성공", Toast.LENGTH_SHORT).show()
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                startActivity(intent)
+//                val response = RetrofitUtil.userService.login(loginRequest)
+
+//                if (response.isSuccessful) {
+//                    val loginResponse = response.body()
+//                    if (loginResponse != null) {
+//                        // 예: 토큰 저장, 메인 액티비티 전환 등 후속 처리
+//                        // ApplicationClass.sharedPreferencesUtil.saveToken(loginResponse.jwtToken)
+//                        // 예시로, 로그인 성공 메시지 출력
+//                        Toast.makeText(requireContext(), "로그인 성공", Toast.LENGTH_SHORT).show()
+//                        val intent = Intent(requireContext(), MainActivity::class.java)
+//                        startActivity(intent)
+//                    } else {
+//                        Toast.makeText(requireContext(), "로그인 실패: 응답 데이터가 없습니다.", Toast.LENGTH_SHORT).show()
+//                    }
+//                } else {
+//                    Toast.makeText(requireContext(), "로그인 실패: ${response.code()}", Toast.LENGTH_SHORT).show()
+//                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 Toast.makeText(requireContext(), "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
@@ -250,7 +255,7 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
             }
     }
 
-    private fun signIn() {
+    private fun goSignup() {
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }

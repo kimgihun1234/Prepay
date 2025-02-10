@@ -68,6 +68,10 @@ class SignupFragment: BaseFragment<FragmentSignUpBinding>(
         binding.signUpPasswordConfirmText.doAfterTextChanged {checkRePassword()} // 비밀번호 재입력 유효성 검사
         binding.signUpNickText.doAfterTextChanged {checkUserNick()}
         binding.signUpSubmit.setOnClickListener { signIn() }
+
+        binding.backBtn.setOnClickListener {
+            loginActivity.changeFragmentLogin(CommonUtils.LoginFragmentName.START_LOGIN_FRAGMENT)
+        }
     }
 
     // editView focus 이벤트 설정
@@ -154,14 +158,10 @@ class SignupFragment: BaseFragment<FragmentSignUpBinding>(
         if (!checkId || checkPassword || !checkNickname) {
             val insertSuccess = dbHelper.insertData(userId, password, nickname)
             if (insertSuccess) {
-                loginActivity.changeFragmentLogin(CommonUtils.LoginFragmentName.LOGIN_FRAGMENT)
-            } else {
-                showToast("입력된 정보를 다시 확인하세요.")
                 lifecycleScope.launch {
                     try {
                         val signupRequest = SignupRequest(userId, password, nickname)
                         val response = RetrofitUtil.userService.signup(signupRequest)
-
                         if (response.isSuccessful) {
                             showToast("회원가입에 성공했습니다.")
                             val signupResponse = response.body()
@@ -181,11 +181,14 @@ class SignupFragment: BaseFragment<FragmentSignUpBinding>(
                         showToast("네트워크 오류가 발생했습니다.")
                     }
                 }
-            } }
-            else {
+            } else {
                 showToast("입력된 정보를 다시 확인하세요.")
             }
+        } else {
+            showToast("입력된 정보를 다시 확인하세요.")
+        }
     }
+
     private fun checkUserID() {
         val userId = binding.signUpIdText.text.toString().trim()
         val idPattern = android.util.Patterns.EMAIL_ADDRESS

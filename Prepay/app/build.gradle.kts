@@ -54,7 +54,6 @@ dependencies {
 
     // https://github.com/square/retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
-
     // firebase 사용에 필요한 의존성 추가 firebase + database
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
     implementation("com.google.firebase:firebase-database-ktx")
@@ -80,4 +79,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("androidx.fragment:fragment-ktx:1.6.2")
 
+    // zxing
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
 }

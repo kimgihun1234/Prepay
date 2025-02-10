@@ -24,7 +24,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Prepay"
         tools:targetApi="31"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        android:hardwareAccelerated="true">
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -44,6 +45,7 @@
             android:name=".ui.MainActivity"
             android:exported="true">
         </activity>
+        <activity android:name=".ui.MyPage.CreateQRActivity" />
     </application>
 
 </manifest>
