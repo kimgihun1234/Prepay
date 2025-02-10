@@ -13,6 +13,9 @@ pipeline {
 
         JWT_SECRET = credentials('JWT_SECRET')
 
+
+        FCM_API_URL = credentials('FCM_API_URL')
+
         SPRING_PROFILES_ACTIVE = 'prod'
         DB_URL = credentials('DB_URL')
         DB_USERNAME = credentials('DB_USERNAME')
@@ -119,6 +122,7 @@ pipeline {
                                       -e BOOTPAY_PRIVATE_KEY=${BOOTPAY_PRIVATE_KEY} \
                                       -e BOOTPAY_APPID=${BOOTPAY_APPID} \
                                       -e client_secret=${client_secret} \
+                                      -e FCM_API_URL=${FCM_API_URL}\
                                       -e TZ=Asia/Seoul\
                                       ${DOCKER_IMAGE}:latest
                                 """.stripIndent()
