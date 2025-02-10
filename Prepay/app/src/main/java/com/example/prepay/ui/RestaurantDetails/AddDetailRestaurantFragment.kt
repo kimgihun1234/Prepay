@@ -19,7 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-private const val TAG = "AddDetailRestaurantFrag"
+private const val TAG = "DetailRestaurantFragment"
 class AddDetailRestaurantFragment: BaseFragment<FragmentDetailRestaurantBinding>(
     FragmentDetailRestaurantBinding::bind,
     R.layout.fragment_detail_restaurant

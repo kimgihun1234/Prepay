@@ -14,6 +14,7 @@ import com.example.prepay.ui.CreateGroup.CreatePublicGroupFragment
 import com.example.prepay.ui.GroupDetails.AddRestaurantFragment
 import com.example.prepay.ui.GroupDetails.GroupDetailsFragment
 import com.example.prepay.ui.GroupSearch.GroupSearchFragment
+import com.example.prepay.ui.GroupSearchDetails.AddPublicGroupDetailsFragment
 import com.example.prepay.ui.MyPage.MyPageFragment
 import com.example.prepay.ui.RestaurantDetails.AddDetailRestaurantFragment
 import com.example.prepay.ui.RestaurantDetails.RestaurantDetailsFragment
@@ -59,6 +60,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
             CommonUtils.MainFragmentName.DETAIL_RESTAURANT_FRAGMENT -> {
                 transaction.replace(R.id.main_container, AddDetailRestaurantFragment())
+            }
+            CommonUtils.MainFragmentName.PUBLIC_GROUP_DETAILS_FRAGMENT -> {
+                transaction.replace(R.id.main_container, AddPublicGroupDetailsFragment())
             }
         }
         transaction.commit()

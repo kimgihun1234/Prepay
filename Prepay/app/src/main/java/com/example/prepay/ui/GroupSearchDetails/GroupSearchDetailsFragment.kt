@@ -1,54 +1,54 @@
-package com.example.prepay.ui.GroupSearch
-
-import android.Manifest
-import android.content.Context.LOCATION_SERVICE
-import android.content.Intent
-import android.location.Address
-import android.location.Geocoder
-import android.location.Location
-import android.location.LocationManager
-import android.os.Bundle
-import android.provider.Settings
-import android.view.View
-import android.widget.Toast
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.drawable.toBitmap
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.prepay.BaseFragment
-import com.example.prepay.CommonUtils
-import com.example.prepay.PermissionChecker
-import com.example.prepay.R
-import com.example.prepay.data.model.dto.Public
-import com.example.prepay.databinding.FragmentGroupSearchBinding
-import com.example.prepay.ui.GroupSearchDetails.AddPublicGroupDetailsFragment
-import com.example.prepay.ui.MainActivity
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.navigation.NavigationView
-import java.io.IOException
-import java.util.Locale
-
-class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
-    FragmentGroupSearchBinding::bind,
-    R.layout.fragment_group_search
-), PublicSearchAdapter.OnPublicClickListener {
-    private lateinit var mainActivity: MainActivity
-    private lateinit var publicSearchAdapter: PublicSearchAdapter
-    private lateinit var publicList: List<Public>
-
-    // GPS 관련은 에러가 계속 발생해서 일단 주석처리함 (현우)
-    // GPS관련 변수
+//package com.example.prepay.ui.GroupSearchDetails
+//
+//import android.Manifest
+//import android.content.Context.LOCATION_SERVICE
+//import android.content.Intent
+//import android.location.Address
+//import android.location.Geocoder
+//import android.location.Location
+//import android.location.LocationManager
+//import android.os.Bundle
+//import android.provider.Settings
+//import android.view.View
+//import android.widget.Toast
+//import androidx.core.content.res.ResourcesCompat
+//import androidx.core.graphics.drawable.toBitmap
+//import androidx.recyclerview.widget.LinearLayoutManager
+//import com.example.prepay.BaseFragment
+//import com.example.prepay.CommonUtils
+//import com.example.prepay.PermissionChecker
+//import com.example.prepay.R
+//import com.example.prepay.data.model.dto.Public
+//import com.example.prepay.databinding.FragmentGroupSearchBinding
+//import com.example.prepay.ui.GroupDetails.GroupDetailsFragment
+//import com.example.prepay.ui.GroupSearch.PublicSearchAdapter
+//import com.example.prepay.ui.MainActivity
+//import com.google.android.gms.location.FusedLocationProviderClient
+//import com.google.android.gms.location.LocationCallback
+//import com.google.android.gms.location.LocationRequest
+//import com.google.android.gms.location.LocationResult
+//import com.google.android.gms.location.LocationServices
+//import com.google.android.gms.maps.CameraUpdateFactory
+//import com.google.android.gms.maps.GoogleMap
+//import com.google.android.gms.maps.OnMapReadyCallback
+//import com.google.android.gms.maps.SupportMapFragment
+//import com.google.android.gms.maps.model.BitmapDescriptorFactory
+//import com.google.android.gms.maps.model.LatLng
+//import com.google.android.gms.maps.model.Marker
+//import com.google.android.gms.maps.model.MarkerOptions
+//import com.google.android.material.navigation.NavigationView
+//import java.io.IOException
+//import java.util.Locale
+//
+//class GroupSearchDetailsFragment: BaseFragment<FragmentGroupSearchBinding>(
+//    FragmentGroupSearchBinding::bind,
+//    R.layout.fragment_group_search
+//), PublicSearchAdapter.OnPublicClickListener {
+//    private lateinit var mainActivity: MainActivity
+//    private lateinit var publicSearchAdapter: PublicSearchAdapter
+//    private lateinit var publicList: List<Public>
+//
+//    //GPS관련 변수
 //    private var mMap: GoogleMap? = null
 //    private var currentMarker: Marker? = null
 //    private lateinit var mFusedLocationClient: FusedLocationProviderClient
@@ -59,12 +59,12 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
 //        Manifest.permission.ACCESS_FINE_LOCATION,
 //        Manifest.permission.ACCESS_COARSE_LOCATION
 //    )
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        mainActivity= context as MainActivity
-    }
-
+//
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        mainActivity= context as MainActivity
+//    }
+//
 //    override fun onStart() {
 //        super.onStart()
 //
@@ -72,65 +72,71 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
 //            startLocationUpdates()
 //        }
 //    }
-
+//
 //    override fun onStop() {
 //        super.onStop()
 //        mFusedLocationClient.removeLocationUpdates(locationCallback)
 //    }
 //
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initAdapter()
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//        initAdapter()
 //        //GPS 관련 코드
 //        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-    }
-
-    private fun initAdapter(){
-        publicList = listOf(
-            Public(1, "A 카페", "대구광역시 동성로",10, 1000000, "https://fastly.picsum.photos/id/221/200/300.jpg?hmac=vFrrajnPFCrr5ttjepVTsUDWzoo-orpnXOsqdqAd0LU"),
-            Public(2, "B 카페", "구미시 진평동", 20, 500000, "https://fastly.picsum.photos/id/875/200/300.jpg?hmac=9NSoqXHP89pGlq4Sz3OgGxjx5c91YHJkcIOBFgNJ8xA"),
-            Public(2, "C 카페", "서울특별시 강남구", 30,800000, "https://fastly.picsum.photos/id/729/200/300.jpg?hmac=VbcZBxFYzQK1ro1MTLLmwHNQ0kuIJSagOeue4JMymUY")
-        )
-        publicSearchAdapter = PublicSearchAdapter(publicList, this)
-
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.adapter = publicSearchAdapter
-    }
-
-    override fun onGroupClick(publicgroup: Public) {
-        val fragment = AddPublicGroupDetailsFragment.newInstance(publicgroup)
-        mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.PUBLIC_GROUP_DETAILS_FRAGMENT)
-    }
-
-
-////    private val readyCallback: OnMapReadyCallback by lazy{
-////        object: OnMapReadyCallback {
-////            override fun onMapReady(p0: GoogleMap) {
-////                mMap = p0
-////
-////                //퍼미션 요청 대화상자 (권한이 없을때) & 실행 시 초기 위치를 서울 중심부로 이동
-////                setDefaultLocation()
-////
-////                /** permission check **/
-////                if (!checker.checkPermission(requireActivity(), runtimePermissions)) {
-////                    checker.setOnGrantedListener {
-////                        //퍼미션 획득 성공일때
-////                        startLocationUpdates()
-////                    }
-////                    checker.requestPermissionLauncher.launch(runtimePermissions)
-////                } else { //이미 전체 권한이 있는 경우
-////                    startLocationUpdates()
-////                }
-////                /** permission check **/
-////                mMap?.setOnMapLongClickListener {
-////                    val loc = Location("")
-////                    loc.latitude = it.latitude
-////                    loc.longitude = it.longitude
-////                    setCurrentLocation(loc)
-////                }
-////            }
-////        }
-////    }
+//        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+//        mapFragment.getMapAsync(readyCallback)
+//    }
+//
+//    private fun initAdapter(){
+//        publicList = listOf(
+//            Public(1, "A 카페", "대구광역시 동성로",10, "https://fastly.picsum.photos/id/221/200/300.jpg?hmac=vFrrajnPFCrr5ttjepVTsUDWzoo-orpnXOsqdqAd0LU"),
+//            Public(2, "B 카페", "구미시 진평동", 20, "https://fastly.picsum.photos/id/875/200/300.jpg?hmac=9NSoqXHP89pGlq4Sz3OgGxjx5c91YHJkcIOBFgNJ8xA"),
+//            Public(3, "C 카페", "서울특별시 강남구", 30,"https://fastly.picsum.photos/id/729/200/300.jpg?hmac=VbcZBxFYzQK1ro1MTLLmwHNQ0kuIJSagOeue4JMymUY")
+//        )
+//        publicSearchAdapter = PublicSearchAdapter(publicList, this)
+//
+//        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+//        binding.recyclerView.adapter = publicSearchAdapter
+//    }
+//
+//    override fun onGroupClick(publicgroup: Public) {
+////        mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.RESTAURANT_DETAILS_FRAGMENT)
+//        val bundle = Bundle()
+//        bundle.putint("pk", publicgroup.pk)
+//        val fragment = GroupDetailsFragment()
+//        fragment.arguments = bundle
+//
+//    }
+//
+//
+//    private val readyCallback: OnMapReadyCallback by lazy{
+//        object: OnMapReadyCallback {
+//            override fun onMapReady(p0: GoogleMap) {
+//                mMap = p0
+//
+//                //퍼미션 요청 대화상자 (권한이 없을때) & 실행 시 초기 위치를 서울 중심부로 이동
+//                setDefaultLocation()
+//
+//                /** permission check **/
+//                if (!checker.checkPermission(requireActivity(), runtimePermissions)) {
+//                    checker.setOnGrantedListener {
+//                        //퍼미션 획득 성공일때
+//                        startLocationUpdates()
+//                    }
+//                    checker.requestPermissionLauncher.launch(runtimePermissions)
+//                } else { //이미 전체 권한이 있는 경우
+//                    startLocationUpdates()
+//                }
+//                /** permission check **/
+//                mMap?.setOnMapLongClickListener {
+//                    val loc = Location("")
+//                    loc.latitude = it.latitude
+//                    loc.longitude = it.longitude
+//                    setCurrentLocation(loc)
+//                }
+//            }
+//        }
+//    }
 //
 //    private fun startLocationUpdates() {
 //        // 위치서비스 활성화 여부 check
@@ -286,5 +292,5 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
 //                }
 //        }
 //    }
-}
-
+//}
+//
