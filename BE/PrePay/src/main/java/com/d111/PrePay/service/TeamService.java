@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -323,17 +324,17 @@ public class TeamService {
                 .dailyPriceLimit(request.getDailyPriceLimit())
                 .countLimit(request.getCountLimit())
                 .teamMessage(request.getTeamMessage())
-                .teamInitializer(userRepository.findById(userId).orElseThrow(() ->new NoSuchElementException("유저를 찾을 수 없습니다.")))
+                .teamInitializer(userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("유저를 찾을 수 없습니다.")))
                 .build();
 
 
         Team savedTeam = teamRepository.save(team);
 
         if (image != null && !image.isEmpty()) {
-            String imgUrl =null;
-            try{
-               imgUrl = imageService.uploadImage(image, team.getId());
-            }catch (IOException e) {
+            String imgUrl = null;
+            try {
+                imgUrl = imageService.uploadImage(image, team.getId());
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
@@ -375,27 +376,42 @@ public class TeamService {
 
 
     //팀의 가게 조회
-    //확인
+    //확인 -> 완료?
     public List<StoresRes> getMyTeamStores(long teamId, long userId) {
-        Team team = teamRepository.findById(teamId).orElseThrow();
-        List<TeamStore> teamStores = team.getTeamStores();
-        List<StoresRes> resultList = new ArrayList<>();
-        for (TeamStore teamStore : teamStores) {
-            StoresRes storesRes = new StoresRes(teamStore);
-            storesRes.setLatitude(teamStore.getStore().getLatitude());
-            storesRes.setLongitude(teamStore.getStore().getLongitude());
-            resultList.add(storesRes);
-        }
-        return resultList;
+        // 팀 찾을 때 팀 스토어 같이 찾기
+        // 팀 스토어 찾을 때 스토어 같이 찾기
+        Team team = teamStoreRepository.findTeamStoresByTeamId(teamId);
+
+        return team.getTeamStores().stream()
+                .map(teamStore -> {
+                    StoresRes storesRes = new StoresRes(teamStore);
+                    storesRes.setLatitude(teamStore.getStore().getLatitude());
+                    storesRes.setLongitude(teamStore.getStore().getLongitude());
+                    return storesRes;
+                }).collect(Collectors.toList());
     }
+
+//        Team team = teamRepository.findById(teamId).orElseThrow();
+//        List<TeamStore> teamStores = team.getTeamStores();
+//        List<StoresRes> resultList = new ArrayList<>();
+//        for (TeamStore teamStore : teamStores) {
+//            StoresRes storesRes = new StoresRes(teamStore);
+//            storesRes.setLatitude(teamStore.getStore().getLatitude());
+//            storesRes.setLongitude(teamStore.getStore().getLongitude());
+//            resultList.add(storesRes);
+//        }
+//        return resultList;
+//    }
 
 
     //팀 가맹점의 좌표 조회
+    //완료
     public List<StoresCorRes> getStoresCor(long teamId, long userId) {
         Team team = teamRepository.findById(teamId).orElseThrow();
         List<TeamStore> list = teamStoreRepository.findTeamStoresByTeam(team);
         List<StoresCorRes> result = new ArrayList<>();
         for (TeamStore teamStore : list) {
+            log.info("팀 스토어 : {}", teamStore);
             Store store = teamStore.getStore();
             StoresCorRes storesCorRes = new StoresCorRes(store);
             result.add(storesCorRes);
