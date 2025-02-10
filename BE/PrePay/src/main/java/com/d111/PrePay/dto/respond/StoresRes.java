@@ -13,6 +13,7 @@ public class StoresRes {
     private int balance;
     private float latitude;
     private float longitude;
+    private boolean isMyteam;
 
     public StoresRes(TeamStore teamStore) {
         this.storeId=teamStore.getStore().getId();
