@@ -18,6 +18,8 @@ pipeline {
         DB_USERNAME = credentials('DB_USERNAME')
         DB_PASSWORD = credentials('DB_PASSWORD')
 
+        client_secret = credentials('client_secret')
+
         GOOGLE_SERVICES_JSON = credentials('FIREBASE-SERVICE-KEY.JSON')
         FCM_SERVICE_KEY_JSON = credentials('FCM_SERVICE_KEY.JSON')
 
@@ -116,6 +118,7 @@ pipeline {
                                       -e JWT_SECRET=${JWT_SECRET} \
                                       -e BOOTPAY_PRIVATE_KEY=${BOOTPAY_PRIVATE_KEY} \
                                       -e BOOTPAY_APPID=${BOOTPAY_APPID} \
+                                      -e client_secret=${client_secret} \
                                       -e TZ=Asia/Seoul\
                                       ${DOCKER_IMAGE}:latest
                                 """.stripIndent()
