@@ -5,21 +5,28 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.os.Bundle
+import android.text.Editable
+import android.text.Html
 import android.text.Spannable
 import android.text.SpannableString
+import android.text.TextWatcher
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.util.Log
+import android.util.TypedValue
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.Dimension.Companion.DP
+import androidx.lifecycle.lifecycleScope
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
+import com.example.prepay.RetrofitUtil
 import com.example.prepay.databinding.FragmentLoginBinding
+import com.example.prepay.response.LoginRequest
 import com.example.prepay.test_db.UserDBHelper
 import com.example.prepay.ui.LoginActivity
 import com.example.prepay.ui.MainActivity
@@ -32,21 +39,28 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+private const val TAG = "LoginFragment_싸피"
 class LoginFragment: BaseFragment<FragmentLoginBinding>(
     FragmentLoginBinding::bind,
     R.layout.fragment_login
 ){
     private lateinit var loginActivity: LoginActivity
+
     private lateinit var DB: UserDBHelper
 
     //구글 로그인
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var currentuser: FirebaseUser
+
+    private lateinit var dbHelper: UserDBHelper
+    private lateinit var editTexts: List<EditText>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,18 +76,26 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        editTexts = listOf(
+            view.findViewById(R.id.login_id_text),
+            view.findViewById(R.id.log_in_password_text)
+        )
+
+
         initEvent()
 
         setStyleCatchphrase(view)
-        initFocusChangeListener(view)
+        initFocusChangeListener()
+        setUpTextWatcher()
 
         // --- login 관련 기능 ---
-        DB = UserDBHelper(requireContext())
+        dbHelper = UserDBHelper(requireContext())
 
         binding.LoginBtn.setOnClickListener {
-//            login()
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            startActivity(intent)
+//            val intent = Intent(requireContext(), MainActivity::class.java)
+//            startActivity(intent)
+            login()
         }
     }
 
@@ -82,12 +104,14 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
         binding.JoinBtn.setOnClickListener {
             loginActivity.changeFragmentLogin(CommonUtils.LoginFragmentName.SIGNIN_FRAGMENT)
         }
-
         binding.findPasswordBtn.setOnClickListener {
             loginActivity.changeFragmentLogin(CommonUtils.LoginFragmentName.FINDPASSWORD_FRAGMENT)
         }
         binding.googleLoginBtn.setOnClickListener {
-            signIn()
+            goSignup()
+        }
+        binding.backBtn.setOnClickListener {
+            loginActivity.changeFragmentLogin(CommonUtils.LoginFragmentName.START_LOGIN_FRAGMENT)
         }
     }
 
@@ -117,7 +141,7 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
         )
         // 텍스트 크기 적용
         spannableString.setSpan(
-            AbsoluteSizeSpan(21, true),
+            AbsoluteSizeSpan(20, true),
             start,
             end,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -128,13 +152,10 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
     }
 
     // editView focus 이벤트 설정
-    private fun initFocusChangeListener(view: View) {
-        val editTexts = listOf<EditText>(
-            view.findViewById(R.id.sign_in_id_text),
-            view.findViewById(R.id.sign_in_password_text)
-        )
+    private fun initFocusChangeListener() {
+
         editTexts.forEach {
-            it.setOnFocusChangeListener { v, isFocus ->
+            it.setOnFocusChangeListener { _, isFocus ->
                 if (isFocus) {
                     it.setBackgroundResource(R.drawable.focus_shape_alll_round)
                 } else {
@@ -144,21 +165,61 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
         }
     }
 
+    // TextView 크기 변환 이벤트
+    private fun setUpTextWatcher() {
+        editTexts.forEach {
+            it.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    if (s.isNullOrEmpty()) {
+                        it.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+                    } else {
+                        it.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
+                    }
+                }
+                override fun afterTextChanged(s: Editable?) {
+                }
+            })
+        }
+    }
+
     // 로그인 함수
     private fun login() {
-        val id = binding.signInIdText.text.toString().trim()
-        val password = binding.signInPasswordText.text.toString().trim()
+        val id = binding.loginIdText.text.toString().trim()
+        val password = binding.logInPasswordText.text.toString().trim()
 
         if (id.isEmpty() || password.isEmpty()) {
             Toast.makeText(requireContext(), "아이디와 비밀번호를 모두 입력해주세요.", Toast.LENGTH_SHORT).show()
             return
         }
+        lifecycleScope.launch {
+            try {
+                val loginRequest = LoginRequest(id, password)
+                RetrofitUtil.userService.login(loginRequest)
+                Toast.makeText(requireContext(), "로그인 성공", Toast.LENGTH_SHORT).show()
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                startActivity(intent)
+//                val response = RetrofitUtil.userService.login(loginRequest)
 
-        if (DB.checkUserPassword(id, password)) {
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            startActivity(intent)
-        } else {
-            Toast.makeText(requireContext(), "아이디와 비밀번호를 확인해 주세요.", Toast.LENGTH_SHORT).show()
+//                if (response.isSuccessful) {
+//                    val loginResponse = response.body()
+//                    if (loginResponse != null) {
+//                        // 예: 토큰 저장, 메인 액티비티 전환 등 후속 처리
+//                        // ApplicationClass.sharedPreferencesUtil.saveToken(loginResponse.jwtToken)
+//                        // 예시로, 로그인 성공 메시지 출력
+//                        Toast.makeText(requireContext(), "로그인 성공", Toast.LENGTH_SHORT).show()
+//                        val intent = Intent(requireContext(), MainActivity::class.java)
+//                        startActivity(intent)
+//                    } else {
+//                        Toast.makeText(requireContext(), "로그인 실패: 응답 데이터가 없습니다.", Toast.LENGTH_SHORT).show()
+//                    }
+//                } else {
+//                    Toast.makeText(requireContext(), "로그인 실패: ${response.code()}", Toast.LENGTH_SHORT).show()
+//                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(requireContext(), "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -194,7 +255,7 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
             }
     }
 
-    private fun signIn() {
+    private fun goSignup() {
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }

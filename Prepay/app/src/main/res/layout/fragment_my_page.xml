@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     tools:context=".ui.MyPage.MyPageFragment">
 
     <TextView
@@ -12,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="72dp"
         android:text="안녕하세요"
         android:textSize="34sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,8 +21,8 @@
         android:id="@+id/my_page_hello2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="88dp"
         android:text="OOO님"
         android:textSize="34sp"
         app:layout_constraintStart_toEndOf="@+id/my_page_hello1"
@@ -89,7 +88,17 @@
         android:paddingBottom="150dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_page_hello2" />
+        app:layout_constraintTop_toBottomOf="@+id/my_page_hello2"
+        app:layout_constraintVertical_bias="0.641" />
+
+    <Button
+        android:id="@+id/test_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        tools:layout_editor_absoluteX="25dp"
+        tools:layout_editor_absoluteY="802dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

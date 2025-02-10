@@ -1,7 +1,16 @@
 package com.example.prepay.ui.MyPage
 
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.AbsoluteSizeSpan
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.view.View
+import android.widget.TextView
 import androidx.fragment.app.viewModels
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
@@ -14,7 +23,7 @@ private const val TAG = "MyPageFragment"
 class MyPageFragment: BaseFragment<FragmentMyPageBinding>(
     FragmentMyPageBinding::bind,
     R.layout.fragment_my_page
-){
+) {
     private lateinit var mainActivity: MainActivity
     private lateinit var cardAdapter: TeamCardAdapter
     private val viewModel: MyPageFragmentViewModel by viewModels()
@@ -22,18 +31,25 @@ class MyPageFragment: BaseFragment<FragmentMyPageBinding>(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivity = context as MainActivity
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
         initEvent()
+
+        val test_btn = view.findViewById<View>(R.id.test_button)
+        test_btn.setOnClickListener {
+            val intent = Intent(requireContext(), CreateQRActivity::class.java)
+            startActivity(intent)
+        }
     }
 
-    fun initAdapter(){
+    fun initAdapter() {
         cardAdapter = TeamCardAdapter(arrayListOf())
         binding.viewPager.adapter = cardAdapter
-        viewModel.teamListInfo.observe(viewLifecycleOwner){ it ->
+        viewModel.teamListInfo.observe(viewLifecycleOwner) { it ->
             cardAdapter.teamList = it
             if (cardAdapter.teamList.isNotEmpty()) {
                 binding.viewPager.setCurrentItem(cardAdapter.itemCount - 1, false)
@@ -42,7 +58,7 @@ class MyPageFragment: BaseFragment<FragmentMyPageBinding>(
         }
         viewModel.getAllTeamList()
 
-        cardAdapter.itemClickListener = object :TeamCardAdapter.ItemClickListener{
+        cardAdapter.itemClickListener = object : TeamCardAdapter.ItemClickListener {
             override fun onClick(productId: Int) {
                 mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.GROUP_DETAILS_FRAGMENT)
             }
@@ -53,7 +69,7 @@ class MyPageFragment: BaseFragment<FragmentMyPageBinding>(
         binding.viewPager.setCurrentItem(0, false)
     }
 
-    fun initEvent(){
+    fun initEvent() {
 
         binding.createGroupBtn.setOnClickListener {
             mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.CREATE_PUBLIC_GROUP_FRAGMENT)

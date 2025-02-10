@@ -6,11 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".ui.Login.LoginFragment">
 
+    <ImageButton
+        android:id="@+id/back_btn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="24dp"
+        android:background="#00ff0000"
+        android:src="@drawable/arrow_down_sign_to_navigate"
+        app:layout_constraintEnd_toStartOf="@+id/login_title"
+        app:layout_constraintHorizontal_bias="0.205"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
-        android:id="@+id/login_appbar"
+        android:id="@+id/login_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="32dp"
         android:fontFamily="@font/samsung_font_2"
         android:text="로그인"
         android:textColor="#394750"
@@ -22,13 +34,12 @@
 
     <ImageView
         android:id="@+id/logo_image"
-        android:layout_width="133dp"
-        android:layout_height="133dp"
-        android:layout_marginTop="104dp"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_marginTop="112dp"
         android:contentDescription="logo_image"
         android:src="@drawable/logo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,77 +47,103 @@
         android:id="@+id/catchphrase"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:bufferType="spannable"
         android:fontFamily="@font/samsung_font_2"
         android:textColor="#394750"
         android:text="선결제의 새로운 바람"
-        android:textSize="20sp"
+        android:textSize="17sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo_image" />
 
 
+    <TextView
+        android:id="@+id/log_in_id_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/samsung_font_2"
+        android:text="아이디"
+        android:textColor="#394750"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/login_id_text"
+        app:layout_constraintStart_toStartOf="@+id/login_id_text" />
+
     <EditText
-        android:id="@+id/sign_in_id_text"
-        android:layout_width="334dp"
+        android:id="@+id/login_id_text"
+        android:layout_width="350dp"
         android:layout_height="54dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="112dp"
+        android:layout_marginTop="80dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/shape_all_round"
         android:hint="아이디를 입력하세요"
         android:paddingLeft="24dp"
-        android:textSize="18sp"
+        android:textSize="16sp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo_image" />
 
+    <TextView
+        android:id="@+id/log_in_password_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/samsung_font_2"
+        android:layout_marginStart="10dp"
+        android:text="비밀번호"
+        android:textColor="#394750"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/log_in_password_text"
+        app:layout_constraintStart_toStartOf="@+id/log_in_password_text" />
+
     <EditText
-        android:id="@+id/sign_in_password_text"
-        android:layout_width="334dp"
+        android:id="@+id/log_in_password_text"
+        android:layout_width="350dp"
         android:layout_height="54dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/shape_all_round"
-        android:paddingLeft="24dp"
         android:hint="비밀번호를 입력하세요"
         android:inputType="textPassword"
-        android:textSize="18sp"
+        android:paddingLeft="24dp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_in_id_text" />
-
+        app:layout_constraintTop_toBottomOf="@+id/login_id_text" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/LoginBtn"
-        android:layout_width="328dp"
+        android:layout_width="334dp"
         android:layout_height="56dp"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="72dp"
         android:layout_marginEnd="36dp"
         android:background="@drawable/submit_button_style"
         android:fontFamily="@font/samsung_font_2"
         android:text="로그인"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="17sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_in_password_text" />
+        app:layout_constraintTop_toBottomOf="@+id/log_in_password_text" />
 
     <TextView
         android:id="@+id/sns"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="116dp"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="116dp"
-        android:textColor="#394750"
-        android:text="SNS 계정으로 간편 로그인"
         android:fontFamily="@font/samsung_font_2"
+        android:text="SNS 계정으로 간편 로그인"
+        android:textColor="#A9B0B5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/LoginBtn" />
@@ -114,22 +151,26 @@
     <TextView
         android:id="@+id/find_password_btn"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/samsung_font_2"
         android:gravity="center"
         android:text="비밀번호 찾기"
-        android:textColor="#394750"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/sign_in_password_text"
-        app:layout_constraintTop_toBottomOf="@+id/sign_in_password_text" />
+        android:textColor="#A9B0B5"
+        android:textSize="15sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="@+id/log_in_password_text"
+        app:layout_constraintTop_toBottomOf="@+id/log_in_password_text" />
 
     <TextView
         android:id="@+id/JoinBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_width="88dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
         android:text="회원가입"
+        android:textAlignment="center"
         android:textColor="#0066CC"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -149,16 +190,16 @@
 
     <CheckBox
         android:id="@+id/remember_id_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_width="112dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="0dp"
         android:layout_marginTop="8dp"
-        android:text="아이디 기억하기"
+        android:fontFamily="@font/samsung_font_2"
+        android:text="자동 로그인"
         android:textColor="#394750"
-        android:textSize="16sp"
-
-        app:layout_constraintStart_toStartOf="@+id/sign_in_password_text"
-        app:layout_constraintTop_toBottomOf="@+id/sign_in_password_text" />
-
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/log_in_password_text"
+        app:layout_constraintTop_toBottomOf="@+id/log_in_password_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

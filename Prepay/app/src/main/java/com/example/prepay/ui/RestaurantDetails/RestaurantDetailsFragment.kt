@@ -1,14 +1,15 @@
 package com.example.prepay.ui.RestaurantDetails
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
-import com.example.prepay.data.model.dto.OrderHistory
 import com.example.prepay.databinding.DialogReceiptBinding
 import com.example.prepay.databinding.FragmentRestaurantDetailsBinding
 import com.example.prepay.ui.MainActivity
@@ -19,6 +20,11 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
 ){
     private lateinit var mainActivity: MainActivity
     private lateinit var receiptbinding : DialogReceiptBinding
+
+    private lateinit var orderHistoryAdapter: OrderHistoryAdapter
+    private val viewModel : OrderHistoryViewModel by viewModels()
+    private val ReceiptViewModel : ReceiptViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivity= context as MainActivity
@@ -39,24 +45,20 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
     }
 
     private fun initAdapter() {
-        val orderHistoryList = listOf(
-            OrderHistory("2025.01.26","김기훈", 100000),
-            OrderHistory("2025.01.13","김성수", 50000),
-            OrderHistory("2025.01.22","경이현", 60000),
-            OrderHistory("2025.01.25","서현석", 90000),
-            OrderHistory("2025.02.26","차현우", 40000),
-            OrderHistory("2025.01.16","조성윤", 90000),
-            OrderHistory("2025.01.05","김기훈", 100000),
-            OrderHistory("2025.01.23","김성수", 50000),
-            OrderHistory("2025.01.29","경이현", 60000),
-            OrderHistory("2025.01.31","서현석", 90000),
-            OrderHistory("2025.02.02","차현우", 40000),
-            OrderHistory("2025.01.20","조성윤", 90000,),
-        )
 
         receiptbinding = DialogReceiptBinding.inflate(LayoutInflater.from(context))
-        val orderHistoryAdapter = OrderHistoryAdapter(orderHistoryList)
-        binding.recyclerView.adapter = orderHistoryAdapter
+
+        receiptbinding.restaurantName.text = binding.restaurantNameBootpay.text
+        Log.d("receiptbinding.restaurantName.text", "receiptbinding.restaurantName.text: ${receiptbinding.restaurantName.text}")
         binding.recyclerView.layoutManager = LinearLayoutManager(binding.root.context)
+        orderHistoryAdapter = OrderHistoryAdapter(arrayListOf(), ReceiptViewModel, this)
+        binding.recyclerView.adapter = orderHistoryAdapter
+        viewModel.orderHistoryListInfo.observe(viewLifecycleOwner) { it->
+            Log.d("RestaurantDetailsFragment", "orderHistoryListInfo 변경됨: ${it.size} 개")
+            orderHistoryAdapter.orderHistoryList = it
+            orderHistoryAdapter.notifyDataSetChanged()
+        }
+        viewModel.getAllOrderHistoryList(1,0,1)
+        Log.d("RestaurantDetailsFragment", "getAllOrderHistoryList() 호출됨")
     }
 }
