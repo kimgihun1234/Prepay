@@ -3,25 +3,40 @@ package com.d111.PrePay.bootpay;
 import com.d111.PrePay.bootpay.response.PaymentResponse;
 import com.d111.PrePay.bootpay.util.Bootpay;
 import com.d111.PrePay.dto.request.BootChargeReq;
+import com.d111.PrePay.model.TeamStore;
+import com.d111.PrePay.model.User;
+import com.d111.PrePay.repository.TeamStoreRepository;
+import com.d111.PrePay.repository.UserRepository;
+import com.d111.PrePay.service.FCMService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
+
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class BootpayService {
+    private final UserRepository userRepository;
+    private final TeamStoreRepository teamStoreRepository;
     private Long bootpayTokenDate = null;
     @Value("${bootpay.appid}")
     private String REST_APPLICATION_ID;
     @Value("${bootpay.key}")
     private String PRIVATE_KEY;
 
+    private final FCMService fcmService;
 
-    public PaymentResponse makeCharge(BootChargeReq bootChargeReq) {
+    @Transactional
+    public PaymentResponse makeCharge(BootChargeReq bootChargeReq, String email) {
         Bootpay api = new Bootpay(REST_APPLICATION_ID, PRIVATE_KEY);
         log.info("REST ID : {}", REST_APPLICATION_ID);
         log.info("PRIVATE_KEY : {}", PRIVATE_KEY);
@@ -38,6 +53,17 @@ public class BootpayService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        TeamStore teamStore = teamStoreRepository.findByTeamIdAndStoreId(bootChargeReq.getTeamId(), bootChargeReq.getStoreId()).orElseThrow();
+        teamStore.setTeamStoreBalance(teamStore.getTeamStoreBalance() + bootChargeReq.getAmount());
+        String storeName = teamStore.getStore().getStoreName();
+        String teamName = teamStore.getTeam().getTeamName();
+        User user = userRepository.findUserByEmail(email);
+        try {
+            fcmService.sendDataMessageTo(user.getFcmToken(), "금액 : " + response.getData().getPrice() + "원 " + teamName + " 그룹의 " + storeName + " 가게에 " + "충전이 완료되었습니다.");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
 
         return response;
     }

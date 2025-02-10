@@ -51,10 +51,10 @@ public class FCMService {
      * @return
      * @throws JsonProcessingException
      */
-    private String makeDataMessage(String targetToken, String jwtToken) throws JsonProcessingException {
+    private String makeDataMessage(String targetToken, String data) throws JsonProcessingException {
 //        Notification noti = new FcmMessage.Notification(title, body, null);
         Map<String, String> map = new HashMap<>();
-        map.put("access", jwtToken);
+        map.put("access", data);
 
 
         FcmMessageWithData.Message message = new FcmMessageWithData.Message();
@@ -74,8 +74,8 @@ public class FCMService {
      * @param targetToken
      * @throws IOException
      */
-    public void sendDataMessageTo(String targetToken,String jwtToken) throws IOException {
-        String message = makeDataMessage(targetToken,jwtToken);
+    public void sendDataMessageTo(String targetToken,String data) throws IOException {
+        String message = makeDataMessage(targetToken,data);
         log.info("message : {}", message);
 
 

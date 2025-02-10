@@ -1,20 +1,15 @@
 package com.d111.PrePay.service;
 
 import com.d111.PrePay.dto.request.FcmTokenReq;
-import com.d111.PrePay.dto.request.LoginReq;
-import com.d111.PrePay.dto.request.UserLoginReq;
 import com.d111.PrePay.dto.request.UserSignUpReq;
-import com.d111.PrePay.dto.respond.LoginRes;
 import com.d111.PrePay.dto.respond.StandardRes;
 import com.d111.PrePay.dto.respond.UserSignUpRes;
 import com.d111.PrePay.exception.DuplicateUserException;
 import com.d111.PrePay.model.User;
 import com.d111.PrePay.repository.UserRepository;
-import com.d111.PrePay.dto.respond.UserLoginRes;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -48,5 +43,12 @@ public class UserService {
                 .message("회원가입이 완료되었습니다.")
                 .build();
         return userSignUpRes;
+    }
+
+    @Transactional
+    public StandardRes setFcmToken(FcmTokenReq req, String email) {
+        User user = userRepository.findUserByEmail(email);
+        user.setFcmToken(req.getToken());
+        return new StandardRes("토큰 저장 완료",200);
     }
 }

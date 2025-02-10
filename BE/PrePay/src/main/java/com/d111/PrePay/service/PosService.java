@@ -8,6 +8,7 @@ import com.d111.PrePay.value.QrType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -19,6 +20,7 @@ public class PosService {
     private final StoreRepository storeRepository;
     private final UserTeamRepository userTeamRepository;
     private final QrRepository qrRepository;
+    private final FCMService fcmService;
 
     public Long makeOrder(OrderCreateReq orderReq) {
         Qr qr = qrRepository.findByUuid(orderReq.getQrUUID());
@@ -45,6 +47,11 @@ public class PosService {
             detailHistoryRepository.save(detailHistory);
         }
 
+        try{
+            fcmService.sendDataMessageTo(user.getFcmToken(),"주문이 완료되었습니다.");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         return orderHistory.getId();
     }
