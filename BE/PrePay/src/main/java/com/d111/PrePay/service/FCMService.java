@@ -23,7 +23,7 @@ import java.util.Map;
 public class FCMService {
 
     public final ObjectMapper objectMapper;
-    @Value("${FCM_API_URL}")
+    @Value("${fcm.url}")
     private String API_URL;
 
     /**
