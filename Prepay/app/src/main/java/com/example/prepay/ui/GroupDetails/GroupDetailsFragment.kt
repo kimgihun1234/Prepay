@@ -81,8 +81,8 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private var isUserLocationSet = false
     private var location = Location("dummy").apply {
-        latitude = 1.0
-        longitude = 1.0
+        latitude = 36.107097
+        longitude = 128.416369
     }
 
     /** permission check **/
@@ -152,7 +152,8 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
 
         viewModel.userLocation.observe(viewLifecycleOwner) { curlocation ->
             // 위치 정보가 변경될 때마다 호출
-            restaurantAdapter = RestaurantAdapter(restaurantList, this, curlocation)
+            Log.d(TAG,"변화"+curlocation.toString())
+            restaurantAdapter.userLocation = curlocation
             restaurantAdapter.notifyDataSetChanged()
         }
     }
@@ -209,6 +210,10 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         binding.addRestaurant.setOnClickListener {
             addRestaurantClick()
         }
+
+        binding.qrBtn.setOnClickListener {
+            mainActivity.broadcast("hello","hello")
+        }
     }
 
     private fun addRestaurantClick() {
@@ -234,7 +239,6 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             .create()
         dialog.show()
     }
-
 
     private fun showInviteCodeInputDialog() {
         val binding = DialogInviteCodeBinding.inflate(layoutInflater)
@@ -395,7 +399,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                     isUserLocationSet = true
                     viewModel.updateLocation(location)
                 }
-                Log.d(TAG,location.toString())
+                Log.d(TAG,"시작"+location.toString())
                 //현재 위치에 마커 생성하고 이동
                 setCurrentLocation(location)
             }

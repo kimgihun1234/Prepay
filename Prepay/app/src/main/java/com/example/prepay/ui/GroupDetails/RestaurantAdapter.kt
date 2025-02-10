@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.prepay.data.response.TeamIdStoreRes
 import com.example.prepay.databinding.ItemRestaurantBinding
 
-class RestaurantAdapter(var teamIdStoreResList: List<TeamIdStoreRes>, private val listener: OnRestaurantClickListener,private val userLocation: Location) :
+class RestaurantAdapter(var teamIdStoreResList: List<TeamIdStoreRes>, private val listener: OnRestaurantClickListener,var userLocation: Location) :
     RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder>() {
 
     class RestaurantViewHolder(private val binding: ItemRestaurantBinding,private val listener: OnRestaurantClickListener) :
