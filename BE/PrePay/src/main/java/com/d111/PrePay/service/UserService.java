@@ -7,13 +7,18 @@ import com.d111.PrePay.dto.request.UserSignUpReq;
 import com.d111.PrePay.dto.respond.LoginRes;
 import com.d111.PrePay.dto.respond.StandardRes;
 import com.d111.PrePay.dto.respond.UserSignUpRes;
+import com.d111.PrePay.exception.DuplicateUserException;
 import com.d111.PrePay.model.User;
 import com.d111.PrePay.repository.UserRepository;
 import com.d111.PrePay.dto.respond.UserLoginRes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +30,16 @@ public class UserService {
 
     public UserSignUpRes userSignUp(UserSignUpReq userSignUpReq) {
         User user = new User(userSignUpReq);
+        List<User> all = userRepository.findAll();
+        for (User findUser : all) {
+            if (user.getEmail().equals(findUser.getEmail())){
+                throw new DuplicateUserException("이미 사용중인 이메일입니다.");
+            }
+            if (user.getNickname().equals(findUser.getNickname())){
+                throw  new DuplicateUserException("이미 사용중인 닉네임입니다.");
+            }
+        }
+
         user.setUserPassword(bCryptPasswordEncoder.encode(userSignUpReq.getPassword()));
         user.setEmail(userSignUpReq.getEmail());
         userRepository.save(user);
