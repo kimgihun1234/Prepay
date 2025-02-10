@@ -16,10 +16,10 @@ public class TeamStore {
     @Column(name = "team_store_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Team team;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Store store;
 
     @OneToMany(mappedBy = "teamStore")

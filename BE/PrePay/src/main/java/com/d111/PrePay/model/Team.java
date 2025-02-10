@@ -37,7 +37,7 @@ public class Team {
 
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User teamInitializer;
 
