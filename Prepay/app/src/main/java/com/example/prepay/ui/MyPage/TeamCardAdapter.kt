@@ -15,7 +15,7 @@ class TeamCardAdapter(var teamList: List<Team>) : RecyclerView.Adapter<TeamCardA
             binding.tvSubTitle.text = card.balance.toString()
             binding.tvBalance.text = card.balance.toString()
             binding.cardview.setOnClickListener {
-                itemClickListener.onClick(0)
+                itemClickListener.onClick(teamList[layoutPosition].teamId)
             }
         }
     }
@@ -32,6 +32,6 @@ class TeamCardAdapter(var teamList: List<Team>) : RecyclerView.Adapter<TeamCardA
     override fun getItemCount(): Int = teamList.size
 
     interface ItemClickListener {
-        fun onClick(productId: Int)
+        fun onClick(teamId: Int)
     }
 }

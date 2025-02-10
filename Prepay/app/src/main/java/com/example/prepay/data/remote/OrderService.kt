@@ -20,6 +20,4 @@ interface OrderService {
     @GET("order/history/{detailHistoryId}")
     suspend fun getDetailReceipt(@Path("detailHistoryId") detailHistoryId : Int,
                                  @Header("userId") userId: Int) : List<Receipt>
-
-
 }

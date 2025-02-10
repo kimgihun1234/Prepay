@@ -1,4 +1,4 @@
-package com.example.prepay.ui.GroupDetails
+package com.example.prepay.ui.MyPage
 
 import android.util.Log
 import androidx.lifecycle.LiveData

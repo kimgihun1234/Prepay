@@ -69,7 +69,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     implementation("io.github.bootpay:android:4.9.0")
-    
+
     // 서버에서 이미지 가지고 오기 위해서 Gilde 사용
     implementation("com.github.bumptech.glide:glide:4.12.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -81,4 +81,7 @@ dependencies {
 
     // zxing
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+    // Google map API
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.gms:play-services-location:21.2.0")
 }

@@ -17,14 +17,21 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.PermissionChecker
 import com.example.prepay.R
-import com.example.prepay.User
-import com.example.prepay.data.model.dto.Restaurant
+import com.example.prepay.RetrofitUtil
+import com.example.prepay.data.response.BanUserReq
+import com.example.prepay.data.response.PrivilegeUserReq
+import com.example.prepay.data.response.TeamIdReq
+import com.example.prepay.data.response.TeamIdStoreRes
+import com.example.prepay.data.response.TeamUserRes
 import com.example.prepay.databinding.DialogAuthoritySettingBinding
 import com.example.prepay.databinding.DialogGroupExitBinding
 import com.example.prepay.databinding.DialogGroupResignBinding
@@ -32,8 +39,7 @@ import com.example.prepay.databinding.DialogInviteCodeBinding
 import com.example.prepay.databinding.DialogQrDiningTogetherBinding
 import com.example.prepay.databinding.FragmentGroupDetailsBinding
 import com.example.prepay.ui.MainActivity
-import javax.sql.DataSource
-import com.example.prepay.ui.RestaurantDetails.RestaurantDetailsFragment
+import com.example.prepay.ui.MainActivityViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -48,9 +54,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.Locale
 
+private const val TAG = "GroupDetailsFragment_싸피"
 class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     FragmentGroupDetailsBinding::bind,
     R.layout.fragment_group_details
@@ -58,15 +66,24 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     private lateinit var mainActivity: MainActivity
     private lateinit var restaurantAdapter: RestaurantAdapter
     private lateinit var teamUserAdapter: TeamUserAdapter
-    private lateinit var restaurantList: List<Restaurant>
-    private lateinit var teamUserList: List<User>
+    private lateinit var restaurantList: List<TeamIdStoreRes>
+    private lateinit var teamTeamUserResList: List<TeamUserRes>
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
+    private lateinit var currentLocation: Location
+    //activityViewModel
+    private val activityViewModel: MainActivityViewModel by activityViewModels()
+    private val viewModel: GroupDetailsFragmentViewModel by viewModels()
 
     //GPS관련 변수
     private var mMap: GoogleMap? = null
     private var currentMarker: Marker? = null
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
+    private var isUserLocationSet = false
+    private var location = Location("dummy").apply {
+        latitude = 1.0
+        longitude = 1.0
+    }
 
     /** permission check **/
     private val checker = PermissionChecker(this)
@@ -78,7 +95,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivity= context as MainActivity
-
+        Log.d(TAG, activityViewModel.teamId.value.toString())
     }
 
     override fun onStart() {
@@ -98,30 +115,51 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         super.onViewCreated(view, savedInstanceState)
         initEvent()
         initAdapter()
+        initData()
         initDrawerLayout()
-        //GPS 관련 ㅋ코드
+        initModelView()
+        //GPS 관련 코드
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(readyCallback)
     }
 
     private fun initAdapter(){
-        restaurantList = listOf(
-            Restaurant("꿀맛 식당", 10000),
-            Restaurant("싸피 식당", 20000),
-            Restaurant("삼성 식당", 4000)
-        )
-        teamUserList = listOf(
-            User("김싸피","ㅇㅇㅇㄹ","ㅇㅇㅇ"),
-            User("김ㄷㄷㄷ","ㄹㄹㄹ","ㅇㅇㅇ"),
-            User("김ㄹㄹ","ㄱㄱㄱ","ㅇㅇㅇ")
-        )
-        restaurantAdapter = RestaurantAdapter(restaurantList,this)
-        teamUserAdapter = TeamUserAdapter(teamUserList,this)
+        teamTeamUserResList = emptyList()
+        restaurantList = emptyList()
+        restaurantAdapter = RestaurantAdapter(restaurantList,this,location)
+        teamUserAdapter = TeamUserAdapter(teamTeamUserResList,this)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
         binding.recyclerView.adapter = restaurantAdapter
         binding.rvMemberList.layoutManager = LinearLayoutManager(requireContext())
         binding.rvMemberList.adapter = teamUserAdapter
+
+        viewModel.storeListInfo.observe(viewLifecycleOwner){ it->
+            restaurantAdapter.teamIdStoreResList = it
+            restaurantList = it
+            if (mMap != null) {
+                addStoreMarkers(it) // 마커 추가
+            }
+            restaurantAdapter.notifyDataSetChanged()
+        }
+        viewModel.teamUserListInfo.observe(viewLifecycleOwner){it->
+            teamUserAdapter.teamUserResList = it
+            teamUserAdapter.notifyDataSetChanged()
+        }
+        viewModel.getMyTeamRestaurantList(1,activityViewModel.teamId.value!!)
+        viewModel.getMyTeamUserList(1,activityViewModel.teamId.value!!);
+
+        viewModel.userLocation.observe(viewLifecycleOwner) { curlocation ->
+            // 위치 정보가 변경될 때마다 호출
+            restaurantAdapter = RestaurantAdapter(restaurantList, this, curlocation)
+            restaurantAdapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun initData(){
+
+
     }
 
     private fun initDrawerLayout(){
@@ -135,6 +173,27 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         }
     }
 
+    private fun addStoreMarkers(stores: List<TeamIdStoreRes>) {
+        mMap!!.clear()  // 기존 마커 삭제
+
+        for (store in stores) {
+            val storeLocation = LatLng(store.latitude, store.longitude)
+
+            val markerOptions = MarkerOptions().apply {
+                position(storeLocation)
+                title(store.storeName)
+                snippet("위도: ${store.latitude}, 경도: ${store.longitude}")
+            }
+            mMap!!.addMarker(markerOptions)
+        }
+
+        // 첫 번째 상점 위치로 카메라 이동
+        if (stores.isNotEmpty()) {
+            val firstStoreLocation = LatLng(stores[0].latitude, stores[0].longitude)
+            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(firstStoreLocation, 15f)
+            mMap!!.animateCamera(cameraUpdate)
+        }
+    }
 
     private fun initEvent() {
         binding.diningTogetherQrBtn.setOnClickListener {
@@ -156,16 +215,16 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.ADD_RESTAURANT_FRAGMENT)
     }
 
-    override fun onRestaurantClick(restaurant: Restaurant) {
+    override fun onRestaurantClick(teamIdStoreResId: Int) {
         mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.RESTAURANT_DETAILS_FRAGMENT)
     }
 
-    override fun onManageClick(user: User) {
-        showAuthoritySettingDialog()
+    override fun onManageClick(teamUserRes: TeamUserRes) {
+        showAuthoritySettingDialog(teamUserRes)
     }
 
-    override fun onResignClick(user: User) {
-        showGroupResignDialog()
+    override fun onResignClick(teamUserRes: TeamUserRes) {
+        showGroupResignDialog(teamUserRes)
     }
 
     private fun showQrCodeDialog(){
@@ -175,7 +234,6 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             .create()
         dialog.show()
     }
-
 
 
     private fun showInviteCodeInputDialog() {
@@ -209,6 +267,9 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             .setView(binding.root)
             .create()
         binding.groupExitConfirmBtn.setOnClickListener {
+            val tr = TeamIdReq(teamId = activityViewModel.teamId.value!!.toInt())
+            exitTeam(tr)
+            mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
             dialog.dismiss()
         }
 
@@ -218,13 +279,15 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         dialog.show()
     }
 
-    private fun showGroupResignDialog() {
+    private fun showGroupResignDialog(ban: TeamUserRes) {
         val binding = DialogGroupResignBinding.inflate(layoutInflater)
 
         val dialog = AlertDialog.Builder(requireContext())
             .setView(binding.root)
             .create()
         binding.groupResignConfirmBtn.setOnClickListener {
+            val banUser = BanUserReq(ban.email,ban.teamId)
+            viewModel.TeamResign(banUser)
             dialog.dismiss()
         }
 
@@ -234,13 +297,15 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         dialog.show()
     }
 
-    private fun showAuthoritySettingDialog() {
+    private fun showAuthoritySettingDialog(privilege : TeamUserRes) {
         val binding = DialogAuthoritySettingBinding.inflate(layoutInflater)
 
         val dialog = AlertDialog.Builder(requireContext())
             .setView(binding.root)
             .create()
         binding.autoritySettingConfirmBtn.setOnClickListener {
+            val pr = PrivilegeUserReq(privilege.email,true,privilege.teamId)
+            privilegeUser(pr)
             dialog.dismiss()
         }
 
@@ -248,6 +313,30 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             dialog.dismiss()
         }
         dialog.show()
+    }
+
+    fun privilegeUser(pr:PrivilegeUserReq){
+        lifecycleScope.launch {
+            runCatching {
+              RetrofitUtil.teamService.privilegeUser(1,pr)
+            }.onSuccess {
+
+            }.onFailure {
+
+            }
+        }
+    }
+
+    fun exitTeam(tr: TeamIdReq){
+        lifecycleScope.launch {
+            runCatching {
+                RetrofitUtil.teamService.exitTeam(1,tr)
+            }.onSuccess {
+
+            }.onFailure {
+
+            }
+        }
     }
 
     private val readyCallback: OnMapReadyCallback by lazy{
@@ -268,13 +357,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                 } else { //이미 전체 권한이 있는 경우
                     startLocationUpdates()
                 }
-                /** permission check **/
-                mMap?.setOnMapLongClickListener {
-                    val loc = Location("")
-                    loc.latitude = it.latitude
-                    loc.longitude = it.longitude
-                    setCurrentLocation(loc)
-                }
+                viewModel.storeListInfo.value?.let { addStoreMarkers(it) }
             }
         }
     }
@@ -307,7 +390,12 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             val locationList = locationResult.locations
             if (locationList.size > 0) {
                 val location = locationList[locationList.size - 1]
-
+                if(!isUserLocationSet){
+                    //여기에 추가
+                    isUserLocationSet = true
+                    viewModel.updateLocation(location)
+                }
+                Log.d(TAG,location.toString())
                 //현재 위치에 마커 생성하고 이동
                 setCurrentLocation(location)
             }
@@ -317,7 +405,6 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     fun setCurrentLocation(location: Location){
         val markerTitle: String = getCurrentAddress(location)
         val markerSnippet = "위도: ${location.latitude.toString()}, 경도: ${location.longitude }"
-
         //현재 위치에 마커 생성하고 이동
         setCurrentLocation(location, markerTitle, markerSnippet)
     }
@@ -325,21 +412,23 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     fun setCurrentLocation(location: Location, markerTitle: String?, markerSnippet: String?) {
         currentMarker?.remove()
 
-        val currentLatLng = LatLng(location.latitude+0.002, location.longitude+0.002)
+        // 첫 번째 마커 위치
+        val currentLatLng1 = LatLng(location.latitude + 0.002, location.longitude + 0.002)
+        val marker1 = ResourcesCompat.getDrawable(resources, R.drawable.logo, requireActivity().theme)?.toBitmap(150, 150)
 
-        val marker = ResourcesCompat.getDrawable(resources,R.drawable.logo,requireActivity().theme)?.toBitmap(150,150)
-
-        val markerOptions = MarkerOptions().apply{
-            position(currentLatLng)
+        // 마커 옵션 1
+        val markerOptions1 = MarkerOptions().apply {
+            position(currentLatLng1)
             title("싸피벅스")
             snippet(markerSnippet)
             draggable(true)
-            icon(BitmapDescriptorFactory.fromBitmap(marker!!))
+            icon(BitmapDescriptorFactory.fromBitmap(marker1!!))
         }
 
-        currentMarker = mMap?.addMarker(markerOptions)
+        // 첫 번째 마커 추가
+        mMap?.addMarker(markerOptions1)
 
-        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f)
+        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLatLng1, 15f)
         mMap?.animateCamera(cameraUpdate)
     }
 
@@ -397,7 +486,6 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                 || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
     }
 
-
     /******** 위치서비스 활성화 여부 check *********/
     private val GPS_ENABLE_REQUEST_CODE = 2001
     private var needRequest = false
@@ -431,6 +519,18 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                         "위치 서비스가 꺼져 있어, 현재 위치를 확인할 수 없습니다.",
                         Toast.LENGTH_SHORT).show()
                 }
+        }
+    }
+
+    fun initModelView(){
+        lifecycleScope.launch{
+            kotlin.runCatching {
+                RetrofitUtil.teamService.getTeamDetails(1,activityViewModel.teamId.value!!)
+            }.onSuccess {
+                binding.usePossiblePriceTxt.text = it.dailyPriceLimit.toString()
+            }.onFailure {
+                Log.d(TAG,"실패하였습니다")
+            }
         }
     }
 }
