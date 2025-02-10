@@ -7,10 +7,7 @@ import com.d111.PrePay.service.StoreService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,7 +20,7 @@ public class StoreController {
 
     @PostMapping("/stores")
     @Operation(summary = "팀 가맹점 추가용 가맹점 리스트 조회")
-    public ResponseEntity<List<StoresRes>> getNewNearStores(StoresReq req, @RequestHeader String email) {
+    public ResponseEntity<List<StoresRes>> getNewNearStores(@RequestBody StoresReq req, @RequestHeader String email) {
         return ResponseEntity.ok(storeService.getNewNearStores(req,email));
     }
 }
