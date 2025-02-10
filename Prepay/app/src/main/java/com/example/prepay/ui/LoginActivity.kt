@@ -5,10 +5,9 @@ import com.example.prepay.BaseActivity
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.databinding.ActivityLoginBinding
-import com.example.prepay.ui.Login.FindIdFragment
 import com.example.prepay.ui.Login.FindPasswordFragment
 import com.example.prepay.ui.Login.LoginFragment
-import com.example.prepay.ui.Login.SignInFragment
+import com.example.prepay.ui.Login.SignupFragment
 import com.example.prepay.ui.Login.StartLoginFragment
 import com.example.prepay.ui.Login.VerifyIdFragment
 
@@ -31,10 +30,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
                 transaction.replace(R.id.login_container, LoginFragment())
             }
             CommonUtils.LoginFragmentName.SIGNIN_FRAGMENT -> {
-                transaction.replace(R.id.login_container, SignInFragment())
-            }
-            CommonUtils.LoginFragmentName.FINDID_FRAGMENT -> {
-                transaction.add(R.id.login_container, FindIdFragment()).addToBackStack(null)
+                transaction.replace(R.id.login_container, SignupFragment())
             }
             CommonUtils.LoginFragmentName.FINDPASSWORD_FRAGMENT -> {
                 transaction.add(R.id.login_container, FindPasswordFragment()).addToBackStack(null)

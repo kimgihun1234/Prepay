@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.Login.SignupFragment">
+
+        <ImageButton
+            android:id="@+id/back_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="24dp"
+            android:background="#00ff0000"
+            android:src="@drawable/arrow_down_sign_to_navigate"
+            app:layout_constraintEnd_toStartOf="@+id/sign_up_title"
+            app:layout_constraintHorizontal_bias="0.205"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/sign_up_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/samsung_font_2"
+            android:text="회원가입"
+            android:textColor="#394750"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    
+        <TextView
+            android:id="@+id/sign_up_id_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/samsung_font_2"
+            android:layout_marginStart="10dp"
+            android:text="이메일"
+            android:textColor="#394750"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/sign_up_id_text"
+            app:layout_constraintStart_toStartOf="@+id/sign_up_id_text" />
+
+        <EditText
+            android:id="@+id/sign_up_id_text"
+            android:layout_width="334dp"
+            android:layout_height="54dp"
+            android:layout_marginTop="80dp"
+            android:background="@drawable/shape_all_round"
+            android:hint="이메일를 입력해주세요"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="24dp"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.493"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/logo_image" />
+
+        <TextView
+            android:id="@+id/id_confirm_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_marginStart="27dp"
+            android:text=""
+            android:fontFamily="@font/samsung_font_2"
+            android:textColor="#20B03D"
+            android:textSize="13sp"
+            app:layout_constraintStart_toStartOf="@+id/sign_up_id_text"
+            app:layout_constraintTop_toBottomOf="@+id/sign_up_id_text" />
+    
+        <TextView
+            android:id="@+id/sign_up_password_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="비밀번호"
+            android:textColor="#394750"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/sign_up_password_text"
+            app:layout_constraintStart_toStartOf="@+id/sign_up_password_text" />
+    
+        <EditText
+            android:id="@+id/sign_up_password_text"
+            android:layout_width="334dp"
+            android:layout_height="54dp"
+            android:layout_marginTop="56dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/shape_all_round"
+            android:hint="비밀번호를 입력해 주세요"
+            android:inputType="textPassword"
+            android:paddingStart="24dp"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sign_up_id_text" />
+    
+        <TextView
+            android:id="@+id/sign_up_rePassword_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="0dp"
+            android:text="비밀번호 재입력"
+            android:textColor="#394750"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/sign_up_password_confirm_text"
+            app:layout_constraintStart_toStartOf="@+id/sign_up_password_confirm_text" />
+    
+        <EditText
+            android:id="@+id/sign_up_password_confirm_text"
+            android:layout_width="334dp"
+            android:layout_height="54dp"
+            android:layout_marginTop="56dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/shape_all_round"
+            android:hint="비밀번호를 다시 입력해 주세요"
+            android:paddingStart="24dp"
+            android:textSize="16sp"
+            android:inputType="textPassword"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sign_up_password_text" />
+    
+        <TextView
+            android:id="@+id/re_password_confirm_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="27dp"
+            android:layout_marginTop="0dp"
+            android:text=""
+            android:textColor="#20B03D"
+            android:textSize="13sp"
+            app:layout_constraintStart_toStartOf="@+id/sign_up_password_confirm_text"
+            app:layout_constraintTop_toBottomOf="@+id/sign_up_password_confirm_text" />
+    
+        <TextView
+            android:id="@+id/sign_up_nick_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="-0dp"
+            android:text="닉네임"
+            android:textColor="#394750"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/sign_up_nick_text"
+            app:layout_constraintStart_toStartOf="@+id/sign_up_nick_text" />
+    
+        <EditText
+            android:id="@+id/sign_up_nick_text"
+            android:layout_width="334dp"
+            android:layout_height="54dp"
+            android:layout_marginTop="56dp"
+            android:background="@drawable/shape_all_round"
+            android:hint="닉네임을 입력해 주세요"
+            android:paddingStart="24dp"
+            android:textSize="16sp"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sign_up_password_confirm_text" />
+    
+    
+        <TextView
+            android:id="@+id/sign_in_nick_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="27dp"
+            android:layout_marginTop="0dp"
+            android:text=""
+            android:textSize="13sp"
+            app:layout_constraintStart_toStartOf="@+id/sign_up_nick_text"
+            app:layout_constraintTop_toBottomOf="@+id/sign_up_nick_text" />
+    
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/sign_up_submit"
+            android:layout_width="334dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="36dp"
+            android:background="@drawable/submit_button_style"
+            android:fontFamily="@font/samsung_font_2"
+            android:text="가입하기"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sign_up_nick_text" />
+
+        <ImageView
+            android:id="@+id/logo_image"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="88dp"
+            android:contentDescription="logo_image"
+            android:src="@drawable/logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/sign_up_logo_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:bufferType="spannable"
+            android:fontFamily="@font/samsung_font_2"
+            android:text="프리페이로 새로운 선결제를 경험해보세요"
+            android:textColor="#394750"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/logo_image" />
+
+        <TextView
+            android:id="@+id/password_confirm_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="27dp"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/samsung_font_2"
+            android:text=""
+            android:textSize="13sp"
+            android:textColor="#20B03D"
+            app:layout_constraintStart_toStartOf="@+id/sign_up_password_text"
+            app:layout_constraintTop_toBottomOf="@+id/sign_up_password_text" />
+    
+    
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

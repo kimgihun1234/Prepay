@@ -3,6 +3,7 @@ package com.example.prepay.ui.CreateGroup
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.prepay.BaseFragment
@@ -10,7 +11,6 @@ import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.data.model.dto.PublicPrivateTeam
-import com.example.prepay.data.model.dto.ImageRequest
 import com.example.prepay.databinding.FragmentCreatePrivateGroupBinding
 import com.example.prepay.ui.MainActivity
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +26,7 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
 ) {
     private lateinit var mainActivity: MainActivity
     private val fragmentScope = lifecycleScope
+    private lateinit var editTexts: List<EditText>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +35,13 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        editTexts = listOf(
+            binding.groupNameText,
+            binding.limitSettingText
+        )
+
         initEvent()
+        initFocusChangeListener()
     }
 
     private fun initEvent() {
@@ -110,7 +117,7 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
                 }
                 Log.d(TAG, "makeTeam: 성공")
 
-                if (response.isSuccessful) {  // Fragment가 아직 활성 상태인지 확인
+                if (response.isSuccessful) {
                     Toast.makeText(requireContext(), "팀이 성공적으로 생성되었습니다.", Toast.LENGTH_SHORT).show()
                     mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
                 } else {
@@ -118,7 +125,7 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "teamMakeRequest 실패, 예외 메시지: ${e.message}", e)
-                if (isAdded) {  // Fragment가 아직 활성 상태인지 확인
+                if (isAdded) {
                     Toast.makeText(requireContext(), "팀 생성 실패: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             } finally {
@@ -130,5 +137,18 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
     override fun onDestroyView() {
         fragmentScope.coroutineContext.cancelChildren()
         super.onDestroyView()
+    }
+
+    // 효과
+    private fun initFocusChangeListener() {
+        editTexts.forEach {
+            it.setOnFocusChangeListener { _, isFocus ->
+                if (isFocus) {
+                    it.setBackgroundResource(R.drawable.focus_shape_alll_round)
+                } else {
+                    it.setBackgroundResource(R.drawable.shape_all_round)
+                }
+            }
+        }
     }
 }
