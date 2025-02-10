@@ -48,16 +48,14 @@ public class FCMService {
      * background 대응을 위해서 data로 전송한다.
      *
      * @param targetToken
-     * @param title
-     * @param body
      * @return
      * @throws JsonProcessingException
      */
-    private String makeDataMessage(String targetToken, String title, String body) throws JsonProcessingException {
+    private String makeDataMessage(String targetToken, String jwtToken) throws JsonProcessingException {
 //        Notification noti = new FcmMessage.Notification(title, body, null);
         Map<String, String> map = new HashMap<>();
-        map.put("myTitle", title);
-        map.put("myBody", body);
+        map.put("access", jwtToken);
+
 
         FcmMessageWithData.Message message = new FcmMessageWithData.Message();
         message.setToken(targetToken);
@@ -74,12 +72,10 @@ public class FCMService {
      * background 대응을 위해서 data로 전송한다.
      *
      * @param targetToken
-     * @param title
-     * @param body
      * @throws IOException
      */
-    public void sendDataMessageTo(String targetToken, String title, String body) throws IOException {
-        String message = makeDataMessage(targetToken, title, body);
+    public void sendDataMessageTo(String targetToken,String jwtToken) throws IOException {
+        String message = makeDataMessage(targetToken,jwtToken);
         log.info("message : {}", message);
 
 

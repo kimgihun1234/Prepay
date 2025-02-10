@@ -15,9 +15,9 @@ public class FcmTestController {
 
     private final FCMService fcmService;
 
-    @PostMapping("/sendDataMessageTo")
-    public void sendDataMessageTo(String token, String title, String body) throws IOException {
-        log.info("sendMessageTo : token:{}, title:{}, body:{}", token, title, body);
-        fcmService.sendDataMessageTo(token, title, body);
-    }
+//    @PostMapping("/sendDataMessageTo")
+//    public void sendDataMessageTo(String token, String title, String body) throws IOException {
+//        log.info("sendMessageTo : token:{}, title:{}, body:{}", token, title, body);
+//        fcmService.sendDataMessageTo(token, title, body);
+//    }
 }
