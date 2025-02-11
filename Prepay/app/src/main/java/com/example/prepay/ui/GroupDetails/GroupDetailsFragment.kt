@@ -1,6 +1,7 @@
 package com.example.prepay.ui.GroupDetails
 
 import android.Manifest
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
@@ -18,6 +19,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.GravityCompat
@@ -63,6 +65,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.navigation.NavigationView
 import com.google.zxing.BarcodeFormat
+import com.google.zxing.integration.android.IntentIntegrator
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -212,7 +215,8 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
 
     private fun initEvent() {
         binding.diningTogetherQrBtn.setOnClickListener {
-            lifecycleScope.launch {
+            startQRCodeScanner()
+            /*lifecycleScope.launch {
                 runCatching {
                     RetrofitUtil.qrService.qrTeamCreate("user1@gmail.com",1)
                 }.onSuccess {
@@ -221,7 +225,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                 }.onFailure {
                     mainActivity.showToast("qr불러오기가 실패했습니다")
                 }
-            }
+            }*/
         }
 
         binding.groupInviteBtn.setOnClickListener {
@@ -247,6 +251,22 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             }
             //mainActivity.broadcast("hello","hello")
         }
+    }
+
+    // QR 코드 스캔을 시작하는 함수
+    fun startQRCodeScanner() {
+        val integrator = IntentIntegrator.forSupportFragment(this) // Fragment에서 사용할 경우 forSupportFragment
+        integrator.setPrompt("Scan a QR code")
+        integrator.setOrientationLocked(false) // 화면 회전 가능
+        integrator.initiateScan() // QR 코드 스캔 시작
+    }
+
+    fun handleQRCodeScanResult(scanResult: String) {
+        // QR 코드 데이터 처리
+        Log.d("QR_SCAN", "QR 코드가 찍혔습니다: $scanResult")
+
+        // QR 코드에서 필요한 정보 처리 (예: ID 추출)
+        //val id = scanResult.split(":")[1]
     }
 
     private fun addRestaurantClick() {
@@ -617,6 +637,22 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                         "위치 서비스가 꺼져 있어, 현재 위치를 확인할 수 없습니다.",
                         Toast.LENGTH_SHORT).show()
                 }
+        }
+
+        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+
+        if (result != null) {
+            if (result.contents != null) {
+                // QR 코드 스캔 성공 시
+                Log.d("QR_SCAN", "QR 코드가 찍혔습니다: ${result.contents}")
+                handleQRCodeScanResult(result.contents) // QR 코드 결과 처리
+            } else {
+                // QR 코드 스캔 취소 시
+                Log.d("QR_SCAN", "QR 코드 스캔 취소됨")
+            }
+        } else {
+            // 예외 처리 (IntentIntegrator가 반환한 결과가 null일 때)
+            Log.e("QR_SCAN", "QR 코드 스캔 결과 처리 중 오류 발생")
         }
     }
 
