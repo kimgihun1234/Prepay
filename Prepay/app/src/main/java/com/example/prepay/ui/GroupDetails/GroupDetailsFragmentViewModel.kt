@@ -8,7 +8,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.example.prepay.RetrofitUtil
+import com.example.prepay.data.model.dto.Restaurant
 import com.example.prepay.data.response.BanUserReq
+import com.example.prepay.data.response.StoreIdReq
+import com.example.prepay.data.response.StoreIdRes
 import com.example.prepay.data.response.Team
 import com.example.prepay.data.response.TeamIdStoreRes
 import com.example.prepay.data.response.TeamUserRes
@@ -25,6 +28,10 @@ class GroupDetailsFragmentViewModel : ViewModel() {
 
     private val _userLocation = MutableLiveData<Location>()
     val userLocation: LiveData<Location> get() = _userLocation
+
+    private val _storesListInfo = MutableLiveData<List<StoreIdRes>>()
+    val storesListInfo: LiveData<List<StoreIdRes>>
+        get() = _storesListInfo
 
     fun updateLocation(location: Location) {
         _userLocation.value = location
@@ -66,6 +73,21 @@ class GroupDetailsFragmentViewModel : ViewModel() {
                 _teamUserListInfo.value = it
             }.onFailure { e ->
                 _teamUserListInfo.value = emptyList()
+            }
+        }
+    }
+    fun getStoreId(storeReq : StoreIdReq) {
+        viewModelScope.launch {
+            runCatching {
+                RetrofitUtil.storeService.getStores(storeReq, "user1@gmail.com")
+            } .onSuccess {
+                Log.d("StoreId", "스토어 값들 가져오기 성공: $it")
+                _storesListInfo.value = it
+                Log.d("getStoreId", "getStoreId: ${_storesListInfo.value}")
+            } .onFailure { e ->
+                Log.d("storeId", "스토어 값 가져오기 실패")
+                _storesListInfo.value = emptyList()
+                Log.d("getStoreId", "getStoreId: ${_storesListInfo.value}")
             }
         }
     }
