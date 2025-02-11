@@ -44,12 +44,14 @@ class MainActivity : AppCompatActivity() {
             orderDetail(detailPrice = 10000, product = "커피", quantity = 2),
             orderDetail(detailPrice = 5000, product = "샌드위치", quantity = 1)
         )
+        //숫자 입력
+        var num = binding.storeInput.text.toString().toIntOrNull() ?: 1
         // PosReq 객체 생성
         val posReq = PosReq(
             details = orderDetails,
             email = parts[1],
             qrUUID = parts[0],
-            storeId = 3,
+            storeId = num,
             teamId = parts[2].toInt()
         )
         lifecycleScope.launch {
