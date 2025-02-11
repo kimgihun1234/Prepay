@@ -1,6 +1,7 @@
 package com.example.qrscanner
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -36,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     fun handleQRCodeScanResult(scanResult: String) {
         // QR 코드 데이터 처리
         Log.d("QR_SCAN", "QR 성공코드가 찍혔습니다: $scanResult")
+        playBeepSound()
         val parts = scanResult.split(":")
         // 주문 상세 정보 리스트 생성
         val orderDetails = listOf(
@@ -75,6 +77,19 @@ class MainActivity : AppCompatActivity() {
         } else {
             // 예외 처리 (IntentIntegrator가 반환한 결과가 null일 때)
             Log.e("QR_SCAN", "QR 코드 스캔 결과 처리 중 오류 발생")
+        }
+    }
+
+    // 🔊 QR 코드 스캔 성공 시 "띠링" 효과음 재생 함수
+    private fun playBeepSound() {
+        val mediaPlayer = MediaPlayer.create(this, R.raw.beep_sound) // 🔹 beep_sound.mp3 파일을 사용
+        if (mediaPlayer != null) {
+            mediaPlayer.start()
+            mediaPlayer.setOnCompletionListener {
+                mediaPlayer.release() // 재생 완료 후 리소스 해제
+            }
+        } else {
+            Log.e("playBeepSound", "미디어 플레이어 초기화 실패.")
         }
     }
 }
