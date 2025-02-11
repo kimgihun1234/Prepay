@@ -395,6 +395,7 @@ public class TeamService {
                     StoresRes storesRes = new StoresRes(teamStore);
                     storesRes.setLatitude(teamStore.getStore().getLatitude());
                     storesRes.setLongitude(teamStore.getStore().getLongitude());
+                    storesRes.setMyteam(true);
                     return storesRes;
                 }).collect(Collectors.toList());
     }
