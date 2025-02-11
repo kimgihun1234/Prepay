@@ -97,6 +97,8 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
+    private var inviteCode = "0"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -335,18 +337,9 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         val dialog = AlertDialog.Builder(requireContext())
             .setView(binding.root)
             .create()
-
+        Log.d(TAG,"초대코드"+inviteCode)
+        binding.etInviteCode.text = inviteCode
         binding.inviteCodeConfirmBtn.setOnClickListener {
-            val code = binding.etInviteCode.text.toString()
-            if (code.isNotEmpty()) {
-                Toast.makeText(requireContext(), "코드 입력: $code", Toast.LENGTH_SHORT).show()
-                dialog.dismiss()
-            } else {
-                Toast.makeText(requireContext(), "코드를 입력해주세요.", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        binding.inviteCodeCancelBtn.setOnClickListener {
             dialog.dismiss()
         }
 
@@ -620,9 +613,11 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             kotlin.runCatching {
                 RetrofitUtil.teamService.getTeamDetails(1,activityViewModel.teamId.value!!)
             }.onSuccess {
-                binding.usePossiblePriceTxt.text = it.dailyPriceLimit.toString()
+                binding.usePossiblePriceTxt.text = (it.dailyPriceLimit-it.usedAmount).toString()
                 viewModel.updatePosition(it.position)
+                inviteCode = it.teamPassword.toString()
                 Log.d(TAG,"숫자 출려"+it.position.toString())
+                Log.d(TAG,"숫자 출려"+inviteCode)
             }.onFailure {
                 Log.d(TAG,"실패하였습니다")
             }

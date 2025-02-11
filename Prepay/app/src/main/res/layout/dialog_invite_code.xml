@@ -75,15 +75,6 @@
             android:background="@drawable/grouptext_round_backgound"
             app:backgroundTint="@null"
             android:textColor="@android:color/white" />
-        <Button
-            android:id="@+id/invite_code_cancel_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/round_background"
-            app:backgroundTint="@null"
-            android:text="취소"
-            android:textColor="@color/text_main_color" />
 
     </LinearLayout>
 </LinearLayout>

@@ -6,5 +6,6 @@ data class StoreIdRes (
     val balance : Int,
     val latitude : Double,
     val longitude : Double,
-    val myteam : Boolean
+    val myteam : Boolean,
+    val like : Boolean
 )
