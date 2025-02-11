@@ -41,6 +41,7 @@ public class BootpayService {
         Bootpay api = new Bootpay(REST_APPLICATION_ID, PRIVATE_KEY);
         log.info("REST ID : {}", REST_APPLICATION_ID);
         log.info("PRIVATE_KEY : {}", PRIVATE_KEY);
+        log.info("영수증 id : {}",bootChargeReq.getReceiptId());
         PaymentResponse response = new PaymentResponse();
         setBootpayToken(api);
         try {
