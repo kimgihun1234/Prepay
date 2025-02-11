@@ -218,15 +218,15 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                 runCatching {
                     RetrofitUtil.qrService.qrPrivateCreate("user1@gmail.com")
                 }.onSuccess {
-                    Log.d(TAG,it.message.toString())
+                    Log.d(TAG,it.message)
                 }.onFailure {
-
+                    mainActivity.showToast("qr불러오기가 실패했습니다")
                 }
             }
             //mainActivity.broadcast("hello","hello")
         }
     }
-
+    
     private fun addRestaurantClick() {
         mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.ADD_RESTAURANT_FRAGMENT)
     }
