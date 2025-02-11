@@ -28,9 +28,15 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.example.prepay.data.model.dto.Public
+import com.example.prepay.RetrofitUtil
+import com.example.prepay.data.response.LikeGroupReq
+import com.example.prepay.data.response.PrivilegeUserReq
+import com.example.prepay.data.response.PublicTeamsRes
+import kotlinx.coroutines.launch
 import java.io.IOException
+import java.text.NumberFormat
 import java.util.Locale
 
 private const val TAG = "PublicGroupDetailsFragment"
@@ -84,6 +90,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
             }
         })
 
+
         // QR 다이얼로그 부분
         binding.publicDetailQrBtn.setOnClickListener {
             val dialogBinding = DialogQrDiningTogetherBinding.inflate(layoutInflater)
@@ -92,8 +99,16 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
                 .create()
             dialog.show()
 
-            // 다이얼로그 외부를 터치시 닫음
             dialog.setCanceledOnTouchOutside(true)
+        }
+
+        groupDetail.isLiked.observe(viewLifecycleOwner, Observer { isLiked ->
+            val imageRes = if (isLiked) R.drawable.like_heart_fill else R.drawable.like_heart_empty
+            binding.likeBtn.setImageResource(imageRes)
+        })
+
+        binding.likeBtn.setOnClickListener {
+            groupDetail.toggleLike()
         }
     }
 
@@ -163,14 +178,29 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
 
     // 숫자 증가 애니메이션
     private fun animateMoneyChange(targetAmount: Int) {
-        val startAmount = binding.leftMoneyInfo.text.toString().toIntOrNull() ?: 0
+        val startAmount = binding.leftMoneyInfo.text.toString().replace(",", "").toIntOrNull() ?: 0
         val animator = ValueAnimator.ofInt(startAmount, targetAmount).apply {
             duration = 1500
             addUpdateListener { valueAnimator ->
                 val animatedValue = valueAnimator.animatedValue as Int
-                binding.leftMoneyInfo.text = animatedValue.toString()
+                val formattedValue = NumberFormat.getNumberInstance(Locale.US).format(animatedValue)
+                binding.leftMoneyInfo.text = formattedValue
+
             }
         }
         animator.start()
+    }
+
+    // 좋아요 정보 서버로 보내기
+    fun isLikedGroup(likeInfo: PublicTeamsRes){
+        lifecycleScope.launch {
+            runCatching {
+                RetrofitUtil.teamService.likeTeam(likeInfo.isLike)
+            }.onSuccess {
+
+            }.onFailure {
+
+            }
+        }
     }
 }

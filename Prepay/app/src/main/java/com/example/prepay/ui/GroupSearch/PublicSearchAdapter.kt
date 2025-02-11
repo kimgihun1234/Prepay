@@ -7,16 +7,18 @@ import com.example.prepay.data.model.dto.Public
 import com.example.prepay.databinding.ItemPublicGroupBinding
 import com.bumptech.glide.Glide
 import com.example.prepay.R
+import com.example.prepay.data.response.PublicTeamsRes
 
-class PublicSearchAdapter(private val publicGroupList: List<Public>, private val listener: OnPublicClickListener) :
+class PublicSearchAdapter(var publicGroupList: List<PublicTeamsRes>, private val listener: OnPublicClickListener) :
     RecyclerView.Adapter<PublicSearchAdapter.PublicGroupViewHolder>() {
 
     class PublicGroupViewHolder(private val binding: ItemPublicGroupBinding,private val listener: OnPublicClickListener) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(publicgroup: Public) {
-            binding.publicName.text = publicgroup.name
-            binding.publicAddress.text = publicgroup.address
-            binding.publicDistance.text = publicgroup.distance.toString()+"km"
+        fun bind(publicgroup: PublicTeamsRes) {
+            binding.publicName.text = publicgroup.teamName
+//            binding.content.text = publicgroup.address
+//            binding.publicDistance.text = publicgroup.distance.toString()+"km"
+            binding.publicMoneyInfo.text = publicgroup.teamBalance.toString()
 
             // 그룹 이미지 가지고 오기
             Glide.with(binding.root.context)
@@ -50,6 +52,6 @@ class PublicSearchAdapter(private val publicGroupList: List<Public>, private val
     }
 
     interface OnPublicClickListener {
-        fun onGroupClick(publicgroup: Public)
+        fun onGroupClick(publicgroup: PublicTeamsRes)
     }
 }

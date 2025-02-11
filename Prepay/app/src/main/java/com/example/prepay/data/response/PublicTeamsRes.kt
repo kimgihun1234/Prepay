@@ -5,5 +5,7 @@ data class PublicTeamsRes(
     val teamId: Int,
     val teamInitializerNickname: String,
     val teamMessage: String,
-    val teamName: String
+    val teamName: String,
+    val isLike: Boolean,
+    val imageURL: String
 )

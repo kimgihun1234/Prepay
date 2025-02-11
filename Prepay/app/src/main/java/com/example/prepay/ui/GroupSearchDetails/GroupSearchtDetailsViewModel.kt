@@ -1,5 +1,6 @@
 package com.example.prepay.ui.GroupSearchDetails
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
@@ -13,5 +14,12 @@ class GroupSearchtDetailsViewModel : ViewModel() {
         groupName.value = name
         groupLeftMoney.value = leftMoney
         groupImageURL.value = imageURL
+    }
+
+    private val _isLiked = MutableLiveData<Boolean>(false)
+    val isLiked: LiveData<Boolean> get() = _isLiked
+
+    fun toggleLike() {
+        _isLiked.value = _isLiked.value?.not()
     }
 }
