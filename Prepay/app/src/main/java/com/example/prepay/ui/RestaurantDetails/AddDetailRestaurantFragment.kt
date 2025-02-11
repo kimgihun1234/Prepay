@@ -48,9 +48,9 @@ class AddDetailRestaurantFragment: BaseFragment<FragmentDetailRestaurantBinding>
             RequestBootPayManager.startPayment(requireActivity(), restaurant.restaurantData.value.toString(), totalPrice) { teamId, storeId ->
                 lifecycleScope.launch {
                     try {
-                        val chargeReceipt = BootPayCharge(1, 1, totalPrice.toInt(), "")
+                        val chargeReceipt = BootPayCharge(teamId.toInt(), storeId, totalPrice.toInt(), "")
                         val response = withContext(Dispatchers.IO) {
-                            RetrofitUtil.bootPayService.getBootPay(chargeReceipt)
+                            RetrofitUtil.bootPayService.getBootPay("user1@gmail.com", chargeReceipt)
                         }
 
                         if (response.isSuccessful) {

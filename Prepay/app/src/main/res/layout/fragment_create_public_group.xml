@@ -249,7 +249,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-        <EditText
+        <androidx.appcompat.widget.SearchView
             android:id="@+id/search_restaurant"
             android:layout_width="0dp"
             android:layout_height="50dp"
@@ -264,6 +264,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/image_btn"
             app:queryHint="검색어를 입력하시오" />
+
+        <TextView
+            android:id="@+id/search_result_text"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="?attr/selectableItemBackground"
+            android:padding="10dp"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/searchResults"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/search_restaurant" />
+        <!-- 검색 결과 리스트 -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchResults"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_restaurant" />
 
         <TextView
             android:id="@+id/textView17"
@@ -283,28 +305,28 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
-            android:text=""
-            android:gravity="center"
             android:background="@drawable/round_background"
+            android:gravity="center"
+            android:text=""
+            android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_restaurant" />
+            app:layout_constraintTop_toBottomOf="@+id/searchResults" />
 
         <TextView
             android:id="@+id/textView20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
             android:layout_marginTop="16dp"
-            android:text="결제 금액"
+            android:layout_marginStart="48dp"
             android:background="@color/white"
             android:gravity="center"
+            android:text="결제 금액"
             android:textColor="@color/text_main_color"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_restaurant" />
+            app:layout_constraintTop_toBottomOf="@+id/searchResults" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </android.widget.ScrollView>

@@ -29,6 +29,8 @@ import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.data.response.BanUserReq
 import com.example.prepay.data.response.PrivilegeUserReq
+import com.example.prepay.data.response.StoreIdReq
+import com.example.prepay.data.response.StoreIdRes
 import com.example.prepay.data.response.TeamIdReq
 import com.example.prepay.data.response.TeamIdStoreRes
 import com.example.prepay.data.response.TeamUserRes
@@ -212,6 +214,10 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     }
 
     private fun addRestaurantClick() {
+        bringStoreId()
+    }
+
+    private fun bringStoreId() {
         mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.ADD_RESTAURANT_FRAGMENT)
     }
 
