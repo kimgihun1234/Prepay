@@ -115,9 +115,9 @@ public class TeamService {
     public void exitTeam(Long userId, TeamIdReq req) {
         UserTeam findUserTeam = userTeamRepository.findByTeamIdAndUserId(req.getTeamId(), userId)
                 .orElseThrow();
-        if(findUserTeam.isPosition()){
+        if (findUserTeam.isPosition()) {
             userTeamRepository.deleteByTeam_Id(req.getTeamId());
-        }else{
+        } else {
             userTeamRepository.delete(findUserTeam);
         }
 
@@ -285,6 +285,7 @@ public class TeamService {
     // 확인
     @Transactional
     public TeamCreateStoreRes createStore(TeamCreateStoreReq req) {
+        log.info("팀아이디 : {}, 스토어아이디 : {}, 돈 : {}", req.getTeamId(), req.getStoreId(), req.getBalance());
         Team findTeam = teamRepository.findById(req.getTeamId()).orElseThrow();
         Store findStore = storeRepository.findById(req.getStoreId()).orElseThrow();
 
@@ -422,10 +423,9 @@ public class TeamService {
                     storesRes.setLatitude(teamStore.getStore().getLatitude());
                     storesRes.setLongitude(teamStore.getStore().getLongitude());
                     Likes findLikes = likesRepository.findByUserAndStoreAndTeam(user, teamStore.getStore(), teamStore.getTeam());
-                    if (findLikes == null){
+                    if (findLikes == null) {
                         storesRes.setLike(false);
-                    }
-                    else {
+                    } else {
                         storesRes.setLike(true);
                     }
                     storesRes.setMyteam(true);
