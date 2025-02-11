@@ -23,6 +23,8 @@ public class Qr {
 
     private QrType type;
 
+    private boolean used;
+
     @ManyToOne
     private User user;
 
@@ -30,6 +32,7 @@ public class Qr {
         this.type = type;
         this.genDate = System.currentTimeMillis();
         this.uuid = UUID.randomUUID().toString();
+        this.used = false;
         this.user = user;
     }
 }

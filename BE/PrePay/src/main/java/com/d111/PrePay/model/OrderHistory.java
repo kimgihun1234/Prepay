@@ -49,7 +49,6 @@ public class OrderHistory {
 
     public OrderHistory(OrderCreateReq orderCreateReq) {
         this.orderDate = System.currentTimeMillis();
-        this.companyDinner = orderCreateReq.isCompanyDinner();
         this.withDraw = true;
         this.totalPrice = 0;
         this.refundRequested = false;

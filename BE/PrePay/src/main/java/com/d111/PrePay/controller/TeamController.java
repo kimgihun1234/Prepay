@@ -9,10 +9,6 @@ import com.d111.PrePay.dto.respond.GetUserOfTeamRes;
 import com.d111.PrePay.dto.respond.StoresRes;
 import com.d111.PrePay.dto.respond.TeamDetailRes;
 import com.d111.PrePay.dto.respond.TeamRes;
-import com.d111.PrePay.model.Team;
-import com.d111.PrePay.model.TeamStore;
-import com.d111.PrePay.model.UserTeam;
-import com.d111.PrePay.security.dto.CustomUserDetails;
 import com.d111.PrePay.service.ImageService;
 import com.d111.PrePay.service.TeamService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,11 +16,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -113,7 +107,7 @@ public class TeamController {
 
 
     @PostMapping("/signin")
-    @Operation(summary = "팀 생성")
+    @Operation(summary = "팀 가입")
     public ResponseEntity<GetUserOfTeamRes> signinTeam(@RequestHeader Long userId,
                                                        @RequestBody SignInTeamReq req) {
 //        Long userId = accessToken.getUserId();
@@ -212,11 +206,7 @@ public class TeamController {
         return ResponseEntity.ok(teamService.getMyTeamStores(teamId, userId));
     }
 
-    @GetMapping("/coordinate/{teamId}")
-    public ResponseEntity<List<StoresCorRes>> getStoresCor(@RequestHeader Long userId, @PathVariable Long teamId) {
-//        Long userId = userDetails.getUserId();
-        return ResponseEntity.ok(teamService.getStoresCor(teamId, userId));
-    }
+
 
     @GetMapping("/public-teams")
     @Operation(summary = "<b>퍼블릭 팀 리스트 조회")

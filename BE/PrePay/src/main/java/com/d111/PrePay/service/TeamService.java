@@ -412,20 +412,6 @@ public class TeamService {
 //    }
 
 
-    //팀 가맹점의 좌표 조회
-    //완료
-    public List<StoresCorRes> getStoresCor(long teamId, long userId) {
-        Team team = teamRepository.findById(teamId).orElseThrow();
-        List<TeamStore> list = teamStoreRepository.findTeamStoresByTeam(team);
-        List<StoresCorRes> result = new ArrayList<>();
-        for (TeamStore teamStore : list) {
-            log.info("팀 스토어 : {}", teamStore);
-            Store store = teamStore.getStore();
-            StoresCorRes storesCorRes = new StoresCorRes(store);
-            result.add(storesCorRes);
-        }
-        return result;
-    }
 
     //퍼블릭 팀 리스트 조회
     // 완료

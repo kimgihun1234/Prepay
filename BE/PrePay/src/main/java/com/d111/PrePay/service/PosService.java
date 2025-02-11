@@ -5,6 +5,7 @@ import com.d111.PrePay.dto.request.OrderCreateReq;
 import com.d111.PrePay.model.*;
 import com.d111.PrePay.repository.*;
 import com.d111.PrePay.value.QrType;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,13 +23,16 @@ public class PosService {
     private final QrRepository qrRepository;
     private final FCMService fcmService;
 
+    @Transactional
     public Long makeOrder(OrderCreateReq orderReq) {
         Qr qr = qrRepository.findByUuid(orderReq.getQrUUID());
 
         if (qr.getGenDate() < System.currentTimeMillis() - 1000 * 60) {
             throw new RuntimeException("시간 초과");
+        } else if (qr.isUsed()) {
+            throw new RuntimeException("사용된 QR");
         }
-
+        qr.setUsed(true);
         OrderHistory orderHistory = new OrderHistory(orderReq);
         Store store = storeRepository.findById(orderReq.getStoreId()).orElseThrow(() -> new RuntimeException("가게 오류"));
         UserTeam userTeam = userTeamRepository.findById(orderReq.getUserTeamId()).orElseThrow();
