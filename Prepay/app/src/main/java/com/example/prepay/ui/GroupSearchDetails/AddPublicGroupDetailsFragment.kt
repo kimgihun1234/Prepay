@@ -31,8 +31,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.prepay.RetrofitUtil
-import com.example.prepay.data.response.LikeGroupReq
-import com.example.prepay.data.response.PrivilegeUserReq
 import com.example.prepay.data.response.PublicTeamsRes
 import kotlinx.coroutines.launch
 import java.io.IOException
