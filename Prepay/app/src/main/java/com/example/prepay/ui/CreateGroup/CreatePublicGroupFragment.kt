@@ -12,14 +12,21 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.data.model.dto.BootPayCharge
 import com.example.prepay.data.model.dto.PublicPrivateTeam
+import com.example.prepay.data.model.dto.Restaurant
+import com.example.prepay.data.response.StoreIdReq
 import com.example.prepay.databinding.FragmentCreatePublicGroupBinding
+import com.example.prepay.ui.GroupDetails.GroupDetailsFragmentViewModel
+import com.example.prepay.ui.GroupDetails.RestaurantSearchAdapter
 import com.example.prepay.ui.MainActivity
 import com.example.prepay.util.BootPayManager
 import kotlinx.coroutines.Dispatchers
@@ -47,6 +54,9 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
     private lateinit var priceText: String
 
     private lateinit var editTexts: List<EditText>
+    private val groupDetailsFragmentViewModel: GroupDetailsFragmentViewModel by viewModels()
+    private lateinit var searchAdapter: RestaurantSearchAdapter
+    private var selectedRestaurantName: String = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,14 +65,31 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
 
         editTexts = listOf(
             binding.groupNameText,
-            binding.searchRestaurant,
             binding.bootpayAmount,
             binding.limitSettingText,
             binding.textInputText
         )
-
+        binding.searchResults.visibility = View.GONE
+        groupDetailsFragmentViewModel.getStoreId(StoreIdReq(0.0,0.0, 1))
+        initRecyclerView()
+        setOnQueryTextListener()
         initEvent()
+        observeStoresListInfo()
         initFocusChangeListener()
+    }
+    private fun observeStoresListInfo() {
+        groupDetailsFragmentViewModel.storesListInfo.observe(viewLifecycleOwner) { stores ->
+            val queryText = binding.searchRestaurant.query.toString()
+
+            if (stores.isNotEmpty() && queryText.isNotEmpty()) {
+                val restaurantList = stores.map { Restaurant(it.storeId, it.storeName) }
+                searchAdapter.submitList(restaurantList)
+                binding.searchResults.visibility = View.VISIBLE
+            } else {
+                searchAdapter.submitList(emptyList())
+                binding.searchResults.visibility = View.GONE
+            }
+        }
     }
 
     private fun initEvent() {
@@ -123,7 +150,7 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
             teamMessage = binding.textInputText.text.toString()
         )
 
-        BootPayManager.startPayment(requireActivity(), binding.groupNameText.text.toString(), binding.bootpayAmount.text.toString()) { receiptId, price ->
+        BootPayManager.startPayment(requireActivity(), selectedRestaurantName, binding.bootpayAmount.text.toString()) { receiptId, price ->
 
             lifecycleScope.launch {
                 try {
@@ -139,6 +166,7 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
                     }
 
                     if (response.isSuccessful) {
+                        Log.d(TAG, "response.body(): ${response.body()}")
                         Toast.makeText(requireContext(), "팀이 성공적으로 생성되었습니다.", Toast.LENGTH_SHORT).show()
                         registerReceipt()
                     } else {
@@ -157,7 +185,7 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
             try {
                 val chargeReceipt = BootPayCharge(1, 1, priceText.toInt(), receiptIdText)
                 val response = withContext(Dispatchers.IO) {
-                    RetrofitUtil.bootPayService.getBootPay(chargeReceipt)
+                    RetrofitUtil.bootPayService.getBootPay("user1@gmail.com", chargeReceipt)
                 }
 
                 if (response.isSuccessful) {
@@ -230,7 +258,11 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
             showToast("그룹명을 입력해주세요.")
             return false
         }
-        if (binding.searchRestaurant.text.isNullOrBlank()) {
+        if (selectedImageMultipart == null) {
+            showToast("이미지를 선택해주세요.")
+            return false
+        }
+        if (selectedRestaurantName.isEmpty()) {
             showToast("식당을 검색해주세요.")
             return false
         }
@@ -250,11 +282,61 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
             showToast("팀 메시지를 입력해주세요.")
             return false
         }
-        if (selectedImageMultipart == null) {
-            showToast("이미지를 선택해주세요.")
-            return false
-        }
+
 
         return true
+    }
+
+    private fun initRecyclerView() {
+        searchAdapter = RestaurantSearchAdapter { selectedRestaurant ->
+            binding.searchRestaurant.setQuery(selectedRestaurant.name, false)
+            selectedRestaurantName = selectedRestaurant.name
+            binding.searchResults.visibility = View.GONE
+        }
+
+        binding.searchResults.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = searchAdapter
+        }
+    }
+
+    private fun setOnQueryTextListener() {
+        binding.searchRestaurant.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrEmpty()) {
+                    binding.searchResults.visibility = View.GONE
+                } else {
+                    filterSearchResults(newText)
+                    binding.searchResults.visibility = View.VISIBLE
+                }
+                return true
+            }
+        })
+    }
+
+    private fun filterSearchResults(query: String) {
+        val storeList = groupDetailsFragmentViewModel.storesListInfo.value
+        if (storeList == null) {
+            Log.e(TAG, "storesListInfo is null, cannot filter results.")
+            return
+        }
+
+        val filteredList = getSearchResults(query)
+        Log.d(TAG, "filterSearchResults: $filteredList")
+        searchAdapter.submitList(filteredList)
+    }
+
+    private fun getSearchResults(query: String): List<Restaurant> {
+        // 여기에 식당 검색 로직 추가
+        val storeList = groupDetailsFragmentViewModel.storesListInfo.value
+        Log.d(TAG, "getSearchResults: ${groupDetailsFragmentViewModel.storesListInfo.value}")
+        return storeList?.map { store ->
+            Restaurant(store.storeId, store.storeName)
+        }?.filter { it.name.contains(query, ignoreCase = true) } ?: emptyList()
+
     }
 }
