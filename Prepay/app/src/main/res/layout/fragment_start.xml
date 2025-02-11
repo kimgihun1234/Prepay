@@ -1,49 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.Login.StartLoginFragment">
+    tools:context=".ui.Login.StartLoginFragment"
+    android:background="@drawable/start_page_bg">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="187dp"
-        android:layout_height="186dp"
-        android:layout_marginTop="72dp"
-        android:src="@drawable/ic_launcher_foreground"
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/login"
+        android:layout_width="334dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="584dp"
+        android:background="@drawable/submit_button_style"
+        android:fontFamily="@font/samsung_font_2"
+        android:text="로그인"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/logo_message"
-        android:layout_width="163dp"
-        android:layout_height="37dp"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:text="선결제를 위한 새로운 바람"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo" />
-
-    <Button
-        android:id="@+id/login"
-        android:layout_width="317dp"
-        android:layout_height="67dp"
-        android:layout_marginTop="179dp"
-        android:text="로그인"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo_message" />
 
     <Button
         android:id="@+id/create_member"
         android:layout_width="317dp"
         android:layout_height="67dp"
-        android:layout_marginTop="19dp"
+        android:layout_marginTop="28dp"
         android:text="회원가입"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
