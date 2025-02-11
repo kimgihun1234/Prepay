@@ -4,6 +4,8 @@ import android.Manifest
 import android.app.AlertDialog
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -11,7 +13,9 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
@@ -42,6 +46,7 @@ import com.example.prepay.databinding.DialogQrDiningTogetherBinding
 import com.example.prepay.databinding.FragmentGroupDetailsBinding
 import com.example.prepay.ui.MainActivity
 import com.example.prepay.ui.MainActivityViewModel
+import com.example.prepay.ui.MyPage.MyPageFragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -56,6 +61,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.navigation.NavigationView
+import com.google.zxing.BarcodeFormat
+import com.journeyapps.barcodescanner.BarcodeEncoder
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.Locale
@@ -202,7 +209,16 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
 
     private fun initEvent() {
         binding.diningTogetherQrBtn.setOnClickListener {
-            showQrCodeDialog()
+            lifecycleScope.launch {
+                runCatching {
+                    RetrofitUtil.qrService.qrTeamCreate("user1@gmail.com",1)
+                }.onSuccess {
+                    Log.d(TAG,it.message)
+                    showQRDialog(it.message)
+                }.onFailure {
+                    mainActivity.showToast("qr불러오기가 실패했습니다")
+                }
+            }
         }
 
         binding.groupInviteBtn.setOnClickListener {
@@ -221,6 +237,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                     RetrofitUtil.qrService.qrPrivateCreate("user1@gmail.com")
                 }.onSuccess {
                     Log.d(TAG,it.message)
+                    showQRDialog(it.message)
                 }.onFailure {
                     mainActivity.showToast("qr불러오기가 실패했습니다")
                 }
@@ -228,7 +245,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             //mainActivity.broadcast("hello","hello")
         }
     }
-    
+
     private fun addRestaurantClick() {
         bringStoreId()
     }
@@ -249,11 +266,36 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         showGroupResignDialog(teamUserRes)
     }
 
-    private fun showQrCodeDialog(){
-        val binding = DialogQrDiningTogetherBinding.inflate(layoutInflater)
-        val dialog = AlertDialog.Builder(requireContext())
-            .setView(binding.root)
+    /**
+     * QR 코드를 생성하여 다이얼로그로 표시하는 함수
+     *
+     * @param context 다이얼로그를 표시할 컨텍스트 (Fragment 내에서는 requireContext()를 사용)
+     * @param url QR 코드에 인코딩할 URL (기본값: "https://www.naver.com")
+     */
+    fun showQRDialog(url: String ="https://www.naver.com") {
+        val context = this@GroupDetailsFragment.requireContext()
+
+        // 1. 다이얼로그 레이아웃 인플레이트
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_create_qr, null)
+
+        // 2. QR 코드 생성 및 이미지뷰에 적용
+        try {
+            val barcodeEncoder = BarcodeEncoder()
+            val bitmap = barcodeEncoder.encodeBitmap(url, BarcodeFormat.QR_CODE, 400, 400)
+            val imageViewQrCode = dialogView.findViewById<ImageView>(R.id.imageViewQrCode)
+            imageViewQrCode.setImageBitmap(bitmap)
+        } catch (e: Exception) {
+            Log.e("QRDialog", "QR 코드 생성 실패", e)
+        }
+
+        // 3. AlertDialog 생성
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(context)
+            .setView(dialogView)
+            .setCancelable(true)  // 뒤로 가기 버튼 허용
             .create()
+
+        // 4. 다이얼로그 배경 투명화
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT)) // ✅ 다이얼로그 배경 투명화
         dialog.show()
     }
 
