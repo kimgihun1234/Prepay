@@ -14,6 +14,7 @@ public class StoresRes {
     private float latitude;
     private float longitude;
     private boolean isMyteam;
+    private boolean isLike;
 
     public StoresRes(TeamStore teamStore) {
         this.storeId=teamStore.getStore().getId();

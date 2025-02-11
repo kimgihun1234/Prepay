@@ -24,15 +24,14 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -49,6 +48,32 @@ public class TeamService {
     private final ChargeRequestRepository chargeRequestRepository;
     private final PartyRequestRepository partyRequestRepository;
     private final ImageService imageService;
+    private final LikesRepository likesRepository;
+
+    // 팀 가게 좋아요
+    @Transactional
+    public StandardRes likeStore(Long userId, LikeStoreReq req) {
+        User user = userRepository.findById(userId).orElseThrow();
+        Store store = storeRepository.findById(req.getStoreId()).orElseThrow();
+        Team team = teamRepository.findById(req.getTeamId()).orElseThrow();
+        Likes findLikes = likesRepository.findByUserAndStoreAndTeam(user, store, team);
+        if (findLikes == null) {
+            Likes likes = new Likes();
+            likes.setTeam(team);
+            likes.setStore(store);
+            likes.setUser(user);
+            likesRepository.save(likes);
+            StandardRes standardRes = new StandardRes("좋아요 완료", 1);
+            return standardRes;
+        } else {
+            likesRepository.delete(findLikes);
+            StandardRes standardRes = new StandardRes("좋아요 취소 완료", 0);
+            return standardRes;
+        }
+
+
+    }
+
 
     // 팀 이미지 업로드
     @Transactional
@@ -378,17 +403,23 @@ public class TeamService {
 
 
     //팀의 가게 조회
-    //확인 -> 완료
     public List<StoresRes> getMyTeamStores(long teamId, long userId) {
         // 팀 찾을 때 팀스토어 같이 찾기
         // 팀스토어 찾을 때 스토어 같이 찾기
         Team team = teamStoreRepository.findTeamWithTeamStoreAndStoreByTeamId(teamId);
-
+        User user = userRepository.findById(userId).orElseThrow();
         return team.getTeamStores().stream()
                 .map(teamStore -> {
                     StoresRes storesRes = new StoresRes(teamStore);
                     storesRes.setLatitude(teamStore.getStore().getLatitude());
                     storesRes.setLongitude(teamStore.getStore().getLongitude());
+                    Likes findLikes = likesRepository.findByUserAndStoreAndTeam(user, teamStore.getStore(), teamStore.getTeam());
+                    if (findLikes == null){
+                        storesRes.setLike(false);
+                    }
+                    else {
+                        storesRes.setLike(true);
+                    }
                     return storesRes;
                 }).collect(Collectors.toList());
     }
