@@ -2,11 +2,14 @@ package com.example.prepay.ui
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import com.example.prepay.ApplicationClass
 import com.example.prepay.BaseActivity
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
+import com.example.prepay.data.remote.FirebaseTokenService
 import com.example.prepay.databinding.ActivityMainBinding
 import com.example.prepay.databinding.DialogVisitCodeBinding
 import com.example.prepay.ui.CreateGroup.CreatePrivateGroupFragment
@@ -18,6 +21,13 @@ import com.example.prepay.ui.GroupSearchDetails.AddPublicGroupDetailsFragment
 import com.example.prepay.ui.MyPage.MyPageFragment
 import com.example.prepay.ui.RestaurantDetails.AddDetailRestaurantFragment
 import com.example.prepay.ui.RestaurantDetails.RestaurantDetailsFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 private const val TAG = "MainActivity_싸피"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
@@ -112,8 +122,28 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 else -> false
             }
         }
-
     }
+
+    fun broadcast(title: String,body: String){
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(2000) // 10초(10000ms) 대기
+            val storeService = ApplicationClass.retrofit.create(FirebaseTokenService::class.java)
+            storeService.broadcast(title,body).enqueue(object : Callback<String> {
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+                    if(response.isSuccessful){
+                        val res = response.body()
+                        Log.d(TAG, "onResponse: $res")
+                    } else {
+                        Log.d(TAG, "onResponse: Error Code ${response.code()}")
+                    }
+                }
+                override fun onFailure(call: Call<String>, t: Throwable) {
+                    Log.d(TAG, t.message ?: "토큰 정보 등록 중 통신오류")
+                }
+            })
+        }
+    }
+
     companion object{
 
     }

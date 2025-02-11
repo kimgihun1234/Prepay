@@ -83,8 +83,8 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private var isUserLocationSet = false
     private var location = Location("dummy").apply {
-        latitude = 1.0
-        longitude = 1.0
+        latitude = 36.107097
+        longitude = 128.416369
     }
 
     /** permission check **/
@@ -130,13 +130,11 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         teamTeamUserResList = emptyList()
         restaurantList = emptyList()
         restaurantAdapter = RestaurantAdapter(restaurantList,this,location)
-        teamUserAdapter = TeamUserAdapter(teamTeamUserResList,this)
+        teamUserAdapter = TeamUserAdapter(teamTeamUserResList,this, true)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
         binding.recyclerView.adapter = restaurantAdapter
         binding.rvMemberList.layoutManager = LinearLayoutManager(requireContext())
         binding.rvMemberList.adapter = teamUserAdapter
-
         viewModel.storeListInfo.observe(viewLifecycleOwner){ it->
             restaurantAdapter.teamIdStoreResList = it
             restaurantList = it
@@ -149,12 +147,17 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             teamUserAdapter.teamUserResList = it
             teamUserAdapter.notifyDataSetChanged()
         }
+        viewModel.userposition.observe(viewLifecycleOwner){it->
+            teamUserAdapter.userposition = it
+            teamUserAdapter.notifyDataSetChanged()
+        }
         viewModel.getMyTeamRestaurantList(1,activityViewModel.teamId.value!!)
         viewModel.getMyTeamUserList(1,activityViewModel.teamId.value!!);
 
         viewModel.userLocation.observe(viewLifecycleOwner) { curlocation ->
             // 위치 정보가 변경될 때마다 호출
-            restaurantAdapter = RestaurantAdapter(restaurantList, this, curlocation)
+            Log.d(TAG,"변화"+curlocation.toString())
+            restaurantAdapter.userLocation = curlocation
             restaurantAdapter.notifyDataSetChanged()
         }
     }
@@ -211,8 +214,21 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         binding.addRestaurant.setOnClickListener {
             addRestaurantClick()
         }
-    }
 
+        binding.qrBtn.setOnClickListener {
+            lifecycleScope.launch {
+                runCatching {
+                    RetrofitUtil.qrService.qrPrivateCreate("user1@gmail.com")
+                }.onSuccess {
+                    Log.d(TAG,it.message)
+                }.onFailure {
+                    mainActivity.showToast("qr불러오기가 실패했습니다")
+                }
+            }
+            //mainActivity.broadcast("hello","hello")
+        }
+    }
+    
     private fun addRestaurantClick() {
         bringStoreId()
     }
@@ -240,7 +256,6 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             .create()
         dialog.show()
     }
-
 
     private fun showInviteCodeInputDialog() {
         val binding = DialogInviteCodeBinding.inflate(layoutInflater)
@@ -401,7 +416,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                     isUserLocationSet = true
                     viewModel.updateLocation(location)
                 }
-                Log.d(TAG,location.toString())
+                Log.d(TAG,"시작"+location.toString())
                 //현재 위치에 마커 생성하고 이동
                 setCurrentLocation(location)
             }
@@ -534,6 +549,8 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                 RetrofitUtil.teamService.getTeamDetails(1,activityViewModel.teamId.value!!)
             }.onSuccess {
                 binding.usePossiblePriceTxt.text = it.dailyPriceLimit.toString()
+                viewModel.updatePosition(it.position)
+                Log.d(TAG,"숫자 출려"+it.position.toString())
             }.onFailure {
                 Log.d(TAG,"실패하였습니다")
             }

@@ -54,6 +54,8 @@ dependencies {
 
     // https://github.com/square/retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    //gson. json 파싱용
+    implementation ("com.google.code.gson:gson:2.10.1")
     // firebase 사용에 필요한 의존성 추가 firebase + database
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
     implementation("com.google.firebase:firebase-database-ktx")
@@ -61,6 +63,9 @@ dependencies {
     // firebase auth 에서 필요한 의존성 추가
     implementation ("com.google.firebase:firebase-auth-ktx")
     implementation ("com.google.android.gms:play-services-auth:20.7.0")
+    // FCM 사용 위한 plugins
+    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    implementation("com.google.firebase:firebase-messaging-ktx")
 
     // https://github.com/square/okhttp
     implementation("com.squareup.okhttp3:okhttp:4.9.0")

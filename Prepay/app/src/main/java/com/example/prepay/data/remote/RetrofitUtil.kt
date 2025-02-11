@@ -1,11 +1,12 @@
 package com.example.prepay
 
+import android.app.Application
 import com.example.prepay.data.remote.UserService
 import com.example.prepay.data.remote.BootPayService
 import com.example.prepay.data.remote.OrderService
-import com.example.prepay.data.remote.FcmService
 import com.example.prepay.data.remote.PosService
 import com.example.prepay.data.remote.StoreService
+import com.example.prepay.data.remote.QrService
 import com.example.prepay.data.remote.TeamService
 
 
@@ -17,7 +18,7 @@ class RetrofitUtil {
         val bootPayService: BootPayService = ApplicationClass.retrofit.create(BootPayService::class.java)
         val orderService: OrderService = ApplicationClass.retrofit.create(OrderService::class.java)
         val storeService : StoreService = ApplicationClass.retrofit.create(StoreService::class.java)
-        val fcmService :FcmService = ApplicationClass.retrofit.create(FcmService::class.java)
         val posService : PosService = ApplicationClass.retrofit.create(PosService::class.java)
+        val qrService : QrService = ApplicationClass.retrofit.create(QrService::class.java)
     }
 }
