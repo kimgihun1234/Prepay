@@ -23,15 +23,15 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.*;
 
@@ -49,6 +49,32 @@ public class TeamService {
     private final ChargeRequestRepository chargeRequestRepository;
     private final PartyRequestRepository partyRequestRepository;
     private final ImageService imageService;
+    private final LikesRepository likesRepository;
+
+    // 팀 가게 좋아요
+    @Transactional
+    public StandardRes likeStore(Long userId, LikeStoreReq req) {
+        User user = userRepository.findById(userId).orElseThrow();
+        Store store = storeRepository.findById(req.getStoreId()).orElseThrow();
+        Team team = teamRepository.findById(req.getTeamId()).orElseThrow();
+        Likes findLikes = likesRepository.findByUserAndStoreAndTeam(user, store, team);
+        if (findLikes == null) {
+            Likes likes = new Likes();
+            likes.setTeam(team);
+            likes.setStore(store);
+            likes.setUser(user);
+            likesRepository.save(likes);
+            StandardRes standardRes = new StandardRes("좋아요 완료", 1);
+            return standardRes;
+        } else {
+            likesRepository.delete(findLikes);
+            StandardRes standardRes = new StandardRes("좋아요 취소 완료", 0);
+            return standardRes;
+        }
+
+
+    }
+
 
     // 팀 이미지 업로드
     @Transactional
@@ -277,23 +303,23 @@ public class TeamService {
 
 
     // 팀 유저 조회
-    // 확인
+    // 완료
+    // 팀 찾을때 유저팀 찾기
+    // 유저팀 찾을 때 유저 찾기
     public List<GetUserOfTeamRes> getUsersOfTeam(Long teamId, Long userId) {
-        Team findTeam = teamRepository.findById(teamId).orElseThrow();
-        List<UserTeam> findUserTeams = findTeam.getUserTeams();
-        List<GetUserOfTeamRes> result = new ArrayList<>();
-        for (UserTeam findUserTeam : findUserTeams) {
-            GetUserOfTeamRes getUserOfTeamRes = new GetUserOfTeamRes(findUserTeam);
-            result.add(getUserOfTeamRes);
-        }
+        Team team = teamRepository.findTeamWithUserTeamAndUserByTeamId(teamId);
 
-        return result;
+        return team.getUserTeams().stream().map((userTeam) -> {
+            GetUserOfTeamRes getUserOfTeamRes = new GetUserOfTeamRes(userTeam);
+            return getUserOfTeamRes;
+        }).collect(Collectors.toList());
 
     }
 
 
     // 팀 상세 조회
-    // 확인
+    // 지연로딩 설정
+    // 완료
     public TeamDetailRes getTeamDetails(Long teamId, Long userId) {
         UserTeam findUserTeam = userTeamRepository.findByTeamIdAndUserId(teamId, userId)
                 .orElseThrow(() -> new RuntimeException("유저팀을 찾을 수 없습니다."));
@@ -316,7 +342,7 @@ public class TeamService {
 
 
     // 팀 생성
-    // 확인
+    // 완료
     public TeamCreateRes createTeam(TeamCreateReq request, Long userId, MultipartFile image) {
         String teamPassword;
         if (!request.isPublicTeam()) {
@@ -370,31 +396,38 @@ public class TeamService {
     }
 
     //나의 팀 전체 조회
-    //확인
+    //확인 -> 완료
     public List<TeamRes> getMyTeams(long userId) {
-        User user = userRepository.findById(userId).orElseThrow();
-        List<UserTeam> userTeams = user.getUserTeams();
-        List<TeamRes> resultList = new ArrayList<>();
-        for (UserTeam userTeam : userTeams) {
+        // 유저 가져올때 유저팀 같이 가져오기
+        // 유저팀 가져올때 팀 같이 가져오기
+
+        User user = userRepository.findUserById(userId);
+
+        return user.getUserTeams().stream().map((userTeam) -> {
             TeamRes teamRes = new TeamRes(userTeam);
-            resultList.add(teamRes);
-        }
-        return resultList;
+            return teamRes;
+        }).collect(Collectors.toList());
     }
 
 
     //팀의 가게 조회
-    //확인 -> 완료?
     public List<StoresRes> getMyTeamStores(long teamId, long userId) {
-        // 팀 찾을 때 팀 스토어 같이 찾기
-        // 팀 스토어 찾을 때 스토어 같이 찾기
-        Team team = teamStoreRepository.findTeamStoresByTeamId(teamId);
-
+        // 팀 찾을 때 팀스토어 같이 찾기
+        // 팀스토어 찾을 때 스토어 같이 찾기
+        Team team = teamStoreRepository.findTeamWithTeamStoreAndStoreByTeamId(teamId);
+        User user = userRepository.findById(userId).orElseThrow();
         return team.getTeamStores().stream()
                 .map(teamStore -> {
                     StoresRes storesRes = new StoresRes(teamStore);
                     storesRes.setLatitude(teamStore.getStore().getLatitude());
                     storesRes.setLongitude(teamStore.getStore().getLongitude());
+                    Likes findLikes = likesRepository.findByUserAndStoreAndTeam(user, teamStore.getStore(), teamStore.getTeam());
+                    if (findLikes == null){
+                        storesRes.setLike(false);
+                    }
+                    else {
+                        storesRes.setLike(true);
+                    }
                     storesRes.setMyteam(true);
                     return storesRes;
                 }).collect(Collectors.toList());
@@ -413,11 +446,25 @@ public class TeamService {
 //    }
 
 
+    //팀 가맹점의 좌표 조회
+    //완료
+    public List<StoresCorRes> getStoresCor(long teamId, long userId) {
+        Team team = teamRepository.findById(teamId).orElseThrow();
+        List<TeamStore> list = teamStoreRepository.findTeamStoresWithStoreByTeam(team);
+        List<StoresCorRes> result = new ArrayList<>();
+        for (TeamStore teamStore : list) {
+            log.info("팀 스토어 : {}", teamStore);
+            Store store = teamStore.getStore();
+            StoresCorRes storesCorRes = new StoresCorRes(store);
+            result.add(storesCorRes);
+        }
+        return result;
+    }
 
     //퍼블릭 팀 리스트 조회
     // 완료
     public List<PublicTeamsRes> getPublicTeams() {
-        List<Team> teams = teamRepository.findTeamsByPublicTeam(true);
+        List<Team> teams = teamRepository.findTeamsWithUserByPublicTeam(true);
         List<PublicTeamsRes> resultList = new ArrayList<>();
         for (Team team : teams) {
             PublicTeamsRes publicTeamsRes = new PublicTeamsRes(team);
