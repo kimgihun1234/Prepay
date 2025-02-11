@@ -40,11 +40,12 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String fcmToken = findUser.getFcmToken();
         String token = jwtUtil.createJWT("access",name,userId, 60*60*60L);
 
-//        fcmService.sendDataMessageTo(fcmToken,token);
+//      fcmService.sendDataMessageTo(fcmToken,token);
         response.sendRedirect("http://localhost:3000/");
 
-//        response.addCookie(createCookie("access", token));
-//        response.sendRedirect("http://localhost:3000/");
+
+//       response.addCookie(createCookie("access", token));
+//       response.sendRedirect("http://localhost:3000/");
 
     }
     private Cookie createCookie(String key, String value) {
