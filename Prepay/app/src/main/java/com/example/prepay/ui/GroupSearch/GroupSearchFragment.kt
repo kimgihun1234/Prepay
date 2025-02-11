@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.prepay.BaseFragment
@@ -20,7 +21,9 @@ import com.example.prepay.CommonUtils
 import com.example.prepay.PermissionChecker
 import com.example.prepay.R
 import com.example.prepay.data.model.dto.Public
+import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.databinding.FragmentGroupSearchBinding
+import com.example.prepay.ui.GroupDetails.GroupDetailsFragmentViewModel
 import com.example.prepay.ui.GroupSearchDetails.AddPublicGroupDetailsFragment
 import com.example.prepay.ui.GroupSearchDetails.GroupSearchtDetailsViewModel
 import com.example.prepay.ui.MainActivity
@@ -47,8 +50,8 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
 ), PublicSearchAdapter.OnPublicClickListener {
     private lateinit var mainActivity: MainActivity
     private lateinit var publicSearchAdapter: PublicSearchAdapter
-    private lateinit var publicList: List<Public>
-
+    private lateinit var publicAdapter: PublicSearchAdapter
+    private val viewModel: GroupSearchFragmentViewModel by viewModels()
     // GPS 관련은 에러가 계속 발생해서 일단 주석처리함 (현우)
     // GPS관련 변수
 //    private var mMap: GoogleMap? = null
@@ -82,34 +85,43 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
 //
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initAdapter()
 //        //GPS 관련 코드
 //        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
     }
 
     private fun initAdapter(){
-        publicList = listOf(
-            Public(1, "A 카페", "대구광역시 동성로",10, 1000000, "https://fastly.picsum.photos/id/221/200/300.jpg?hmac=vFrrajnPFCrr5ttjepVTsUDWzoo-orpnXOsqdqAd0LU"),
-            Public(2, "B 카페", "구미시 진평동", 20, 500000, "https://fastly.picsum.photos/id/875/200/300.jpg?hmac=9NSoqXHP89pGlq4Sz3OgGxjx5c91YHJkcIOBFgNJ8xA"),
-            Public(2, "C 카페", "서울특별시 강남구", 30,800000, "https://fastly.picsum.photos/id/729/200/300.jpg?hmac=VbcZBxFYzQK1ro1MTLLmwHNQ0kuIJSagOeue4JMymUY")
-        )
-        publicSearchAdapter = PublicSearchAdapter(publicList, this)
+//        publicList = listOf(
+//            Public(1, "A 카페", "대구광역시 동성로",10, 1000000, "https://fastly.picsum.photos/id/221/200/300.jpg?hmac=vFrrajnPFCrr5ttjepVTsUDWzoo-orpnXOsqdqAd0LU"),
+//            Public(2, "B 카페", "구미시 진평동", 20, 500000, "https://fastly.picsum.photos/id/875/200/300.jpg?hmac=9NSoqXHP89pGlq4Sz3OgGxjx5c91YHJkcIOBFgNJ8xA"),
+//            Public(2, "C 카페", "서울특별시 강남구", 30,800000, "https://fastly.picsum.photos/id/729/200/300.jpg?hmac=VbcZBxFYzQK1ro1MTLLmwHNQ0kuIJSagOeue4JMymUY")
+//        )
+
+        publicAdapter = PublicSearchAdapter(arrayListOf(),this)
+        viewModel.getPublicTeams.observe(viewLifecycleOwner){it->
+            publicAdapter.publicGroupList = it
+            publicAdapter.notifyDataSetChanged()
+        }
+        viewModel.getAllPublicTeamList()
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = publicSearchAdapter
     }
 
-    override fun onGroupClick(publicgroup: Public) {
+    override fun onGroupClick(publicgroup: PublicTeamsRes) {
         val viewModel = ViewModelProvider(mainActivity).get(GroupSearchtDetailsViewModel::class.java)
         viewModel.sendGroupDetails(
-            publicgroup.name,
-            publicgroup.leftMoney,
+            publicgroup.teamName,
+            publicgroup.teamBalance,
             publicgroup.imageURL
         )
 
         val fragment = AddPublicGroupDetailsFragment()
         mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.PUBLIC_GROUP_DETAILS_FRAGMENT)
+        TODO("Not yet implemented")
     }
+
 
 ////    private val readyCallback: OnMapReadyCallback by lazy{
 ////        object: OnMapReadyCallback {
