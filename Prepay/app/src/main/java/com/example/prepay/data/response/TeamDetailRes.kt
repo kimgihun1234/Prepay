@@ -6,6 +6,7 @@ data class TeamDetailRes(
     val position: Boolean,
     val publicTeam: Boolean,
     val teamId: Int,
+    val usedAmount : Int,
     val teamMessage: String,
     val teamName: String,
     val teamPassword: Any
