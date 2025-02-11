@@ -62,20 +62,15 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
         viewModel.getAllTeamList()
 
         cardAdapter.itemClickListener = object : TeamCardAdapter.ItemClickListener {
-            override fun onClick(productId: Int) {
-                cardAdapter.itemClickListener = object : TeamCardAdapter.ItemClickListener {
-                    override fun onClick(teamId: Int) {
-                        activityViewModel.setTeamId(teamId.toLong())
-                        mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.GROUP_DETAILS_FRAGMENT)
-                    }
-                }
-
-                // 스택 효과 추가
-                binding.viewPager.setPageTransformer(StackPageTransformer())
-                binding.viewPager.offscreenPageLimit = 5
-                binding.viewPager.setCurrentItem(0, false)
+            override fun onClick(teamId: Int) {
+                activityViewModel.setTeamId(teamId.toLong())
+                mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.GROUP_DETAILS_FRAGMENT)
             }
         }
+        // 스택 효과 추가
+        binding.viewPager.setPageTransformer(StackPageTransformer())
+        binding.viewPager.offscreenPageLimit = 5
+        binding.viewPager.setCurrentItem(0, false)
     }
 
     private fun initEvent() {
@@ -94,7 +89,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
      * @param context 다이얼로그를 표시할 컨텍스트 (Fragment 내에서는 requireContext()를 사용)
      * @param url QR 코드에 인코딩할 URL (기본값: "https://www.naver.com")
      */
-    fun showQRDialog(fragment: MyPageFragment, url: String = "https://www.naver.com") {
+    fun showQRDialog(fragment: MyPageFragment, url: String =ㅕ) {
         val context = fragment.requireContext()
         val parentView = fragment.requireView()
 

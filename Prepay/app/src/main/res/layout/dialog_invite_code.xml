@@ -45,15 +45,14 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:fontFamily="sans-serif-medium"
-        android:text="초대 코드 입력"
+        android:text="초대 코드"
         android:textColor="@color/text_main_color"
         android:textSize="16sp" />
 
-    <EditText
+    <TextView
         android:id="@+id/et_invite_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="초대 코드를 입력해주세요"
         android:background="@drawable/round_background"
         android:padding="12dp"
         android:textSize="14sp"
