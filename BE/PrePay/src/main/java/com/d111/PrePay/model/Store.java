@@ -32,6 +32,8 @@ public class Store {
 
     private float latitude;
 
+    private String storeImgUrl;
+
     @OneToMany(mappedBy = "store")
     private List<TeamStore> teamStores = new ArrayList<>();
 

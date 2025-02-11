@@ -168,8 +168,9 @@ public class TeamController {
     @PostMapping("/store")
     @Operation(summary = "팀 가맹점 추가")
     public ResponseEntity<TeamCreateStoreRes> createStore(@RequestHeader Long userId,
-                                                          @RequestBody TeamCreateStoreReq req) {
-        return ResponseEntity.ok(teamService.createStore(req));
+                                                          @RequestPart("request") TeamCreateStoreReq req,
+                                                          @RequestPart(value="image",required = false) MultipartFile image) throws IOException {
+        return ResponseEntity.ok(teamService.createStore(req,image));
     }
 
 
