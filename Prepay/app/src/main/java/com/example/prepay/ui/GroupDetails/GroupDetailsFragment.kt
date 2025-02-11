@@ -29,13 +29,11 @@ import com.example.prepay.CommonUtils
 import com.example.prepay.PermissionChecker
 import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
-import com.example.prepay.data.response.PosReq
 import com.example.prepay.data.response.BanUserReq
 import com.example.prepay.data.response.PrivilegeUserReq
 import com.example.prepay.data.response.TeamIdReq
 import com.example.prepay.data.response.TeamIdStoreRes
 import com.example.prepay.data.response.TeamUserRes
-import com.example.prepay.data.response.orderDetail
 import com.example.prepay.databinding.DialogAuthoritySettingBinding
 import com.example.prepay.databinding.DialogGroupExitBinding
 import com.example.prepay.databinding.DialogGroupResignBinding
