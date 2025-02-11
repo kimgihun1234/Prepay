@@ -39,6 +39,7 @@ public class BootpayService {
     @Transactional
     public PaymentResponse makeCharge(BootChargeReq bootChargeReq, String email) {
         Bootpay api = new Bootpay(REST_APPLICATION_ID, PRIVATE_KEY);
+        log.info("가게 아이디 : {}, 팀 아이디 :  {}, 영수중 아이디 : {}, 충전금액 : {}",bootChargeReq.getStoreId(),bootChargeReq.getTeamId(),bootChargeReq.getReceiptId(),bootChargeReq.getAmount());
         log.info("REST ID : {}", REST_APPLICATION_ID);
         log.info("PRIVATE_KEY : {}", PRIVATE_KEY);
         log.info("영수증 id : {}",bootChargeReq.getReceiptId());
