@@ -40,14 +40,14 @@ public class PosService {
         OrderHistory orderHistory = new OrderHistory(orderReq);
         Store store = storeRepository.findById(orderReq.getStoreId()).orElseThrow(() -> new RuntimeException("가게 오류"));
 
-        UserTeam userTeam = userTeamRepository.findById(orderReq.getUserTeamId()).orElseThrow();
+        UserTeam userTeam = userTeamRepository.findByTeamIdAndUser_Email(orderReq.getTeamId(), orderReq.getEmail()).orElseThrow();
         userTeam.setUsedAmount(userTeam.getUsedAmount() + orderHistory.getTotalPrice());
         Team team = userTeam.getTeam();
         User user = userTeam.getUser();
         TeamStore teamStore = teamStoreRepository.findTeamStoreByTeamAndStore(team, store);
 
         teamStore.setTeamStoreBalance(teamStore.getTeamStoreBalance() - orderHistory.getTotalPrice());
-        log.info("총 주문 금액 : {}",orderHistory.getTotalPrice());
+        log.info("총 주문 금액 : {}", orderHistory.getTotalPrice());
         if (teamStore.getTeamStoreBalance() < 0) {
             teamStore.setTeamStoreBalance(teamStore.getTeamStoreBalance() + orderHistory.getTotalPrice());
             throw new NotEnoughBalanceException("팀 잔액이 부족합니다,");
@@ -64,8 +64,8 @@ public class PosService {
             detailHistoryRepository.save(detailHistory);
         }
 
-        try{
-            fcmService.sendDataMessageTo(user.getFcmToken(),"완료","주문이 완료되었습니다.");
+        try {
+            fcmService.sendDataMessageTo(user.getFcmToken(), "완료", "주문이 완료되었습니다.");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

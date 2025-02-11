@@ -41,7 +41,7 @@ public class BootpayService {
         Bootpay api = new Bootpay(REST_APPLICATION_ID, PRIVATE_KEY);
         log.info("REST ID : {}", REST_APPLICATION_ID);
         log.info("PRIVATE_KEY : {}", PRIVATE_KEY);
-        PaymentResponse response;
+        PaymentResponse response = new PaymentResponse();
         setBootpayToken(api);
         try {
             HttpResponse res = api.verify(String.valueOf(bootChargeReq.getReceiptId()));
@@ -52,7 +52,7 @@ public class BootpayService {
             log.info("결제 금액 {}", response.getData().getPrice());
             log.info("검증 : {}", str);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("결제 상태 "+ response.getMessage());
         }
         TeamStore teamStore = teamStoreRepository.findByTeamIdAndStoreId(bootChargeReq.getTeamId(), bootChargeReq.getStoreId()).orElseThrow();
         teamStore.setTeamStoreBalance(teamStore.getTeamStoreBalance() + bootChargeReq.getAmount());
@@ -61,7 +61,7 @@ public class BootpayService {
         User user = userRepository.findUserByEmail(email);
         log.info(user.getFcmToken());
         try {
-            fcmService.sendDataMessageTo(user.getFcmToken(),"완료" ,"금액 : " + response.getData().getPrice() + "원 " + teamName + " 그룹의 " + storeName + " 가게에 " + "충전이 완료되었습니다.");
+            fcmService.sendDataMessageTo(user.getFcmToken(), "완료", "금액 : " + response.getData().getPrice() + "원 " + teamName + " 그룹의 " + storeName + " 가게에 " + "충전이 완료되었습니다.");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -78,7 +78,7 @@ public class BootpayService {
         }*/
         try {
             api.getAccessToken();
-            bootpayToken=api.token;
+            bootpayToken = api.token;
             log.info("bootpay access token : {}", api.token);
             bootpayTokenDate = System.currentTimeMillis();
 
