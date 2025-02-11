@@ -3,7 +3,7 @@
     android:shape="rectangle">
 
     <!-- 배경을 반투명한 색상으로 설정 -->
-    <solid android:color="#990066CC"/> <!-- 반투명한 보라색 -->
+    <solid android:color="#CC0066CC"/> <!-- 반투명한 보라색 -->
 
     <!-- 모서리를 둥글게 (원하면 제거 가능) -->
     <corners android:radius="0dp"/>  <!-- ✅ 둥근 효과 제거하여 전체 화면 적용 -->
