@@ -26,10 +26,16 @@ class GroupDetailsFragmentViewModel : ViewModel() {
     private val _userLocation = MutableLiveData<Location>()
     val userLocation: LiveData<Location> get() = _userLocation
 
+    private val _userposition = MutableLiveData<Boolean>()
+    val userposition:LiveData<Boolean> get() = _userposition
+
     fun updateLocation(location: Location) {
         _userLocation.value = location
     }
 
+    fun updatePosition(userposition: Boolean){
+        _userposition.value = userposition
+    }
     fun getMyTeamRestaurantList(userId:Long,teamId: Long) {
         viewModelScope.launch {
             runCatching {
