@@ -16,8 +16,11 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.activityViewModels
@@ -114,6 +117,25 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        // MainActivity에 햄버거 버튼 활성화 요청
+        parentFragmentManager.setFragmentResult(
+            "toolbarUpdate",
+            bundleOf("showHamburger" to true)
+        )
+
+        val toolbar: Toolbar? = activity?.findViewById(R.id.toolbar)
+        toolbar?.setNavigationOnClickListener {
+            if (binding.drawerLayout.isDrawerOpen(GravityCompat.END)) {
+                binding.drawerLayout.closeDrawer(GravityCompat.END) // 👉 열려 있으면 닫기
+            } else {
+                binding.drawerLayout.openDrawer(GravityCompat.END)  // 👉 닫혀 있으면 열기
+            }
+        }
+    }
+
     override fun onStop() {
         super.onStop()
         mFusedLocationClient.removeLocationUpdates(locationCallback)
@@ -130,6 +152,12 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(readyCallback)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // 다른 프래그먼트로 이동할 때 햄버거 버튼 숨기기
+        (activity as? AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     private fun initAdapter(){
@@ -208,7 +236,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
 
     private fun initEvent() {
         binding.diningTogetherQrBtn.setOnClickListener {
-            /*lifecycleScope.launch {
+            lifecycleScope.launch {
                 runCatching {
                     RetrofitUtil.qrService.qrTeamCreate("user1@gmail.com",1)
                 }.onSuccess {
@@ -217,7 +245,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                 }.onFailure {
                     mainActivity.showToast("qr불러오기가 실패했습니다")
                 }
-            }*/
+            }
         }
 
         binding.groupInviteBtn.setOnClickListener {

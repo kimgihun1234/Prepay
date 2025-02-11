@@ -31,14 +31,13 @@ import retrofit2.Response
 
 private const val TAG = "MainActivity_싸피"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
-
-
-
-
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initFragment()
         initEvent()
+        setSupportActionBar(binding.toolbar)
+        setupToolbarListener()
     }
 
     fun changeFragmentMain(name: CommonUtils.MainFragmentName, num: Int = -1) {
@@ -85,6 +84,23 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     fun hideBottomNav(state : Boolean){
         if(state) binding.bottomNavigation.visibility = View.GONE
         else binding.bottomNavigation.visibility = View.VISIBLE
+    }
+
+    //툴바 관련 코드
+    private fun setupToolbarListener() {
+        supportFragmentManager.setFragmentResultListener("toolbarUpdate", this) { _, bundle ->
+            val isHamburger = bundle.getBoolean("showHamburger", false)
+            updateToolbarIcon(isHamburger)
+        }
+    }
+
+    private fun updateToolbarIcon(showHamburger: Boolean) {
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(showHamburger)
+            if (showHamburger) {
+                setHomeAsUpIndicator(R.drawable.ic_menu)
+            }
+        }
     }
 
     fun enterDialog(){
