@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
@@ -21,6 +22,7 @@ import com.example.prepay.R
 import com.example.prepay.data.model.dto.Public
 import com.example.prepay.databinding.FragmentGroupSearchBinding
 import com.example.prepay.ui.GroupSearchDetails.AddPublicGroupDetailsFragment
+import com.example.prepay.ui.GroupSearchDetails.GroupSearchtDetailsViewModel
 import com.example.prepay.ui.MainActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -98,10 +100,16 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
     }
 
     override fun onGroupClick(publicgroup: Public) {
-        val fragment = AddPublicGroupDetailsFragment.newInstance(publicgroup)
+        val viewModel = ViewModelProvider(mainActivity).get(GroupSearchtDetailsViewModel::class.java)
+        viewModel.sendGroupDetails(
+            publicgroup.name,
+            publicgroup.leftMoney,
+            publicgroup.imageURL
+        )
+
+        val fragment = AddPublicGroupDetailsFragment()
         mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.PUBLIC_GROUP_DETAILS_FRAGMENT)
     }
-
 
 ////    private val readyCallback: OnMapReadyCallback by lazy{
 ////        object: OnMapReadyCallback {
