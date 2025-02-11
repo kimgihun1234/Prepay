@@ -16,6 +16,7 @@ public class TeamDetailRes {
     private int dailyPriceLimit;
     private boolean publicTeam;
     private int countLimit;
+    private int usedAmount;
     private boolean position;
     private String teamMessage;
     private String teamPassword;

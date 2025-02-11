@@ -336,6 +336,7 @@ public class TeamService {
                 .teamMessage(findTeam.getTeamMessage())
                 .position(findUserTeam.isPosition())
                 .teamPassword(findTeam.getTeamPassword())
+                .usedAmount(findUserTeam.getUsedAmount())
                 .build();
 
         return res;

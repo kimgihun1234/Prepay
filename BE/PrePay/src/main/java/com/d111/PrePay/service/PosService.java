@@ -41,12 +41,11 @@ public class PosService {
         Store store = storeRepository.findById(orderReq.getStoreId()).orElseThrow(() -> new RuntimeException("가게 오류"));
 
         UserTeam userTeam = userTeamRepository.findByTeamIdAndUser_Email(orderReq.getTeamId(), orderReq.getEmail()).orElseThrow();
-        userTeam.setUsedAmount(userTeam.getUsedAmount() + orderHistory.getTotalPrice());
+
         Team team = userTeam.getTeam();
         User user = userTeam.getUser();
         TeamStore teamStore = teamStoreRepository.findTeamStoreByTeamAndStore(team, store);
 
-        teamStore.setTeamStoreBalance(teamStore.getTeamStoreBalance() - orderHistory.getTotalPrice());
         log.info("총 주문 금액 : {}", orderHistory.getTotalPrice());
         if (teamStore.getTeamStoreBalance() < 0) {
             teamStore.setTeamStoreBalance(teamStore.getTeamStoreBalance() + orderHistory.getTotalPrice());
@@ -54,6 +53,9 @@ public class PosService {
         } else if (team.getDailyPriceLimit()-userTeam.getUsedAmount()< orderHistory.getTotalPrice()) {
             throw new NotEnoughBalanceException("일일 한도 잔액이 부족합니다,");
         }
+
+        teamStore.setTeamStoreBalance(teamStore.getTeamStoreBalance() - orderHistory.getTotalPrice());
+        userTeam.setUsedAmount(userTeam.getUsedAmount() + orderHistory.getTotalPrice());
         orderHistory.setCompanyDinner(qr.getType() != QrType.PRIVATE);
         orderHistory.setStore(store);
         orderHistory.setTeam(team);
