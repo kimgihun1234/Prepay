@@ -1,7 +1,6 @@
 package com.d111.PrePay.security.service;
 
 
-import com.d111.PrePay.security.dto.CustomUserDetails;
 import com.d111.PrePay.security.entity.Refresh;
 import com.d111.PrePay.security.jwt.JWTUtil;
 import com.d111.PrePay.security.repository.RefreshRepository;
@@ -11,12 +10,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.Date;
 
 @Service
@@ -25,10 +20,11 @@ public class ReissueService {
     private final JWTUtil jwtUtil;
     private final RefreshRepository refreshRepository;
 
-    public ReissueService(JWTUtil jwtUtil,RefreshRepository refreshRepository) {
+    public ReissueService(JWTUtil jwtUtil, RefreshRepository refreshRepository) {
         this.jwtUtil = jwtUtil;
         this.refreshRepository = refreshRepository;
     }
+
 
     public ResponseEntity<?> createRefresh(HttpServletRequest request, HttpServletResponse response) {
         String refresh = null;

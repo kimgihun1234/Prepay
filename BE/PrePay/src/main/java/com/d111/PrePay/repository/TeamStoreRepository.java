@@ -15,10 +15,10 @@ import java.util.Optional;
 public interface TeamStoreRepository extends JpaRepository<TeamStore,Long> {
 
     @Query("SELECT ts FROM TeamStore ts join fetch ts.store s WHERE ts.team = :team")
-    List<TeamStore> findTeamStoresByTeam(@Param("team") Team team);
+    List<TeamStore> findTeamStoresWithStoreByTeam(@Param("team") Team team);
 
     @Query("SELECT t FROM Team t join FETCH t.teamStores ts join FETCH ts.store WHERE t.id=:teamId")
-    Team findTeamStoresByTeamId(Long teamId);
+    Team findTeamWithTeamStoreAndStoreByTeamId(Long teamId);
 
     TeamStore findTeamStoreByTeamAndStore(Team team, Store store);
 
