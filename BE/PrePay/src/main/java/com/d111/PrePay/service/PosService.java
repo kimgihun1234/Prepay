@@ -2,16 +2,20 @@ package com.d111.PrePay.service;
 
 import com.d111.PrePay.dto.request.DetailHistoryReq;
 import com.d111.PrePay.dto.request.OrderCreateReq;
+import com.d111.PrePay.exception.NotEnoughBalanceException;
 import com.d111.PrePay.model.*;
 import com.d111.PrePay.repository.*;
 import com.d111.PrePay.value.QrType;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PosService {
@@ -21,6 +25,7 @@ public class PosService {
     private final StoreRepository storeRepository;
     private final UserTeamRepository userTeamRepository;
     private final QrRepository qrRepository;
+    private final TeamStoreRepository teamStoreRepository;
     private final FCMService fcmService;
 
     @Transactional
@@ -35,10 +40,19 @@ public class PosService {
         qr.setUsed(true);
         OrderHistory orderHistory = new OrderHistory(orderReq);
         Store store = storeRepository.findById(orderReq.getStoreId()).orElseThrow(() -> new RuntimeException("가게 오류"));
+
         UserTeam userTeam = userTeamRepository.findById(orderReq.getUserTeamId()).orElseThrow();
         userTeam.setUsedAmount(userTeam.getUsedAmount() + orderHistory.getTotalPrice());
         Team team = userTeam.getTeam();
         User user = userTeam.getUser();
+        TeamStore teamStore = teamStoreRepository.findTeamStoreByTeamAndStore(team, store);
+
+        teamStore.setTeamStoreBalance(teamStore.getTeamStoreBalance() - orderHistory.getTotalPrice());
+        log.info("총 주문 금액 : {}",orderHistory.getTotalPrice());
+        if (teamStore.getTeamStoreBalance() < 0) {
+            teamStore.setTeamStoreBalance(teamStore.getTeamStoreBalance() + orderHistory.getTotalPrice());
+            throw new NotEnoughBalanceException("팀 잔액이 부족합니다,");
+        }
         orderHistory.setCompanyDinner(qr.getType() != QrType.PRIVATE);
         orderHistory.setStore(store);
         orderHistory.setTeam(team);
