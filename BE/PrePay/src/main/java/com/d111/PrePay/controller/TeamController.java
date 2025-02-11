@@ -32,6 +32,15 @@ public class TeamController {
     private final TeamService teamService;
     private final ImageService imageService;
 
+    // 팀 가게 좋아요
+    @PostMapping("/likes")
+    @Operation(summary = "팀 가게 좋아요, 좋아요 취소")
+    public ResponseEntity<StandardRes> likeStore(@RequestHeader Long userId, @RequestBody LikeStoreReq req){
+
+        return ResponseEntity.ok(teamService.likeStore(userId,req));
+    }
+
+
     // 팀 이미지 수정
     @PostMapping("/image")
     @Operation(summary = "팀 이미지 수정")
