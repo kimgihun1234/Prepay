@@ -14,16 +14,19 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
-import com.example.prepay.data.model.dto.BootPayCharge
+import com.example.prepay.data.response.BootPayChargeReq
 import com.example.prepay.data.model.dto.PublicPrivateTeam
 import com.example.prepay.data.model.dto.Restaurant
 import com.example.prepay.data.response.StoreIdReq
+import com.example.prepay.data.response.TeamIdRes
+import com.example.prepay.data.response.TeamStoreReq
 import com.example.prepay.databinding.FragmentCreatePublicGroupBinding
 import com.example.prepay.ui.GroupDetails.GroupDetailsFragmentViewModel
 import com.example.prepay.ui.GroupDetails.RestaurantSearchAdapter
@@ -31,6 +34,7 @@ import com.example.prepay.ui.MainActivity
 import com.example.prepay.util.BootPayManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -57,6 +61,8 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
     private val groupDetailsFragmentViewModel: GroupDetailsFragmentViewModel by viewModels()
     private lateinit var searchAdapter: RestaurantSearchAdapter
     private var selectedRestaurantName: String = ""
+
+    private val createGroupViewModel : CreateGroupViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -155,19 +161,23 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
             lifecycleScope.launch {
                 try {
                     binding.registerBtn.isEnabled = false
-                    receiptIdText = receiptId
-                    priceText = price.toString()
-
-                    Log.d(TAG, "receiptId: $receiptId")
-                    Log.d(TAG, "price: $price")
-                    Log.d(TAG, "registerTeam: $selectedImageMultipart")
                     val response = withContext(Dispatchers.IO) {
-                        RetrofitUtil.teamService.makeTeam("1", teamMakeRequest, selectedImageMultipart)
+                        RetrofitUtil.teamService.makeTeam(
+                            "1",
+                            teamMakeRequest,
+                            selectedImageMultipart
+                        )
                     }
 
                     if (response.isSuccessful) {
-                        Log.d(TAG, "response.body(): ${response.body()}")
+                        receiptIdText = receiptId
+                        priceText = price.toString()
                         Toast.makeText(requireContext(), "팀이 성공적으로 생성되었습니다.", Toast.LENGTH_SHORT).show()
+
+                        val teamIdRes : TeamIdRes? = response.body()
+                        teamIdRes?.let { createGroupViewModel.updateTeamId(it) }
+                        Log.d(TAG, "teamId: ${teamIdRes?.teamId}")
+                        registerStore()
                         registerReceipt()
                     } else {
                         Log.e(TAG, "팀 생성 실패: ${response.code()}")
@@ -180,21 +190,70 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
             }
         }
     }
+
+    private fun registerStore() {
+        lifecycleScope.launch {
+            try {
+                binding.registerBtn.isEnabled = false
+                // teamId와 storeId를 안전하게 가져오기
+                val teamId = createGroupViewModel.teamId.value?.teamId
+                val storeId = createGroupViewModel.storeId.value
+
+                if (teamId == null || storeId == null) {
+                    Toast.makeText(requireContext(), "팀 ID 또는 스토어 ID가 없습니다.", Toast.LENGTH_SHORT).show()
+                    return@launch
+                }
+
+                val request = TeamStoreReq(storeId, teamId, priceText.toInt())
+
+                val response = withContext(Dispatchers.IO) {
+                    RetrofitUtil.teamService.createStore(1, request)
+                }
+
+                Log.d(TAG, "response: $response")
+
+                if (response.isSuccessful) {
+                    Toast.makeText(requireContext(), "스토어가 성공적으로 연결되었습니다.", Toast.LENGTH_SHORT).show()
+                } else {
+                    Log.e(TAG, "스토어 연결 실패: ${response?.errorBody()?.string()}")
+                }
+
+            } catch (e: Exception) {
+                Log.e(TAG, "네트워크 요청 실패: ${e.localizedMessage}", e)
+            } finally {
+                binding.registerBtn.isEnabled = true
+            }
+        }
+    }
+
     private fun registerReceipt() {
         lifecycleScope.launch {
             try {
-                val chargeReceipt = BootPayCharge(1, 1, priceText.toInt(), receiptIdText)
-                val response = withContext(Dispatchers.IO) {
-                    RetrofitUtil.bootPayService.getBootPay("user1@gmail.com", chargeReceipt)
-                }
+                val temaIdRes : LiveData<TeamIdRes> = createGroupViewModel.teamId
+                val storeId = createGroupViewModel.storeId.value
+                val chargeReceipt =
+                    storeId?.let { store ->
+                        temaIdRes.value?.teamId?.let { team ->
+                            BootPayChargeReq(
+                                team, store, priceText.toInt(), receiptIdText)
+                        }
+                    }
 
-                if (response.isSuccessful) {
+                val response = withContext(Dispatchers.IO) {
+                    delay(1000)
+                    chargeReceipt?.let {
+                        RetrofitUtil.bootPayService.getBootPay("user1@gmail.com",
+                            it
+                        )
+                    }
+                }
+                if (response?.isSuccessful == true) {
                     Toast.makeText(requireContext(), "영수증이 성공적으로 들어갔습니다.", Toast.LENGTH_SHORT).show()
                     // 영수증 올리고 그다음 프레그먼트 이동
                     mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
 
                 } else {
-                    Log.e(TAG, "영수증 올리기 실패: ${response.code()}")
+                    Log.e(TAG, "영수증 올리기 실패: ${response}")
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "네트워크 요청 실패: ${e.localizedMessage}", e)
@@ -288,11 +347,11 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
     }
 
     private fun initRecyclerView() {
-        searchAdapter = RestaurantSearchAdapter { selectedRestaurant ->
+        searchAdapter = RestaurantSearchAdapter ({ selectedRestaurant ->
             binding.searchRestaurant.setQuery(selectedRestaurant.name, false)
             selectedRestaurantName = selectedRestaurant.name
             binding.searchResults.visibility = View.GONE
-        }
+        }, createGroupViewModel)
 
         binding.searchResults.apply {
             layoutManager = LinearLayoutManager(requireContext())
