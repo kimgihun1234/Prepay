@@ -48,6 +48,7 @@ public class BootpayService {
             String str = StreamUtils.copyToString(res.getEntity().getContent(), StandardCharsets.UTF_8);
             ObjectMapper mapper = new ObjectMapper();
             response = mapper.readValue(str, PaymentResponse.class);
+            log.info("결과 메세지 값 : {}" ,response.getMessage());
             log.info("결제 상태 {}", response.getData().getStatusKo());
             log.info("결제 금액 {}", response.getData().getPrice());
             log.info("검증 : {}", str);
