@@ -51,6 +51,8 @@ public class PosService {
         if (teamStore.getTeamStoreBalance() < 0) {
             teamStore.setTeamStoreBalance(teamStore.getTeamStoreBalance() + orderHistory.getTotalPrice());
             throw new NotEnoughBalanceException("팀 잔액이 부족합니다,");
+        } else if (team.getDailyPriceLimit()-userTeam.getUsedAmount()< orderHistory.getTotalPrice()) {
+            throw new NotEnoughBalanceException("일일 한도 잔액이 부족합니다,");
         }
         orderHistory.setCompanyDinner(qr.getType() != QrType.PRIVATE);
         orderHistory.setStore(store);

@@ -428,6 +428,7 @@ public class TeamService {
                     else {
                         storesRes.setLike(true);
                     }
+                    storesRes.setMyteam(true);
                     return storesRes;
                 }).collect(Collectors.toList());
     }
