@@ -10,6 +10,7 @@ public class TeamCreateStoreRes {
     private Long teamId;
     private Long storeId;
     private int teamStoreBalance;
+    private String storeImgUrl;
 
 
 }

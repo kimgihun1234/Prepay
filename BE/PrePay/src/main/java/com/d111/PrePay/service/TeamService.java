@@ -83,8 +83,8 @@ public class TeamService {
         if (image != null && !image.isEmpty()) {
             String imgUrl;
             try {
-                imgUrl = imageService.uploadImage(image, req.getTeamId());
-                imageService.uploadImage(image, team.getId());
+                imgUrl = imageService.uploadImage(image);
+                imageService.uploadImage(image);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -284,10 +284,22 @@ public class TeamService {
     // 팀 가맹점 추가
     // 확인
     @Transactional
-    public TeamCreateStoreRes createStore(TeamCreateStoreReq req) {
+    public TeamCreateStoreRes createStore(TeamCreateStoreReq req, MultipartFile image) {
         log.info("팀아이디 : {}, 스토어아이디 : {}, 돈 : {}", req.getTeamId(), req.getStoreId(), req.getBalance());
         Team findTeam = teamRepository.findById(req.getTeamId()).orElseThrow();
         Store findStore = storeRepository.findById(req.getStoreId()).orElseThrow();
+
+        if (image != null && !image.isEmpty()) {
+            String imgUrl = null;
+            try {
+                imgUrl = imageService.uploadImage(image);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            findStore.setStoreImgUrl(imgUrl);
+            storeRepository.save(findStore);
+        }
 
         TeamStore teamStore = new TeamStore(findTeam, findStore, req.getBalance());
         TeamStore savedTeamStore = teamStoreRepository.save(teamStore);
@@ -297,6 +309,7 @@ public class TeamService {
                 .teamId(findTeam.getId())
                 .storeId(findStore.getId())
                 .teamStoreBalance(savedTeamStore.getTeamStoreBalance())
+                .storeImgUrl(findStore.getStoreImgUrl())
                 .build();
 
         return teamCreateStoreRes;
@@ -369,7 +382,7 @@ public class TeamService {
         if (image != null && !image.isEmpty()) {
             String imgUrl = null;
             try {
-                imgUrl = imageService.uploadImage(image, team.getId());
+                imgUrl = imageService.uploadImage(image);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

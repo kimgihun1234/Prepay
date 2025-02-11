@@ -20,7 +20,7 @@ public class ImageService {
 
     private final Bucket bucket;
 
-    public String uploadImage(MultipartFile file, Long teamId) throws IOException{
+    public String uploadImage(MultipartFile file) throws IOException{
         String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
         Blob blob = bucket.create(fileName, file.getInputStream(),file.getContentType());
 
