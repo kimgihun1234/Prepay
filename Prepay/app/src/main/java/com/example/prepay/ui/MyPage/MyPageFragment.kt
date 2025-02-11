@@ -86,7 +86,11 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
         mainActivity.hideBottomNav(false)
     }
 
-    fun showQRDialog(fragment: MyPageFragment, url: String = "https://www.naver.com") {
+
+
+
+    fun showQRDialog(fragment: MyPageFragment, url: String ="https://www.naver.com") {
+
         val context = fragment.requireContext()
         val parentView = fragment.requireView()
         // 타이머 생성
