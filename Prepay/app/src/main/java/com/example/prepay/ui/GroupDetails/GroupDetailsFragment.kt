@@ -27,6 +27,7 @@ import com.example.prepay.CommonUtils
 import com.example.prepay.PermissionChecker
 import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
+import com.example.prepay.data.model.dto.RestaurantData
 import com.example.prepay.data.response.BanUserReq
 import com.example.prepay.data.response.PrivilegeUserReq
 import com.example.prepay.data.response.StoreIdReq
@@ -42,6 +43,7 @@ import com.example.prepay.databinding.DialogQrDiningTogetherBinding
 import com.example.prepay.databinding.FragmentGroupDetailsBinding
 import com.example.prepay.ui.MainActivity
 import com.example.prepay.ui.MainActivityViewModel
+import com.example.prepay.ui.RestaurantDetails.RestaurantDetailsViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -76,6 +78,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     //activityViewModel
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val viewModel: GroupDetailsFragmentViewModel by viewModels()
+    private val restaurantDetailsViewModel : RestaurantDetailsViewModel by viewModels()
 
     //GPS관련 변수
     private var mMap: GoogleMap? = null
@@ -160,6 +163,13 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             restaurantAdapter.userLocation = curlocation
             restaurantAdapter.notifyDataSetChanged()
         }
+//        restaurantAdapter.onRestaurantClickListener = object : RestaurantAdapter.OnRestaurantClickListener {
+//            override fun onRestaurantClick(teamIdStoreResId: Int) {
+//                Log.d(TAG, "teamIdStoreResId: $teamIdStoreResId")
+//                activityViewModel.setStoreId(teamIdStoreResId)
+//            }
+//        }
+
     }
 
     private fun initData(){
@@ -237,7 +247,13 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.ADD_RESTAURANT_FRAGMENT)
     }
 
-    override fun onRestaurantClick(teamIdStoreResId: Int) {
+    override fun onRestaurantClick(storeName : String, teamIdStoreResId: Int) {
+        Log.d(TAG, "teamIdStoreResId: $teamIdStoreResId")
+        activityViewModel.setStoreId(teamIdStoreResId)
+        activityViewModel.setStoreName(storeName)
+        Log.d(TAG, "storeName: $storeName")
+        val restaurantData = RestaurantData(storeName, teamIdStoreResId)
+        restaurantDetailsViewModel.setRestaurantData(restaurantData)
         mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.RESTAURANT_DETAILS_FRAGMENT)
     }
 

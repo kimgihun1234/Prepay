@@ -10,9 +10,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepay.R
 import com.example.prepay.data.model.dto.Restaurant
+import com.example.prepay.ui.CreateGroup.CreateGroupViewModel
 
 class RestaurantSearchAdapter(
-    private val onItemClick: (Restaurant) -> Unit
+    private val onItemClick: (Restaurant) -> Unit,
+    private val createGroupViewModel : CreateGroupViewModel
 ) : ListAdapter<Restaurant, RestaurantSearchAdapter.ViewHolder>(RestaurantDiffCallback()) {
 
 
@@ -32,6 +34,7 @@ class RestaurantSearchAdapter(
         fun bind(restaurant: Restaurant) {
             nameTextView.setText(restaurant.name ?: "")
             itemView.setOnClickListener {
+                createGroupViewModel.updateStoreId(restaurant.storeId)
                 onItemClick(restaurant) // 아이템 클릭 시 콜백 호출
             }
         }
