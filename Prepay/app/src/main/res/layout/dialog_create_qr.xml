@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="@drawable/dialog_background">
+
+    <!-- QR 코드 이미지 -->
+    <ImageView
+        android:id="@+id/imageViewQrCode"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginBottom="20dp"
+        android:scaleType="fitCenter" />
+
+    <!-- QR 코드 인식 안내 -->
+    <TextView
+        android:id="@+id/qr_instruction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="QR 코드를 인식해주세요"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="4dp" />
+
+    <!-- 영어 안내 문구 -->
+    <TextView
+        android:id="@+id/qr_instruction_sub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Scan a QR to Pay"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:layout_marginBottom="16dp" />
+
+    <!-- 추가 안내 문구 -->
+    <TextView
+        android:id="@+id/qr_instruction_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="리더기와 QR 코드 사이의 거리를 적절히 유지하여\n선명하게 보이도록 조정해주세요"
+        android:textSize="14sp"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:layout_marginBottom="10dp" />
+</LinearLayout>

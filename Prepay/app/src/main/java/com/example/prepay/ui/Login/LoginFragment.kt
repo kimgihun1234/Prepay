@@ -93,9 +93,9 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
         dbHelper = UserDBHelper(requireContext())
 
         binding.LoginBtn.setOnClickListener {
-//            val intent = Intent(requireContext(), MainActivity::class.java)
-//            startActivity(intent)
-            login()
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            startActivity(intent)
+//            login()
         }
     }
 
@@ -218,7 +218,7 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
 //                }
             } catch (e: Exception) {
                 e.printStackTrace()
-                Toast.makeText(requireContext(), "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show()
             }
         }
     }

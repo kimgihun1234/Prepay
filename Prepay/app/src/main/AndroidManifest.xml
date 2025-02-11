@@ -12,6 +12,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
 
     <application
         android:name=".ApplicationClass"
@@ -30,8 +32,15 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_api_key" />
+            android:value="@string/api_key" />
 
+        <service
+            android:name=".data.remote.MyFirebaseMessageService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <activity
             android:name=".ui.LoginActivity"
@@ -46,7 +55,6 @@
             android:name=".ui.MainActivity"
             android:exported="true">
         </activity>
-        <activity android:name=".ui.MyPage.CreateQRActivity" />
     </application>
 
 </manifest>
