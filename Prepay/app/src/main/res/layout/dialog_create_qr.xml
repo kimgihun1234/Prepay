@@ -13,6 +13,7 @@
         android:id="@+id/imageViewQrCode"
         android:layout_width="250dp"
         android:layout_height="250dp"
+        android:layout_marginTop="100dp"
         android:layout_marginBottom="20dp"
         android:scaleType="fitCenter" />
 
@@ -48,5 +49,5 @@
         android:textSize="14sp"
         android:textColor="@android:color/white"
         android:gravity="center"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="100dp" />
 </LinearLayout>
