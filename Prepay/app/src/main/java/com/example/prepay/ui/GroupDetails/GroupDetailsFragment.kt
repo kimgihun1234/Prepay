@@ -145,6 +145,11 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        mainActivity.hideBottomNav(true)
+    }
+
     override fun onStop() {
         super.onStop()
         mFusedLocationClient.removeLocationUpdates(locationCallback)
@@ -167,6 +172,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         super.onPause()
         // 다른 프래그먼트로 이동할 때 햄버거 버튼 숨기기
         (activity as? AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        mainActivity.hideBottomNav(false)
     }
 
     private fun initAdapter(){
