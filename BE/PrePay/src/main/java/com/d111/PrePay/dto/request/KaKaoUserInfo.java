@@ -9,6 +9,6 @@ public class KaKaoUserInfo {
     private Long id;
     private String connected_at;
     private Map<String, String> properties;
-    private Map<String, String> kakao_account;
+    private Map<String, String> profile;
 
 }
