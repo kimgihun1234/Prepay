@@ -19,6 +19,7 @@ pipeline {
         DB_PASSWORD = credentials('DB_PASSWORD')
 
         client_secret = credentials('client_secret')
+        KAKAO_CLIENT_ID = credentials('KAKAO_CLIENT_ID')
 
         GOOGLE_SERVICES_JSON = credentials('FIREBASE-SERVICE-KEY.JSON')
         FCM_SERVICE_KEY_JSON = credentials('FCM_SERVICE_KEY.JSON')
@@ -119,6 +120,7 @@ pipeline {
                                       -e BOOTPAY_PRIVATE_KEY=${BOOTPAY_PRIVATE_KEY} \
                                       -e BOOTPAY_APPID=${BOOTPAY_APPID} \
                                       -e client_secret=${client_secret} \
+                                      -e KAKAO_CLIENT_ID=${KAKAO_CLIENT_ID} \
                                       -e TZ=Asia/Seoul\
                                       ${DOCKER_IMAGE}:latest
                                 """.stripIndent()
