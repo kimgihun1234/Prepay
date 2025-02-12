@@ -275,7 +275,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         binding.qrBtn.setOnClickListener {
             lifecycleScope.launch {
                 runCatching {
-                    RetrofitUtil.qrService.qrPrivateCreate("user1@gmail.com")
+                    RetrofitUtil.qrService.qrPrivateCreate("user1@gmail.com",activityViewModel.teamId.value!!.toInt())
                 }.onSuccess {
                     Log.d(TAG,it.message)
                     showQRDialog(it.message+":"+"user1@gmail.com"+":"+activityViewModel.teamId.value.toString())
