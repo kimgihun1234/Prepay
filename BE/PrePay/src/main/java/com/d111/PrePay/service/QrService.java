@@ -49,10 +49,7 @@ public class QrService {
         Team team = teamRepository.findById(teamId).orElseThrow();
         if(team.isPublicTeam()){
             Optional<UserTeam> opUserTeam = userTeamRepository.findByTeamIdAndUser_Email(teamId, userEmail);
-            if (opUserTeam.isPresent()) {
-                UserTeam userTeam = opUserTeam.get();
-                if (userTeam.getUsageCount() > 0) throw new RuntimeException("이미 한 번 사용한 팀 입니다.");
-            }else{
+            if (opUserTeam.isEmpty()) {
                 User user = userRepository.findUserByEmail(userEmail);
                 UserTeam userTeam = UserTeam.builder()
                         .team(team)

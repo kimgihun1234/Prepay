@@ -19,13 +19,9 @@ import com.d111.PrePay.repository.UserRepository;
 import com.d111.PrePay.repository.UserTeamRepository;
 import com.d111.PrePay.model.*;
 import com.d111.PrePay.repository.*;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,7 +29,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.*;
 
 
 @Service
@@ -49,31 +44,6 @@ public class TeamService {
     private final ChargeRequestRepository chargeRequestRepository;
     private final PartyRequestRepository partyRequestRepository;
     private final ImageService imageService;
-    private final LikesRepository likesRepository;
-
-    // 팀 가게 좋아요
-    @Transactional
-    public StandardRes likeStore(Long userId, LikeStoreReq req) {
-        User user = userRepository.findById(userId).orElseThrow();
-        Store store = storeRepository.findById(req.getStoreId()).orElseThrow();
-        Team team = teamRepository.findById(req.getTeamId()).orElseThrow();
-        Likes findLikes = likesRepository.findByUserAndStoreAndTeam(user, store, team);
-        if (findLikes == null) {
-            Likes likes = new Likes();
-            likes.setTeam(team);
-            likes.setStore(store);
-            likes.setUser(user);
-            likesRepository.save(likes);
-            StandardRes standardRes = new StandardRes("좋아요 완료", 1);
-            return standardRes;
-        } else {
-            likesRepository.delete(findLikes);
-            StandardRes standardRes = new StandardRes("좋아요 취소 완료", 0);
-            return standardRes;
-        }
-
-
-    }
 
 
     // 팀 이미지 업로드
@@ -204,6 +174,7 @@ public class TeamService {
                 .usageCount(0)
                 .usedAmount(0)
                 .position(false)
+                .isLike(false)
                 .build();
         userTeamRepository.save(userTeam);
         GetUserOfTeamRes getUserOfTeamRes = new GetUserOfTeamRes(userTeam);
@@ -366,7 +337,7 @@ public class TeamService {
             teamColor = request.getColor();
         } else {
             teamPassword = null;
-            teamColor=null;
+            teamColor = null;
         }
 
         Team team = Team.builder()
@@ -377,6 +348,7 @@ public class TeamService {
                 .countLimit(request.getCountLimit())
                 .teamMessage(request.getTeamMessage())
                 .color(teamColor)
+
                 .teamInitializer(userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("유저를 찾을 수 없습니다.")))
                 .build();
 
@@ -405,6 +377,7 @@ public class TeamService {
                 .privilege(true)
                 .usedAmount(0)
                 .usageCount(0)
+                .isLike(false)
                 .build();
 
         userTeamRepository.save(userTeam);
@@ -432,18 +405,11 @@ public class TeamService {
         // 팀 찾을 때 팀스토어 같이 찾기
         // 팀스토어 찾을 때 스토어 같이 찾기
         Team team = teamStoreRepository.findTeamWithTeamStoreAndStoreByTeamId(teamId);
-        User user = userRepository.findById(userId).orElseThrow();
         return team.getTeamStores().stream()
                 .map(teamStore -> {
                     StoresRes storesRes = new StoresRes(teamStore);
                     storesRes.setLatitude(teamStore.getStore().getLatitude());
                     storesRes.setLongitude(teamStore.getStore().getLongitude());
-                    Likes findLikes = likesRepository.findByUserAndStoreAndTeam(user, teamStore.getStore(), teamStore.getTeam());
-                    if (findLikes == null) {
-                        storesRes.setLike(false);
-                    } else {
-                        storesRes.setLike(true);
-                    }
                     storesRes.setMyteam(true);
                     return storesRes;
                 }).collect(Collectors.toList());
@@ -479,12 +445,18 @@ public class TeamService {
 
     //퍼블릭 팀 리스트 조회
     // 완료
-    public List<PublicTeamsRes> getPublicTeams() {
+    public List<PublicTeamsRes> getPublicTeams(String email) {
         List<Team> teams = teamRepository.findTeamsWithUserByPublicTeam(true);
         List<PublicTeamsRes> resultList = new ArrayList<>();
         for (Team team : teams) {
             PublicTeamsRes publicTeamsRes = new PublicTeamsRes(team);
             publicTeamsRes.setTeamInitializerNickname(team.getTeamInitializer().getNickname());
+            Optional<UserTeam> userTeam = userTeamRepository.findByTeamIdAndUser_Email(team.getId(), email);
+            if (userTeam.isPresent()) {
+                publicTeamsRes.setLike(userTeam.get().isLike());
+            }else{
+                publicTeamsRes.setLike(false);
+            }
             resultList.add(publicTeamsRes);
         }
         return resultList;
@@ -518,5 +490,28 @@ public class TeamService {
             return new StandardRes("팀 코드가 없습니다. 관리자를 통해 재발급 받으세요", 200);
         }
         return new StandardRes(teamPassword, 200);
+    }
+
+    @Transactional
+    public StandardRes like(String email, LikeReq req) {
+        Optional<UserTeam> opUserTeam = userTeamRepository.findByTeamIdAndUser_Email(req.getTeamId(), email);
+        UserTeam userTeam;
+        if (opUserTeam.isEmpty()) {
+            User user = userRepository.findUserByEmail(email);
+            Team team = teamRepository.findById(req.getTeamId()).orElseThrow();
+            userTeam = UserTeam.builder()
+                    .team(team)
+                    .user(user)
+                    .privilege(false)
+                    .usageCount(0)
+                    .usedAmount(0)
+                    .position(false)
+                    .build();
+            userTeamRepository.save(userTeam);
+        }else{
+            userTeam = opUserTeam.get();
+        }
+        userTeam.setLike(true);
+        return new StandardRes("좋아요 완료", 200);
     }
 }

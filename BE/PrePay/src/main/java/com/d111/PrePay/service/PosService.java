@@ -61,7 +61,6 @@ public class PosService {
         orderHistory.setTeam(team);
         orderHistory.setUser(user);
         orderHistoryRepository.save(orderHistory);
-        userTeam.setUsageCount(userTeam.getUsageCount() + 1);
         for (DetailHistoryReq detailHistoryReq : orderReq.getDetails()) {
             DetailHistory detailHistory = new DetailHistory(detailHistoryReq);
             detailHistory.setOrderHistory(orderHistory);
