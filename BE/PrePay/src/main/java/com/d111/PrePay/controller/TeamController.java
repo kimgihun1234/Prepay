@@ -35,9 +35,9 @@ public class TeamController {
     // 팀 가게 좋아요
     @PostMapping("/likes")
     @Operation(summary = "팀 가게 좋아요, 좋아요 취소")
-    public ResponseEntity<StandardRes> likeStore(@RequestHeader Long userId, @RequestBody LikeStoreReq req){
+    public ResponseEntity<StandardRes> likeStore(@RequestHeader Long userId, @RequestBody LikeStoreReq req) {
 
-        return ResponseEntity.ok(teamService.likeStore(userId,req));
+        return ResponseEntity.ok(teamService.likeStore(userId, req));
     }
 
 
@@ -46,7 +46,7 @@ public class TeamController {
     @Operation(summary = "팀 이미지 수정")
     public ResponseEntity<UploadImageRes> uploadImage(@RequestHeader Long userId,
                                                       @RequestPart("request") TeamIdReq req,
-                                                      @RequestPart(value = "image", required = false) MultipartFile image){
+                                                      @RequestPart(value = "image", required = false) MultipartFile image) {
 
         return ResponseEntity.ok(teamService.uploadImage(req, image));
 
@@ -55,12 +55,12 @@ public class TeamController {
 
     @PostMapping("/ban")
     @Operation(summary = "팀에서 유저 강퇴")
-    public ResponseEntity<Map<String,String>> banUser(@RequestHeader Long userId,
-                                        @RequestBody BanUserReq req) {
+    public ResponseEntity<Map<String, String>> banUser(@RequestHeader Long userId,
+                                                       @RequestBody BanUserReq req) {
         teamService.banUser(req);
 //        Long userId = accessToken.getUserId();
 
-        String message = String.format("%d번팀에서 %d번 유저를 강퇴하였습니다.", req.getTeamId(), userId);
+        String message = String.format("%d번팀에서" + req.getBanUserEmail() + " 유저를 강퇴하였습니다.", req.getTeamId());
         Map<String, String> response = new HashMap<>();
         response.put("message", message);
         return ResponseEntity.ok(response);
@@ -168,8 +168,8 @@ public class TeamController {
     @Operation(summary = "팀 가맹점 추가")
     public ResponseEntity<TeamCreateStoreRes> createStore(@RequestHeader Long userId,
                                                           @RequestPart("request") TeamCreateStoreReq req,
-                                                          @RequestPart(value="image",required = false) MultipartFile image) throws IOException {
-        return ResponseEntity.ok(teamService.createStore(req,image));
+                                                          @RequestPart(value = "image", required = false) MultipartFile image) throws IOException {
+        return ResponseEntity.ok(teamService.createStore(req, image));
     }
 
 
@@ -191,7 +191,7 @@ public class TeamController {
     }
 
 
-    @PostMapping(value = "/signup",consumes = MediaType.MULTIPART_FORM_DATA_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/signup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "팀 생성")
     public ResponseEntity<TeamCreateRes> createTeam(@RequestPart("request") TeamCreateReq request,
                                                     @RequestPart(value = "image", required = false) MultipartFile image,
@@ -214,7 +214,6 @@ public class TeamController {
 //        Long userId = userDetails.getUserId();
         return ResponseEntity.ok(teamService.getMyTeamStores(teamId, userId));
     }
-
 
 
     @GetMapping("/public-teams")

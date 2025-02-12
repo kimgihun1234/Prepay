@@ -27,7 +27,8 @@ public class UserController {
     }
 
     @PostMapping("/setFcmToken")
-    @Operation(summary = "fcm 토큰 설정")
+    @Operation(summary = "fcm 토큰 설정"
+    )
     public ResponseEntity<StandardRes>setFcmToken(@RequestBody FcmTokenReq req, @RequestHeader String email ){
         return ResponseEntity.ok(userService.setFcmToken(req, email));
     }

@@ -249,10 +249,9 @@ public class TeamService {
     // 확인
     @Transactional
     public TeamDetailRes changeDailyPriceLimit(ChangeDailyPriceLimitReq req, Long userId) {
-        Team findTeam = teamRepository.findById(req.getTeamId()).orElseThrow();
+        UserTeam userTeam = userTeamRepository.findUserTeamByTeamIdAndUserIdWithTeam(req.getTeamId(), userId);
+        Team findTeam = userTeam.getTeam();
         findTeam.setDailyPriceLimit(req.getDailyPriceLimit());
-        UserTeam userTeam = userTeamRepository.findByTeamIdAndUserId(findTeam.getId(), userId)
-                .orElseThrow();
 
         TeamDetailRes teamDetailRes = new TeamDetailRes(findTeam, userTeam);
         return teamDetailRes;
@@ -335,11 +334,11 @@ public class TeamService {
     // 지연로딩 설정
     // 완료
     public TeamDetailRes getTeamDetails(Long teamId, Long userId) {
-        UserTeam findUserTeam = userTeamRepository.findByTeamIdAndUserId(teamId, userId)
-                .orElseThrow(() -> new RuntimeException("유저팀을 찾을 수 없습니다."));
+//        UserTeam findUserTeam = userTeamRepository.findByTeamIdAndUserId(teamId, userId)
+//                .orElseThrow(() -> new RuntimeException("유저팀을 찾을 수 없습니다."));
+        UserTeam findUserTeam = userTeamRepository.findUserTeamByTeamIdAndUserIdWithTeam(teamId, userId);
+        Team findTeam = findUserTeam.getTeam();
 
-        Team findTeam = teamRepository.findById(teamId)
-                .orElseThrow(() -> new RuntimeException("팀을 찾을 수 없습니다"));
         TeamDetailRes res = TeamDetailRes.builder()
                 .teamId(teamId)
                 .teamName(findTeam.getTeamName())
