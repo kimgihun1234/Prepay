@@ -49,3 +49,5 @@ bootpay:
   appid: ${BOOTPAY_APPID}
 fcm:
   url: ${FCM_API_URL}
+kakao:
+  client_id: ${KAKAO_CLIENT_ID}
