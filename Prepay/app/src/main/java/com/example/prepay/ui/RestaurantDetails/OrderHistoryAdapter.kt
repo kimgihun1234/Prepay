@@ -3,6 +3,7 @@ package com.example.prepay.ui.RestaurantDetails
 import android.app.AlertDialog
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +22,7 @@ class OrderHistoryAdapter(var orderHistoryList: List<OrderHistory>,
 ) : RecyclerView.Adapter<OrderHistoryAdapter.orderHistoryViewHolder>() {
 
     private lateinit var receiptHistoryAdapter: ReceiptHistoryAdapter
+    lateinit var imageButtonClick : ImageButtonClick
 
     inner class orderHistoryViewHolder(private val binding : RestaurantPayerBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -39,34 +41,35 @@ class OrderHistoryAdapter(var orderHistoryList: List<OrderHistory>,
 
             // 영수증 버튼 클릭 시 다이얼로그 표시
             binding.imageButton.setOnClickListener {
+                imageButtonClick.onClick(itemView, order)
 
-                val dialogBinding = DialogReceiptBinding.inflate(LayoutInflater.from(itemView.context))
-                val dialog = AlertDialog.Builder(itemView.context)
-                    .setView(dialogBinding.root)
-                    .create()
-
-                dialog.setOnShowListener {
-                    val window = dialog.window
-                    window?.setLayout(1000, 1600)
-                    window?.setBackgroundDrawableResource(R.drawable.receipt_rounded_dialog)
-                }
-
-                receiptHistoryAdapter = ReceiptHistoryAdapter(arrayListOf())
-                dialogBinding.recyclerView.adapter = receiptHistoryAdapter
-
-                viewModel.receiptListInfo.observe(lifecycleOwner) {
-                    it -> receiptHistoryAdapter.receiptList = it
-                    receiptHistoryAdapter.notifyDataSetChanged()
-                }
-
-                viewModel.getAllReceiptList(1,1)
-
-                dialogBinding.recyclerView.layoutManager = LinearLayoutManager(itemView.context)
-                dialogBinding.useName.text = order.orderHistoryId.toString()
-                dialogBinding.restaurantAmount.text = NumberFormat.getNumberInstance(Locale.KOREA).format(order.totalPrice)
-                dialogBinding.receiptDate.text = order.orderDate
-                dialogBinding.orderDate.text = "[주문] ${order.orderDate}"
-                dialog.show()
+//                val dialogBinding = DialogReceiptBinding.inflate(LayoutInflater.from(itemView.context))
+//                val dialog = AlertDialog.Builder(itemView.context)
+//                    .setView(dialogBinding.root)
+//                    .create()
+//
+//                dialog.setOnShowListener {
+//                    val window = dialog.window
+//                    window?.setLayout(1000, 1600)
+//                    window?.setBackgroundDrawableResource(R.drawable.receipt_rounded_dialog)
+//                }
+//
+//                receiptHistoryAdapter = ReceiptHistoryAdapter(arrayListOf())
+//                dialogBinding.recyclerView.adapter = receiptHistoryAdapter
+//
+//                viewModel.receiptListInfo.observe(lifecycleOwner) {
+//                    it -> receiptHistoryAdapter.receiptList = it
+//                    receiptHistoryAdapter.notifyDataSetChanged()
+//                }
+//
+//                viewModel.getAllReceiptList(1,1)
+//
+//                dialogBinding.recyclerView.layoutManager = LinearLayoutManager(itemView.context)
+//                dialogBinding.useName.text = order.orderHistoryId.toString()
+//                dialogBinding.restaurantAmount.text = NumberFormat.getNumberInstance(Locale.KOREA).format(order.totalPrice)
+//                dialogBinding.receiptDate.text = order.orderDate
+//                dialogBinding.orderDate.text = "[주문] ${order.orderDate}"
+//                dialog.show()
             }
         }
     }
@@ -83,4 +86,8 @@ class OrderHistoryAdapter(var orderHistoryList: List<OrderHistory>,
     override fun getItemCount(): Int {
         return orderHistoryList.size
     }
+    interface ImageButtonClick {
+        fun onClick(itemView: View, order: OrderHistory)
+    }
+
 }

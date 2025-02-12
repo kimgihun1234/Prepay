@@ -15,7 +15,7 @@ class OrderHistoryViewModel : ViewModel() {
     val orderHistoryListInfo : LiveData<List<OrderHistory>>
         get() = _orderHistoryListInfo
 
-    fun getAllOrderHistoryList(userId:Int, teamId:Long, storeId : Long) {
+    fun getAllOrderHistoryList(userId:Int, teamId:Long, storeId: Int) {
         viewModelScope.launch {
             runCatching {
                 RetrofitUtil.orderService.getDetailHistory(userId, OrderHistoryReq(teamId, storeId))
