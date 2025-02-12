@@ -36,6 +36,15 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
         mainActivity= context as MainActivity
     }
 
+    override fun onResume() {
+        super.onResume()
+        mainActivity.hideBottomNav(true)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mainActivity.hideBottomNav(false)
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initEvent()
