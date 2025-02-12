@@ -12,5 +12,5 @@ data class OrderHistory(
 
 data class OrderHistoryReq(
     val teamId: Long,
-    val storeId:Long
+    val storeId:Int
 )
