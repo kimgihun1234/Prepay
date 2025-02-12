@@ -496,6 +496,7 @@ public class TeamService {
     public StandardRes like(String email, LikeReq req) {
         Optional<UserTeam> opUserTeam = userTeamRepository.findByTeamIdAndUser_Email(req.getTeamId(), email);
         UserTeam userTeam;
+        log.info("좋아요 : {}",req.isCheckLike());
         if (opUserTeam.isEmpty()) {
             User user = userRepository.findUserByEmail(email);
             Team team = teamRepository.findById(req.getTeamId()).orElseThrow();
@@ -506,12 +507,12 @@ public class TeamService {
                     .usageCount(0)
                     .usedAmount(0)
                     .position(false)
-                    .isLike(req.isLike())
+                    .isLike(req.isCheckLike())
                     .build();
             userTeamRepository.save(userTeam);
         }else{
             userTeam = opUserTeam.get();
-            userTeam.setLike(req.isLike());
+            userTeam.setLike(req.isCheckLike());
         }
         return new StandardRes("좋아요 완료", 200);
     }
