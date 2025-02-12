@@ -35,6 +35,8 @@ public class Team {
 
     private long codeGenDate;
 
+    private String color;
+
 
 
     @ManyToOne(fetch = FetchType.LAZY)

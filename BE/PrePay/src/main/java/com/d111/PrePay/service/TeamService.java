@@ -349,6 +349,7 @@ public class TeamService {
                 .position(findUserTeam.isPosition())
                 .teamPassword(findTeam.getTeamPassword())
                 .usedAmount(findUserTeam.getUsedAmount())
+                .color(findTeam.getColor())
                 .build();
 
         return res;
@@ -359,10 +360,13 @@ public class TeamService {
     // 완료
     public TeamCreateRes createTeam(TeamCreateReq request, Long userId, MultipartFile image) {
         String teamPassword;
+        String teamColor;
         if (!request.isPublicTeam()) {
             teamPassword = generateRandomPassword();
+            teamColor = request.getColor();
         } else {
             teamPassword = null;
+            teamColor=null;
         }
 
         Team team = Team.builder()
@@ -372,6 +376,7 @@ public class TeamService {
                 .dailyPriceLimit(request.getDailyPriceLimit())
                 .countLimit(request.getCountLimit())
                 .teamMessage(request.getTeamMessage())
+                .color(teamColor)
                 .teamInitializer(userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("유저를 찾을 수 없습니다.")))
                 .build();
 

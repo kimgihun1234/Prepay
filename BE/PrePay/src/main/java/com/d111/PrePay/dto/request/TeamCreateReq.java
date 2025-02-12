@@ -12,5 +12,5 @@ public class TeamCreateReq {
     private int dailyPriceLimit;
     private int countLimit;
     private String teamMessage;
-
+    private String color;
 }

@@ -20,6 +20,7 @@ public class TeamDetailRes {
     private boolean position;
     private String teamMessage;
     private String teamPassword;
+    private String color;
 
     public TeamDetailRes(Team team, UserTeam userTeam){
         this.teamId = team.getId();
@@ -30,5 +31,6 @@ public class TeamDetailRes {
         this.countLimit = team.getCountLimit();
         this.position =  userTeam.isPosition();
         this.teamMessage = team.getTeamMessage();
+        this.color = team.getColor();
     }
 }
