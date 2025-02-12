@@ -506,12 +506,13 @@ public class TeamService {
                     .usageCount(0)
                     .usedAmount(0)
                     .position(false)
+                    .isLike(req.isLike())
                     .build();
             userTeamRepository.save(userTeam);
         }else{
             userTeam = opUserTeam.get();
+            userTeam.setLike(req.isLike());
         }
-        userTeam.setLike(true);
         return new StandardRes("좋아요 완료", 200);
     }
 }

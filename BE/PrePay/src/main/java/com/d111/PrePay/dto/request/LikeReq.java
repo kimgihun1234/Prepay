@@ -5,4 +5,5 @@ import lombok.Getter;
 @Getter
 public class LikeReq {
     private long teamId;
+    private boolean isLike;
 }
