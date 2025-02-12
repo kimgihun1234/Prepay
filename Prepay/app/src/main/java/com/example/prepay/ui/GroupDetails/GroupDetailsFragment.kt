@@ -37,6 +37,7 @@ import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.data.model.dto.RestaurantData
 import com.example.prepay.data.response.BanUserReq
+import com.example.prepay.data.response.MoneyChangeReq
 import com.example.prepay.data.response.PrivilegeUserReq
 import com.example.prepay.data.response.TeamIdReq
 import com.example.prepay.data.response.TeamIdStoreRes
@@ -45,6 +46,7 @@ import com.example.prepay.databinding.DialogAuthoritySettingBinding
 import com.example.prepay.databinding.DialogGroupExitBinding
 import com.example.prepay.databinding.DialogGroupResignBinding
 import com.example.prepay.databinding.DialogInviteCodeBinding
+import com.example.prepay.databinding.DialogMoneyChangeBinding
 import com.example.prepay.databinding.FragmentGroupDetailsBinding
 import com.example.prepay.ui.MainActivity
 import com.example.prepay.ui.MainActivityViewModel
@@ -272,6 +274,9 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             addRestaurantClick()
         }
 
+        binding.moneyChangeBtn.setOnClickListener {
+            showMoneyChangeDialog()
+        }
         binding.qrBtn.setOnClickListener {
             lifecycleScope.launch {
                 runCatching {
@@ -390,7 +395,6 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         binding.inviteCodeConfirmBtn.setOnClickListener {
             dialog.dismiss()
         }
-
         dialog.show()
     }
 
@@ -408,6 +412,21 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         }
 
         binding.groupExitCancelBtn.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+
+
+    private fun showMoneyChangeDialog() {
+        val binding = DialogMoneyChangeBinding.inflate(layoutInflater)
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(binding.root)
+            .create()
+        binding.btnRegister.setOnClickListener {
+            val moneychange = MoneyChangeReq(binding.etCodeInput.text.toString().toInt(),activityViewModel.teamId.value!!.toInt())
+            moneyChange(moneychange)
             dialog.dismiss()
         }
         dialog.show()
@@ -447,6 +466,18 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             dialog.dismiss()
         }
         dialog.show()
+    }
+
+    fun moneyChange(moneychange: MoneyChangeReq){
+        lifecycleScope.launch {
+            runCatching {
+                RetrofitUtil.teamService.moneyChange(1,moneychange)
+            }.onSuccess {
+
+            }.onFailure {
+
+            }
+        }
     }
 
     fun privilegeUser(pr:PrivilegeUserReq){
