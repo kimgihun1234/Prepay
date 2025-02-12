@@ -61,6 +61,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             CommonUtils.MainFragmentName.LOOK_GROUP_FRAGMENT -> TODO()
             CommonUtils.MainFragmentName.RESTAURANT_DETAILS_FRAGMENT -> {
                 transaction.replace(R.id.main_container, RestaurantDetailsFragment())
+                transaction.addToBackStack(null)
             }
             CommonUtils.MainFragmentName.ADD_RESTAURANT_FRAGMENT -> {
                 transaction.replace(R.id.main_container, AddRestaurantFragment())

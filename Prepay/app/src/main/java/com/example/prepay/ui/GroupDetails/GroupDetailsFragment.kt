@@ -170,8 +170,6 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
 
     override fun onPause() {
         super.onPause()
-        // 다른 프래그먼트로 이동할 때 햄버거 버튼 숨기기
-        (activity as? AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
         mainActivity.hideBottomNav(false)
     }
 
