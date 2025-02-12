@@ -366,7 +366,7 @@ public class TeamService {
             teamColor = request.getColor();
         } else {
             teamPassword = null;
-            teamColor=null;
+            teamColor = null;
         }
 
         Team team = Team.builder()

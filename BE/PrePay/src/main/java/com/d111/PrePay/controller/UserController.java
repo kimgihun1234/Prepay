@@ -50,8 +50,8 @@ public class UserController {
     @Operation(summary = "카카오 로그인")
     public ResponseEntity<?> kakaoLogin(@PathVariable String code, HttpServletRequest request, HttpServletResponse response) {
 
-        String accessToken = kakaoService.getAccessToken(code);
-        HashMap<String, Object> kaKaoUserInfo = kakaoService.getKaKaoUserInfo(accessToken);
+//        String accessToken = kakaoService.getAccessToken(code);
+        HashMap<String, Object> kaKaoUserInfo = kakaoService.getKaKaoUserInfo(code);
         TokenRes tokenRes = kakaoService.kakaoUserLogin(kaKaoUserInfo);
 
         Map<String, String> responseBody = new HashMap<>();
