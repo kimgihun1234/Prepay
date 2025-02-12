@@ -121,7 +121,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
         fun uploadToken(token: TokenReq) {
             // 새로운 토큰 수신 시 서버로 전송
             val storeService = ApplicationClass.retrofit.create(FirebaseTokenService::class.java)
-            storeService.uploadToken(token).enqueue(object : Callback<String> {
+            storeService.uploadToken("user1@gmail.com",token).enqueue(object : Callback<String> {
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     if (response.isSuccessful) {
                         val res = response.body()

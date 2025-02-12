@@ -12,6 +12,9 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -110,6 +113,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         super.onCreate(savedInstanceState)
         mainActivity= context as MainActivity
         Log.d(TAG, activityViewModel.teamId.value.toString())
+        setHasOptionsMenu(true)
     }
 
     override fun onStart() {
@@ -120,22 +124,22 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_toolbar, menu) // 메뉴 추가
+        super.onCreateOptionsMenu(menu, inflater)
+    }
 
-        // MainActivity에 햄버거 버튼 활성화 요청
-        parentFragmentManager.setFragmentResult(
-            "toolbarUpdate",
-            bundleOf("showHamburger" to true)
-        )
-
-        val toolbar: Toolbar? = activity?.findViewById(R.id.toolbar)
-        toolbar?.setNavigationOnClickListener {
-            if (binding.drawerLayout.isDrawerOpen(GravityCompat.END)) {
-                binding.drawerLayout.closeDrawer(GravityCompat.END) // 👉 열려 있으면 닫기
-            } else {
-                binding.drawerLayout.openDrawer(GravityCompat.END)  // 👉 닫혀 있으면 열기
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.ic_menu -> {
+                if (binding.drawerLayout.isDrawerOpen(GravityCompat.END)) {
+                    binding.drawerLayout.closeDrawer(GravityCompat.END) // 👉 열려 있으면 닫기
+                } else {
+                    binding.drawerLayout.openDrawer(GravityCompat.END)  // 👉 닫혀 있으면 열기
+                }
+                true
             }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
