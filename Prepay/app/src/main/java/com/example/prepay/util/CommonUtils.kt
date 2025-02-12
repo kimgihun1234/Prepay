@@ -51,6 +51,7 @@ object CommonUtils {
         ADD_RESTAURANT_FRAGMENT("AddRestaurantFragment"),
         DETAIL_RESTAURANT_FRAGMENT("DetailRestaurantFragment"),
         PUBLIC_GROUP_DETAILS_FRAGMENT("PublicGroupDetailsFragment")
+        
     }
 
 }

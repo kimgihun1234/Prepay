@@ -80,4 +80,8 @@ interface TeamService {
     @GET("/team/coordinate/{teamId}")
     suspend fun getTeamStore(@Header("userId") userId: Long, @Path("teamId") teamId: Long) : List<StoreLocation>
 
+    //공개된 그룹의 좋아요 정보를 보냅니다. (진행중)
+    @POST("/team/public-teams")
+    suspend fun likeTeam(likeInfo: Boolean): List<PublicTeamsRes>
+
 }

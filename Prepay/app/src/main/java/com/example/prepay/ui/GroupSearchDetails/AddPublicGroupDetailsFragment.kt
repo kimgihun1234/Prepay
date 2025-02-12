@@ -27,9 +27,14 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.example.prepay.data.model.dto.Public
+import com.example.prepay.RetrofitUtil
+import com.example.prepay.data.response.PublicTeamsRes
+import kotlinx.coroutines.launch
 import java.io.IOException
+import java.text.NumberFormat
 import java.util.Locale
 
 private const val TAG = "PublicGroupDetailsFragment"
@@ -43,22 +48,6 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
     private var mMap: GoogleMap? = null
     private var currentMarker: Marker? = null
 
-    // 리사이클러뷰 선택한 팀의 정보 가지고 오기
-    companion object {
-        fun newInstance(publicgroup: Public): AddPublicGroupDetailsFragment {
-            return AddPublicGroupDetailsFragment().apply {
-                arguments = Bundle().apply {
-                    putInt("id", publicgroup.pk)
-                    putString("name", publicgroup.name)
-                    putString("address", publicgroup.address)
-                    putInt("distance", publicgroup.distance)
-                    putInt("leftMoney", publicgroup.leftMoney)
-                    putString("imageURL", publicgroup.imageURL)
-                }
-            }
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivity = context as MainActivity
@@ -67,6 +56,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initEvent()
+
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         val mapFragment = childFragmentManager.findFragmentById(R.id.public_detail_map) as SupportMapFragment
         mapFragment.getMapAsync(readyCallback)
@@ -74,27 +64,30 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
 
 
     private fun initEvent() {
-//        val groupDetail = ViewModelProvider(requireActivity()).get(GroupSearchtDetailsViewModel::class.java)
-//
-//        Log.d(com.example.prepay.ui.GroupSearchDetails.TAG, "initEvent: ${groupDetail.groupDetailsData.value}")
-//        binding.publicDetailTeamName.text = groupDetail.groupDetailsData.value
-        val groupName = arguments?.getString("name") ?: "그룹명 없음"
-        val groupLeftMoney = arguments?.getInt("leftMoney") ?: 0
-        val groupImageURL = arguments?.getString("imageURL") ?: ""
+        val groupDetail = ViewModelProvider(requireActivity()).get(GroupSearchtDetailsViewModel::class.java)
 
-        binding.publicDetailTeamName.text = groupName
+        groupDetail.groupName.observe(viewLifecycleOwner, Observer { name ->
+            Log.d(TAG, "groupName updated: $name")
+            binding.publicDetailTeamName.text = name
+        })
 
-        // 숫자 증가 애니메이션
-        animateMoneyChange(groupLeftMoney)
+        groupDetail.groupLeftMoney.observe(viewLifecycleOwner, Observer { leftMoney ->
+            Log.d(TAG, "groupLeftMoney updated: $leftMoney")
+            //  binding.leftMoneyInfo.text = leftMoney.toString()
+            animateMoneyChange(leftMoney)
+        })
 
-        if (!groupImageURL.isNullOrEmpty()) {
-            // Glide 또는 Picasso 등을 사용하여 이미지를 로드할 수 있습니다.
-            Glide.with(requireContext())
-                .load(groupImageURL)
-                .into(binding.publicDetailImage)
-        } else {
-            binding.publicDetailImage.setImageResource(R.drawable.logo) // 기본 이미지 설정
-        }
+        groupDetail.groupImageURL.observe(viewLifecycleOwner, Observer { imageURL ->
+            Log.d(TAG, "groupImageURL updated: $imageURL")
+            if (!imageURL.isNullOrEmpty()) {
+                Glide.with(requireContext())
+                    .load(imageURL)
+                    .into(binding.publicDetailImage)
+            } else {
+                binding.publicDetailImage.setImageResource(R.drawable.logo)
+            }
+        })
+
 
         // QR 다이얼로그 부분
         binding.publicDetailQrBtn.setOnClickListener {
@@ -104,8 +97,16 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
                 .create()
             dialog.show()
 
-            // 다이얼로그 외부를 터치시 닫음
             dialog.setCanceledOnTouchOutside(true)
+        }
+
+        groupDetail.isLiked.observe(viewLifecycleOwner, Observer { isLiked ->
+            val imageRes = if (isLiked) R.drawable.like_heart_fill else R.drawable.like_heart_empty
+            binding.likeBtn.setImageResource(imageRes)
+        })
+
+        binding.likeBtn.setOnClickListener {
+            groupDetail.toggleLike()
         }
     }
 
@@ -150,6 +151,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
         mMap?.animateCamera(cameraUpdate)
     }
 
+
     private fun getCurrentAddress(location: Location): String {
         val geocoder = Geocoder(requireActivity(), Locale.getDefault())
         val addresses: List<Address>?
@@ -174,14 +176,29 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
 
     // 숫자 증가 애니메이션
     private fun animateMoneyChange(targetAmount: Int) {
-        val startAmount = 0
+        val startAmount = binding.leftMoneyInfo.text.toString().replace(",", "").toIntOrNull() ?: 0
         val animator = ValueAnimator.ofInt(startAmount, targetAmount).apply {
-            duration = 2000 // 애니메이션 시간 (2초)
+            duration = 1500
             addUpdateListener { valueAnimator ->
                 val animatedValue = valueAnimator.animatedValue as Int
-                binding.leftMoneyInfo.text = animatedValue.toString()
+                val formattedValue = NumberFormat.getNumberInstance(Locale.US).format(animatedValue)
+                binding.leftMoneyInfo.text = formattedValue
+
             }
         }
         animator.start()
+    }
+
+    // 좋아요 정보 서버로 보내기
+    fun isLikedGroup(likeInfo: PublicTeamsRes){
+        lifecycleScope.launch {
+            runCatching {
+                RetrofitUtil.teamService.likeTeam(likeInfo.isLike)
+            }.onSuccess {
+
+            }.onFailure {
+
+            }
+        }
     }
 }
