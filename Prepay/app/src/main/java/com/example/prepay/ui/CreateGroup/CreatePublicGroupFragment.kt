@@ -99,20 +99,6 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
     }
 
     private fun initEvent() {
-        binding.publicCheckbox.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                binding.privateCheckbox.isChecked = false
-                mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.CREATE_PUBLIC_GROUP_FRAGMENT)
-            }
-        }
-
-        binding.privateCheckbox.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                binding.publicCheckbox.isChecked = false
-                mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.CREATE_PRIVATE_GROUP_FRAGMENT)
-            }
-        }
-
         binding.imageBtn.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             imagePickerLauncher.launch(intent)
@@ -149,7 +135,7 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
         }
 
         val teamMakeRequest = PublicPrivateTeam(
-            publicTeam = binding.publicCheckbox.isChecked,
+            publicTeam = true,
             teamName = binding.groupNameText.text.toString(),
             dailyPriceLimit = binding.limitSettingText.text.toString().toInt(),
             countLimit = if (binding.possible.isChecked) 0 else 1,
