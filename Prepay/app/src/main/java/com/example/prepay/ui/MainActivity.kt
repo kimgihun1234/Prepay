@@ -12,6 +12,7 @@ import com.example.prepay.R
 import com.example.prepay.data.remote.FirebaseTokenService
 import com.example.prepay.databinding.ActivityMainBinding
 import com.example.prepay.databinding.DialogVisitCodeBinding
+import com.example.prepay.ui.CreateGroup.CreateGroupFragment
 import com.example.prepay.ui.CreateGroup.CreatePrivateGroupFragment
 import com.example.prepay.ui.CreateGroup.CreatePublicGroupFragment
 import com.example.prepay.ui.GroupDetails.AddRestaurantFragment
@@ -49,11 +50,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             CommonUtils.MainFragmentName.GROUP_SEARCH_FRAGMENT -> {
                 transaction.replace(R.id.main_container, GroupSearchFragment())
             }
-            CommonUtils.MainFragmentName.CREATE_PRIVATE_GROUP_FRAGMENT -> {
-                transaction.replace(R.id.main_container, CreatePrivateGroupFragment())
-            }
-            CommonUtils.MainFragmentName.CREATE_PUBLIC_GROUP_FRAGMENT -> {
-                transaction.replace(R.id.main_container, CreatePublicGroupFragment())
+            CommonUtils.MainFragmentName.CREATE_GROUP_FRAGMENT -> {
+                transaction.replace(R.id.main_container, CreateGroupFragment())
                 transaction.addToBackStack(null)
             }
             CommonUtils.MainFragmentName.GROUP_DETAILS_FRAGMENT -> {
@@ -72,6 +70,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
             CommonUtils.MainFragmentName.PUBLIC_GROUP_DETAILS_FRAGMENT -> {
                 transaction.replace(R.id.main_container, AddPublicGroupDetailsFragment())
+            }
+        }
+        transaction.commit()
+    }
+
+    fun changeFragmentGroup(name: CommonUtils.GroupFragmentName, num: Int = -1) {
+        val transaction = supportFragmentManager.beginTransaction()
+        when (name) {
+            CommonUtils.GroupFragmentName.CREATE_PUBLIC_GROUP_FRAGMENT -> {
+                transaction.replace(R.id.create_group_container, CreatePublicGroupFragment())
+            }
+            CommonUtils.GroupFragmentName.CREATE_PRIVATE_GROUP_FRAGMENT -> {
+                transaction.replace(R.id.create_group_container, CreatePrivateGroupFragment())
             }
         }
         transaction.commit()

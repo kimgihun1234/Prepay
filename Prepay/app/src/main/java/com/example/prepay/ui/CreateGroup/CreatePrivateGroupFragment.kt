@@ -45,28 +45,13 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
     }
 
     private fun initEvent() {
-        binding.publicCheckbox.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                binding.privateCheckbox.isChecked = false
-                mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.CREATE_PUBLIC_GROUP_FRAGMENT)
-            }
-        }
-
-        binding.privateCheckbox.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                binding.publicCheckbox.isChecked = false
-                mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.CREATE_PRIVATE_GROUP_FRAGMENT)
-            }
-        }
-
         binding.privateRegisterBtn.setOnClickListener {
             if (validateInputs()) {
-                val privateTeam = !binding.privateCheckbox.isChecked
                 val groupName = binding.groupNameText.text.toString()
                 val limitAmount = binding.limitSettingText.text.toString()
 
                 val makePrivateTeam = PublicPrivateTeam(
-                    privateTeam,
+                    true,
                     groupName,
                     limitAmount.toInt()
                 )
