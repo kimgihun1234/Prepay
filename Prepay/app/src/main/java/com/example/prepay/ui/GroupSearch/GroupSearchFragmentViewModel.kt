@@ -23,6 +23,7 @@ class GroupSearchFragmentViewModel : ViewModel(){
                 Log.d("GroupSearchViewModel", "공개 팀 리스트 가져오기 성공: $it")
                 _getPublicTeams.value = it
             }.onFailure { e ->
+                Log.d("GroupSearchViewModel", "getAllPublicTeamList: 실패")
                 _getPublicTeams.value = emptyList()
             }
         }

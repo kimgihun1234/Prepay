@@ -5,11 +5,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import androidx.activity.viewModels
 import com.example.prepay.ApplicationClass
 import com.example.prepay.BaseActivity
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
+import com.example.prepay.RetrofitUtil
 import com.example.prepay.data.remote.FirebaseTokenService
+import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.databinding.ActivityMainBinding
 import com.example.prepay.databinding.DialogVisitCodeBinding
 import com.example.prepay.ui.CreateGroup.CreatePrivateGroupFragment
@@ -17,6 +20,8 @@ import com.example.prepay.ui.CreateGroup.CreatePublicGroupFragment
 import com.example.prepay.ui.GroupDetails.AddRestaurantFragment
 import com.example.prepay.ui.GroupDetails.GroupDetailsFragment
 import com.example.prepay.ui.GroupSearch.GroupSearchFragment
+import com.example.prepay.ui.GroupSearch.GroupSearchFragmentViewModel
+import com.example.prepay.ui.GroupSearch.PublicSearchAdapter
 import com.example.prepay.ui.GroupSearchDetails.AddPublicGroupDetailsFragment
 import com.example.prepay.ui.MyPage.MyPageFragment
 import com.example.prepay.ui.RestaurantDetails.AddDetailRestaurantFragment
@@ -30,8 +35,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 private const val TAG = "MainActivity_싸피"
-class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
-    
+class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate), PublicSearchAdapter.OnPublicClickListener {
+    private val groupSearchFragmentViewModel : GroupSearchFragmentViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initFragment()
@@ -132,6 +137,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 }
 
                 R.id.navigation_group_search -> {
+                    groupSearchFragmentViewModel.getAllPublicTeamList()
+                    Log.d(TAG, "initEvent: $groupSearchFragmentViewModel")
                     changeFragmentMain(CommonUtils.MainFragmentName.GROUP_SEARCH_FRAGMENT)
                     true
                 }
@@ -162,5 +169,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     companion object{
 
+    }
+
+    override fun onGroupClick(publicgroup: PublicTeamsRes) {
+        TODO("Not yet implemented")
     }
 }

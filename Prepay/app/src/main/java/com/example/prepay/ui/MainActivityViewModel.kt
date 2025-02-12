@@ -1,8 +1,13 @@
 package com.example.prepay.ui
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.prepay.RetrofitUtil
+import com.example.prepay.data.response.PublicTeamsRes
+import kotlinx.coroutines.launch
 
 class MainActivityViewModel: ViewModel()  {
     private val _teamId = MutableLiveData<Long>()
@@ -28,7 +33,4 @@ class MainActivityViewModel: ViewModel()  {
     fun setStoreName(storeName: String) {
         _storeName.postValue(storeName)
     }
-
-
-
 }
