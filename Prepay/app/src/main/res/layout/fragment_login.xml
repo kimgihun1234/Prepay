@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.Login.LoginFragment">
+
+    <ImageButton
+        android:id="@+id/back_btn"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="21dp"
+        android:background="#00ff0000"
+        android:importantForAccessibility="no"
+        android:src="@drawable/arrow_down_sign_to_navigate"
+        app:layout_constraintEnd_toStartOf="@+id/login_title"
+        app:layout_constraintHorizontal_bias="0.205"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/login_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/samsung_font_2"
+        android:text="로그인"
+        android:textColor="#394750"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <ImageView
+        android:id="@+id/logo_image"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_marginTop="108dp"
+        android:contentDescription="logo_image"
+        android:src="@drawable/logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
+
+
+    <TextView
+        android:id="@+id/catchphrase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:bufferType="spannable"
+        android:fontFamily="@font/samsung_font_2"
+        android:letterSpacing="-0.0125"
+        android:text="@string/catchphrase"
+        android:textColor="#394750"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo_image" />
+
+    <TextView
+        android:id="@+id/log_in_id_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/samsung_font_2"
+        android:text="아이디"
+        android:textColor="#394750"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/login_id_text"
+        app:layout_constraintStart_toStartOf="@+id/login_id_text"
+        tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/login_id_text"
+        android:layout_width="350dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="88dp"
+        android:layout_marginEnd="32dp"
+        android:autofillHints=""
+        android:fontFamily="@font/samsung_font_2"
+        android:background="@drawable/shape_all_round"
+        android:hint="아이디를 입력하세요"
+        android:inputType="textEmailAddress"
+        android:paddingStart="24dp"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo_image"
+        tools:ignore="HardcodedText,RtlSymmetry" />
+
+    <TextView
+        android:id="@+id/log_in_password_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/samsung_font_2"
+        android:layout_marginStart="10dp"
+        android:text="비밀번호"
+        android:textColor="#394750"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/log_in_password_text"
+        app:layout_constraintStart_toStartOf="@+id/log_in_password_text"
+        tools:ignore="HardcodedText" />
+
+    <EditText
+        android:id="@+id/log_in_password_text"
+        android:layout_width="350dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/shape_all_round"
+        android:hint="비밀번호를 입력하세요"
+        android:importantForAutofill="no"
+        android:fontFamily="@font/samsung_font_2"
+        android:inputType="textPassword"
+        android:paddingStart="24dp"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_id_text"
+        tools:ignore="HardcodedText,RtlSymmetry" />
+
+
+    <CheckBox
+        android:id="@+id/remember_id_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/samsung_font_2"
+        android:letterSpacing="0.015"
+        android:text="자동 로그인"
+        android:textColor="#394750"
+        android:textFontWeight="600"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="@+id/log_in_password_text"
+        app:layout_constraintTop_toBottomOf="@+id/log_in_password_text"
+        tools:ignore="HardcodedText"
+        tools:targetApi="p" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/LoginBtn"
+        android:layout_width="334dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="36dp"
+        android:background="@drawable/submit_button_style"
+        android:fontFamily="@font/samsung_font_2"
+        android:text="로그인"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/log_in_password_text"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/sns"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="116dp"
+        android:fontFamily="@font/samsung_font_2"
+        android:text="SNS 계정으로 간편 로그인"
+        android:textColor="#A9B0B5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LoginBtn" />
+
+    <TextView
+        android:id="@+id/find_password_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/samsung_font_2"
+        android:gravity="center"
+        android:text="비밀번호 찾기"
+        android:textColor="#A9B0B5"
+        android:textSize="15sp"
+        android:textFontWeight="600"
+        app:layout_constraintEnd_toEndOf="@+id/log_in_password_text"
+        app:layout_constraintTop_toBottomOf="@+id/log_in_password_text"
+        tools:ignore="HardcodedText"
+        tools:targetApi="p" />
+
+    <TextView
+        android:id="@+id/JoinBtn"
+        android:layout_width="88dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="회원가입"
+        android:textAlignment="center"
+        android:textColor="#0066CC"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LoginBtn" />
+
+    <ImageView
+        android:id="@+id/google_login_btn"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/google_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sns" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

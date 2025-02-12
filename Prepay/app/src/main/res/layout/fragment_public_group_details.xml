@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.GroupSearch.GroupSearchFragment">
+
+    <ImageButton
+        android:id="@+id/public_detail_qr_btn"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/round_button"
+        android:padding="16dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/qr_code"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/left_money_tag" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/public_detail_map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="0dp"
+        android:layout_height="258dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/public_detail_team_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:text="Public_group_name"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@+id/public_detail_image"
+        app:layout_constraintTop_toBottomOf="@+id/public_detail_qr_btn" />
+
+    <TextView
+        android:id="@+id/like_regist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:text="나의 관심 그룹"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/public_detail_image"
+        app:layout_constraintTop_toBottomOf="@+id/public_detail_team_name" />
+
+    <TextView
+        android:id="@+id/left_money_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="현재 잔액"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/public_detail_location" />
+
+    <TextView
+        android:id="@+id/won_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="원"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/left_money_info"
+        app:layout_constraintStart_toEndOf="@+id/left_money_info" />
+
+    <TextView
+        android:id="@+id/left_money_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="800,000"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/left_money_tag"
+        app:layout_constraintStart_toEndOf="@+id/left_money_tag" />
+
+    <TextView
+        android:id="@+id/public_detail_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:background="#1A000000"
+        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.111"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/like_regist" />
+
+    <TextView
+        android:id="@+id/public_detail_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="group_address"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/public_detail_map" />
+
+    <ImageView
+        android:id="@+id/public_detail_image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/public_detail_qr_btn"
+        tools:src="@tools:sample/avatars" />
+
+    <ImageButton
+        android:id="@+id/like_btn"
+        android:layout_width="46dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
+        android:src="@drawable/like_heart_empty"
+        app:layout_constraintStart_toEndOf="@+id/like_regist"
+        app:layout_constraintTop_toBottomOf="@+id/public_detail_team_name" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
