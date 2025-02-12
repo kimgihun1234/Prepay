@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.example.prepay.data.response.TokenReq
 import com.example.prepay.ui.LoginActivity
 import com.example.prepay.ui.MainActivity
 
@@ -14,7 +15,9 @@ class MyFirebaseMessageService : com.google.firebase.messaging.FirebaseMessaging
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         // 새로운 토큰 수신 시 서버로 전송
-        LoginActivity.uploadToken(token)
+        // TokenReq 객체 생성 후 전달
+        val tokenReq = TokenReq(token)
+        LoginActivity.uploadToken(tokenReq)
     }
 
     // Foreground, Background 모두 처리하기 위해서는 data에 값을 담아서 넘긴다.
