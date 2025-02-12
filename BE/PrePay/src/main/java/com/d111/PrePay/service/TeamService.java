@@ -123,13 +123,13 @@ public class TeamService {
                 .statusChangedDate(0)
                 .userTeam(findUserTeam)
                 .build());
-        PartyRequestRes partyRequestRes = PartyRequestRes.builder()
+
+        return PartyRequestRes.builder()
                 .partyRequestId(savePartyRequest.getId())
                 .requestDate(savePartyRequest.getRequestDate())
                 .requestStatus(savePartyRequest.getRequestStatus())
                 .statusChangedDate(savePartyRequest.getStatusChangedDate())
                 .build();
-        return partyRequestRes;
     }
 
 
@@ -143,14 +143,13 @@ public class TeamService {
                 .requestDate(System.currentTimeMillis())
                 .teamStore(findTeamStore)
                 .build());
-        ChargeRes chargeRes = ChargeRes.builder()
+
+        return ChargeRes.builder()
                 .chargeRequestId(saveChargeRequest.getId())
                 .RequestStatus(saveChargeRequest.getRequestStatus())
                 .requestPrice(saveChargeRequest.getRequestPrice())
                 .requestDate(saveChargeRequest.getRequestDate())
                 .build();
-
-        return chargeRes;
     }
 
 
@@ -287,10 +286,7 @@ public class TeamService {
     public List<GetUserOfTeamRes> getUsersOfTeam(Long teamId, Long userId) {
         Team team = teamRepository.findTeamWithUserTeamAndUserByTeamId(teamId);
 
-        return team.getUserTeams().stream().map((userTeam) -> {
-            GetUserOfTeamRes getUserOfTeamRes = new GetUserOfTeamRes(userTeam);
-            return getUserOfTeamRes;
-        }).collect(Collectors.toList());
+        return team.getUserTeams().stream().map(GetUserOfTeamRes::new).collect(Collectors.toList());
 
     }
 
@@ -398,6 +394,14 @@ public class TeamService {
     public List<StoresRes> getMyTeamStores(long teamId, long userId) {
         // 팀 찾을 때 팀스토어 같이 찾기
         // 팀스토어 찾을 때 스토어 같이 찾기
+//        List<TeamStore> teamStores = teamStoreRepository.findByTeamId(teamId);
+//        return teamStores.stream().map((teamStore)->{
+//            StoresRes storesRes = new StoresRes(teamStore);
+//            storesRes.setLatitude(teamStore.getStore().getLatitude());
+//            storesRes.setLongitude(teamStore.getStore().getLongitude());
+//            storesRes.setMyteam(true);
+//            return storesRes;
+//        }).collect(Collectors.toList());
         Team team = teamStoreRepository.findTeamWithTeamStoreAndStoreByTeamId(teamId);
         return team.getTeamStores().stream()
                 .map(teamStore -> {

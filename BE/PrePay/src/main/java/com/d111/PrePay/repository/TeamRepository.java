@@ -22,5 +22,7 @@ public interface TeamRepository extends JpaRepository<Team, Long>, TeamRepoCusto
     @Query("SELECT t FROM Team t join FETCH t.teamInitializer WHERE t.publicTeam = true")
     List<Team> findTeamsWithUserByPublicTeam(boolean publicTeam);
 
+    List<Team> findTeamsByPublicTeam(boolean publicTeam);
+
     Optional<Team> findByTeamPassword(String teamPassword);
 }
