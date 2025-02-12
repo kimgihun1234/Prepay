@@ -9,6 +9,7 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
@@ -28,6 +29,7 @@ import com.example.prepay.ui.GroupSearch.PublicSearchAdapter.OnPublicClickListen
 import com.example.prepay.ui.GroupSearchDetails.AddPublicGroupDetailsFragment
 import com.example.prepay.ui.GroupSearchDetails.GroupSearchtDetailsViewModel
 import com.example.prepay.ui.MainActivity
+import com.example.prepay.ui.MainActivityViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -45,20 +47,19 @@ import com.google.android.material.navigation.NavigationView
 import java.io.IOException
 import java.util.Locale
 
+private const val TAG = "GroupSearchFragment"
 class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
     FragmentGroupSearchBinding::bind,
     R.layout.fragment_group_search
-), PublicSearchAdapter.OnPublicClickListener {
+), OnPublicClickListener {
     private lateinit var mainActivity: MainActivity
     private lateinit var publicSearchAdapter: PublicSearchAdapter
-    private lateinit var publicAdapter: PublicSearchAdapter
-    private val viewModel: GroupSearchFragmentViewModel by viewModels()
 
     // GPS관련 변수
     private var mMap: GoogleMap? = null
     private var currentMarker: Marker? = null
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
-
+    private val groupSearchFragmentViewModel: GroupSearchFragmentViewModel by viewModels()
     /** permission check **/
     private val checker = PermissionChecker(this)
     private val runtimePermissions = arrayOf(
@@ -84,7 +85,6 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        publicSearchAdapter = PublicSearchAdapter(arrayListOf(), this)
 
         initAdapter()
         //GPS 관련 코드
@@ -97,16 +97,20 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
 //            Public(2, "B 카페", "구미시 진평동", 20, 500000, "https://fastly.picsum.photos/id/875/200/300.jpg?hmac=9NSoqXHP89pGlq4Sz3OgGxjx5c91YHJkcIOBFgNJ8xA"),
 //            Public(2, "C 카페", "서울특별시 강남구", 30,800000, "https://fastly.picsum.photos/id/729/200/300.jpg?hmac=VbcZBxFYzQK1ro1MTLLmwHNQ0kuIJSagOeue4JMymUY")
 //        )
+//        publicAdapter = PublicSearchAdapter(arrayListOf(),this)
+//        viewModel.getPublicTeams.observe(viewLifecycleOwner){it->
+//            publicAdapter.publicGroupList = it
+//            publicAdapter.notifyDataSetChanged()
+//        }
 
-        publicAdapter = PublicSearchAdapter(arrayListOf(),this)
-        viewModel.getPublicTeams.observe(viewLifecycleOwner){it->
-            publicAdapter.publicGroupList = it
-            publicAdapter.notifyDataSetChanged()
-        }
-        viewModel.getAllPublicTeamList()
-
+        publicSearchAdapter = PublicSearchAdapter(arrayListOf(),this)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = publicSearchAdapter
+        groupSearchFragmentViewModel.getPublicTeams.observe(viewLifecycleOwner){it->
+            publicSearchAdapter.publicGroupList = it
+            publicSearchAdapter.notifyDataSetChanged()
+        }
+        groupSearchFragmentViewModel.getAllPublicTeamList()
     }
 
     override fun onGroupClick(publicgroup: PublicTeamsRes) {
