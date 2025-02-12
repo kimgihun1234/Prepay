@@ -16,8 +16,11 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.activityViewModels
@@ -58,6 +61,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.navigation.NavigationView
 import com.google.zxing.BarcodeFormat
+import com.google.zxing.integration.android.IntentIntegrator
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -99,6 +103,8 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
+    private var inviteCode = "0"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,6 +117,25 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
 
         if (checker.checkPermission(requireActivity(), runtimePermissions)) {
             startLocationUpdates()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // MainActivity에 햄버거 버튼 활성화 요청
+        parentFragmentManager.setFragmentResult(
+            "toolbarUpdate",
+            bundleOf("showHamburger" to true)
+        )
+
+        val toolbar: Toolbar? = activity?.findViewById(R.id.toolbar)
+        toolbar?.setNavigationOnClickListener {
+            if (binding.drawerLayout.isDrawerOpen(GravityCompat.END)) {
+                binding.drawerLayout.closeDrawer(GravityCompat.END) // 👉 열려 있으면 닫기
+            } else {
+                binding.drawerLayout.openDrawer(GravityCompat.END)  // 👉 닫혀 있으면 열기
+            }
         }
     }
 
@@ -130,6 +155,12 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(readyCallback)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // 다른 프래그먼트로 이동할 때 햄버거 버튼 숨기기
+        (activity as? AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     private fun initAdapter(){
@@ -243,7 +274,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                     RetrofitUtil.qrService.qrPrivateCreate("user1@gmail.com")
                 }.onSuccess {
                     Log.d(TAG,it.message)
-                    showQRDialog(it.message)
+                    showQRDialog(it.message+":"+"user1@gmail.com"+":"+activityViewModel.teamId.value.toString())
                 }.onFailure {
                     mainActivity.showToast("qr불러오기가 실패했습니다")
                 }
@@ -251,6 +282,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             //mainActivity.broadcast("hello","hello")
         }
     }
+
 
     private fun addRestaurantClick() {
         bringStoreId()
@@ -349,18 +381,9 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         val dialog = AlertDialog.Builder(requireContext())
             .setView(binding.root)
             .create()
-
+        Log.d(TAG,"초대코드"+inviteCode)
+        binding.etInviteCode.text = inviteCode
         binding.inviteCodeConfirmBtn.setOnClickListener {
-            val code = binding.etInviteCode.text.toString()
-            if (code.isNotEmpty()) {
-                Toast.makeText(requireContext(), "코드 입력: $code", Toast.LENGTH_SHORT).show()
-                dialog.dismiss()
-            } else {
-                Toast.makeText(requireContext(), "코드를 입력해주세요.", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        binding.inviteCodeCancelBtn.setOnClickListener {
             dialog.dismiss()
         }
 
@@ -634,9 +657,11 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             kotlin.runCatching {
                 RetrofitUtil.teamService.getTeamDetails(1,activityViewModel.teamId.value!!)
             }.onSuccess {
-                binding.usePossiblePriceTxt.text = it.dailyPriceLimit.toString()
+                binding.usePossiblePriceTxt.text = (it.dailyPriceLimit-it.usedAmount).toString()
                 viewModel.updatePosition(it.position)
+                inviteCode = it.teamPassword.toString()
                 Log.d(TAG,"숫자 출려"+it.position.toString())
+                Log.d(TAG,"숫자 출려"+inviteCode)
             }.onFailure {
                 Log.d(TAG,"실패하였습니다")
             }
