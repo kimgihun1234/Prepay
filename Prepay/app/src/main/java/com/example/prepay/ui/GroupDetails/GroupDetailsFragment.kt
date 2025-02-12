@@ -357,6 +357,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         // 다이얼로그 닫힐 때 타이머 취소
         dialog.setOnDismissListener {
             timer.cancel()
+            initModelView()
         }
 
         // 다이얼로그 표시
@@ -382,6 +383,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                         }
                     }
                     timer.cancel()
+                    initModelView()
                 }
             }
         }, 1000, 1000)
