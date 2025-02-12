@@ -274,7 +274,7 @@ public class TeamService {
                 .dailyPriceLimit(team.getDailyPriceLimit())
                 .publicTeam(team.isPublicTeam())
                 .teamMessage(team.getTeamMessage())
-
+                .color(team.getColor())
                 .build();
         return teamDetailRes;
     }

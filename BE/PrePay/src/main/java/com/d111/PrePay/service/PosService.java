@@ -45,12 +45,12 @@ public class PosService {
         Team team = userTeam.getTeam();
         User user = userTeam.getUser();
         TeamStore teamStore = teamStoreRepository.findTeamStoreByTeamAndStore(team, store);
-
+        
         log.info("총 주문 금액 : {}", orderHistory.getTotalPrice());
         if (teamStore.getTeamStoreBalance() < 0) {
             teamStore.setTeamStoreBalance(teamStore.getTeamStoreBalance() + orderHistory.getTotalPrice());
             throw new NotEnoughBalanceException("팀 잔액이 부족합니다,");
-        } else if (team.getDailyPriceLimit()-userTeam.getUsedAmount()< orderHistory.getTotalPrice()) {
+        } else if (team.getDailyPriceLimit() - userTeam.getUsedAmount() < orderHistory.getTotalPrice()) {
             throw new NotEnoughBalanceException("일일 한도 잔액이 부족합니다,");
         }
 
@@ -61,7 +61,7 @@ public class PosService {
         orderHistory.setTeam(team);
         orderHistory.setUser(user);
         orderHistoryRepository.save(orderHistory);
-
+        userTeam.setUsageCount(userTeam.getUsageCount() + 1);
         for (DetailHistoryReq detailHistoryReq : orderReq.getDetails()) {
             DetailHistory detailHistory = new DetailHistory(detailHistoryReq);
             detailHistory.setOrderHistory(orderHistory);
