@@ -23,6 +23,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -86,11 +87,12 @@ public class KaKaoService {
         LinkedHashMap<?, ?> responseBody = (LinkedHashMap<?, ?>) response.getBody();
         log.info("response : {}",response);
         log.info("responseBody : {}",responseBody);
-        ObjectMapper objectMapper = new ObjectMapper();
-        KaKaoUserInfo kaKaoUserInfo = objectMapper.convertValue(responseBody, KaKaoUserInfo.class);
-        Long id = kaKaoUserInfo.getId();
+        Long id = ((Number) responseBody.get("id")).longValue();
+        String nickname = (String) ((Map<String, Object>) responseBody.get("properties")).get("nickname");
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        Long id = kaKaoUserInfo.getId();
 //        String email = kaKaoUserInfo.getKakao_account().get("email");
-        String nickname = kaKaoUserInfo.getProperties().getNickname();
+//        String nickname = kaKaoUserInfo.getProperties().getNickname();
 
         log.info("카카오 PK : {}",id);
 //        log.info("이메일 : {}",email);
