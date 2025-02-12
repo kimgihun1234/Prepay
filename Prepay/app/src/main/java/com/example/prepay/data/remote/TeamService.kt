@@ -10,6 +10,7 @@ import com.example.prepay.data.response.StoreLocation
 import com.example.prepay.data.response.Team
 import com.example.prepay.data.response.TeamDetailRes
 import com.example.prepay.data.response.TeamIdReq
+import com.example.prepay.data.response.TeamIdRes
 import com.example.prepay.data.response.TeamIdStoreRes
 import com.example.prepay.data.response.TeamStoreReq
 import com.example.prepay.data.response.TeamStoreRes
@@ -28,13 +29,13 @@ interface TeamService {
 
     //팀 가맹점 추가
     @POST("/team/store")
-    suspend fun createStore(@Header("userId") userId: Long, @Body request: TeamStoreReq): TeamStoreRes
+    suspend fun createStore(@Header("userId") userId: Long, @Body request: TeamStoreReq): Response<TeamStoreRes>
     //팀을 생성하는 과정
     @Multipart
     @POST("team/signup")
     suspend fun makeTeam(@Header("userId") userId: String,
                          @Part("request") request: PublicPrivateTeam,
-                         @Part image: MultipartBody.Part?) : Response<PublicPrivateTeam>
+                         @Part image: MultipartBody.Part?) : Response<TeamIdRes>
 
     //팀 가맹점 추가
     @POST("/team/signin")
