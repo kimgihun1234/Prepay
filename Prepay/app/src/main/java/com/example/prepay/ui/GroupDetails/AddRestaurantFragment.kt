@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,11 +14,13 @@ import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
-import com.example.prepay.data.model.dto.BootPayCharge
+import com.example.prepay.data.response.BootPayChargeReq
 import com.example.prepay.data.model.dto.Restaurant
 import com.example.prepay.data.response.StoreIdReq
 import com.example.prepay.databinding.FragmentAddRestaurantBinding
+import com.example.prepay.ui.CreateGroup.CreateGroupViewModel
 import com.example.prepay.ui.MainActivity
+import com.example.prepay.ui.MainActivityViewModel
 import com.example.prepay.util.BootPayManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,6 +36,8 @@ class AddRestaurantFragment : BaseFragment<FragmentAddRestaurantBinding>(
     private var selectedRestaurantName: String = ""
 
     private val groupDetailsFragmentViewModel: GroupDetailsFragmentViewModel by viewModels()
+    private val createGroupViewModel : CreateGroupViewModel by viewModels()
+    private val activityViewModel: MainActivityViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,29 +76,44 @@ class AddRestaurantFragment : BaseFragment<FragmentAddRestaurantBinding>(
         binding.addRestaurantName.setQuery(restaurant.storesListInfo.value?.joinToString(", ") { it.storeName }, false)
 
         binding.confirm.setOnClickListener {
+            val storeId = createGroupViewModel.storeId.value
             val totalPrice = binding.totalPrice.text.toString()
-
+            val teamId : Long? = activityViewModel.teamId.value
+            Log.d(TAG, "selectedRestaurantName: $selectedRestaurantName")
+            Log.d(TAG, "totalPrice: $totalPrice")
             if (selectedRestaurantName.isNotEmpty() && totalPrice.isNotEmpty()) {
-                    BootPayManager.startPayment(requireActivity(), selectedRestaurantName, totalPrice) { teamId, storeId ->
-                        Log.d(TAG, "teamId: ${teamId.toInt()}, ${storeId}, ${totalPrice.toInt()}")
+                    BootPayManager.startPayment(requireActivity(), selectedRestaurantName, totalPrice) { receiptId, price ->
+
+                        Log.d(TAG, "storeId: $storeId")
+                        Log.d(TAG, "teamId: $teamId, price: ${price}, ${totalPrice.toInt()}")
+                        Log.d(TAG, "receiptId: $receiptId")
+
                         lifecycleScope.launch {
-                        try {
-                            val chargeReceipt = BootPayCharge(teamId.toInt(), storeId, totalPrice.toInt(), "")
-                            val response = withContext(Dispatchers.IO) {
-                                RetrofitUtil.bootPayService.getBootPay("user1@gmail.com", chargeReceipt)
+
+                            try {
+                                val chargeReceipt = teamId?.let { teamId -> storeId?.let { storeId ->
+                                    BootPayChargeReq(teamId.toInt(),
+                                        storeId, totalPrice.toInt(), receiptId)
+                                } }
+                                val response = withContext(Dispatchers.IO) {
+                                    chargeReceipt?.let { it ->
+                                        RetrofitUtil.bootPayService.getBootPay("user1@gmail.com",
+                                            it
+                                        )
+                                    }
                             }
 
-                            if (response.isSuccessful) {
+                            if (response?.isSuccessful == true) {
                                 Toast.makeText(requireContext(), "영수증이 성공적으로 들어갔습니다.", Toast.LENGTH_SHORT).show()
                                 mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
                             } else {
-                                Log.e(TAG, "영수증 올리기 실패: ${response.code()}")
+                                Log.e(TAG, "영수증 올리기 실패: ${response}")
                             }
-                        } catch (e: Exception) {
-                            Log.e(TAG, "네트워크 요청 실패: ${e.localizedMessage}", e)
+                            } catch (e: Exception) {
+                                Log.e(TAG, "네트워크 요청 실패: ${e.localizedMessage}", e)
+                            }
                         }
                     }
-                }
             } else {
                 showError("식당 이름과 결제금액을 모두 입력해주세요.")
             }
@@ -126,11 +146,11 @@ class AddRestaurantFragment : BaseFragment<FragmentAddRestaurantBinding>(
     }
 
     private fun initRecyclerView() {
-        searchAdapter = RestaurantSearchAdapter { selectedRestaurant ->
+        searchAdapter = RestaurantSearchAdapter ({ selectedRestaurant ->
             binding.addRestaurantName.setQuery(selectedRestaurant.name, false)
             selectedRestaurantName = selectedRestaurant.name
             binding.searchResults.visibility = View.GONE
-        }
+        }, createGroupViewModel)
 
         binding.searchResults.apply {
             layoutManager = LinearLayoutManager(requireContext())

@@ -1,12 +1,16 @@
 package com.example.prepay.ui.GroupDetails
 
 import android.location.Location
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepay.data.response.TeamIdStoreRes
 import com.example.prepay.databinding.ItemRestaurantBinding
+import com.example.prepay.ui.MainActivityViewModel
 
+private const val TAG = "RestaurantAdapter"
 class RestaurantAdapter(var teamIdStoreResList: List<TeamIdStoreRes>, private val listener: OnRestaurantClickListener,var userLocation: Location) :
     RecyclerView.Adapter<RestaurantAdapter.RestaurantViewHolder>() {
 
@@ -22,7 +26,8 @@ class RestaurantAdapter(var teamIdStoreResList: List<TeamIdStoreRes>, private va
             )
             binding.restaurantDistance.text = "%.1f km".format(distance)
             binding.restaurantDetailBtn.setOnClickListener {
-                listener.onRestaurantClick(teamIdStoreRes.storeId)
+                Log.d(TAG, "teamIdStoreRes.storeName: ${teamIdStoreRes.storeName}")
+                listener.onRestaurantClick(teamIdStoreRes.storeName, teamIdStoreRes.storeId)
             }
         }
         private fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
@@ -56,6 +61,6 @@ class RestaurantAdapter(var teamIdStoreResList: List<TeamIdStoreRes>, private va
     }
 
     interface OnRestaurantClickListener {
-        fun onRestaurantClick(teamIdStoreResId: Int)
+        fun onRestaurantClick(storeName : String, teamIdStoreResId: Int)
     }
 }
