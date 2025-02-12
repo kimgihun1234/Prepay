@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import java.util.HashMap;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class KaKaoService {
 
     private final RestTemplate restTemplate;
@@ -78,7 +80,9 @@ public class KaKaoService {
                 String.class
         );
         // responseBody에 있는 정보를 꺼냄
+        log.info("response : {}",response);
         String responseBody = response.getBody();
+        log.info("responseBody : {}",responseBody);
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = null;
         try {
