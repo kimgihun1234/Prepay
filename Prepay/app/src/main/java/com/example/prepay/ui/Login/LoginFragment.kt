@@ -1,12 +1,11 @@
 package com.example.prepay.ui.Login
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.os.Bundle
 import android.text.Editable
-import android.text.Html
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextWatcher
@@ -19,15 +18,12 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.Dimension.Companion.DP
 import androidx.lifecycle.lifecycleScope
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
-import com.example.prepay.RetrofitUtil
 import com.example.prepay.databinding.FragmentLoginBinding
 import com.example.prepay.response.LoginRequest
-import com.example.prepay.test_db.UserDBHelper
 import com.example.prepay.ui.LoginActivity
 import com.example.prepay.ui.MainActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -35,14 +31,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.common.model.ClientError
+import com.kakao.sdk.common.model.ClientErrorCause
+import com.kakao.sdk.user.UserApiClient
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 private const val TAG = "LoginFragment_싸피"
 class LoginFragment: BaseFragment<FragmentLoginBinding>(
@@ -51,14 +47,15 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
 ){
     private lateinit var loginActivity: LoginActivity
 
-    private lateinit var DB: UserDBHelper
-
     //구글 로그인
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
-    private lateinit var currentuser: FirebaseUser
 
-    private lateinit var dbHelper: UserDBHelper
+    // SharedPreferences 파일명 및 키 정의
+    private val prefsName = "user_prefs"
+    private val keyUserId = "userId"
+    private val keyUserPw = "userPw"
+
     private lateinit var editTexts: List<EditText>
 
 
@@ -77,11 +74,30 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // SharedPreferences를 통한 자동 로그인 체크
+        val sharedPref = requireContext().getSharedPreferences(prefsName, Context.MODE_PRIVATE)
+
+        // 저장된 아이디와 비밀번호 읽어오기 (저장되지 않았다면 기본값은 빈 문자열로)
+//        val savedId = sharedPref.getString(keyUserId, "") ?: ""
+//        val savedPw = sharedPref.getString(keyUserPw, "") ?: ""
+
+//        // 저장된 아이디와 패스워드가 모두 있으면, 자동으로 로그인 API를 호출하여 자동 로그인 처리
+//        if (savedId.isNotEmpty() && savedPw.isNotEmpty()) {
+//            // 자동 로그인: 저장된 값으로 login() 함수를 호출
+//            login(savedId, savedPw)
+//            return
+//        }
+
+        // 카카오 로그인 버튼 클릭 처리 (예: testButton)
+        binding.kakaoLoginBtn.setOnClickListener {
+            kakaoLogin()
+        }
+
+
         editTexts = listOf(
             view.findViewById(R.id.login_id_text),
             view.findViewById(R.id.log_in_password_text)
         )
-
 
         initEvent()
 
@@ -90,13 +106,12 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
         setUpTextWatcher()
 
         // --- login 관련 기능 ---
-        dbHelper = UserDBHelper(requireContext())
 
         binding.LoginBtn.setOnClickListener {
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            startActivity(intent)
-//            login()
+            login()
         }
+
+
     }
 
     fun initEvent(){
@@ -184,44 +199,41 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
     }
 
     // 로그인 함수
-    private fun login() {
-        val id = binding.loginIdText.text.toString().trim()
-        val password = binding.logInPasswordText.text.toString().trim()
+    private fun login(id: String? = null, password: String? = null) {
+        // 파라미터가 전달되면 해당 값을 사용하고, 그렇지 않으면 사용자가 입력한 값을 사용
+        val userId = id ?: binding.loginIdText.text.toString().trim()
+        val userPw = password ?: binding.logInPasswordText.text.toString().trim()
 
-        if (id.isEmpty() || password.isEmpty()) {
+        if (userId.isEmpty() || userPw.isEmpty()) {
             Toast.makeText(requireContext(), "아이디와 비밀번호를 모두 입력해주세요.", Toast.LENGTH_SHORT).show()
             return
         }
         lifecycleScope.launch {
             try {
-                val loginRequest = LoginRequest(id, password)
-                RetrofitUtil.userService.login(loginRequest)
+//                val loginRequest = LoginRequest(userId, userPw)
+
+                // 사용자가 '자동 로그인' 체크한 경우, 입력한 아이디/비밀번호를 저장
+                if (binding.autoIdCheckbox.isChecked) {
+                    val sharedPref =
+                        requireContext().getSharedPreferences(prefsName, Context.MODE_PRIVATE)
+                    with(sharedPref.edit()) {
+                        putString(keyUserId, userId)
+                        putString(keyUserPw, userPw)
+                        apply()
+                    }
+                }
                 Toast.makeText(requireContext(), "로그인 성공", Toast.LENGTH_SHORT).show()
                 val intent = Intent(requireContext(), MainActivity::class.java)
                 startActivity(intent)
-//                val response = RetrofitUtil.userService.login(loginRequest)
+                activity?.finish()
 
-//                if (response.isSuccessful) {
-//                    val loginResponse = response.body()
-//                    if (loginResponse != null) {
-//                        // 예: 토큰 저장, 메인 액티비티 전환 등 후속 처리
-//                        // ApplicationClass.sharedPreferencesUtil.saveToken(loginResponse.jwtToken)
-//                        // 예시로, 로그인 성공 메시지 출력
-//                        Toast.makeText(requireContext(), "로그인 성공", Toast.LENGTH_SHORT).show()
-//                        val intent = Intent(requireContext(), MainActivity::class.java)
-//                        startActivity(intent)
-//                    } else {
-//                        Toast.makeText(requireContext(), "로그인 실패: 응답 데이터가 없습니다.", Toast.LENGTH_SHORT).show()
-//                    }
-//                } else {
-//                    Toast.makeText(requireContext(), "로그인 실패: ${response.code()}", Toast.LENGTH_SHORT).show()
-//                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 Toast.makeText(requireContext(), "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show()
             }
         }
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -264,4 +276,40 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
         private const val RC_SIGN_IN = 9001
         // Notification Channel ID
     }
+
+    private fun kakaoLogin() {
+        // 로그인 조합 예제
+
+        // 카카오계정으로 로그인 공통 callback 구성
+        // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용됨
+        val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+            if (error != null) {
+                Log.e(TAG, "카카오계정으로 로그인 실패", error)
+            } else if (token != null) {
+                Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
+            }
+        }
+        // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
+        if (UserApiClient.instance.isKakaoTalkLoginAvailable(requireContext())) {
+            UserApiClient.instance.loginWithKakaoTalk(requireContext()) { token, error ->
+                if (error != null) {
+                    Log.e(TAG, "카카오톡으로 로그인 실패", error)
+
+                    // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
+                    // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
+                    if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
+                        return@loginWithKakaoTalk
+                    }
+
+                    // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
+                    UserApiClient.instance.loginWithKakaoAccount(requireContext(), callback = callback)
+                } else if (token != null) {
+                    Log.i(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
+                }
+            }
+        } else {
+            UserApiClient.instance.loginWithKakaoAccount(requireContext(), callback = callback)
+        }
+    }
+
 }

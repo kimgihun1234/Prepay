@@ -86,7 +86,12 @@ dependencies {
 
     // zxing
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+
     // Google map API
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("com.google.android.gms:play-services-location:21.2.0")
+
+    // 카카오톡 인증 관련
+    implementation ("com.kakao.sdk:v2-cert:2.20.6") // 카카오톡 인증 서비스 API 모듈
+    implementation ("com.kakao.sdk:v2-user:2.20.6") // 카카오 로그인 API 모듈
 }

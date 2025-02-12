@@ -5,4 +5,5 @@
     <string name="bootPayApiKey">67a0ae6c4fb27baaf86e5571</string>
     <string name="catchphrase">선결제의 새로운 바람</string>
     <string name="api_key" translatable="false">AIzaSyCtC1Xk68_iGDtYzEcS1xLz-vZ0bph8fng</string>
+    <string name="scheme_kakao_app_key" translatable="false">cc0c9a3194ebc29336e08e6c73f2e0fa</string>
 </resources>

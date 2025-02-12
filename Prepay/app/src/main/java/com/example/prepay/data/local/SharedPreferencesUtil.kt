@@ -12,7 +12,6 @@ class SharedPreferencesUtil(context: Context) {
 
     var preferences: SharedPreferences =
         context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
-
     //사용자 정보 저장
     /*
     fun addUser(teamUserRes: TeamUserRes){

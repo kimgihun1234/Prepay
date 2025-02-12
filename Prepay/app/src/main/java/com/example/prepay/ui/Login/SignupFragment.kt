@@ -1,7 +1,7 @@
 package com.example.prepay.ui.Login
 
-import android.content.Intent
 import android.graphics.Color
+import android.graphics.Rect
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
@@ -11,26 +11,26 @@ import android.text.TextWatcher
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
-import android.widget.ScrollView
 import android.widget.EditText
+import android.widget.ScrollView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
+import kotlin.math.max
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.databinding.FragmentSignUpBinding
 import com.example.prepay.response.SignupRequest
 import com.example.prepay.test_db.UserDBHelper
 import com.example.prepay.ui.LoginActivity
-import com.example.prepay.ui.MainActivity
 import kotlinx.coroutines.launch
+
 
 class SignupFragment: BaseFragment<FragmentSignUpBinding>(
     FragmentSignUpBinding::bind,
@@ -39,10 +39,15 @@ class SignupFragment: BaseFragment<FragmentSignUpBinding>(
     private lateinit var loginActivity: LoginActivity
     private lateinit var editTexts: List<EditText>
     private lateinit var dbHelper: UserDBHelper
+    private lateinit var scrollView: ScrollView
+
 
     private var checkId = false
     private var checkNickname = false
     private var checkPassword = false
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         loginActivity = context as LoginActivity
@@ -51,12 +56,15 @@ class SignupFragment: BaseFragment<FragmentSignUpBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         editTexts = listOf(
             view.findViewById(R.id.sign_up_id_text),
             view.findViewById(R.id.sign_up_password_text),
             view.findViewById(R.id.sign_up_password_confirm_text),
             view.findViewById(R.id.sign_up_nick_text)
         )
+
+        scrollView = view.findViewById(R.id.scrollView)
 
         dbHelper = UserDBHelper(requireContext())
 
@@ -76,6 +84,7 @@ class SignupFragment: BaseFragment<FragmentSignUpBinding>(
 
     // editView focus 이벤트 설정
     private fun initFocusChangeListener() {
+
         editTexts.forEach {
             it.setOnFocusChangeListener { _, isFocus ->
                 if (isFocus) {

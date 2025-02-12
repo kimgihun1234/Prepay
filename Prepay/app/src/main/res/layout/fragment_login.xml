@@ -79,7 +79,7 @@
 
     <EditText
         android:id="@+id/login_id_text"
-        android:layout_width="350dp"
+        android:layout_width="334dp"
         android:layout_height="54dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="88dp"
@@ -112,7 +112,7 @@
 
     <EditText
         android:id="@+id/log_in_password_text"
-        android:layout_width="350dp"
+        android:layout_width="334dp"
         android:layout_height="54dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="36dp"
@@ -129,9 +129,8 @@
         app:layout_constraintTop_toBottomOf="@+id/login_id_text"
         tools:ignore="HardcodedText,RtlSymmetry" />
 
-
     <CheckBox
-        android:id="@+id/remember_id_checkbox"
+        android:id="@+id/auto_id_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:layout_marginStart="4dp"
@@ -151,7 +150,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/LoginBtn"
         android:layout_width="334dp"
-        android:layout_height="56dp"
+        android:layout_height="58dp"
         android:layout_marginStart="36dp"
         android:layout_marginTop="68dp"
         android:layout_marginEnd="36dp"
@@ -172,7 +171,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="116dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="116dp"
         android:fontFamily="@font/samsung_font_2"
         android:text="SNS 계정으로 간편 로그인"
@@ -212,16 +211,29 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LoginBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/LoginBtn"
+        tools:ignore="HardcodedText" />
 
     <ImageView
         android:id="@+id/google_login_btn"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
-        android:layout_marginTop="12dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
         android:src="@drawable/google_icon"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.410"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sns" />
+
+    <ImageView
+        android:id="@+id/kakao_login_btn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/kakao_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.116"
+        app:layout_constraintStart_toEndOf="@+id/google_login_btn"
         app:layout_constraintTop_toBottomOf="@+id/sns" />
 
 

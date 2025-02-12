@@ -21,6 +21,8 @@ import com.example.prepay.ui.Login.StartLoginFragment
 import com.example.prepay.ui.Login.VerifyIdFragment
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
+import com.kakao.sdk.common.KakaoSdk
+import com.kakao.sdk.common.util.Utility
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -36,6 +38,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
         super.onCreate(savedInstanceState)
         changeFragmentLogin(CommonUtils.LoginFragmentName.START_LOGIN_FRAGMENT)
         checkPermission()
+
+        // Kakao SDK 초기화
+        KakaoSdk.init(this, getString(R.string.scheme_kakao_app_key))
     }
 
     fun changeFragmentLogin(name: CommonUtils.LoginFragmentName, num: Int = -1) {
@@ -61,6 +66,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
     }
 
     private fun checkPermission() {
+
+
         /** permission check **/
         if (!checker.checkPermission(this, runtimePermissions)) {
             checker.setOnGrantedListener{ //퍼미션 획득 성공일때
