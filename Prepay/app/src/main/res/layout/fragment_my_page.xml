@@ -6,79 +6,36 @@
     android:layout_height="match_parent"
     tools:context=".ui.MyPage.MyPageFragment">
 
-    <TextView
-        android:id="@+id/my_page_hello1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="72dp"
-        android:text="안녕하세요"
-        android:textSize="34sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/my_page_hello2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="88dp"
-        android:text="OOO님"
-        android:textSize="34sp"
-        app:layout_constraintStart_toEndOf="@+id/my_page_hello1"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/my_page_hello3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="오늘도 즐거운 하루 되세요"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_page_hello1" />
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/create_group_btn"
         android:layout_width="93dp"
         android:layout_height="40dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="156dp"
         android:background="@color/cardview_light_background"
         android:text="그룹생성"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/my_page_hello2"
-        app:layout_constraintTop_toTopOf="@+id/my_page_hello2" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/enter_group_btn"
         android:layout_width="93dp"
         android:layout_height="40dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="44dp"
         android:background="@color/cardview_light_background"
         android:text="그룹입장"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/my_page_hello3"
-        app:layout_constraintTop_toBottomOf="@+id/create_group_btn" />
-
-    <TextView
-        android:id="@+id/group_name"
-        android:layout_width="182dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:text="내가 속한 그룹"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_page_hello3" />
+        app:layout_constraintStart_toEndOf="@+id/create_group_btn"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="500dp"
-        android:layout_marginTop="64dp"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:orientation="vertical"
@@ -90,8 +47,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_page_hello2"
-        app:layout_constraintVertical_bias="0.641" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.372" />
 
     <Button
         android:id="@+id/test_button"
