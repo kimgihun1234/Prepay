@@ -30,6 +30,8 @@ public class User {
 
     private String fcmToken;
 
+    private Long kakaoId;
+
     @OneToMany(mappedBy = "user")
     private List<UserTeam> userTeams = new ArrayList<>();
 

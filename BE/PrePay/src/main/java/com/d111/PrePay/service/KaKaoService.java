@@ -89,54 +89,53 @@ public class KaKaoService {
         ObjectMapper objectMapper = new ObjectMapper();
         KaKaoUserInfo kaKaoUserInfo = objectMapper.convertValue(responseBody, KaKaoUserInfo.class);
         Long id = kaKaoUserInfo.getId();
-        String email = kaKaoUserInfo.getKakao_account().get("email");
+//        String email = kaKaoUserInfo.getKakao_account().get("email");
         String nickname = kaKaoUserInfo.getProperties().get("nickname");
 
-        log.info("유저PK : {}",id);
-        log.info("이메일 : {}",email);
+        log.info("카카오 PK : {}",id);
+//        log.info("이메일 : {}",email);
         log.info("닉네임 : {}",nickname);
 
         userInfo.put("id",id);
-        userInfo.put("email",email);
+//        userInfo.put("email",email);
         userInfo.put("nickname",nickname);
 
         return userInfo;
     }
 
     public TokenRes kakaoUserLogin(HashMap<String,Object> userInfo) {
-        Long uid = Long.valueOf(userInfo.get("id").toString());
-        String kakaoEmail = userInfo.get("email").toString();
+        Long kid = Long.valueOf(userInfo.get("id").toString());
+//        String kakaoEmail = userInfo.get("email").toString();
         String nickName = userInfo.get("nickname").toString();
 
-        User kakaoUser = userRepository.findUserByEmail(kakaoEmail);
+        User kakaoUser = userRepository.findByKakaoId(kid);
         String access = null;
         String refresh = null;
 
         if (kakaoUser == null) {
             User user = new User();
             user.setNickname(nickName);
-            user.setEmail(kakaoEmail);
+            user.setKakaoId(kid);
             User savedUser = userRepository.save(user);
 
-            access = jwtUtil.createJWT("access", savedUser.getEmail(), 600000L, savedUser.getId());
-            refresh = jwtUtil.createJWT("refresh", savedUser.getEmail(), 86400000L, savedUser.getId());
+            access = jwtUtil.createJWT("access", savedUser.getNickname(), 600000L, savedUser.getId());
+            refresh = jwtUtil.createJWT("refresh", savedUser.getNickname(), 86400000L, savedUser.getId());
 
         } else {
-            access = jwtUtil.createJWT("access", kakaoEmail, 600000L, kakaoUser.getId());
-            refresh = jwtUtil.createJWT("refresh", kakaoEmail, 86400000L, kakaoUser.getId());
+            access = jwtUtil.createJWT("access", nickName, 600000L, kakaoUser.getId());
+            refresh = jwtUtil.createJWT("refresh", nickName, 86400000L, kakaoUser.getId());
 
         }
-        addRefresh(kakaoEmail, refresh, 86400000L);
+        addRefresh(refresh, 86400000L);
 
         TokenRes tokenRes = new TokenRes(access, refresh);
         return tokenRes;
 
-    }  private void addRefresh(String email, String refreshTokenName, Long expiredMs) {
+    }  private void addRefresh(String refreshTokenName, Long expiredMs) {
 
         Date date = new Date(System.currentTimeMillis() + expiredMs);
 
         Refresh refresh = new Refresh();
-        refresh.setEmail(email);
         refresh.setRefresh(refreshTokenName);
         refresh.setExpiration(date.toString());
 
