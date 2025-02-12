@@ -42,5 +42,9 @@ logging:
 bootpay:
   key: ${BOOTPAY_PRIVATE_KEY}
   appid: ${BOOTPAY_APPID}
+
+kakao:
+  client_id: ${KAKAO_CLIENT_ID}
+
 fcm:
   url: ${FCM_API_URL}

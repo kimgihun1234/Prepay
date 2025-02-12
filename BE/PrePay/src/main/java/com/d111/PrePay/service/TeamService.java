@@ -422,10 +422,8 @@ public class TeamService {
 
         User user = userRepository.findUserById(userId);
 
-        return user.getUserTeams().stream().map((userTeam) -> {
-            TeamRes teamRes = new TeamRes(userTeam);
-            return teamRes;
-        }).collect(Collectors.toList());
+        return user.getUserTeams().stream().map((userTeam) ->
+                new TeamRes(userTeam)).collect(Collectors.toList());
     }
 
 
