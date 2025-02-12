@@ -24,6 +24,8 @@ public class UserTeam {
 
     private int usageCount;
 
+    private boolean isLike;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private Team team;

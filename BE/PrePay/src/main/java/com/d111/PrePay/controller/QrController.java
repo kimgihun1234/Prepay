@@ -21,11 +21,11 @@ public class QrController {
         return ResponseEntity.status(result.getStatusCode()).body(result);
     }
 
-    @GetMapping("/private")
+    @GetMapping("/{teamId}/private")
     @Operation(summary = "개인용 qr 생성")
-    public ResponseEntity<StandardRes> getPrivateQr(@RequestHeader String userEmail){
+    public ResponseEntity<StandardRes> getPrivateQr(@RequestHeader String userEmail, @PathVariable long teamId){
 
-        return ResponseEntity.ok(qrService.getPrivateQr(userEmail));
+        return ResponseEntity.ok(qrService.getPrivateQr(userEmail,teamId));
     }
 
 }

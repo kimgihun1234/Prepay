@@ -32,14 +32,12 @@ public class TeamController {
     private final TeamService teamService;
     private final ImageService imageService;
 
-    // 팀 가게 좋아요
-    @PostMapping("/likes")
-    @Operation(summary = "팀 가게 좋아요, 좋아요 취소")
-    public ResponseEntity<StandardRes> likeStore(@RequestHeader Long userId, @RequestBody LikeStoreReq req) {
-
-        return ResponseEntity.ok(teamService.likeStore(userId, req));
+    // 퍼블릭 팀 좋아요
+    @PostMapping("/like")
+    @Operation(summary = "좋아요")
+    public ResponseEntity<StandardRes> like(@RequestHeader String email, @RequestBody LikeReq req) {
+        return ResponseEntity.ok(teamService.like(email,req));
     }
-
 
     // 팀 이미지 수정
     @PostMapping("/image")
@@ -218,8 +216,8 @@ public class TeamController {
 
     @GetMapping("/public-teams")
     @Operation(summary = "<b>퍼블릭 팀 리스트 조회")
-    public ResponseEntity<List<PublicTeamsRes>> getPublicTeams() {
-        return ResponseEntity.ok(teamService.getPublicTeams());
+    public ResponseEntity<List<PublicTeamsRes>> getPublicTeams(@RequestHeader String email) {
+        return ResponseEntity.ok(teamService.getPublicTeams(email));
     }
 
     @GetMapping("/public-teams/{keyword}")

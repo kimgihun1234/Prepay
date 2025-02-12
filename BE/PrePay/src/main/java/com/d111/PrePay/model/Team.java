@@ -37,8 +37,6 @@ public class Team {
 
     private String color;
 
-
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User teamInitializer;

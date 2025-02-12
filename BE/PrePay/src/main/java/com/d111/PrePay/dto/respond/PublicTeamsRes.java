@@ -12,6 +12,7 @@ public class PublicTeamsRes {
     private String teamMessage;
     private int teamBalance;
     private String teamInitializerNickname;
+    private boolean isLike;
 
     public PublicTeamsRes(Team team) {
         this.teamName = team.getTeamName();

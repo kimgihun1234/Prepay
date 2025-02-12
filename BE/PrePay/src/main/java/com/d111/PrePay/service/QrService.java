@@ -2,17 +2,19 @@ package com.d111.PrePay.service;
 
 import com.d111.PrePay.dto.respond.StandardRes;
 import com.d111.PrePay.model.Qr;
+import com.d111.PrePay.model.Team;
 import com.d111.PrePay.model.User;
 import com.d111.PrePay.model.UserTeam;
 import com.d111.PrePay.repository.QrRepository;
+import com.d111.PrePay.repository.TeamRepository;
 import com.d111.PrePay.repository.UserRepository;
 import com.d111.PrePay.repository.UserTeamRepository;
 import com.d111.PrePay.value.QrType;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Slf4j
@@ -23,6 +25,8 @@ public class QrService {
     private final UserTeamRepository userTeamRepository;
     private final QrRepository qrRepository;
     private final UserRepository userRepository;
+    private final TeamRepository teamRepository;
+
     public StandardRes getPartyQr(String userEmail, Long teamId) {
         Optional<UserTeam> byTeamIdAndUserEmail = userTeamRepository.findByTeamIdAndUser_Email(teamId, userEmail);
         UserTeam userTeam;
@@ -40,7 +44,24 @@ public class QrService {
         }
     }
 
-    public StandardRes getPrivateQr(String userEmail) {
+    @Transactional
+    public StandardRes getPrivateQr(String userEmail, long teamId) {
+        Team team = teamRepository.findById(teamId).orElseThrow();
+        if(team.isPublicTeam()){
+            Optional<UserTeam> opUserTeam = userTeamRepository.findByTeamIdAndUser_Email(teamId, userEmail);
+            if (opUserTeam.isEmpty()) {
+                User user = userRepository.findUserByEmail(userEmail);
+                UserTeam userTeam = UserTeam.builder()
+                        .team(team)
+                        .user(user)
+                        .privilege(false)
+                        .usageCount(0)
+                        .usedAmount(0)
+                        .position(false)
+                        .build();
+                userTeamRepository.save(userTeam);
+            }
+        }
         User user = userRepository.findUserByEmail(userEmail);
         Qr qr = new Qr(QrType.PRIVATE, user);
         qrRepository.save(qr);
