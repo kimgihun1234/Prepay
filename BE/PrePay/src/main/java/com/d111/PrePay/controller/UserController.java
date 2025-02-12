@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
@@ -41,7 +42,7 @@ public class UserController {
         return ResponseEntity.ok(userSignUpRes);
     }
 
-    @PostMapping("/kakao/login/{code}")
+    @GetMapping("/kakao/login/{code}")
     @Operation(summary = "카카오 로그인")
     public ResponseEntity<?> kakaoLogin(@PathVariable String code, HttpServletRequest request, HttpServletResponse response) {
 
