@@ -77,7 +77,7 @@ public class DbInitConfig implements ApplicationRunner {
                 TeamIdReq teamId = new TeamIdReq(i);
                 SignInTeamReq signInTeamReq = new SignInTeamReq();
                 Long userId = userRepository.findUserByEmail("user" + j + "@gmail.com").getId();
-                signInTeamReq.setTeamPassword(teamService.generateInviteCode(1L + i, teamId).getTeamPassword());
+                signInTeamReq.setTeamPassword(teamService.generateInviteCode(1L + i, teamId).getInviteCode());
                 teamService.signInTeam(1L + j, signInTeamReq);
             }
         }

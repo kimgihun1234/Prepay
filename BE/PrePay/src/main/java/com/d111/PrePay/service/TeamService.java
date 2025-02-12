@@ -167,6 +167,10 @@ public class TeamService {
             log.error("이미 가입된 팀입니다.");
             throw new RuntimeException();
         }
+
+        if (findTeam.getCodeGenDate() < System.currentTimeMillis() - 1000 * 60 * 60 * 3) {
+            throw new RuntimeException("초대 코드 시간 만료");
+        }
         UserTeam userTeam = UserTeam.builder()
                 .team(findTeam)
                 .user(findUser)
@@ -232,22 +236,12 @@ public class TeamService {
     // 팀 초대 코드 생성
     // 확인
     @Transactional
-    public TeamDetailRes generateInviteCode(Long userId, TeamIdReq req) {
+    public InviteCodeRes generateInviteCode(Long userId, TeamIdReq req) {
         Team team = teamRepository.findById(req.getTeamId()).orElseThrow();
         String password = generateRandomPassword();
         team.setTeamPassword(password);
         team.setCodeGenDate(System.currentTimeMillis());
-        TeamDetailRes teamDetailRes = TeamDetailRes.builder()
-                .teamId(team.getId())
-                .teamName(team.getTeamName())
-                .countLimit(team.getCountLimit())
-                .teamPassword(team.getTeamPassword())
-                .dailyPriceLimit(team.getDailyPriceLimit())
-                .publicTeam(team.isPublicTeam())
-                .teamMessage(team.getTeamMessage())
-                .color(team.getColor())
-                .build();
-        return teamDetailRes;
+        return new InviteCodeRes(password, System.currentTimeMillis());
     }
 
 
@@ -454,7 +448,7 @@ public class TeamService {
             Optional<UserTeam> userTeam = userTeamRepository.findByTeamIdAndUser_Email(team.getId(), email);
             if (userTeam.isPresent()) {
                 publicTeamsRes.setLike(userTeam.get().isLike());
-            }else{
+            } else {
                 publicTeamsRes.setLike(false);
             }
             resultList.add(publicTeamsRes);
@@ -483,20 +477,21 @@ public class TeamService {
     }
 
 
-    public StandardRes getTeamInviteCode(String email, long teamId) {
+    public InviteCodeRes getTeamInviteCode(String email, long teamId) {
         Team team = teamRepository.findById(teamId).orElseThrow();
         String teamPassword = team.getTeamPassword();
-        if (teamPassword == null || System.currentTimeMillis() - (1000 * 60 * 60 * 24) > team.getCodeGenDate()) {
-            return new StandardRes("팀 코드가 없습니다. 관리자를 통해 재발급 받으세요", 200);
+        if (teamPassword == null || System.currentTimeMillis() - (1000 * 60 * 60 * 3) > team.getCodeGenDate()) {
+            throw new RuntimeException("코드 시간 만료 재발급 문의");
         }
-        return new StandardRes(teamPassword, 200);
+
+        return new InviteCodeRes(teamPassword, team.getCodeGenDate());
     }
 
     @Transactional
     public StandardRes like(String email, LikeReq req) {
         Optional<UserTeam> opUserTeam = userTeamRepository.findByTeamIdAndUser_Email(req.getTeamId(), email);
         UserTeam userTeam;
-        log.info("좋아요 : {}",req.isCheckLike());
+        log.info("좋아요 : {}", req.isCheckLike());
         if (opUserTeam.isEmpty()) {
             User user = userRepository.findUserByEmail(email);
             Team team = teamRepository.findById(req.getTeamId()).orElseThrow();
@@ -510,7 +505,7 @@ public class TeamService {
                     .isLike(req.isCheckLike())
                     .build();
             userTeamRepository.save(userTeam);
-        }else{
+        } else {
             userTeam = opUserTeam.get();
             userTeam.setLike(req.isCheckLike());
         }

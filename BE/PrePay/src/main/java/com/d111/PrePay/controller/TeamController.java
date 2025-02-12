@@ -150,7 +150,7 @@ public class TeamController {
 
     @PostMapping("/code")
     @Operation(summary = "팀 초대 코드 생성")
-    public ResponseEntity<TeamDetailRes> generateInviteCode(@RequestHeader Long userId, @RequestBody TeamIdReq req) {
+    public ResponseEntity<InviteCodeRes> generateInviteCode(@RequestHeader Long userId, @RequestBody TeamIdReq req) {
 //        Long userId = accessToken.getUserId();
         return ResponseEntity.ok(teamService.generateInviteCode(userId, req));
 
@@ -158,7 +158,7 @@ public class TeamController {
 
     @GetMapping("/code")
     @Operation(summary = "팀 초대코드 조회")
-    public ResponseEntity<StandardRes> getInviteCode(@RequestHeader String email, @RequestParam long teamId) {
+    public ResponseEntity<InviteCodeRes> getInviteCode(@RequestHeader String email, @RequestParam long teamId) {
         return ResponseEntity.ok(teamService.getTeamInviteCode(email, teamId));
     }
 
