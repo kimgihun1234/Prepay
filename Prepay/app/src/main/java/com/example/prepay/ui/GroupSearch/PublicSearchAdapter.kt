@@ -3,7 +3,6 @@ package com.example.prepay.ui.GroupSearch
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.prepay.data.model.dto.Public
 import com.example.prepay.databinding.ItemPublicGroupBinding
 import com.bumptech.glide.Glide
 import com.example.prepay.R

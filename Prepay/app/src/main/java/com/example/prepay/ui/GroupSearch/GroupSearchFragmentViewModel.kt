@@ -15,10 +15,12 @@ class GroupSearchFragmentViewModel : ViewModel(){
     val getPublicTeams: LiveData<List<PublicTeamsRes>>
         get() = _getPublicTeams
 
+    val email = "user1@gmail.com"
     fun getAllPublicTeamList() {
+
         viewModelScope.launch {
             runCatching {
-                RetrofitUtil.teamService.getPublicTeams()
+                RetrofitUtil.teamService.getPublicTeams(email)
             }.onSuccess {
                 Log.d("GroupSearchViewModel", "공개 팀 리스트 가져오기 성공: $it")
                 _getPublicTeams.value = it
