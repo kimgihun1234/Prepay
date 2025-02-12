@@ -1,5 +1,6 @@
 package com.d111.PrePay.service;
 
+import com.d111.PrePay.dto.request.KaKaoUserInfo;
 import com.d111.PrePay.dto.respond.TokenRes;
 import com.d111.PrePay.model.User;
 import com.d111.PrePay.repository.UserRepository;
@@ -21,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 @Service
 @RequiredArgsConstructor
@@ -73,27 +75,26 @@ public class KaKaoService {
 
         HttpEntity<MultiValueMap<String, String>> kakaoUserInfoRequest = new HttpEntity<>(headers);
 
-        ResponseEntity<String> response = restTemplate.exchange(
+        ResponseEntity<Object> response = restTemplate.exchange(
                 "https://kapi.kakao.com/v2/user/me",
                 HttpMethod.POST,
                 kakaoUserInfoRequest,
-                String.class
+                Object.class
         );
-        // responseBody에 있는 정보를 꺼냄
+
+
+        LinkedHashMap<?, ?> responseBody = (LinkedHashMap<?, ?>) response.getBody();
         log.info("response : {}",response);
-        String responseBody = response.getBody();
         log.info("responseBody : {}",responseBody);
         ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode jsonNode = null;
-        try {
-            jsonNode = objectMapper.readTree(responseBody);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        KaKaoUserInfo kaKaoUserInfo = objectMapper.convertValue(responseBody, KaKaoUserInfo.class);
+        Long id = kaKaoUserInfo.getId();
+        String email = kaKaoUserInfo.getKakao_account().get("email");
+        String nickname = kaKaoUserInfo.getProperties().get("nickname");
 
-        Long id = jsonNode.get("id").asLong();
-        String email = jsonNode.get("kakao_account").get("email").asText();
-        String nickname = jsonNode.get("properties").get("nickname").asText();
+        log.info("유저PK : {}",id);
+        log.info("이메일 : {}",email);
+        log.info("닉네임 : {}",nickname);
 
         userInfo.put("id",id);
         userInfo.put("email",email);
