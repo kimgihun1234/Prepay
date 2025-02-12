@@ -203,6 +203,11 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             restaurantAdapter.userLocation = curlocation
             restaurantAdapter.notifyDataSetChanged()
         }
+
+        viewModel.moneyValue.observe(viewLifecycleOwner) { it->
+            binding.usePossiblePriceTxt.text = it.toString()
+        }
+        
 //        restaurantAdapter.onRestaurantClickListener = object : RestaurantAdapter.OnRestaurantClickListener {
 //            override fun onRestaurantClick(teamIdStoreResId: Int) {
 //                Log.d(TAG, "teamIdStoreResId: $teamIdStoreResId")
@@ -220,12 +225,6 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     private fun initDrawerLayout(){
         drawerLayout = binding.drawerLayout
         navigationView = binding.navigationView
-        drawerLayout.openDrawer(GravityCompat.END)
-        binding.drawerLayout.setOnClickListener {
-            if (!drawerLayout.isDrawerOpen(GravityCompat.END)) {
-                drawerLayout.openDrawer(GravityCompat.END)
-            }
-        }
     }
 
     private fun addStoreMarkers(stores: List<TeamIdStoreRes>) {
@@ -425,8 +424,15 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             .setView(binding.root)
             .create()
         binding.btnRegister.setOnClickListener {
-            val moneychange = MoneyChangeReq(binding.etCodeInput.text.toString().toInt(),activityViewModel.teamId.value!!.toInt())
+            val moneyInput = binding.etCodeInput.text.toString()
+            val moneyValue = if (moneyInput.isEmpty()) {
+                10000
+            } else {
+                moneyInput.toInt()
+            }
+            val moneychange = MoneyChangeReq(moneyValue,activityViewModel.teamId.value!!.toInt())
             moneyChange(moneychange)
+            viewModel.setMoneyValue(moneychange.dailyPriceLimit)
             dialog.dismiss()
         }
         dialog.show()
@@ -694,9 +700,8 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             }.onSuccess {
                 binding.usePossiblePriceTxt.text = (it.dailyPriceLimit-it.usedAmount).toString()
                 viewModel.updatePosition(it.position)
-                inviteCode = it.teamPassword.toString()
-                Log.d(TAG,"숫자 출려"+it.position.toString())
-                Log.d(TAG,"숫자 출려"+inviteCode)
+                inviteCode = it.teamPassword.toString()?:"초대코드없음"
+
             }.onFailure {
                 Log.d(TAG,"실패하였습니다")
             }

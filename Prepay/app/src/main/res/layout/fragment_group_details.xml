@@ -237,7 +237,7 @@
                     android:background="@drawable/round_invite_background"
                     app:backgroundTint="@null"
                     android:text="한도 변경"
-                    android:layout_marginLeft="60sp"
+                    android:layout_marginLeft="65sp"
                     android:layout_marginTop="32dp"
                     android:textColor="#0066CC"
                     android:textSize="12sp"
