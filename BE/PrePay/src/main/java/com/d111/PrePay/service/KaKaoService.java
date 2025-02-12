@@ -90,7 +90,7 @@ public class KaKaoService {
         KaKaoUserInfo kaKaoUserInfo = objectMapper.convertValue(responseBody, KaKaoUserInfo.class);
         Long id = kaKaoUserInfo.getId();
 //        String email = kaKaoUserInfo.getKakao_account().get("email");
-        String nickname = kaKaoUserInfo.getProperties().get("nickname");
+        String nickname = kaKaoUserInfo.getProperties().getNickname();
 
         log.info("카카오 PK : {}",id);
 //        log.info("이메일 : {}",email);
