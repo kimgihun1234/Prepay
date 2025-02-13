@@ -68,8 +68,8 @@ public class ReissueService {
         String email = jwtUtil.getEmail(refresh);
         Long userId = jwtUtil.getUserId(refresh);
 
-        String newAccess = jwtUtil.createJWT("access", email, 60000L, userId);
-        String newRefresh = jwtUtil.createJWT("refresh", email, 120000L, userId);
+        String newAccess = jwtUtil.createJWT("access", email, 600000 * 6L, userId);
+        String newRefresh = jwtUtil.createJWT("refresh", email, 600000 * 12L, userId);
 
         log.info("새로운 액세스 토큰 : {}",newAccess);
         log.info("새로운 리프레쉬 토큰 : {}",newRefresh);
