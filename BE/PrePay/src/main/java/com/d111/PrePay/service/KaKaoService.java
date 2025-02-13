@@ -122,14 +122,14 @@ public class KaKaoService {
             user.setEmail(kakaoEmail);
             User savedUser = userRepository.save(user);
 
-            access = jwtUtil.createJWT("access", kakaoEmail, 60000L, savedUser.getId());
-            refresh = jwtUtil.createJWT("refresh", kakaoEmail, 120000L, savedUser.getId());
+            access = jwtUtil.createJWT("access", kakaoEmail, 600000 * 6L, savedUser.getId());
+            refresh = jwtUtil.createJWT("refresh", kakaoEmail, 600000 * 12L, savedUser.getId());
 
             log.info("로그인 유저 PK {}",savedUser.getId());
 
         } else {
-            access = jwtUtil.createJWT("access", kakaoEmail, 60000L, kakaoUser.getId());
-            refresh = jwtUtil.createJWT("refresh", kakaoEmail, 120000L, kakaoUser.getId());
+            access = jwtUtil.createJWT("access", kakaoEmail, 600000 * 6L, kakaoUser.getId());
+            refresh = jwtUtil.createJWT("refresh", kakaoEmail, 600000 * 12L, kakaoUser.getId());
             log.info("로그인 유저 PK {}",kakaoUser.getId());
 
         }

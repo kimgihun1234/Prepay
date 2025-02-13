@@ -88,8 +88,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         Long userId = user.getId();
 
 
-        String access = jwtUtil.createJWT("access", email, 60000L, userId);
-        String refresh = jwtUtil.createJWT("refresh", email, 120000L, userId);
+        String access = jwtUtil.createJWT("access", email, 600000 * 6L, userId);
+        String refresh = jwtUtil.createJWT("refresh", email, 600000 * 12L, userId);
 
 
         log.info("액세스 토큰 : {}",access);
