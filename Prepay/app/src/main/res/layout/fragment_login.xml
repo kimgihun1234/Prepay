@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.Login.LoginFragment">
 
+    <!-- 뒤로 가기 버튼 -->
     <ImageButton
         android:id="@+id/back_btn"
         android:layout_width="48dp"
@@ -19,6 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- 페이지 타이틀 -->
     <TextView
         android:id="@+id/login_title"
         android:layout_width="wrap_content"
@@ -34,10 +36,11 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="HardcodedText" />
 
+    <!-- 로고 -->
     <ImageView
         android:id="@+id/logo_image"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="92dp"
+        android:layout_height="92dp"
         android:layout_marginTop="108dp"
         android:contentDescription="logo_image"
         android:src="@drawable/logo"
@@ -46,12 +49,12 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="HardcodedText" />
 
-
+    <!-- 캐치 프라이즈 -->
     <TextView
         android:id="@+id/catchphrase"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:bufferType="spannable"
         android:fontFamily="@font/samsung_font_2"
         android:letterSpacing="-0.0125"
@@ -60,71 +63,82 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo_image" />
 
+    <!--  아이디 label   -->
     <TextView
         android:id="@+id/log_in_id_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="4dp"
         android:fontFamily="@font/samsung_font_2"
-        android:text="아이디"
+        android:text="이메일"
         android:textColor="#394750"
-        android:textSize="16sp"
-        android:textStyle="bold"
+        android:textSize="12sp"
+        android:textFontWeight="600"
         app:layout_constraintBottom_toTopOf="@+id/login_id_text"
         app:layout_constraintStart_toStartOf="@+id/login_id_text"
-        tools:ignore="HardcodedText" />
+        tools:ignore="HardcodedText"
+        tools:targetApi="p" />
 
     <EditText
         android:id="@+id/login_id_text"
-        android:layout_width="334dp"
+        android:layout_width="320dp"
         android:layout_height="54dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="80dp"
         android:layout_marginEnd="32dp"
         android:autofillHints=""
-        android:fontFamily="@font/samsung_font_2"
         android:background="@drawable/shape_all_round"
-        android:hint="아이디를 입력하세요"
+        android:fontFamily="@font/samsung_font_2"
+        android:hint="이메일을 입력하세요"
         android:inputType="textEmailAddress"
         android:paddingStart="24dp"
-        android:textSize="16sp"
+        android:textColorHint="#78828A"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.518"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo_image"
-        tools:ignore="HardcodedText,RtlSymmetry" />
+        tools:ignore="HardcodedText,RtlSymmetry"
+        tools:targetApi="p" />
 
     <TextView
         android:id="@+id/log_in_password_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/samsung_font_2"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="4dp"
         android:text="비밀번호"
         android:textColor="#394750"
-        android:textSize="16sp"
-        android:textStyle="bold"
+        android:textSize="12sp"
+        android:textFontWeight="600"
         app:layout_constraintBottom_toTopOf="@+id/log_in_password_text"
         app:layout_constraintStart_toStartOf="@+id/log_in_password_text"
-        tools:ignore="HardcodedText" />
+        tools:ignore="HardcodedText"
+        tools:targetApi="p"/>
 
     <EditText
         android:id="@+id/log_in_password_text"
-        android:layout_width="334dp"
+        android:layout_width="320dp"
         android:layout_height="54dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/shape_all_round"
+        android:fontFamily="@font/samsung_font_2"
         android:hint="비밀번호를 입력하세요"
         android:importantForAutofill="no"
-        android:fontFamily="@font/samsung_font_2"
         android:inputType="textPassword"
+        android:textColorHint="#78828A"
         android:paddingStart="24dp"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.518"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_id_text"
         tools:ignore="HardcodedText,RtlSymmetry" />
@@ -132,16 +146,15 @@
     <CheckBox
         android:id="@+id/auto_id_checkbox"
         android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="10dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
         android:fontFamily="@font/samsung_font_2"
-        android:letterSpacing="0.015"
+        android:letterSpacing="0.005"
         android:text="자동 로그인"
         android:textColor="#394750"
         android:textFontWeight="600"
-        android:textSize="15sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/log_in_password_text"
         app:layout_constraintTop_toBottomOf="@+id/log_in_password_text"
         tools:ignore="HardcodedText"
@@ -185,14 +198,14 @@
         android:id="@+id/find_password_btn"
         android:layout_width="wrap_content"
         android:layout_height="32dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
         android:fontFamily="@font/samsung_font_2"
         android:gravity="center"
         android:text="비밀번호 찾기"
         android:textColor="#A9B0B5"
-        android:textSize="15sp"
         android:textFontWeight="600"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="@+id/log_in_password_text"
         app:layout_constraintTop_toBottomOf="@+id/log_in_password_text"
         tools:ignore="HardcodedText"
