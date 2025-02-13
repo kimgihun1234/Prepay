@@ -8,6 +8,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 
 @Service
+@Slf4j
 public class ReissueService {
 
     private final JWTUtil jwtUtil;
@@ -75,6 +77,9 @@ public class ReissueService {
 
         String newAccess = jwtUtil.createJWT("access", email, 60000L, userId);
         String newRefresh = jwtUtil.createJWT("refresh", email, 120000L, userId);
+
+        log.info("새로운 액세스 토큰 : {}",newAccess);
+        log.info("새로운 리프레쉬 토큰 : {}",newRefresh);
 
         refreshRepository.deleteByRefresh(refresh);
         addRefresh(email, newRefresh, 86400000L);

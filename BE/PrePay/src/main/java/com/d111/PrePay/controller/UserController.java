@@ -53,7 +53,8 @@ public class UserController {
 //        String accessToken = kakaoService.getAccessToken(code);
         HashMap<String, Object> kaKaoUserInfo = kakaoService.getKaKaoUserInfo(code);
         TokenRes tokenRes = kakaoService.kakaoUserLogin(kaKaoUserInfo);
-
+        log.info("액세스 토큰 : {}",tokenRes.getAccess());
+        log.info("리프레쉬 토큰 : {}",tokenRes.getRefresh());
         Map<String, String> responseBody = new HashMap<>();
         responseBody.put("message", "로그인 성공");
 
