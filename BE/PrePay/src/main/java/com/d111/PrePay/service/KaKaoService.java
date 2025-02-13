@@ -89,7 +89,7 @@ public class KaKaoService {
         log.info("responseBody : {}",responseBody);
         Long id = ((Number) responseBody.get("id")).longValue();
         String nickname = (String) ((Map<String, Object>) responseBody.get("properties")).get("nickname");
-        String email = responseBody.get("email").toString();
+        String email = (String) ((Map<String, Object>) responseBody.get("kakao_account")).get("email");
 //        ObjectMapper objectMapper = new ObjectMapper();
 //        Long id = kaKaoUserInfo.getId();
 //        String email = kaKaoUserInfo.getKakao_account().get("email");

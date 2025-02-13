@@ -40,7 +40,7 @@ public class TeamController {
     }
 
     // 팀 이미지 수정
-    @PostMapping("/image")
+    @PostMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "팀 이미지 수정")
     public ResponseEntity<UploadImageRes> uploadImage(@RequestHeader Long userId,
                                                       @RequestPart("request") TeamIdReq req,
@@ -162,7 +162,7 @@ public class TeamController {
         return ResponseEntity.ok(teamService.getTeamInviteCode(email, teamId));
     }
 
-    @PostMapping("/store")
+    @PostMapping(value = "/store", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "팀 가맹점 추가")
     public ResponseEntity<TeamCreateStoreRes> createStore(@RequestHeader Long userId,
                                                           @RequestPart("request") TeamCreateStoreReq req,
