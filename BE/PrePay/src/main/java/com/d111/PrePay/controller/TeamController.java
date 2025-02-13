@@ -9,6 +9,7 @@ import com.d111.PrePay.dto.respond.GetUserOfTeamRes;
 import com.d111.PrePay.dto.respond.StoresRes;
 import com.d111.PrePay.dto.respond.TeamDetailRes;
 import com.d111.PrePay.dto.respond.TeamRes;
+import com.d111.PrePay.security.dto.CustomUserDetails;
 import com.d111.PrePay.service.ImageService;
 import com.d111.PrePay.service.TeamService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -194,16 +196,19 @@ public class TeamController {
     @Operation(summary = "팀 생성")
     public ResponseEntity<TeamCreateRes> createTeam(@RequestPart("request") TeamCreateReq request,
                                                     @RequestPart(value = "image", required = false) MultipartFile image,
-                                                    @RequestHeader Long userId) throws IOException {
+                                                    /*@RequestHeader Long userId*/
+    @AuthenticationPrincipal CustomUserDetails userDetails) throws IOException {
 
-//        Long userId = accessToken.getUserId();
+        Long userId = userDetails.getUserId();
         return ResponseEntity.ok(teamService.createTeam(request, userId, image));
     }
 
     @GetMapping("/myTeams")
     @Operation(summary = "<b>나의 팀 리스트")
-    public ResponseEntity<List<TeamRes>> getMyTeams(@RequestHeader Long userId) {
-//        Long userId = userDetails.getUserId();
+    public ResponseEntity<List<TeamRes>> getMyTeams(/*@RequestHeader Long userId*/
+    @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        Long userId = userDetails.getUserId();
         return ResponseEntity.ok(teamService.getMyTeams(userId));
     }
 
