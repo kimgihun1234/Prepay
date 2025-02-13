@@ -36,7 +36,8 @@ class PublicSearchAdapter(var publicGroupList: List<PublicTeamsRes>, private val
             binding.publicSearchLikeBtn.setOnClickListener {
                 isLiked = !isLiked  // 상태 변경
                 updateHeartIcon()  // 아이콘 변경
-                listener.sendLikeStatus(publicgroup, isLiked)  // 서버로 변경 요청
+                val likereq = LikeTeamsReq(publicgroup.teamId,isLiked)
+                listener.onLikeClick(likereq)
             }
 
             // 부모 레이아웃 터치 이벤트 방지 (하트 버튼 클릭 시 아이템 클릭 방지)
@@ -75,10 +76,5 @@ class PublicSearchAdapter(var publicGroupList: List<PublicTeamsRes>, private val
     // 갯수 반환
     override fun getItemCount(): Int {
         return publicGroupList.size
-    }
-
-    interface OnPublicClickListener {
-        fun onGroupClick(publicgroup: PublicTeamsRes)
-        fun onLikeClick(publicgroup: LikeTeamsReq, isLiked: Boolean)
     }
 }

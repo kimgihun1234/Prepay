@@ -9,20 +9,22 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.PermissionChecker
 import com.example.prepay.R
+import com.example.prepay.RetrofitUtil
 import com.example.prepay.data.response.LikeTeamsReq
 import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.databinding.FragmentGroupSearchBinding
-import com.example.prepay.ui.GroupSearch.PublicSearchAdapter.OnPublicClickListener
 import com.example.prepay.ui.GroupSearchDetails.AddPublicGroupDetailsFragment
 import com.example.prepay.ui.GroupSearchDetails.GroupSearchtDetailsViewModel
 import com.example.prepay.ui.MainActivity
@@ -31,6 +33,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
+import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.Locale
 
@@ -107,10 +110,23 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
         mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.PUBLIC_GROUP_DETAILS_FRAGMENT)
     }
 
-    override fun onLikeClick(publicgroup: PublicTeamsRes, isLiked: Boolean) {
-        val likeTeamsReq = LikeTeamsReq(publicgroup.teamId, isLiked)
-        val email = "user1@gmail.com"
+    override fun onLikeClick(publicgroup: LikeTeamsReq) {
+        Log.d(TAG,"클릭하였습니다")
+        sendlike(publicgroup)
     }
+
+    fun sendlike(likeTeamsReq: LikeTeamsReq){
+       lifecycleScope.launch {
+           runCatching {
+               RetrofitUtil.teamService.sendLikeStatus("user1@gmail.com",likeTeamsReq)
+           }.onSuccess {
+
+           }.onFailure {
+
+           }
+       }
+    }
+
 
 
     fun getCurrentAddress(location: Location): String {
