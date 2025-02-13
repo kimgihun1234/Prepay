@@ -7,10 +7,4 @@ data class OrderHistory(
     val refundRequested : Boolean,
     val withdraw : Boolean,
     val companyDinner: Boolean
-
-)
-
-data class OrderHistoryReq(
-    val teamId: Long,
-    val storeId:Int
 )

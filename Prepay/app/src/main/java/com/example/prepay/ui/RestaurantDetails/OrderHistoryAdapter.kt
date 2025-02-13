@@ -41,7 +41,7 @@ class OrderHistoryAdapter(var orderHistoryList: List<OrderHistory>,
 
             // 영수증 버튼 클릭 시 다이얼로그 표시
             binding.imageButton.setOnClickListener {
-                imageButtonClick.onClick(itemView, order)
+                imageButtonClick.onClick(itemView, order, order.orderHistoryId)
 
 //                val dialogBinding = DialogReceiptBinding.inflate(LayoutInflater.from(itemView.context))
 //                val dialog = AlertDialog.Builder(itemView.context)
@@ -87,7 +87,7 @@ class OrderHistoryAdapter(var orderHistoryList: List<OrderHistory>,
         return orderHistoryList.size
     }
     interface ImageButtonClick {
-        fun onClick(itemView: View, order: OrderHistory)
+        fun onClick(itemView: View, order: OrderHistory, orderHistoryId : Int)
     }
 
 }
