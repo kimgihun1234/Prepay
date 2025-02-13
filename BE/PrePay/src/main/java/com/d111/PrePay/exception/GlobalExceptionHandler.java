@@ -28,14 +28,7 @@ public class GlobalExceptionHandler {
         Map<String, Object> response = makeResponse(e, HttpStatus.NOT_FOUND);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, Object>> handleException(Exception e) {
-        e.printStackTrace();
-        Map<String, Object> response = makeResponse(e, HttpStatus.INTERNAL_SERVER_ERROR);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-    }
-
+    
     @ExceptionHandler(IllegalAccessException.class)
     public ResponseEntity<Map<String, Object>> handleIllegalAccessException(Exception e) {
         Map<String, Object> response = makeResponse(e, HttpStatus.BAD_REQUEST);
