@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.data.model.dto.OrderHistory
-import com.example.prepay.data.model.dto.OrderHistoryReq
+import com.example.prepay.data.response.OrderHistoryReq
 import kotlinx.coroutines.launch
 
 class OrderHistoryViewModel : ViewModel() {

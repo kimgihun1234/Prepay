@@ -33,6 +33,7 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private lateinit var receiptHistoryAdapter: ReceiptHistoryAdapter
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivity= context as MainActivity
@@ -70,8 +71,10 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
             orderHistoryAdapter.orderHistoryList = it
             orderHistoryAdapter.notifyDataSetChanged()
         }
+
         activityViewModel.teamId.value?.let {
             activityViewModel.storeId.value?.let { it1 ->
+                Log.d(TAG, "getAllOrderHistoryList: $it, $it1")
                 orderHistoryViewModel.getAllOrderHistoryList(1,
                     it, it1.toInt()
                 )
@@ -81,8 +84,7 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
 
 
         orderHistoryAdapter.imageButtonClick = object : OrderHistoryAdapter.ImageButtonClick {
-            override fun onClick(itemView: View, order: OrderHistory) {
-
+            override fun onClick(itemView: View, order: OrderHistory, orderHistoryId : Int) {
                 val dialogBinding = DialogReceiptBinding.inflate(LayoutInflater.from(itemView.context))
                 val dialog = AlertDialog.Builder(itemView.context)
                     .setView(dialogBinding.root)
@@ -101,8 +103,8 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
                         it -> receiptHistoryAdapter.receiptList = it
                     receiptHistoryAdapter.notifyDataSetChanged()
                 }
-
-                receiptViewModel.getAllReceiptList(1,1)
+                Log.d(TAG, "onClick: $orderHistoryId")
+                receiptViewModel.getAllReceiptList(orderHistoryId,1)
 
                 dialogBinding.recyclerView.layoutManager = LinearLayoutManager(itemView.context)
                 dialogBinding.useName.text = order.orderHistoryId.toString()
