@@ -19,11 +19,8 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
-import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.activityViewModels
@@ -66,7 +63,6 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.navigation.NavigationView
 import com.google.zxing.BarcodeFormat
-import com.google.zxing.integration.android.IntentIntegrator
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -92,6 +88,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     private val viewModel: GroupDetailsFragmentViewModel by viewModels()
     private val restaurantDetailsViewModel : RestaurantDetailsViewModel by viewModels()
 
+    var moneyDiff = 0
     //GPS관련 변수
     private var mMap: GoogleMap? = null
     private var currentMarker: Marker? = null
@@ -212,7 +209,9 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         }
 
         viewModel.moneyValue.observe(viewLifecycleOwner) { it->
-            binding.usePossiblePriceTxt.text = it.toString()
+            Log.d(TAG,"가격변동"+it.toString())
+            //binding.usePossiblePriceTxt.text = it.toString()
+            changeMoneyView()
         }
     }
 
@@ -263,6 +262,23 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             //mainActivity.broadcast("hello","hello")
         }
     }
+
+    fun changeMoneyView(){
+        lifecycleScope.launch {
+            kotlin.runCatching {
+                RetrofitUtil.teamService.getTeamDetails(1, activityViewModel.teamId.value!!)
+            }.onSuccess {
+                Log.d(TAG,"얼마 사용"+it.dailyPriceLimit+" "+it.usedAmount)
+                binding.usePossiblePriceTxt.text = CommonUtils.makeComma(viewModel.moneyValue.value!!.toInt() - it.usedAmount)
+                viewModel.updatePosition(it.position)
+                inviteCode = (it.teamPassword ?: "초대코드없음").toString()
+            }.onFailure {
+                Log.d(TAG, "서버 데이터 가져오기 실패")
+            }
+        }
+    }
+
+
 
     fun initialView(){
         lifecycleScope.launch{
