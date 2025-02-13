@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.data.model.dto.OrderHistory
-import com.example.prepay.data.model.dto.OrderHistoryReq
+import com.example.prepay.data.response.OrderHistoryReq
 import kotlinx.coroutines.launch
 
 class OrderHistoryViewModel : ViewModel() {
@@ -15,7 +15,7 @@ class OrderHistoryViewModel : ViewModel() {
     val orderHistoryListInfo : LiveData<List<OrderHistory>>
         get() = _orderHistoryListInfo
 
-    fun getAllOrderHistoryList(userId:Int, teamId:Long, storeId : Long) {
+    fun getAllOrderHistoryList(userId:Int, teamId:Long, storeId: Int) {
         viewModelScope.launch {
             runCatching {
                 RetrofitUtil.orderService.getDetailHistory(userId, OrderHistoryReq(teamId, storeId))
