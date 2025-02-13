@@ -44,6 +44,7 @@ public class TeamService {
     private final ChargeRequestRepository chargeRequestRepository;
     private final PartyRequestRepository partyRequestRepository;
     private final ImageService imageService;
+    private final StoreService storeService;
 
 
     // 팀 이미지 업로드
@@ -550,5 +551,51 @@ public class TeamService {
         }
 
         return new PublicTeamDetailRes(userTeam, userTeam.getTeam());
+    }
+
+    public List<PublicTeams2kmRes> get2kmPublicTeams(String email, float latitude, float longitude) {
+        List<Store> stores = storeRepository.findAll();
+        List<Store> in2Km = new ArrayList<>();
+        for (Store store : stores) {
+            if (storeService.calDistance(store.getLongitude(), store.getLatitude(), longitude, latitude)) {
+                in2Km.add(store);
+            }
+        }
+
+        List<PublicTeams2kmRes> result = new ArrayList<>();
+        for (Store store : in2Km) {
+            log.info("가게명 : {}", store.getStoreName());
+            List<TeamStore> teamStores = store.getTeamStores();
+            for (TeamStore teamStore : teamStores) {
+                Team team = teamStore.getTeam();
+                boolean check = false;
+                for (PublicTeams2kmRes tmpResult : result) {
+                    if (tmpResult.getTeamId() == team.getId()) {
+                        check = true;
+                        break;
+                    }
+                }
+                log.info("팀명 : {}", team.getTeamName());
+                if (check) {
+                    log.info("중복된 팀");
+                    continue;
+                }
+
+                if (team.isPublicTeam()) {
+                    log.info("팀 추가 : {}", team.getTeamName());
+
+                    Optional<UserTeam> opUserTeam = userTeamRepository.findByTeamIdAndUser_Email(team.getId(), email);
+                    PublicTeams2kmRes res = new PublicTeams2kmRes(team);
+                    res.setLatitude(store.getLatitude());
+                    res.setLongitude(store.getLongitude());
+                    if (opUserTeam.isPresent()) {
+                        res.setLike(opUserTeam.get().isLike());
+                    }
+                    result.add(res);
+                }
+            }
+        }
+        log.info("리스트 사이즈 : {}", result.size());
+        return result;
     }
 }

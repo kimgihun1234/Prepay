@@ -96,6 +96,16 @@ public class DbInitConfig implements ApplicationRunner {
         req.setBalance(100000000);
         teamService.createStore(req,null);
 
+        for (long l = 3; l < 10; l++) {
+            for (long k = 4; k < 10; k++) {
+                req = new TeamCreateStoreReq();
+                req.setStoreId(l);
+                req.setTeamId(k);
+                req.setBalance(100000000);
+                teamService.createStore(req,null);
+            }
+        }
+
         log.info("식당 팀에 삽입 완료");
 
         for (long i = 1; i < 5; i++) {

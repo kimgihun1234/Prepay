@@ -123,9 +123,9 @@ public class TeamController {
 //        Long userId = accessToken.getUserId();
         Long userId = userDetails.getUserId();
         String email = userDetails.getUsername();
-        log.info("유저 PK : {}",userId);
-        log.info("액세스 토큰 : {}",access);
-        log.info("유저 이메일 : {}",email);
+        log.info("유저 PK : {}", userId);
+        log.info("액세스 토큰 : {}", access);
+        log.info("유저 이메일 : {}", email);
         return ResponseEntity.ok(teamService.signInTeam(userId, req));
 
     }
@@ -160,7 +160,7 @@ public class TeamController {
     @Operation(summary = "팀 초대 코드 생성")
     public ResponseEntity<InviteCodeRes> generateInviteCode(/*@RequestHeader Long userId,*/ @RequestBody TeamIdReq req,
                                                                                             @AuthenticationPrincipal CustomUserDetails userDetails,
-    @RequestHeader String access) {
+                                                                                            @RequestHeader String access) {
 //        Long userId = accessToken.getUserId();
         Long userId = userDetails.getUserId();
         return ResponseEntity.ok(teamService.generateInviteCode(userId, req));
@@ -242,5 +242,11 @@ public class TeamController {
     @Operation(summary = "퍼블릭 팀 디테일")
     public ResponseEntity<PublicTeamDetailRes> getPublicTeamDetail(@RequestHeader String email, @PathVariable long teamId) {
         return ResponseEntity.ok(teamService.getPublicTeamDetail(email, teamId));
+    }
+
+    @GetMapping("/public-team/2km")
+    @Operation(summary = "2km 이내의 퍼블릭 팀 조회")
+    public ResponseEntity<List<PublicTeams2kmRes>> get2kmPublicTeams(@RequestHeader String email,@RequestParam float latitude, @RequestParam float longitude) {
+        return ResponseEntity.ok(teamService.get2kmPublicTeams(email, latitude, longitude));
     }
 }

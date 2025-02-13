@@ -62,7 +62,7 @@ public class StoreService {
     }
 
     // 경도 위도로 2km 이내이면 true
-    private boolean calDistance(float storeLongitude, float storeLatitude, float userLongitude, float userLatitude) {
+    public boolean calDistance(float storeLongitude, float storeLatitude, float userLongitude, float userLatitude) {
         final int EARTH_RADIUS_KM = 6371; // 지구 반지름 (km)
 
         // 라디안으로 변환
