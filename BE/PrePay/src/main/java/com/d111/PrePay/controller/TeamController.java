@@ -36,7 +36,7 @@ public class TeamController {
     @PostMapping("/like")
     @Operation(summary = "좋아요")
     public ResponseEntity<StandardRes> like(@RequestHeader String email, @RequestBody LikeReq req) {
-        return ResponseEntity.ok(teamService.like(email,req));
+        return ResponseEntity.ok(teamService.like(email, req));
     }
 
     // 팀 이미지 수정
@@ -225,5 +225,11 @@ public class TeamController {
     @Operation(summary = "<b>퍼블릭 팀 검색")
     public ResponseEntity<List<PublicTeamsRes>> getPublicTeamsByKeyword(@PathVariable String keyword) {
         return ResponseEntity.ok(teamService.getPublicTeamsByKeyword(keyword));
+    }
+
+    @GetMapping("/public-team/{teamId}")
+    @Operation(summary = "퍼블릭 팀 디테일")
+    public ResponseEntity<PublicTeamDetailRes> getPublicTeamDetail(@RequestHeader String email, @PathVariable long teamId) {
+        return ResponseEntity.ok(teamService.getPublicTeamDetail(email,teamId));
     }
 }

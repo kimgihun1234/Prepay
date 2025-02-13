@@ -2,6 +2,7 @@ package com.d111.PrePay.service;
 
 import com.d111.PrePay.dto.request.DetailHistoryReq;
 import com.d111.PrePay.dto.request.OrderCreateReq;
+import com.d111.PrePay.exception.NoQrException;
 import com.d111.PrePay.exception.NotEnoughBalanceException;
 import com.d111.PrePay.model.*;
 import com.d111.PrePay.repository.*;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -29,7 +32,10 @@ public class PosService {
 
     @Transactional
     public Long makeOrder(OrderCreateReq orderReq) {
-        Qr qr = qrRepository.findByUuid(orderReq.getQrUUID());
+        Qr qr = qrRepository.findByUuid(orderReq.getQrUUID()).orElseThrow(() -> {
+            log.error("qr uuid : {}", orderReq.getQrUUID());
+            throw new NoQrException("존재하지 않는 qr");
+        });
 
         if (qr.getGenDate() < System.currentTimeMillis() - 1000 * 60) {
             throw new RuntimeException("시간 초과");
@@ -38,19 +44,28 @@ public class PosService {
         }
         qr.setUsed(true);
         OrderHistory orderHistory = new OrderHistory(orderReq);
-        Store store = storeRepository.findById(orderReq.getStoreId()).orElseThrow(() -> new RuntimeException("가게 오류"));
+        Store store = storeRepository.findById(orderReq.getStoreId()).orElseThrow(() ->
+        {
+            log.error("가게 아이디 : {}", orderReq.getStoreId());
+            return new NoSuchElementException("가게 없음");
+        });
 
-        UserTeam userTeam = userTeamRepository.findByTeamIdAndUser_Email(orderReq.getTeamId(), orderReq.getEmail()).orElseThrow();
+        UserTeam userTeam = userTeamRepository.findByTeamIdAndUser_Email(orderReq.getTeamId(), orderReq.getEmail()).orElseThrow(() ->
+        {
+            log.error("팀 아아디 : {}, 이메일 : {}", orderReq.getTeamId(), orderReq.getEmail());
+            return new RuntimeException("userTeam 찾기 실패");
+        });
 
         Team team = userTeam.getTeam();
         User user = userTeam.getUser();
         TeamStore teamStore = teamStoreRepository.findTeamStoreByTeamAndStore(team, store);
-        
+
         log.info("총 주문 금액 : {}", orderHistory.getTotalPrice());
-        if (teamStore.getTeamStoreBalance() < 0) {
-            teamStore.setTeamStoreBalance(teamStore.getTeamStoreBalance() + orderHistory.getTotalPrice());
+        if (teamStore.getTeamStoreBalance() - orderHistory.getTotalPrice() < 0) {
+            log.error("팀 잔액 : {},현재주문 금액 : {}", teamStore.getTeamStoreBalance(), orderHistory.getTotalPrice());
             throw new NotEnoughBalanceException("팀 잔액이 부족합니다,");
         } else if (team.getDailyPriceLimit() - userTeam.getUsedAmount() < orderHistory.getTotalPrice()) {
+            log.error("일일한도 잔액 : {},현재주문 금액 : {}", team.getDailyPriceLimit() - userTeam.getUsedAmount(), orderHistory.getTotalPrice());
             throw new NotEnoughBalanceException("일일 한도 잔액이 부족합니다,");
         }
 
@@ -70,7 +85,8 @@ public class PosService {
         try {
             fcmService.sendDataMessageTo(user.getFcmToken(), "완료", "주문이 완료되었습니다.");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new RuntimeException("fcm 오류 발생");
         }
 
         return orderHistory.getId();

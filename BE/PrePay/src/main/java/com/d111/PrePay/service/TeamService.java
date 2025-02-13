@@ -527,4 +527,28 @@ public class TeamService {
         }
         return new StandardRes("좋아요 완료", 200);
     }
+
+    @Transactional
+    public PublicTeamDetailRes getPublicTeamDetail(String email, long teamId) {
+        Optional<UserTeam> opUserTeam = userTeamRepository.findByTeamIdAndUser_Email(teamId, email);
+        UserTeam userTeam;
+        if (opUserTeam.isEmpty()) {
+            User user = userRepository.findUserByEmail(email);
+            Team team = teamRepository.findById(teamId).orElseThrow(() -> new RuntimeException("팀 없음"));
+            userTeam = UserTeam.builder()
+                    .team(team)
+                    .user(user)
+                    .privilege(false)
+                    .usageCount(0)
+                    .usedAmount(0)
+                    .position(false)
+                    .isLike(false)
+                    .build();
+            userTeamRepository.save(userTeam);
+        } else {
+            userTeam = opUserTeam.get();
+        }
+
+        return new PublicTeamDetailRes(userTeam, userTeam.getTeam());
+    }
 }

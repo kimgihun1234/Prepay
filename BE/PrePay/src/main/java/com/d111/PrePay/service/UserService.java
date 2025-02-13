@@ -28,9 +28,11 @@ public class UserService {
         List<User> all = userRepository.findAll();
         for (User findUser : all) {
             if (user.getEmail().equals(findUser.getEmail())){
+                log.error("중복 이메일 : {}", userSignUpReq.getEmail());
                 throw new DuplicateUserException("이미 사용중인 이메일입니다.");
             }
             if (user.getNickname().equals(findUser.getNickname())){
+                log.error("중복 닉네임 : {}", userSignUpReq.getNickname());
                 throw  new DuplicateUserException("이미 사용중인 닉네임입니다.");
             }
         }
