@@ -125,9 +125,12 @@ public class KaKaoService {
             access = jwtUtil.createJWT("access", kakaoEmail, 60000L, savedUser.getId());
             refresh = jwtUtil.createJWT("refresh", kakaoEmail, 120000L, savedUser.getId());
 
+            log.info("로그인 유저 PK {}",savedUser.getId());
+
         } else {
             access = jwtUtil.createJWT("access", kakaoEmail, 60000L, kakaoUser.getId());
             refresh = jwtUtil.createJWT("refresh", kakaoEmail, 120000L, kakaoUser.getId());
+            log.info("로그인 유저 PK {}",kakaoUser.getId());
 
         }
         addRefresh(refresh, 86400000L);
