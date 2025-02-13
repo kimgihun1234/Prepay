@@ -122,7 +122,10 @@ public class TeamController {
                                                        @RequestBody SignInTeamReq req) {
 //        Long userId = accessToken.getUserId();
         Long userId = userDetails.getUserId();
-        log.info("유저 PK {}",userId);
+        String email = userDetails.getUsername();
+        log.info("유저 PK : {}",userId);
+        log.info("액세스 토큰 : {}",access);
+        log.info("유저 이메일 : {}",email);
         return ResponseEntity.ok(teamService.signInTeam(userId, req));
 
     }
