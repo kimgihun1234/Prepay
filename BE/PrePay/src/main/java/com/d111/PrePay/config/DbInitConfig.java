@@ -52,12 +52,12 @@ public class DbInitConfig implements ApplicationRunner {
 
         for (long i = 1; i < 6; i++) {
             String k = "team" + i;
-            teamService.createTeam(new TeamCreateReq(k, false, 1000000, 0, k+"테스트메시지","#FFFFFF"), i, null);
+            teamService.createTeam(new TeamCreateReq(k, false, 1000000, 0, k+"테스트메시지","FFFFFF"), i, null);
         }
 
         for (long i = 6; i < 11; i++) {
             String k = "team" + i;
-            teamService.createTeam(new TeamCreateReq(k, true, 500000, 0, k+"publicteam 테스트메시지2","#000000"), i, null);
+            teamService.createTeam(new TeamCreateReq(k, true, 500000, 0, k+"publicteam 테스트메시지2","000000"), i, null);
         }
         log.info("team 삽입 완료");
 

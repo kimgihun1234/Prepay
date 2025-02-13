@@ -9,7 +9,6 @@ import com.d111.PrePay.value.QrType;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -27,7 +26,6 @@ public class PosService {
     private final QrRepository qrRepository;
     private final TeamStoreRepository teamStoreRepository;
     private final FCMService fcmService;
-    private final RedisTemplate<String,Object>qrRedisTemplate;
 
     @Transactional
     public Long makeOrder(OrderCreateReq orderReq) {
@@ -79,48 +77,4 @@ public class PosService {
     }
 
 
-    public Long makeRedisOrder(OrderCreateReq orderReq) {
-        RedisQr qr = (RedisQr) qrRedisTemplate.opsForValue().get(orderReq.getQrUUID());
-        if(qr==null){
-            throw new RuntimeException("qr 시간 만료");
-        }
-
-        OrderHistory orderHistory = new OrderHistory(orderReq);
-        Store store = storeRepository.findById(orderReq.getStoreId()).orElseThrow(() -> new RuntimeException("가게 오류"));
-
-        UserTeam userTeam = userTeamRepository.findByTeamIdAndUser_Email(orderReq.getTeamId(), orderReq.getEmail()).orElseThrow();
-
-        Team team = userTeam.getTeam();
-        User user = userTeam.getUser();
-        TeamStore teamStore = teamStoreRepository.findTeamStoreByTeamAndStore(team, store);
-
-        log.info("총 주문 금액 : {}", orderHistory.getTotalPrice());
-        if (teamStore.getTeamStoreBalance() < 0) {
-            teamStore.setTeamStoreBalance(teamStore.getTeamStoreBalance() + orderHistory.getTotalPrice());
-            throw new NotEnoughBalanceException("팀 잔액이 부족합니다,");
-        } else if (team.getDailyPriceLimit() - userTeam.getUsedAmount() < orderHistory.getTotalPrice()) {
-            throw new NotEnoughBalanceException("일일 한도 잔액이 부족합니다,");
-        }
-
-        teamStore.setTeamStoreBalance(teamStore.getTeamStoreBalance() - orderHistory.getTotalPrice());
-        userTeam.setUsedAmount(userTeam.getUsedAmount() + orderHistory.getTotalPrice());
-        orderHistory.setCompanyDinner(qr.getType() != QrType.PRIVATE);
-        orderHistory.setStore(store);
-        orderHistory.setTeam(team);
-        orderHistory.setUser(user);
-        orderHistoryRepository.save(orderHistory);
-        for (DetailHistoryReq detailHistoryReq : orderReq.getDetails()) {
-            DetailHistory detailHistory = new DetailHistory(detailHistoryReq);
-            detailHistory.setOrderHistory(orderHistory);
-            detailHistoryRepository.save(detailHistory);
-        }
-
-        try {
-            fcmService.sendDataMessageTo(user.getFcmToken(), "완료", "주문이 완료되었습니다.");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        return orderHistory.getId();
-    }
 }
