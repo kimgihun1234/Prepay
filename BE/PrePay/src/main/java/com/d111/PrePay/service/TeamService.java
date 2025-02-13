@@ -334,7 +334,7 @@ public class TeamService {
     public TeamCreateRes createTeam(TeamCreateReq request, Long userId, MultipartFile image) {
         String teamPassword;
         String teamColor;
-        if (request.isPublicTeam()) {
+        if (!request.isPublicTeam()) {
             teamPassword = generateRandomPassword();
             teamColor = request.getColor();
         } else {
