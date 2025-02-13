@@ -60,9 +60,9 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
             if (validateInputs()) {
                 val groupName = binding.groupNameText.text.toString()
                 val limitAmount = binding.limitSettingText.text.toString()
-                val cardType = colorCard
+                val cardType = colorCard?:"FFFFFF"
                 val makePrivateTeam = PublicPrivateTeam(
-                    true,
+                    false,
                     groupName,
                     limitAmount.toInt(),
                     cardType
