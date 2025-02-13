@@ -33,6 +33,13 @@ class PublicSearchAdapter(var publicGroupList: List<PublicTeamsRes>, private val
         }
     }
 
+    // 좋아요 그룹 정렬
+    fun likeUpdateSort(likeGroupList: List<PublicTeamsRes>) {
+        publicGroupList = likeGroupList
+        notifyDataSetChanged()
+    }
+
+
     // 뷰홀더 생성
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PublicGroupViewHolder {
         val binding = ItemPublicGroupBinding.inflate(LayoutInflater.from(parent.context), parent, false)

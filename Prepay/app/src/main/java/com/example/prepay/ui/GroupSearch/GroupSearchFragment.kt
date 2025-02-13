@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
@@ -69,6 +70,8 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivity= context as MainActivity
+
+        val likeBtn: Button = findViewById
     }
 
     override fun onStart() {
