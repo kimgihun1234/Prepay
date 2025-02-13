@@ -7,6 +7,18 @@
     android:layout_marginBottom="10dp"
     android:background="@drawable/round_background">
 
+    <ImageButton
+        android:id="@+id/public_search_like_btn"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="24dp"
+        android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
+        android:src="@drawable/like_heart_empty"
+        app:layout_constraintStart_toEndOf="@+id/public_distance"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/public_name"
         android:layout_width="wrap_content"
