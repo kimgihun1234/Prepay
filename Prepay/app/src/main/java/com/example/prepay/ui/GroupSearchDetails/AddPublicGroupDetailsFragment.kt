@@ -113,7 +113,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
         binding.likeBtn.setOnClickListener {
             viewModel.toggleLike()
             val email = "user1@gmail.com"
-            val info = activityViewModel.teamId.value?.let { LikeTeamsReq(it, viewModel.isLiked.value ?: false) }
+            val info = activityViewModel.teamId.value?.let { LikeTeamsReq(it.toInt(), viewModel.isLiked.value ?: false) }
             Log.d(TAG, "onStop: ${activityViewModel.teamId.value}")
             info?.let { viewModel.sendLikeStatus(email, it) }
         }

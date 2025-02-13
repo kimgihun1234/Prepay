@@ -89,6 +89,6 @@ interface TeamService {
 
     //공개된 그룹의 좋아요 정보를 보냅니다.
     @POST("/team/like")
-    suspend fun sendLikeStatus(@Header("email") email: String, @Body request: LikeTeamsReq): Map<String, Int>
+    suspend fun sendLikeStatus(@Header("email") email: String, @Body request: LikeTeamsReq): Map<String, String>
 
 }

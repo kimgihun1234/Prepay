@@ -26,6 +26,7 @@ import com.example.prepay.ui.GroupDetails.AddRestaurantFragment
 import com.example.prepay.ui.GroupDetails.GroupDetailsFragment
 import com.example.prepay.ui.GroupSearch.GroupSearchFragment
 import com.example.prepay.ui.GroupSearch.GroupSearchFragmentViewModel
+import com.example.prepay.ui.GroupSearch.OnPublicClickListener
 import com.example.prepay.ui.GroupSearch.PublicSearchAdapter
 import com.example.prepay.ui.GroupSearchDetails.AddPublicGroupDetailsFragment
 import com.example.prepay.ui.MyPage.MyPageFragment
@@ -40,7 +41,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 private const val TAG = "MainActivity_싸피"
-class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate), PublicSearchAdapter.OnPublicClickListener {
+class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
     private val groupSearchFragmentViewModel : GroupSearchFragmentViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -196,9 +197,5 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     companion object{
 
-    }
-
-    override fun onGroupClick(publicgroup: PublicTeamsRes) {
-        TODO("Not yet implemented")
     }
 }
