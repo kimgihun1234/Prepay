@@ -13,11 +13,11 @@ import retrofit2.http.Path
 interface OrderService {
 
     @POST("order/history")
-    suspend fun getDetailHistory(@Header("userId") userId: Int,
+    suspend fun getDetailHistory(@Header("access") access: String,
                                  @Body request: OrderHistoryReq,
                                  ) : List<OrderHistory>
 
     @GET("order/history/{detailHistoryId}")
     suspend fun getDetailReceipt(@Path("detailHistoryId") detailHistoryId : Int,
-                                 @Header("userId") userId: Int) : List<Receipt>
+                                 @Header("access") access: String) : List<Receipt>
 }

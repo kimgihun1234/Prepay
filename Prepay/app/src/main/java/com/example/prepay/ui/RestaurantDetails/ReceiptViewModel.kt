@@ -14,10 +14,10 @@ class ReceiptViewModel : ViewModel() {
     val receiptListInfo : LiveData<List<Receipt>>
         get() = _receiptListInfo
 
-    fun getAllReceiptList(detailHistoryId: Int, userId:Int) {
+    fun getAllReceiptList(detailHistoryId: Int, access:String) {
         viewModelScope.launch {
             runCatching {
-                RetrofitUtil.orderService.getDetailReceipt(detailHistoryId, userId)
+                RetrofitUtil.orderService.getDetailReceipt(detailHistoryId, access)
             } .onSuccess { response ->
                 _receiptListInfo.postValue(response)
                 Log.d("ReceiptList", "getDetailReceiptList: 영수증리스트 가져오기 $response")
