@@ -48,3 +48,7 @@ kakao:
 
 fcm:
   url: ${FCM_API_URL}
+redis:
+  password: ${REDIS_PASSWORD}
+  port: ${REDIS_PORT}
+  host: ${REDIS_HOST}

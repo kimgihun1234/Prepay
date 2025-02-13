@@ -25,4 +25,13 @@ public class PosController {
     public ResponseEntity<Long> makeOrder(@RequestBody OrderCreateReq orderCreateReq) {
         return ResponseEntity.ok(posService.makeOrder(orderCreateReq));
     }
+
+    @PostMapping("/redisOrder")
+    @Operation(summary = "redis 주문 생성", description = "<b>long : userTeamId" +
+            "<br>long : storeId" +
+            "<br>boolean companyDinner ->회식이면 true" +
+            "<br> List(DetailHistoryReq) details")
+    public ResponseEntity<Long> makeRedisOrder(@RequestBody OrderCreateReq orderCreateReq) {
+        return ResponseEntity.ok(posService.makeRedisOrder(orderCreateReq));
+    }
 }

@@ -13,6 +13,9 @@ pipeline {
 
         JWT_SECRET = credentials('JWT_SECRET')
 
+        REDIS_PASSWORD = credentials('REDIS_PASSWORD')
+        REDIS_PORT = credentials('REDIS_PORT')
+        REDIS_HOST = credentials('REDIS_HOST')
 
         FCM_API_URL = credentials('FCM_API_URL')
 
@@ -124,6 +127,9 @@ pipeline {
                                       -e client_secret=${client_secret} \
                                       -e FCM_API_URL=${FCM_API_URL}\
                                       -e KAKAO_CLIENT_ID=${KAKAO_CLIENT_ID} \
+                                      -e REDIS_PASSWORD=${REDIS_PASSWORD} \
+                                      -e REDIS_PORT=${REDIS_PORT} \
+                                      -e REDIS_HOST${REDIS_HOST} \
                                       -e TZ=Asia/Seoul\
                                       ${DOCKER_IMAGE}:latest
                                 """.stripIndent()
