@@ -48,3 +48,6 @@ kakao:
 
 fcm:
   url: ${FCM_API_URL}
+springdoc:
+  swagger-ui:
+    display-request-duration: true

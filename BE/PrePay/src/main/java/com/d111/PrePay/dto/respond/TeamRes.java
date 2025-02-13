@@ -13,12 +13,14 @@ public class TeamRes {
     private boolean publicTeam;
     private int balance;
     private Long teamId;
+    private String color;
 
     public TeamRes(UserTeam userTeam) {
         this.teamId = userTeam.getTeam().getId();
         this.teamName = userTeam.getTeam().getTeamName();
         this.publicTeam = userTeam.getTeam().isPublicTeam();
         this.balance = userTeam.getTeam().getDailyPriceLimit() - userTeam.getUsedAmount();
+        this.color=userTeam.getTeam().getColor();
         log.info("dailyLimit : {} , usedAmount : {}", userTeam.getTeam().getDailyPriceLimit(), userTeam.getUsedAmount());
     }
 }
