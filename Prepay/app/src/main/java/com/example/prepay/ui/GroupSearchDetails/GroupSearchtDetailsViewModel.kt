@@ -13,8 +13,8 @@ import com.example.prepay.data.response.TeamDetailRes
 import kotlinx.coroutines.launch
 import kotlin.math.log
 
-private const val TAG = "GroupSearchtDetailsView"
-class GroupSearchtDetailsViewModel : ViewModel() {
+private const val TAG = "GroupSearchDetailsView"
+class GroupSearchDetailsViewModel : ViewModel() {
 //    val groupId: MutableLiveData<Int> = MutableLiveData()
 //    val groupName: MutableLiveData<String> = MutableLiveData()
 //    val groupMessage: MutableLiveData<String> = MutableLiveData()
