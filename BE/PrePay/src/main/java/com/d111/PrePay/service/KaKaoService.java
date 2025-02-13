@@ -89,17 +89,18 @@ public class KaKaoService {
         log.info("responseBody : {}",responseBody);
         Long id = ((Number) responseBody.get("id")).longValue();
         String nickname = (String) ((Map<String, Object>) responseBody.get("properties")).get("nickname");
+        String email = responseBody.get("email").toString();
 //        ObjectMapper objectMapper = new ObjectMapper();
 //        Long id = kaKaoUserInfo.getId();
 //        String email = kaKaoUserInfo.getKakao_account().get("email");
 //        String nickname = kaKaoUserInfo.getProperties().getNickname();
 
         log.info("카카오 PK : {}",id);
-//        log.info("이메일 : {}",email);
+        log.info("이메일 : {}",email);
         log.info("닉네임 : {}",nickname);
 
         userInfo.put("id",id);
-//        userInfo.put("email",email);
+        userInfo.put("email",email);
         userInfo.put("nickname",nickname);
 
         return userInfo;
@@ -107,7 +108,7 @@ public class KaKaoService {
 
     public TokenRes kakaoUserLogin(HashMap<String,Object> userInfo) {
         Long kid = Long.valueOf(userInfo.get("id").toString());
-//        String kakaoEmail = userInfo.get("email").toString();
+        String kakaoEmail = userInfo.get("email").toString();
         String nickName = userInfo.get("nickname").toString();
 
         User kakaoUser = userRepository.findByKakaoId(kid);
@@ -118,14 +119,15 @@ public class KaKaoService {
             User user = new User();
             user.setNickname(nickName);
             user.setKakaoId(kid);
+            user.setEmail(kakaoEmail);
             User savedUser = userRepository.save(user);
 
-            access = jwtUtil.createJWT("access", savedUser.getNickname(), 600000L, savedUser.getId());
-            refresh = jwtUtil.createJWT("refresh", savedUser.getNickname(), 86400000L, savedUser.getId());
+            access = jwtUtil.createJWT("access", kakaoEmail, 600000L, savedUser.getId());
+            refresh = jwtUtil.createJWT("refresh", kakaoEmail, 86400000L, savedUser.getId());
 
         } else {
-            access = jwtUtil.createJWT("access", nickName, 600000L, kakaoUser.getId());
-            refresh = jwtUtil.createJWT("refresh", nickName, 86400000L, kakaoUser.getId());
+            access = jwtUtil.createJWT("access", kakaoEmail, 600000L, kakaoUser.getId());
+            refresh = jwtUtil.createJWT("refresh", kakaoEmail, 86400000L, kakaoUser.getId());
 
         }
         addRefresh(refresh, 86400000L);

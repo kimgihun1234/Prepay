@@ -285,9 +285,21 @@ public class TeamService {
     // 유저팀 찾을 때 유저 찾기
     public List<GetUserOfTeamRes> getUsersOfTeam(Long teamId, Long userId) {
         Team team = teamRepository.findTeamWithUserTeamAndUserByTeamId(teamId);
+        List<GetUserOfTeamRes> resultList = new ArrayList<>();
+        GetUserOfTeamRes ownerUser = null;
+        int idx = 0;
+        for (UserTeam userTeam : team.getUserTeams()) {
+            if (userTeam.isPosition()) {
+                ownerUser = new GetUserOfTeamRes(userTeam);
+                resultList.add(idx, ownerUser);
+                idx++;
+            } else {
+                GetUserOfTeamRes getUserOfTeamRes = new GetUserOfTeamRes(userTeam);
+                resultList.add(getUserOfTeamRes);
+            }
+        }
 
-        return team.getUserTeams().stream().map(GetUserOfTeamRes::new).collect(Collectors.toList());
-
+        return resultList;
     }
 
 
