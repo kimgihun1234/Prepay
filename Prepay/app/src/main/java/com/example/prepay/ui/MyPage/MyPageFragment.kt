@@ -80,7 +80,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
 
     private fun initEvent() {
         binding.createGroupBtn.setOnClickListener {
-            mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.CREATE_PUBLIC_GROUP_FRAGMENT)
+            mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.CREATE_GROUP_FRAGMENT)
         }
         binding.enterGroupBtn.setOnClickListener {
             mainActivity.enterDialog()

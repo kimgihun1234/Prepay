@@ -13,6 +13,7 @@ import com.example.prepay.CommonUtils
 import com.example.prepay.PermissionChecker
 import com.example.prepay.R
 import com.example.prepay.data.remote.FirebaseTokenService
+import com.example.prepay.data.response.TokenReq
 import com.example.prepay.databinding.ActivityLoginBinding
 import com.example.prepay.ui.Login.FindPasswordFragment
 import com.example.prepay.ui.Login.LoginFragment
@@ -96,7 +97,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
             // token log 남기기
             Log.d(TAG, "token: ${task.result?:"task.result is null"}")
             if(task.result != null){
-                uploadToken(task.result!!)
+                val tr = TokenReq(task.result!!)
+                uploadToken(tr)
             }
         })
     }
@@ -116,10 +118,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
         const val channel_id = "ssafy_channel"
 
         // ratrofit  수업 후 network 에 업로드 할 수 있도록 구성
-        fun uploadToken(token: String) {
+        fun uploadToken(token: TokenReq) {
             // 새로운 토큰 수신 시 서버로 전송
             val storeService = ApplicationClass.retrofit.create(FirebaseTokenService::class.java)
-            storeService.uploadToken(token).enqueue(object : Callback<String> {
+            storeService.uploadToken("user1@gmail.com",token).enqueue(object : Callback<String> {
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     if (response.isSuccessful) {
                         val res = response.body()

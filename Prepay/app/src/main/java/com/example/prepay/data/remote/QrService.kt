@@ -8,8 +8,8 @@ import retrofit2.http.Path
 
 interface QrService {
     //개인용 qr생성
-    @GET("/qr/private")
-    suspend fun qrPrivateCreate(@Header("userEmail") userEmail: String): QrRes
+    @GET("/qr/{teamId}/private")
+    suspend fun qrPrivateCreate(@Header("userEmail") userEmail: String,@Path("teamId") teamId: Int): QrRes
     @GET("/qr/{teamId}/party")
     suspend fun qrTeamCreate(@Header("userEmail") userEmail: String,@Path("teamId") teamId: Int) :QrRes
 

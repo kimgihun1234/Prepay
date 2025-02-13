@@ -4,6 +4,7 @@ import com.example.prepay.data.model.dto.PublicPrivateTeam
 import com.example.prepay.data.response.BanUserReq
 import com.example.prepay.data.response.GetUserOfTeamRes
 import com.example.prepay.data.response.LikeTeamsReq
+import com.example.prepay.data.response.MoneyChangeReq
 import com.example.prepay.data.response.PrivilegeUserReq
 import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.data.response.SignInTeamReq
@@ -48,6 +49,11 @@ interface TeamService {
     // 본인의 팀의 상세 정보 조회
     @GET("/team/{teamId}")
     suspend fun getTeamDetails(@Header("userId") userId: Long, @Path("teamId") teamId: Long): TeamDetailRes
+
+    //한도 변경
+    @POST("/team/limit")
+    suspend fun moneyChange(@Header("userId") userId: Long, @Body request: MoneyChangeReq) : TeamDetailRes
+
 
     //특정 사용자를 팀에서 강퇴합니다.
     @POST("/team/ban")
