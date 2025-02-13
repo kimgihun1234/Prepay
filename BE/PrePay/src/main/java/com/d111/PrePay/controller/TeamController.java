@@ -152,8 +152,10 @@ public class TeamController {
 
     @PostMapping("/code")
     @Operation(summary = "팀 초대 코드 생성")
-    public ResponseEntity<InviteCodeRes> generateInviteCode(@RequestHeader Long userId, @RequestBody TeamIdReq req) {
+    public ResponseEntity<InviteCodeRes> generateInviteCode(/*@RequestHeader Long userId,*/ @RequestBody TeamIdReq req,
+                                                                                            @AuthenticationPrincipal CustomUserDetails userDetails) {
 //        Long userId = accessToken.getUserId();
+        Long userId = userDetails.getUserId();
         return ResponseEntity.ok(teamService.generateInviteCode(userId, req));
 
     }
@@ -167,9 +169,9 @@ public class TeamController {
     @PostMapping(value = "/store", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "팀 가맹점 추가")
     public ResponseEntity<TeamCreateStoreRes> createStore(
-                                                          @RequestPart("request") TeamCreateStoreReq req,
-                                                          @RequestPart(value = "image", required = false) MultipartFile image,
-                                                          @RequestHeader Long userId) throws IOException {
+            @RequestPart("request") TeamCreateStoreReq req,
+            @RequestPart(value = "image", required = false) MultipartFile image,
+            @RequestHeader Long userId) throws IOException {
         return ResponseEntity.ok(teamService.createStore(req, image));
     }
 
@@ -196,19 +198,16 @@ public class TeamController {
     @Operation(summary = "팀 생성")
     public ResponseEntity<TeamCreateRes> createTeam(@RequestPart("request") TeamCreateReq request,
                                                     @RequestPart(value = "image", required = false) MultipartFile image,
-                                                    /*@RequestHeader Long userId*/
-    @AuthenticationPrincipal CustomUserDetails userDetails) throws IOException {
+                                                    @RequestHeader Long userId) throws IOException {
 
-        Long userId = userDetails.getUserId();
         return ResponseEntity.ok(teamService.createTeam(request, userId, image));
     }
 
     @GetMapping("/myTeams")
     @Operation(summary = "<b>나의 팀 리스트")
-    public ResponseEntity<List<TeamRes>> getMyTeams(/*@RequestHeader Long userId*/
-    @AuthenticationPrincipal CustomUserDetails userDetails) {
-
-        Long userId = userDetails.getUserId();
+    public ResponseEntity<List<TeamRes>> getMyTeams(@RequestHeader Long userId)
+//    @AuthenticationPrincipal CustomUserDetails userDetails)
+    {
         return ResponseEntity.ok(teamService.getMyTeams(userId));
     }
 
@@ -235,6 +234,6 @@ public class TeamController {
     @GetMapping("/public-team/{teamId}")
     @Operation(summary = "퍼블릭 팀 디테일")
     public ResponseEntity<PublicTeamDetailRes> getPublicTeamDetail(@RequestHeader String email, @PathVariable long teamId) {
-        return ResponseEntity.ok(teamService.getPublicTeamDetail(email,teamId));
+        return ResponseEntity.ok(teamService.getPublicTeamDetail(email, teamId));
     }
 }
