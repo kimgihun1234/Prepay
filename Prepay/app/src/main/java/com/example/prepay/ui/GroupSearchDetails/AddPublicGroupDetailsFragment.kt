@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.example.prepay.BaseFragment
 import com.example.prepay.R
 import com.example.prepay.databinding.FragmentPublicGroupDetailsBinding
@@ -31,12 +32,17 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.data.response.LikeTeamsReq
+import com.example.prepay.data.response.PublicTeamDetailsRes
+import com.example.prepay.data.response.PublicTeamsRes
+import com.example.prepay.ui.GroupSearch.PublicSearchAdapter
 import com.example.prepay.ui.MainActivityViewModel
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.text.NumberFormat
@@ -56,6 +62,8 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
     private var currentMarker: Marker? = null
     private val viewModel: GroupSearchtDetailsViewModel by viewModels()
     private val activityViewModel : MainActivityViewModel by activityViewModels()
+    private lateinit var teamsRes: PublicTeamDetailsRes
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,49 +73,66 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initEvent()
+        initViewModel()
+        
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         val mapFragment = childFragmentManager.findFragmentById(R.id.public_detail_map) as SupportMapFragment
         mapFragment.getMapAsync(readyCallback)
     }
 
+    private fun initViewModel() {
+
+        viewModel.detailInfo.observe(viewLifecycleOwner) { it ->
+            teamsRes = it
+            Log.d(TAG, "initViewModel: ${it}")
+        }
+        viewModel.getGroupDetails("user1@gmail.com", 1)
+    }
+
     private fun initEvent() {
+        binding.publicDetailTeamName.text = viewModel.detailInfo.value?.teamName
+        Log.d(TAG, "initEvent: ${viewModel.detailInfo.value?.teamName}")
+        binding.publicDetailText.text = viewModel.detailInfo.value?.teamMessage
+        
 
-        viewModel.groupId.observe(viewLifecycleOwner, Observer { id ->
-            binding.publicDetailQrBtn.isEnabled = id != null && id > 0
-        })
 
-        viewModel.groupName.observe(viewLifecycleOwner, Observer { name ->
-            Log.d(TAG, "groupName updated: $name")
-            binding.publicDetailTeamName.text = name
-        })
+//
+//        viewModel.groupId.observe(viewLifecycleOwner, Observer { id ->
+//            binding.publicDetailQrBtn.isEnabled = id != null && id > 0
+//        })
+//
+//        viewModel.groupName.observe(viewLifecycleOwner, Observer { name ->
+//            Log.d(TAG, "groupName updated: $name")
+//            binding.publicDetailTeamName.text = name
+//        })
+//
+//        viewModel.groupMessage.observe(viewLifecycleOwner, Observer { message ->
+//            Log.d(TAG, "groupContent updated: $message")
+//            binding.publicDetailText.text = message
+//        })
+//
+//        viewModel.groupLeftMoney.observe(viewLifecycleOwner, Observer { leftMoney ->
+//            Log.d(TAG, "groupLeftMoney updated: $leftMoney")
+//            //  binding.leftMoneyInfo.text = leftMoney.toString()
+//            animateMoneyChange(leftMoney)
+//        })
+//
+//        viewModel.groupImageURL.observe(viewLifecycleOwner, Observer { imageURL ->
+//            Log.d(TAG, "groupImageURL updated: $imageURL")
+//            if (!imageURL.isNullOrEmpty()) {
+//                Glide.with(requireContext())
+//                    .load(imageURL)
+//                    .into(binding.publicDetailImage)
+//            } else {
+//                binding.publicDetailImage.setImageResource(R.drawable.logo)
+//            }
+//        })
 
-        viewModel.groupMessage.observe(viewLifecycleOwner, Observer { message ->
-            Log.d(TAG, "groupContent updated: $message")
-            binding.publicDetailText.text = message
-        })
-
-        viewModel.groupLeftMoney.observe(viewLifecycleOwner, Observer { leftMoney ->
-            Log.d(TAG, "groupLeftMoney updated: $leftMoney")
-            //  binding.leftMoneyInfo.text = leftMoney.toString()
-            animateMoneyChange(leftMoney)
-        })
-
-        viewModel.groupImageURL.observe(viewLifecycleOwner, Observer { imageURL ->
-            Log.d(TAG, "groupImageURL updated: $imageURL")
-            if (!imageURL.isNullOrEmpty()) {
-                Glide.with(requireContext())
-                    .load(imageURL)
-                    .into(binding.publicDetailImage)
-            } else {
-                binding.publicDetailImage.setImageResource(R.drawable.logo)
-            }
-        })
-
-        // 좋아요 기능
-        viewModel.isLiked.observe(viewLifecycleOwner, Observer { isLiked ->
-            val imageRes = if (isLiked) R.drawable.like_heart_fill else R.drawable.like_heart_empty
-            binding.likeBtn.setImageResource(imageRes)
-        })
+//        // 좋아요 기능
+//        viewModel.isLiked.observe(viewLifecycleOwner, Observer { isLiked ->
+//            val imageRes = if (isLiked) R.drawable.like_heart_fill else R.drawable.like_heart_empty
+//            binding.likeBtn.setImageResource(imageRes)
+//        })
 
 
         binding.likeBtn.setOnClickListener {
@@ -144,7 +169,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
             }
 
             // AlertDialog 생성
-            val dialog = androidx.appcompat.app.AlertDialog.Builder(context)
+            val dialog = AlertDialog.Builder(context)
                 .setView(dialogView)
                 .setCancelable(true)  // 뒤로 가기 버튼 허용
                 .create()
@@ -216,6 +241,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
 //        }
 
     }
+
 
     private val readyCallback: OnMapReadyCallback by lazy {
         object : OnMapReadyCallback {
@@ -296,6 +322,19 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
         animator.start()
     }
 
+
+
+    fun sendlike(likeTeamsReq: LikeTeamsReq){
+        lifecycleScope.launch {
+            runCatching {
+                RetrofitUtil.teamService.sendLikeStatus("user1@gmail.com",likeTeamsReq)
+            }.onSuccess {
+
+            }.onFailure {
+
+            }
+        }
+    }
 //    override fun onStop() {
 //        super.onStop()
 //        val email = "user1@gmail.com"

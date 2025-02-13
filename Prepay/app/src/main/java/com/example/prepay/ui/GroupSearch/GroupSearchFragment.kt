@@ -46,7 +46,7 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
     private lateinit var mainActivity: MainActivity
     private lateinit var publicSearchAdapter: PublicSearchAdapter
     private val viewModel: GroupSearchFragmentViewModel by viewModels()
-    private val activityViewModel : MainActivityViewModel by activityViewModels()
+    private val activityViewModel: MainActivityViewModel by activityViewModels()
 
     // GPS관련 변수
     private var mMap: GoogleMap? = null
@@ -64,7 +64,7 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
         super.onCreate(savedInstanceState)
         mainActivity= context as MainActivity
 
-        val likeBtn: Button = findViewById
+//        val likeBtn: Button = findViewById
     }
 
     override fun onStart() {
@@ -93,23 +93,13 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
             publicSearchAdapter.notifyDataSetChanged()
         }
 
-        // 임시로 코드 작성
-        val email = "user1@gmail.com"
+//        // 임시로 코드 작성
+//        val email = "user1@gmail.com"
         groupSearchFragmentViewModel.getAllPublicTeamList()
     }
 
     override fun onGroupClick(publicgroup: PublicTeamsRes) {
-        val viewModel = ViewModelProvider(mainActivity).get(GroupSearchtDetailsViewModel::class.java)
-        viewModel.sendGroupDetails(
-            publicgroup.teamId,
-            publicgroup.teamName,
-            publicgroup.teamMessage,
-            publicgroup.teamBalance,
-            publicgroup.teamInitializerNickname,
-            publicgroup.imageURL
-        )
-
-        val fragment = AddPublicGroupDetailsFragment()
+        Log.d(TAG, "onGroupClick: ")
         mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.PUBLIC_GROUP_DETAILS_FRAGMENT)
     }
 

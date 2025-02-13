@@ -1,5 +1,6 @@
 package com.example.prepay.ui.GroupSearch
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,6 +10,7 @@ import com.example.prepay.R
 import com.example.prepay.data.response.LikeTeamsReq
 import com.example.prepay.data.response.PublicTeamsRes
 
+private const val TAG = "PublicSearchAdapter_싸피"
 class PublicSearchAdapter(var publicGroupList: List<PublicTeamsRes>, private val listener: OnPublicClickListener) :
     RecyclerView.Adapter<PublicSearchAdapter.PublicGroupViewHolder>() {
 
@@ -29,7 +31,8 @@ class PublicSearchAdapter(var publicGroupList: List<PublicTeamsRes>, private val
                 .into(binding.groupImage)
 
             // ❤️ 초기 하트 상태 설정 (서버 값 반영)
-            isLiked = publicgroup.isLike
+            Log.d(TAG,publicgroup.like.toString())
+            isLiked = publicgroup.like
             updateHeartIcon()
 
             // ❤️ 하트 버튼 클릭 이벤트 (서버 반영 포함)
