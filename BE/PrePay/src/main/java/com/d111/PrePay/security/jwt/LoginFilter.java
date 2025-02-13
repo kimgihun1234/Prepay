@@ -98,7 +98,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         addRefresh(email, refresh, 86400000L);
 
         response.setHeader("access", access);
-        response.addCookie(createCookie("refresh", refresh));
+        response.setHeader("refresh", refresh);
         response.setStatus(HttpStatus.OK.value());
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -122,21 +122,21 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        System.out.println("3123");
+        log.info("로그인 실패");
         response.setStatus(401);
     }
 
-    private Cookie createCookie(String key, String value) {
-
-        Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(24 * 60 * 60);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        cookie.setAttribute("SameSite", "None");  // 크로스 사이트 요청에서도 쿠키 허용
-        cookie.setSecure(true);
-
-        return cookie;
-    }
+//    private Cookie createCookie(String key, String value) {
+//
+//        Cookie cookie = new Cookie(key, value);
+//        cookie.setMaxAge(24 * 60 * 60);
+//        cookie.setHttpOnly(true);
+//        cookie.setPath("/");
+//        cookie.setAttribute("SameSite", "None");  // 크로스 사이트 요청에서도 쿠키 허용
+//        cookie.setSecure(true);
+//
+//        return cookie;
+//    }
 
 
 }

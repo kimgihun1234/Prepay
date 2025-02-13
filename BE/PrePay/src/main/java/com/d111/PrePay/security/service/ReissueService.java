@@ -30,15 +30,8 @@ public class ReissueService {
 
     public ResponseEntity<?> createRefresh(HttpServletRequest request, HttpServletResponse response) {
         String refresh = null;
-        Cookie[] cookies = request.getCookies();
+        refresh = request.getHeader("refresh");
 
-        for (Cookie cookie : cookies) {
-            cookie.getName();
-            if (cookie.getName().equals("refresh")) {
-
-                refresh = cookie.getValue();
-            }
-        }
 
         if (refresh == null) {
 
@@ -84,7 +77,7 @@ public class ReissueService {
         refreshRepository.deleteByRefresh(refresh);
         addRefresh(email, newRefresh, 86400000L);
         response.setHeader("access", newAccess);
-        response.addCookie(createCookie("refresh", newRefresh));
+        response.setHeader("refresh",newRefresh);
 
         return new ResponseEntity<>(HttpStatus.OK);
 
@@ -103,17 +96,17 @@ public class ReissueService {
         refreshRepository.save(refresh);
     }
 
-
-    private Cookie createCookie(String key, String value) {
-
-        Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(24 * 60 * 60);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        cookie.setAttribute("SameSite", "None");  // 크로스 사이트 요청에서도 쿠키 허용
-        cookie.setSecure(true);
-
-        return cookie;
-    }
+//
+//    private Cookie createCookie(String key, String value) {
+//
+//        Cookie cookie = new Cookie(key, value);
+//        cookie.setMaxAge(24 * 60 * 60);
+//        cookie.setHttpOnly(true);
+//        cookie.setPath("/");
+//        cookie.setAttribute("SameSite", "None");  // 크로스 사이트 요청에서도 쿠키 허용
+//        cookie.setSecure(true);
+//
+//        return cookie;
+//    }
 
 }
