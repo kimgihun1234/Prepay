@@ -117,9 +117,11 @@ public class TeamController {
 
     @PostMapping("/signin")
     @Operation(summary = "팀 가입")
-    public ResponseEntity<GetUserOfTeamRes> signinTeam(@RequestHeader Long userId,
+    public ResponseEntity<GetUserOfTeamRes> signinTeam(@RequestHeader String access,
+                                                       @AuthenticationPrincipal CustomUserDetails userDetails,
                                                        @RequestBody SignInTeamReq req) {
 //        Long userId = accessToken.getUserId();
+        Long userId = userDetails.getUserId();
         return ResponseEntity.ok(teamService.signInTeam(userId, req));
 
     }
@@ -153,7 +155,8 @@ public class TeamController {
     @PostMapping("/code")
     @Operation(summary = "팀 초대 코드 생성")
     public ResponseEntity<InviteCodeRes> generateInviteCode(/*@RequestHeader Long userId,*/ @RequestBody TeamIdReq req,
-                                                                                            @AuthenticationPrincipal CustomUserDetails userDetails) {
+                                                                                            @AuthenticationPrincipal CustomUserDetails userDetails,
+    @RequestHeader String access) {
 //        Long userId = accessToken.getUserId();
         Long userId = userDetails.getUserId();
         return ResponseEntity.ok(teamService.generateInviteCode(userId, req));
