@@ -75,7 +75,7 @@ class SignupFragment: BaseFragment<FragmentSignUpBinding>(
         binding.signUpPasswordText.doAfterTextChanged { checkPassword() }
         binding.signUpPasswordConfirmText.doAfterTextChanged {checkRePassword()} // 비밀번호 재입력 유효성 검사
         binding.signUpNickText.doAfterTextChanged {checkUserNick()}
-        binding.signUpSubmit.setOnClickListener { signIn() }
+        binding.signUpSubmit.setOnClickListener { signUp() }
 
         binding.backBtn.setOnClickListener {
             loginActivity.changeFragmentLogin(CommonUtils.LoginFragmentName.START_LOGIN_FRAGMENT)
@@ -153,7 +153,7 @@ class SignupFragment: BaseFragment<FragmentSignUpBinding>(
     }
 
 
-    private fun signIn() {
+    private fun signUp() {
         val userId = binding.signUpIdText.text.toString().trim()
         val password = binding.signUpPasswordText.text.toString().trim()
         val nickname = binding.signUpNickText.text.toString().trim()

@@ -22,7 +22,9 @@ import androidx.lifecycle.lifecycleScope
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
+import com.example.prepay.RetrofitUtil
 import com.example.prepay.databinding.FragmentLoginBinding
+import com.example.prepay.response.KakaoLoginRequest
 import com.example.prepay.response.LoginRequest
 import com.example.prepay.ui.LoginActivity
 import com.example.prepay.ui.MainActivity
@@ -110,8 +112,6 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
         binding.LoginBtn.setOnClickListener {
             login()
         }
-
-
     }
 
     fun initEvent(){
@@ -210,8 +210,8 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
         }
         lifecycleScope.launch {
             try {
-//                val loginRequest = LoginRequest(userId, userPw)
-
+                val loginRequest = LoginRequest(userId, userPw)
+                RetrofitUtil.userService.login(loginRequest)
                 // 사용자가 '자동 로그인' 체크한 경우, 입력한 아이디/비밀번호를 저장
                 if (binding.autoIdCheckbox.isChecked) {
                     val sharedPref =
@@ -278,37 +278,73 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
     }
 
     private fun kakaoLogin() {
-        // 로그인 조합 예제
-
-        // 카카오계정으로 로그인 공통 callback 구성
-        // 카카오톡으로 로그인 할 수 없어 카카오계정으로 로그인할 경우 사용됨
+        // 카카오계정 로그인 공통 callback 구성
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
                 Log.e(TAG, "카카오계정으로 로그인 실패", error)
             } else if (token != null) {
-                Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
+                Log.i(TAG, "카카오계정으로 로그인 성공: ${token.accessToken}")
+                // 서버에 accessToken 전달
+                performKakaoLogin(token.accessToken)
             }
         }
-        // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
+
+        // 카카오톡이 설치되어 있다면 카카오톡으로 로그인 시도
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(requireContext())) {
             UserApiClient.instance.loginWithKakaoTalk(requireContext()) { token, error ->
                 if (error != null) {
                     Log.e(TAG, "카카오톡으로 로그인 실패", error)
-
-                    // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
-                    // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
+                    // 사용자가 로그인 취소한 경우에는 추가 로그인 시도하지 않음
                     if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
                         return@loginWithKakaoTalk
                     }
-
-                    // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
+                    // 카카오톡 로그인 실패 시 카카오계정으로 로그인 시도
                     UserApiClient.instance.loginWithKakaoAccount(requireContext(), callback = callback)
                 } else if (token != null) {
-                    Log.i(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
+                    Log.i(TAG, "카카오톡으로 로그인 성공: ${token.accessToken}")
+                    performKakaoLogin(token.accessToken)
                 }
             }
         } else {
+            // 카카오톡이 설치되어 있지 않다면 카카오계정으로 로그인 시도
             UserApiClient.instance.loginWithKakaoAccount(requireContext(), callback = callback)
+        }
+    }
+
+    /**
+     * 카카오 SDK로 받은 accessToken을 서버에 전달하여 로그인 처리하는 함수
+     */
+    private fun performKakaoLogin(accessToken: String) {
+        lifecycleScope.launch {
+            try {
+                // GET 방식으로 서버에 로그인 요청: accessToken을 URL 경로의 {code}에 매핑
+                val response = RetrofitUtil.userService.kakaoLogin(accessToken)
+
+                if (response.isSuccessful) {
+                    // Retrofit의 Response 객체에서 HTTP 응답 헤더를 추출
+                    val httpHeaders = response.headers().toMultimap()
+                    // "Set-Cookie" 헤더에 들어있는 쿠키 값들을 추출
+                    val httpCookies = response.headers().values("Set-Cookie")
+
+                    // HTTP 응답 헤더와 쿠키 로그 출력
+                    Log.d(TAG, "HTTP 응답 헤더: $httpHeaders")
+                    Log.d(TAG, "HTTP 응답 쿠키: $httpCookies")
+
+                    // 응답 본문에서 받아온 KakaoLoginResponse 확인
+                    val loginResponse = response.body()
+                    if (loginResponse != null) {
+                        Log.d(TAG, "응답 본문 메시지: ${loginResponse.message}")
+                        Log.d(TAG, "응답 본문 내 headers: ${loginResponse.headers}")
+                        Log.d(TAG, "응답 본문 내 cookies: ${loginResponse.cookies}")
+                    } else {
+                        Log.e(TAG, "응답 본문이 null 입니다.")
+                    }
+                } else {
+                    Log.e(TAG, "서버 카카오 로그인 실패: ${response.errorBody()?.string()}")
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "서버 통신 중 에러 발생", e)
+            }
         }
     }
 

@@ -5,11 +5,15 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.example.prepay.ApplicationClass
 import com.example.prepay.BaseActivity
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
+import com.example.prepay.RetrofitUtil
 import com.example.prepay.data.remote.FirebaseTokenService
+import com.example.prepay.data.response.SignInTeamReq
 import com.example.prepay.databinding.ActivityMainBinding
 import com.example.prepay.databinding.DialogVisitCodeBinding
 import com.example.prepay.ui.CreateGroup.CreatePrivateGroupFragment
@@ -28,6 +32,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.http.Header
 
 private const val TAG = "MainActivity_싸피"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
@@ -116,9 +121,20 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
         // '등록' 버튼 클릭 리스너
         binding.btnRegister.setOnClickListener {
-            val code = binding.etCodeInput.toString()
-            // 코드 등록 로직 추가
-            dialog.dismiss()
+            val code = binding.etCodeInput.text.toString()
+            val requestBody = SignInTeamReq(code)
+            lifecycleScope.launch {
+                try {
+                    val response = RetrofitUtil.teamService.signInTeam(
+                        userId = 6,
+                        request = requestBody
+                    )
+                    // 요청이 성공했을 때만 대화상자 닫기
+                    dialog.dismiss()
+                } catch (e: Exception) {
+                    Toast.makeText(this@MainActivity, "초대 코드를 확인해주세요", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
         dialog.show()
     }
