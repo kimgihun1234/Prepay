@@ -88,7 +88,6 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     private val viewModel: GroupDetailsFragmentViewModel by viewModels()
     private val restaurantDetailsViewModel : RestaurantDetailsViewModel by viewModels()
 
-    var moneyDiff = 0
     //GPS관련 변수
     private var mMap: GoogleMap? = null
     private var currentMarker: Marker? = null

@@ -47,11 +47,6 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
         initEvent()
-
-        // 테스트 버튼 클릭 시 QR 코드 다이얼로그 호출
-        view.findViewById<View>(R.id.test_button).setOnClickListener {
-            showQRDialog()
-        }
     }
 
     private fun initAdapter() {
