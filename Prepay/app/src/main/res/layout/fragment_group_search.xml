@@ -44,7 +44,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/hot_sort"
+        android:id="@+id/ai_sort"
         android:layout_width="104dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
