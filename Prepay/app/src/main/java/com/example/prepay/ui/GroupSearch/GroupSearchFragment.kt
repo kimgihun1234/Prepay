@@ -27,7 +27,7 @@ import com.example.prepay.data.response.LikeTeamsReq
 import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.databinding.FragmentGroupSearchBinding
 import com.example.prepay.ui.GroupSearchDetails.AddPublicGroupDetailsFragment
-import com.example.prepay.ui.GroupSearchDetails.GroupSearchtDetailsViewModel
+import com.example.prepay.ui.GroupSearchDetails.GroupSearchDetailsViewModel
 import com.example.prepay.ui.MainActivity
 import com.example.prepay.ui.MainActivityViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
