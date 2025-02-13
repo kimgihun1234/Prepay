@@ -41,7 +41,7 @@ interface TeamService {
 
     //팀 가맹점 추가
     @POST("/team/signin")
-    suspend fun signInTeam(@Header("userId") userId: Long, @Body request: SignInTeamReq): GetUserOfTeamRes
+    suspend fun signInTeam(@Header("access") access: String, @Body request: SignInTeamReq): GetUserOfTeamRes
 
     // 본인의 전체 팀정보 조회
     @GET("/team/myTeams")

@@ -1,6 +1,7 @@
 package com.example.prepay.ui
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.activity.viewModels
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.prepay.ApplicationClass
 import com.example.prepay.BaseActivity
 import com.example.prepay.CommonUtils
@@ -38,6 +40,9 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
+private val KeyAccessToken = "AccessToken"
+private val prefsName = "user_prefs"
 
 private const val TAG = "MainActivity_싸피"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate), PublicSearchAdapter.OnPublicClickListener {
@@ -139,10 +144,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         binding.btnRegister.setOnClickListener {
             val code = binding.etCodeInput.text.toString()
             val requestBody = SignInTeamReq(code)
+            // Context가 있는 곳 (예: Activity나 Fragment)
+            val sharedPref = this.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
+            val accessToken = sharedPref.getString(KeyAccessToken, "") ?: ""
+            Log.d(TAG, "불러온 AccessToken: $accessToken")
+
             lifecycleScope.launch {
                 try {
                     val response = RetrofitUtil.teamService.signInTeam(
-                        userId = 6,
+                        access = accessToken,
                         request = requestBody
                     )
                     // 요청이 성공했을 때만 대화상자 닫기

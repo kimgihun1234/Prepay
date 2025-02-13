@@ -8,6 +8,7 @@ import com.example.prepay.response.KakaoLoginResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
 
@@ -19,8 +20,9 @@ interface UserService {
     suspend fun login(@Body request: LoginRequest)
 
     @GET("/user/kakao/login/{code}")
-    suspend fun kakaoLogin(@Path("code") code: String): Response<KakaoLoginResponse>
-
+    suspend fun kakaoLogin(
+        @Path("code") code: String,
+    ): Response<KakaoLoginResponse>
 
 
 

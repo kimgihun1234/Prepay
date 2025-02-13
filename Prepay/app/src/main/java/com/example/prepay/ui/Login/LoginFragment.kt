@@ -57,6 +57,7 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
     private val prefsName = "user_prefs"
     private val keyUserId = "userId"
     private val keyUserPw = "userPw"
+    private val KeyAccessToken = "AccessToken"
 
     private lateinit var editTexts: List<EditText>
 
@@ -303,6 +304,7 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
                 } else if (token != null) {
                     Log.i(TAG, "카카오톡으로 로그인 성공: ${token.accessToken}")
                     performKakaoLogin(token.accessToken)
+                    Log.i(TAG, "카카오톡 토큰 : ${token}")
                 }
             }
         } else {
@@ -330,15 +332,17 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
                     Log.d(TAG, "HTTP 응답 헤더: $httpHeaders")
                     Log.d(TAG, "HTTP 응답 쿠키: $httpCookies")
 
-                    // 응답 본문에서 받아온 KakaoLoginResponse 확인
-                    val loginResponse = response.body()
-                    if (loginResponse != null) {
-                        Log.d(TAG, "응답 본문 메시지: ${loginResponse.message}")
-                        Log.d(TAG, "응답 본문 내 headers: ${loginResponse.headers}")
-                        Log.d(TAG, "응답 본문 내 cookies: ${loginResponse.cookies}")
-                    } else {
-                        Log.e(TAG, "응답 본문이 null 입니다.")
+                    val sharedPref = requireContext().getSharedPreferences(prefsName, Context.MODE_PRIVATE)
+                    val saveToken = sharedPref.getString(KeyAccessToken, "") ?: ""
+                    Log.d(TAG, "${httpHeaders["access"]?.get(0)}")
+                    val userToken = httpHeaders["access"]?.get(0)
+                    with(sharedPref.edit()) {
+                        putString(KeyAccessToken, userToken)
+                        apply()
                     }
+                    val intent = Intent(requireContext(), MainActivity::class.java)
+                    startActivity(intent)
+
                 } else {
                     Log.e(TAG, "서버 카카오 로그인 실패: ${response.errorBody()?.string()}")
                 }
