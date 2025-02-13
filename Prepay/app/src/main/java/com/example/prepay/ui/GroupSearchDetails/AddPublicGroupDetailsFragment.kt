@@ -11,7 +11,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
 import com.example.prepay.BaseFragment
 import com.example.prepay.R
 import com.example.prepay.databinding.FragmentPublicGroupDetailsBinding
@@ -28,13 +27,13 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.data.response.LikeTeamsReq
-import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.ui.MainActivityViewModel
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
@@ -55,10 +54,8 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private var mMap: GoogleMap? = null
     private var currentMarker: Marker? = null
-    // private val viewModel : GroupSearchtDetailsViewModel by viewModels()
     private val viewModel: GroupSearchtDetailsViewModel by viewModels()
-
-    private val activityViewModel : MainActivityViewModel by viewModels()
+    private val activityViewModel : MainActivityViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,6 +112,10 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
 
         binding.likeBtn.setOnClickListener {
             viewModel.toggleLike()
+            val email = "user1@gmail.com"
+            val info = activityViewModel.teamId.value?.let { LikeTeamsReq(it, viewModel.isLiked.value ?: false) }
+            Log.d(TAG, "onStop: ${activityViewModel.teamId.value}")
+            info?.let { viewModel.sendLikeStatus(email, it) }
         }
 
         /**
@@ -295,12 +296,12 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
         animator.start()
     }
 
-    override fun onStop() {
-        super.onStop()
-        val email = "user1@gmail.com"
-
-        val info = activityViewModel.teamId.value?.let { LikeTeamsReq(it, viewModel.isLiked.value ?: false) }
-        Log.d(TAG, "onStop: ${activityViewModel.teamId.value}")
-        info?.let { viewModel.sendLikeStatus(email, it) }
-    }
+//    override fun onStop() {
+//        super.onStop()
+//        val email = "user1@gmail.com"
+//
+//        val info = activityViewModel.teamId.value?.let { LikeTeamsReq(it, viewModel.isLiked.value ?: false) }
+//        Log.d(TAG, "onStop: ${activityViewModel.teamId.value}")
+//        info?.let { viewModel.sendLikeStatus(email, it) }
+//    }
 }

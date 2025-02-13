@@ -9,11 +9,9 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.drawable.toBitmap
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,28 +19,18 @@ import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.PermissionChecker
 import com.example.prepay.R
+import com.example.prepay.data.response.LikeTeamsReq
 import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.databinding.FragmentGroupSearchBinding
-import com.example.prepay.ui.GroupDetails.GroupDetailsFragmentViewModel
 import com.example.prepay.ui.GroupSearch.PublicSearchAdapter.OnPublicClickListener
 import com.example.prepay.ui.GroupSearchDetails.AddPublicGroupDetailsFragment
 import com.example.prepay.ui.GroupSearchDetails.GroupSearchtDetailsViewModel
 import com.example.prepay.ui.MainActivity
 import com.example.prepay.ui.MainActivityViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.navigation.NavigationView
 import java.io.IOException
 import java.util.Locale
 
@@ -53,6 +41,8 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
 ), OnPublicClickListener {
     private lateinit var mainActivity: MainActivity
     private lateinit var publicSearchAdapter: PublicSearchAdapter
+    private val viewModel: GroupSearchFragmentViewModel by viewModels()
+    private val activityViewModel : MainActivityViewModel by activityViewModels()
 
     // GPS관련 변수
     private var mMap: GoogleMap? = null
@@ -82,21 +72,12 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
         super.onViewCreated(view, savedInstanceState)
 
         initAdapter()
+
         //GPS 관련 코드
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
     }
 
     private fun initAdapter(){
-//        publicList = listOf(
-//            Public(1, "A 카페", "대구광역시 동성로",10, 1000000, "https://fastly.picsum.photos/id/221/200/300.jpg?hmac=vFrrajnPFCrr5ttjepVTsUDWzoo-orpnXOsqdqAd0LU"),
-//            Public(2, "B 카페", "구미시 진평동", 20, 500000, "https://fastly.picsum.photos/id/875/200/300.jpg?hmac=9NSoqXHP89pGlq4Sz3OgGxjx5c91YHJkcIOBFgNJ8xA"),
-//            Public(2, "C 카페", "서울특별시 강남구", 30,800000, "https://fastly.picsum.photos/id/729/200/300.jpg?hmac=VbcZBxFYzQK1ro1MTLLmwHNQ0kuIJSagOeue4JMymUY")
-//        )
-//        publicAdapter = PublicSearchAdapter(arrayListOf(),this)
-//        viewModel.getPublicTeams.observe(viewLifecycleOwner){it->
-//            publicAdapter.publicGroupList = it
-//            publicAdapter.notifyDataSetChanged()
-//        }
 
         publicSearchAdapter = PublicSearchAdapter(arrayListOf(),this)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -126,6 +107,10 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
         mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.PUBLIC_GROUP_DETAILS_FRAGMENT)
     }
 
+    override fun onLikeClick(publicgroup: PublicTeamsRes, isLiked: Boolean) {
+        val likeTeamsReq = LikeTeamsReq(publicgroup.teamId, isLiked)
+        val email = "user1@gmail.com"
+    }
 
 
     fun getCurrentAddress(location: Location): String {
