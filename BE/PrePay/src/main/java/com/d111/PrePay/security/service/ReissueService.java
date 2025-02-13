@@ -73,8 +73,8 @@ public class ReissueService {
         String email = jwtUtil.getEmail(refresh);
         Long userId = jwtUtil.getUserId(refresh);
 
-        String newAccess = jwtUtil.createJWT("access", email, 600000L, userId);
-        String newRefresh = jwtUtil.createJWT("refresh", email, 86400000L, userId);
+        String newAccess = jwtUtil.createJWT("access", email, 60000L, userId);
+        String newRefresh = jwtUtil.createJWT("refresh", email, 120000L, userId);
 
         refreshRepository.deleteByRefresh(refresh);
         addRefresh(email, newRefresh, 86400000L);

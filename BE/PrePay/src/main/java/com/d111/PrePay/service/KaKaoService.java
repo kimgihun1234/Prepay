@@ -122,12 +122,12 @@ public class KaKaoService {
             user.setEmail(kakaoEmail);
             User savedUser = userRepository.save(user);
 
-            access = jwtUtil.createJWT("access", kakaoEmail, 600000L, savedUser.getId());
-            refresh = jwtUtil.createJWT("refresh", kakaoEmail, 86400000L, savedUser.getId());
+            access = jwtUtil.createJWT("access", kakaoEmail, 60000L, savedUser.getId());
+            refresh = jwtUtil.createJWT("refresh", kakaoEmail, 120000L, savedUser.getId());
 
         } else {
-            access = jwtUtil.createJWT("access", kakaoEmail, 600000L, kakaoUser.getId());
-            refresh = jwtUtil.createJWT("refresh", kakaoEmail, 86400000L, kakaoUser.getId());
+            access = jwtUtil.createJWT("access", kakaoEmail, 60000L, kakaoUser.getId());
+            refresh = jwtUtil.createJWT("refresh", kakaoEmail, 120000L, kakaoUser.getId());
 
         }
         addRefresh(refresh, 86400000L);

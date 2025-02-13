@@ -86,8 +86,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         Long userId = user.getId();
 
 
-        String access = jwtUtil.createJWT("access", email, 600000L, userId);
-        String refresh = jwtUtil.createJWT("refresh", email, 86400000L, userId);
+        String access = jwtUtil.createJWT("access", email, 60000L, userId);
+        String refresh = jwtUtil.createJWT("refresh", email, 120000L, userId);
 
 
         addRefresh(email, refresh, 86400000L);
