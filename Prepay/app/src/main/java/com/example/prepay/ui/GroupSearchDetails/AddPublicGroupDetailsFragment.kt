@@ -55,7 +55,9 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private var mMap: GoogleMap? = null
     private var currentMarker: Marker? = null
-    private val viewModel : GroupSearchtDetailsViewModel by viewModels()
+    // private val viewModel : GroupSearchtDetailsViewModel by viewModels()
+    private val viewModel: GroupSearchtDetailsViewModel by viewModels()
+
     private val activityViewModel : MainActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
