@@ -3,6 +3,7 @@ package com.example.prepay.data.remote
 import com.example.prepay.data.model.dto.PublicPrivateTeam
 import com.example.prepay.data.response.BanUserReq
 import com.example.prepay.data.response.GetUserOfTeamRes
+import com.example.prepay.data.response.LikeTeamsReq
 import com.example.prepay.data.response.PrivilegeUserReq
 import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.data.response.SignInTeamReq
@@ -70,7 +71,7 @@ interface TeamService {
 
     //공개된 모든 팀 목록을 가져옵니다.
     @GET("/team/public-teams")
-    suspend fun getPublicTeams(): List<PublicTeamsRes>
+    suspend fun getPublicTeams(@Header("email") email: String): List<PublicTeamsRes>
 
     //특정 키워드로 공개된 팀을 검색합니다.
     @GET("/team/public-teams/{keyword}")
@@ -80,8 +81,8 @@ interface TeamService {
     @GET("/team/coordinate/{teamId}")
     suspend fun getTeamStore(@Header("userId") userId: Long, @Path("teamId") teamId: Long) : List<StoreLocation>
 
-    //공개된 그룹의 좋아요 정보를 보냅니다. (진행중)
-    @POST("/team/public-teams")
-    suspend fun likeTeam(likeInfo: Boolean): List<PublicTeamsRes>
+    //공개된 그룹의 좋아요 정보를 보냅니다.
+    @POST("/team/like")
+    suspend fun sendLikeStatus(@Header("email") email: String, @Body request: LikeTeamsReq): Map<String, Int>
 
 }

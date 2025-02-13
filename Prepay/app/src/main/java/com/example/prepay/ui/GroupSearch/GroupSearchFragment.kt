@@ -21,7 +21,6 @@ import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.PermissionChecker
 import com.example.prepay.R
-import com.example.prepay.data.model.dto.Public
 import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.databinding.FragmentGroupSearchBinding
 import com.example.prepay.ui.GroupDetails.GroupDetailsFragmentViewModel
@@ -79,10 +78,6 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -110,20 +105,25 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
             publicSearchAdapter.publicGroupList = it
             publicSearchAdapter.notifyDataSetChanged()
         }
+
+        // 임시로 코드 작성
+        val email = "user1@gmail.com"
         groupSearchFragmentViewModel.getAllPublicTeamList()
     }
 
     override fun onGroupClick(publicgroup: PublicTeamsRes) {
         val viewModel = ViewModelProvider(mainActivity).get(GroupSearchtDetailsViewModel::class.java)
         viewModel.sendGroupDetails(
+            publicgroup.teamId,
             publicgroup.teamName,
+            publicgroup.teamMessage,
             publicgroup.teamBalance,
+            publicgroup.teamInitializerNickname,
             publicgroup.imageURL
         )
 
         val fragment = AddPublicGroupDetailsFragment()
         mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.PUBLIC_GROUP_DETAILS_FRAGMENT)
-        TODO("Not yet implemented")
     }
 
 
