@@ -9,5 +9,16 @@
     </style>
 
     <style name="Theme.Prepay" parent="Base.Theme.Prepay" />
+    <string-array name="categoryColorArr">
+        <item>#EC9B3B</item>
+        <item>#FBCB0C</item>
+        <item>#95BB7C</item>
+        <item>#5A8F7B</item>
+        <item>#858585</item>
+        <item>#E26588</item>
+        <item>#8571BF</item>
+        <item>#187498</item>
+        <item>#83C4C3</item>
+    </string-array>
 
 </resources>

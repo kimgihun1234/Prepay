@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
@@ -14,10 +13,9 @@ import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.data.response.BootPayChargeReq
 import com.example.prepay.databinding.FragmentDetailRestaurantBinding
-import com.example.prepay.ui.CreateGroup.CreateGroupViewModel
 import com.example.prepay.ui.MainActivity
 import com.example.prepay.ui.MainActivityViewModel
-import com.example.prepay.util.RequestBootPayManager
+import com.example.prepay.util.BootPayManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -52,7 +50,7 @@ class AddDetailRestaurantFragment: BaseFragment<FragmentDetailRestaurantBinding>
             val teamId : Long? = activityViewModel.teamId.value
             Log.d(TAG, "initEvent: ")
             Log.d(TAG, "teamId: $teamId")
-            RequestBootPayManager.startPayment(requireActivity(), restaurantDetailsViewModel.restaurantData.value.toString(), totalPrice) { receiptId, price ->
+            BootPayManager.startPayment(requireActivity(), restaurantDetailsViewModel.restaurantData.value.toString(), totalPrice) { receiptId, price ->
                 lifecycleScope.launch {
                     try {
                         Log.d(TAG, "storeId: $storeId")

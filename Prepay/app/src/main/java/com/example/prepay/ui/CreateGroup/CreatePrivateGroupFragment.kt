@@ -1,10 +1,15 @@
 package com.example.prepay.ui.CreateGroup
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.View.*
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
@@ -27,6 +32,9 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
     private lateinit var mainActivity: MainActivity
     private val fragmentScope = lifecycleScope
     private lateinit var editTexts: List<EditText>
+    private lateinit var colorAdapter : ColorAdapter
+    private val createGroupViewModel : CreateGroupViewModel by viewModels()
+    private lateinit var colorCard : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,8 +49,11 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
         )
 
         initEvent()
+        initAdapter()
         initFocusChangeListener()
     }
+
+
 
     private fun initEvent() {
         binding.publicCheckbox.setOnCheckedChangeListener { _, isChecked ->
@@ -64,14 +75,22 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
                 val privateTeam = !binding.privateCheckbox.isChecked
                 val groupName = binding.groupNameText.text.toString()
                 val limitAmount = binding.limitSettingText.text.toString()
-
+                val cardType = colorCard
                 val makePrivateTeam = PublicPrivateTeam(
                     privateTeam,
                     groupName,
-                    limitAmount.toInt()
+                    limitAmount.toInt(),
+                    cardType
                 )
                 makeTeam(makePrivateTeam)
             }
+        }
+        binding.colorButton.setOnClickListener {
+            binding.categoryPaletteRv.isVisible = !binding.categoryPaletteRv.isVisible
+        }
+
+        binding.cardView.setOnClickListener{
+
         }
 
         binding.cancelBtn.setOnClickListener {
@@ -80,6 +99,26 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
 
         // 내비게이션 바 없어지게
         mainActivity.hideBottomNav(true)
+    }
+    private fun initAdapter() {
+        val colorAdapter = ColorAdapter(arrayListOf()) { color ->
+            // onClick 처리
+            colorCard = color
+            val col = Color.parseColor(color)
+            binding.cardView.setBackgroundColor(col)
+        }
+        val colorArray = resources.getStringArray(R.array.categoryColorArr)
+        binding.categoryPaletteRv.adapter = colorAdapter
+        Log.d(TAG, "initAdapter: ${colorArray.size}")
+        Log.d(TAG, "initAdapter: ${colorArray.get(0)}")
+
+        createGroupViewModel.colorList.observe(viewLifecycleOwner) { colorList ->
+            colorAdapter.colorList = colorList
+            colorAdapter.notifyDataSetChanged()
+        }
+
+        createGroupViewModel.setColorList(requireContext(), colorArray)
+
     }
 
     private fun validateInputs(): Boolean {
