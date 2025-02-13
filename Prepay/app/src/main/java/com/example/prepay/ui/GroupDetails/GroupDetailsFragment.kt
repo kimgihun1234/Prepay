@@ -12,6 +12,9 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -34,6 +37,7 @@ import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.data.model.dto.RestaurantData
 import com.example.prepay.data.response.BanUserReq
+import com.example.prepay.data.response.MoneyChangeReq
 import com.example.prepay.data.response.PrivilegeUserReq
 import com.example.prepay.data.response.TeamIdReq
 import com.example.prepay.data.response.TeamIdStoreRes
@@ -42,6 +46,7 @@ import com.example.prepay.databinding.DialogAuthoritySettingBinding
 import com.example.prepay.databinding.DialogGroupExitBinding
 import com.example.prepay.databinding.DialogGroupResignBinding
 import com.example.prepay.databinding.DialogInviteCodeBinding
+import com.example.prepay.databinding.DialogMoneyChangeBinding
 import com.example.prepay.databinding.FragmentGroupDetailsBinding
 import com.example.prepay.ui.MainActivity
 import com.example.prepay.ui.MainActivityViewModel
@@ -110,6 +115,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         super.onCreate(savedInstanceState)
         mainActivity= context as MainActivity
         Log.d(TAG, activityViewModel.teamId.value.toString())
+        setHasOptionsMenu(true)
     }
 
     override fun onStart() {
@@ -120,23 +126,28 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_toolbar, menu) // 메뉴 추가
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.ic_menu -> {
+                if (binding.drawerLayout.isDrawerOpen(GravityCompat.END)) {
+                    binding.drawerLayout.closeDrawer(GravityCompat.END) // 👉 열려 있으면 닫기
+                } else {
+                    binding.drawerLayout.openDrawer(GravityCompat.END)  // 👉 닫혀 있으면 열기
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onResume() {
         super.onResume()
-
-        // MainActivity에 햄버거 버튼 활성화 요청
-        parentFragmentManager.setFragmentResult(
-            "toolbarUpdate",
-            bundleOf("showHamburger" to true)
-        )
-
-        val toolbar: Toolbar? = activity?.findViewById(R.id.toolbar)
-        toolbar?.setNavigationOnClickListener {
-            if (binding.drawerLayout.isDrawerOpen(GravityCompat.END)) {
-                binding.drawerLayout.closeDrawer(GravityCompat.END) // 👉 열려 있으면 닫기
-            } else {
-                binding.drawerLayout.openDrawer(GravityCompat.END)  // 👉 닫혀 있으면 열기
-            }
-        }
+        mainActivity.hideBottomNav(true)
     }
 
     override fun onStop() {
@@ -148,9 +159,9 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         super.onViewCreated(view, savedInstanceState)
         initEvent()
         initAdapter()
-        initData()
+        initViewModel()
         initDrawerLayout()
-        initModelView()
+        initialView()
         //GPS 관련 코드
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
@@ -159,8 +170,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
 
     override fun onPause() {
         super.onPause()
-        // 다른 프래그먼트로 이동할 때 햄버거 버튼 숨기기
-        (activity as? AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        mainActivity.hideBottomNav(false)
     }
 
     private fun initAdapter(){
@@ -172,6 +182,9 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         binding.recyclerView.adapter = restaurantAdapter
         binding.rvMemberList.layoutManager = LinearLayoutManager(requireContext())
         binding.rvMemberList.adapter = teamUserAdapter
+    }
+
+    private fun initViewModel(){
         viewModel.storeListInfo.observe(viewLifecycleOwner){ it->
             restaurantAdapter.teamIdStoreResList = it
             restaurantList = it
@@ -197,52 +210,17 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             restaurantAdapter.userLocation = curlocation
             restaurantAdapter.notifyDataSetChanged()
         }
-//        restaurantAdapter.onRestaurantClickListener = object : RestaurantAdapter.OnRestaurantClickListener {
-//            override fun onRestaurantClick(teamIdStoreResId: Int) {
-//                Log.d(TAG, "teamIdStoreResId: $teamIdStoreResId")
-//                activityViewModel.setStoreId(teamIdStoreResId)
-//            }
-//        }
 
-    }
-
-    private fun initData(){
-
-
+        viewModel.moneyValue.observe(viewLifecycleOwner) { it->
+            binding.usePossiblePriceTxt.text = it.toString()
+        }
     }
 
     private fun initDrawerLayout(){
         drawerLayout = binding.drawerLayout
         navigationView = binding.navigationView
-        drawerLayout.openDrawer(GravityCompat.END)
-        binding.drawerLayout.setOnClickListener {
-            if (!drawerLayout.isDrawerOpen(GravityCompat.END)) {
-                drawerLayout.openDrawer(GravityCompat.END)
-            }
-        }
     }
 
-    private fun addStoreMarkers(stores: List<TeamIdStoreRes>) {
-        mMap!!.clear()  // 기존 마커 삭제
-
-        for (store in stores) {
-            val storeLocation = LatLng(store.latitude, store.longitude)
-
-            val markerOptions = MarkerOptions().apply {
-                position(storeLocation)
-                title(store.storeName)
-                snippet("위도: ${store.latitude}, 경도: ${store.longitude}")
-            }
-            mMap!!.addMarker(markerOptions)
-        }
-
-        // 첫 번째 상점 위치로 카메라 이동
-        if (stores.isNotEmpty()) {
-            val firstStoreLocation = LatLng(stores[0].latitude, stores[0].longitude)
-            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(firstStoreLocation, 15f)
-            mMap!!.animateCamera(cameraUpdate)
-        }
-    }
 
     private fun initEvent() {
         binding.diningTogetherQrBtn.setOnClickListener {
@@ -268,10 +246,13 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             addRestaurantClick()
         }
 
+        binding.moneyChangeBtn.setOnClickListener {
+            showMoneyChangeDialog()
+        }
         binding.qrBtn.setOnClickListener {
             lifecycleScope.launch {
                 runCatching {
-                    RetrofitUtil.qrService.qrPrivateCreate("user1@gmail.com")
+                    RetrofitUtil.qrService.qrPrivateCreate("user1@gmail.com",activityViewModel.teamId.value!!.toInt())
                 }.onSuccess {
                     Log.d(TAG,it.message)
                     showQRDialog(it.message+":"+"user1@gmail.com"+":"+activityViewModel.teamId.value.toString())
@@ -283,7 +264,22 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         }
     }
 
+    fun initialView(){
+        lifecycleScope.launch{
+            kotlin.runCatching {
+                RetrofitUtil.teamService.getTeamDetails(1,activityViewModel.teamId.value!!)
+            }.onSuccess {
+                binding.usePossiblePriceTxt.text = CommonUtils.makeComma(it.dailyPriceLimit-it.usedAmount)
+                viewModel.updatePosition(it.position)
+                inviteCode = it.teamPassword.toString()?:"초대코드없음"
 
+            }.onFailure {
+                Log.d(TAG,"실패하였습니다")
+            }
+        }
+    }
+
+    //클릭 이벤트 등 집합
     private fun addRestaurantClick() {
         bringStoreId()
     }
@@ -345,6 +341,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         // 다이얼로그 닫힐 때 타이머 취소
         dialog.setOnDismissListener {
             timer.cancel()
+            initialView()
         }
 
         // 다이얼로그 표시
@@ -370,11 +367,13 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                         }
                     }
                     timer.cancel()
+                    initialView()
                 }
             }
         }, 1000, 1000)
     }
 
+    //다이얼로그 보여주는 부분
     private fun showInviteCodeInputDialog() {
         val binding = DialogInviteCodeBinding.inflate(layoutInflater)
 
@@ -386,7 +385,6 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         binding.inviteCodeConfirmBtn.setOnClickListener {
             dialog.dismiss()
         }
-
         dialog.show()
     }
 
@@ -404,6 +402,31 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         }
 
         binding.groupExitCancelBtn.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+
+
+    private fun showMoneyChangeDialog() {
+        val binding = DialogMoneyChangeBinding.inflate(layoutInflater)
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(binding.root)
+            .create()
+        binding.btnRegister.setOnClickListener {
+            val moneyInput = binding.etCodeInput.text.toString()
+            val moneyValue = if (moneyInput.isEmpty()) {
+                10000
+            } else {
+                moneyInput.toInt()
+            }
+            val moneychange = MoneyChangeReq(moneyValue,activityViewModel.teamId.value!!.toInt())
+            moneyChange(moneychange)
+            viewModel.setMoneyValue(moneychange.dailyPriceLimit)
+            dialog.dismiss()
+        }
+        binding.btnCancel.setOnClickListener {
             dialog.dismiss()
         }
         dialog.show()
@@ -436,6 +459,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         binding.autoritySettingConfirmBtn.setOnClickListener {
             val pr = PrivilegeUserReq(privilege.email,true,privilege.teamId)
             privilegeUser(pr)
+            showToast(privilege.nickname+"님에게 권한을 부여하였습니다.")
             dialog.dismiss()
         }
 
@@ -443,6 +467,18 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             dialog.dismiss()
         }
         dialog.show()
+    }
+
+    fun moneyChange(moneychange: MoneyChangeReq){
+        lifecycleScope.launch {
+            runCatching {
+                RetrofitUtil.teamService.moneyChange(1,moneychange)
+            }.onSuccess {
+
+            }.onFailure {
+
+            }
+        }
     }
 
     fun privilegeUser(pr:PrivilegeUserReq){
@@ -466,6 +502,29 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             }.onFailure {
 
             }
+        }
+    }
+
+    //GPS 관련 코드부분
+    private fun addStoreMarkers(stores: List<TeamIdStoreRes>) {
+        mMap!!.clear()  // 기존 마커 삭제
+
+        for (store in stores) {
+            val storeLocation = LatLng(store.latitude, store.longitude)
+
+            val markerOptions = MarkerOptions().apply {
+                position(storeLocation)
+                title(store.storeName)
+                snippet("위도: ${store.latitude}, 경도: ${store.longitude}")
+            }
+            mMap!!.addMarker(markerOptions)
+        }
+
+        // 첫 번째 상점 위치로 카메라 이동
+        if (stores.isNotEmpty()) {
+            val firstStoreLocation = LatLng(stores[0].latitude, stores[0].longitude)
+            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(firstStoreLocation, 15f)
+            mMap!!.animateCamera(cameraUpdate)
         }
     }
 
@@ -649,22 +708,6 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                         "위치 서비스가 꺼져 있어, 현재 위치를 확인할 수 없습니다.",
                         Toast.LENGTH_SHORT).show()
                 }
-        }
-    }
-
-    fun initModelView(){
-        lifecycleScope.launch{
-            kotlin.runCatching {
-                RetrofitUtil.teamService.getTeamDetails(1,activityViewModel.teamId.value!!)
-            }.onSuccess {
-                binding.usePossiblePriceTxt.text = (it.dailyPriceLimit-it.usedAmount).toString()
-                viewModel.updatePosition(it.position)
-                inviteCode = it.teamPassword.toString()
-                Log.d(TAG,"숫자 출려"+it.position.toString())
-                Log.d(TAG,"숫자 출려"+inviteCode)
-            }.onFailure {
-                Log.d(TAG,"실패하였습니다")
-            }
         }
     }
 }

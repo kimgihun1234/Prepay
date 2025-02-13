@@ -43,15 +43,18 @@ object CommonUtils {
     enum class MainFragmentName(var str: String) {
         MYPAGE_FRAGMENT("MyPageFragment"),
         GROUP_SEARCH_FRAGMENT("GroupSearchFragment"),
-        CREATE_PRIVATE_GROUP_FRAGMENT("CreatePrivateGroupFragment"),
-        CREATE_PUBLIC_GROUP_FRAGMENT("CreatePublicGroupFragment"),
+        CREATE_GROUP_FRAGMENT("CreateGroupFragment"),
         GROUP_DETAILS_FRAGMENT("GroupDetailsFragment"),
         LOOK_GROUP_FRAGMENT("LookGroupFragment"),
         RESTAURANT_DETAILS_FRAGMENT("RestaurantDetailsFragment"),
         ADD_RESTAURANT_FRAGMENT("AddRestaurantFragment"),
         DETAIL_RESTAURANT_FRAGMENT("DetailRestaurantFragment"),
         PUBLIC_GROUP_DETAILS_FRAGMENT("PublicGroupDetailsFragment")
-        
+    }
+
+    enum class GroupFragmentName(var str: String) {
+        CREATE_PRIVATE_GROUP_FRAGMENT("CreatePrivateGroupFragment"),
+        CREATE_PUBLIC_GROUP_FRAGMENT("CreatePublicGroupFragment"),
     }
 
 }

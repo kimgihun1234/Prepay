@@ -15,7 +15,7 @@ class TeamUserAdapter(var teamUserResList: List<TeamUserRes>,
         RecyclerView.ViewHolder(binding.root) {
         fun bind(teamUserRes: TeamUserRes) {
             binding.teamUserName.text = teamUserRes.nickname
-            if(userposition==false){
+            if(userposition==false||teamUserRes.position==userposition){
                 binding.manageBtn.visibility = View.GONE
                 binding.resignBtn.visibility = View.GONE
             }
