@@ -102,7 +102,6 @@ pipeline {
         stage('Deploy to EC2') {
             steps {
                 echo 'Deploying the application on EC2...'
-                echo ${REDIS_HOST}
                 sshPublisher(publishers: [
                     sshPublisherDesc(
                         configName: 'EC2-Server',
