@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
+import com.example.prepay.CommonUtils
 import com.example.prepay.data.response.TeamIdStoreRes
 import com.example.prepay.databinding.ItemRestaurantBinding
 import com.example.prepay.ui.MainActivityViewModel
@@ -18,7 +19,7 @@ class RestaurantAdapter(var teamIdStoreResList: List<TeamIdStoreRes>, private va
         RecyclerView.ViewHolder(binding.root) {
         fun bind(teamIdStoreRes: TeamIdStoreRes, userLocation: Location) {
             binding.restaurantName.text = teamIdStoreRes.storeName
-            binding.restaurantPrepayMoney.text = teamIdStoreRes.balance.toString()+"원"
+            binding.restaurantPrepayMoney.text = CommonUtils.makeComma(teamIdStoreRes.balance)
             // 거리 계산
             val distance = calculateDistance(
                 userLocation.latitude, userLocation.longitude,
