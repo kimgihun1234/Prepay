@@ -6,49 +6,50 @@ import com.example.prepay.data.response.TeamUserRes
 
 private const val TAG = "SharedPreferencesUtil_싸피"
 
-class SharedPreferencesUtil(context: Context) {
-    val SHARED_PREFERENCES_NAME = "smartstore_preference"
-    val COOKIES_KEY_NAME = "cookies"
+object SharedPreferencesUtil {
+    private const val SHARED_PREFERENCES_NAME = "prepay_preference"
+    private const val KEY_USER_ID = "user_id"
+    private const val KEY_USER_PW = "user_pw"
+    private const val KEY_ACCESS_TOKEN = "access_token"
 
-    var preferences: SharedPreferences =
-        context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
-    //사용자 정보 저장
-    /*
-    fun addUser(teamUserRes: TeamUserRes){
-        val editor = preferences.edit()
-        editor.putString("id", teamUserRes.id)
-        editor.putString("name", teamUserRes.name)
-        editor.apply()
+    private lateinit var preferences: SharedPreferences
+
+    // 초기화 메서드
+    fun init(context: Context) {
+        preferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
     }
 
-    fun getUser(): TeamUserRes {
-        val id = preferences.getString("id", "")
-        if (id != "") {
-            val name = preferences.getString("name", "")
-            return TeamUserRes(id!!, name!!, "")
-        } else {
-            return TeamUserRes()
+    // 사용자 자격 증명 저장
+    fun saveUserCredentials(id: String, password: String) {
+        preferences.edit().apply {
+            putString(KEY_USER_ID, id)
+            putString(KEY_USER_PW, password)
+            apply()
         }
-    }*/
-
-    fun deleteUser(){
-        //preference 지우기
-        val editor = preferences.edit()
-        editor.clear()
-        editor.apply()
     }
 
-    fun addUserCookie(cookies: HashSet<String>) {
-        val editor = preferences.edit()
-        editor.putStringSet(COOKIES_KEY_NAME, cookies)
-        editor.apply()
+    // 사용자 자격 증명 불러오기
+    fun getUserCredentials(): Pair<String?, String?> {
+        val id = preferences.getString(KEY_USER_ID, null)
+        val password = preferences.getString(KEY_USER_PW, null)
+        return Pair(id, password)
     }
 
-    fun getUserCookie(): MutableSet<String>? {
-        return preferences.getStringSet(COOKIES_KEY_NAME, HashSet())
+    // 액세스 토큰 저장
+    fun saveAccessToken(accessToken: String) {
+        preferences.edit().apply {
+            putString(KEY_ACCESS_TOKEN, accessToken)
+            apply()
+        }
     }
 
-    fun deleteUserCookie() {
-        preferences.edit().remove(COOKIES_KEY_NAME).apply()
+    // 액세스 토큰 불러오기
+    fun getAccessToken(): String? {
+        return preferences.getString(KEY_ACCESS_TOKEN, null)
+    }
+
+    // 모든 사용자 데이터 삭제
+    fun clearUserData() {
+        preferences.edit().clear().apply()
     }
 }
