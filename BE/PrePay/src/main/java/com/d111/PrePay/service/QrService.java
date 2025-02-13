@@ -40,7 +40,7 @@ public class QrService {
             qrRepository.save(qr);
             return new StandardRes(qr.getUuid(), 201);
         } else {
-            return new StandardRes("권한이 없습니다.", 403);
+            throw new RuntimeException("회식 권한이 없습니다.");
         }
     }
 

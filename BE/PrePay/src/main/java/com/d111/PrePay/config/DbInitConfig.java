@@ -3,6 +3,8 @@ package com.d111.PrePay.config;
 import com.d111.PrePay.dto.request.*;
 import com.d111.PrePay.model.DetailHistory;
 import com.d111.PrePay.model.OrderHistory;
+import com.d111.PrePay.model.Store;
+import com.d111.PrePay.model.Team;
 import com.d111.PrePay.repository.*;
 import com.d111.PrePay.service.StoreService;
 import com.d111.PrePay.service.TeamService;
@@ -13,6 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -48,6 +53,14 @@ public class DbInitConfig implements ApplicationRunner {
             String k = "store" + i;
             storeService.makeStore(new CreateStoreReq(k, "식당", false, k, 36.0084F, 128.015F));
         }
+
+        for (long i = 1; i < 10; i++) {
+            List<Store> stores = storeRepository.findAll();
+            for (Store store : stores) {
+                store.setStoreImgUrl("https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/02ef8733-a852-4a86-b482-28c4e65b30d4_images.png?alt=media&token=7335964c-3b70-4a5c-8cba-247721fcd9b4");
+            }
+        }
+
         log.info("store 삽입 완료");
 
         for (long i = 1; i < 6; i++) {
@@ -59,6 +72,13 @@ public class DbInitConfig implements ApplicationRunner {
             String k = "team" + i;
             teamService.createTeam(new TeamCreateReq(k, true, 500000, 0, k+"publicteam 테스트메시지2","000000"), i, null);
         }
+
+        for (long i = 1; i < 10; i++) {
+            Optional<Team> opTeam = teamRepository.findById(i);
+            Team team = opTeam.get();
+            team.setTeamImgUrl("https://storage.googleapis.com/kyung0216-10d14.appspot.com/e7b077fd-bbdf-47d5-9de8-934f4cccfddd_example.jpg");
+        }
+
         log.info("team 삽입 완료");
 
         for (long i = 1; i < 3; i++) {

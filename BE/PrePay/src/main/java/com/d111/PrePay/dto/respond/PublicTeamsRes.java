@@ -13,11 +13,13 @@ public class PublicTeamsRes {
     private int teamBalance;
     private String teamInitializerNickname;
     private boolean isLike;
+    private String imgUrl;
 
     public PublicTeamsRes(Team team) {
         this.teamName = team.getTeamName();
         this.teamId = team.getId();
         this.teamMessage = team.getTeamMessage();
         this.teamBalance = team.getTeamBalance();
+        this.imgUrl=team.getTeamImgUrl();
     }
 }
