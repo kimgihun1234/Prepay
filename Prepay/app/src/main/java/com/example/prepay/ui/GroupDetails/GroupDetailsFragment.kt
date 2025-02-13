@@ -271,8 +271,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             }.onSuccess {
                 binding.usePossiblePriceTxt.text = CommonUtils.makeComma(it.dailyPriceLimit-it.usedAmount)
                 viewModel.updatePosition(it.position)
-                inviteCode = it.teamPassword.toString()?:"초대코드없음"
-
+                inviteCode = (it.teamPassword ?: "초대코드없음").toString()
             }.onFailure {
                 Log.d(TAG,"실패하였습니다")
             }
