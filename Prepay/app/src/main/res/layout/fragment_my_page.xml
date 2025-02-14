@@ -10,27 +10,28 @@
         android:id="@+id/create_group_btn"
         android:layout_width="93dp"
         android:layout_height="40dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="156dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="276dp"
         android:background="@color/cardview_light_background"
         android:text="그룹생성"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/viewPager" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/enter_group_btn"
         android:layout_width="93dp"
         android:layout_height="40dp"
         android:layout_marginStart="19dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="80dp"
         android:layout_marginEnd="44dp"
         android:background="@color/cardview_light_background"
         android:text="그룹입장"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.041"
         app:layout_constraintStart_toEndOf="@+id/create_group_btn"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/viewPager" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
@@ -43,11 +44,9 @@
         android:paddingTop="150dp"
         android:paddingEnd="50dp"
         android:paddingBottom="150dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.372" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

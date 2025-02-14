@@ -15,9 +15,11 @@ import android.text.style.StyleSpan
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
@@ -85,12 +87,12 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
         val savedId = sharedPref.getString(keyUserId, "") ?: ""
         val savedPw = sharedPref.getString(keyUserPw, "") ?: ""
 
-        // 저장된 아이디와 패스워드가 모두 있으면, 자동으로 로그인 API를 호출하여 자동 로그인 처리
-        if (savedId.isNotEmpty() && savedPw.isNotEmpty()) {
-            // 자동 로그인: 저장된 값으로 login() 함수를 호출
-            login(savedId, savedPw)
-            return
-        }
+//        // 저장된 아이디와 패스워드가 모두 있으면, 자동으로 로그인 API를 호출하여 자동 로그인 처리
+//        if (savedId.isNotEmpty() && savedPw.isNotEmpty()) {
+//            // 자동 로그인: 저장된 값으로 login() 함수를 호출
+//            login(savedId, savedPw)
+//            return
+//        }
 
         // editView list
         editTexts = listOf(
@@ -130,8 +132,20 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
         binding.kakaoLoginBtn.setOnClickListener {
             kakaoLogin()
         }
-
-
+        binding.autoIdCheckbox.setOnClickListener { view ->
+            val autoButton = view.findViewById<CheckBox>(R.id.auto_id_checkbox)
+            if (autoButton.isChecked) {
+                // 체크된 상태일 때의 색상 설정
+                autoButton.buttonTintList = ContextCompat.getColorStateList(
+                    requireContext(), R.color.checked_color
+                )
+            } else {
+                // 체크 해제 상태일 때의 색상 설정
+                autoButton.buttonTintList = ContextCompat.getColorStateList(
+                    requireContext(), R.color.unchecked_color
+                )
+            }
+        }
     }
 
     // 캐치프라이 스타일 지정
@@ -169,7 +183,6 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
         val catchphrase: TextView = view.findViewById(R.id.catchphrase)
         catchphrase.text = spannableString
     }
-
     // editView focus 이벤트 설정
     private fun initFocusChangeListener() {
 
@@ -183,7 +196,6 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
             }
         }
     }
-
     // TextView 크기 변환 이벤트
     private fun setUpTextWatcher() {
         editTexts.forEach {
@@ -219,8 +231,6 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
             )
         }
     }
-
-
     // 로그인 함수
     private fun login(id: String? = null, password: String? = null) {
         // 파라미터가 전달되면 해당 값을 사용하고, 그렇지 않으면 사용자가 입력한 값을 사용

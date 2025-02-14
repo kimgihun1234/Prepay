@@ -12,7 +12,7 @@
         android:id="@+id/back_btn"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="20dp"
         android:background="#00ff0000"
         android:importantForAccessibility="no"
         android:src="@drawable/arrow_down_sign_to_navigate"
@@ -49,10 +49,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="HardcodedText" />
-
-    <!-- 캐치 프라이즈 -->
-
-    <!--  아이디 label   -->
 
     <TextView
         android:id="@+id/catchphrase"
@@ -180,7 +176,6 @@
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/log_in_password_text"
         tools:ignore="HardcodedText" />
@@ -210,7 +205,7 @@
         android:fontFamily="@font/samsung_font_2"
         android:gravity="center"
         android:text="비밀번호 찾기"
-        android:textColor="#9E9E9E"
+        android:textColor="#9CA4AB"
         android:textFontWeight="500"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/log_in_password_text"
@@ -230,10 +225,11 @@
         android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/LoginBtn"
         tools:ignore="HardcodedText"
-        tools:targetApi="p"/>
+        tools:targetApi="p" />
 
     <ImageView
         android:id="@+id/google_login_btn"

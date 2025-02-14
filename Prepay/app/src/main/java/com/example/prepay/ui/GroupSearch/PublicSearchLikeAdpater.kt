@@ -18,15 +18,7 @@ class PublicSearchLikeAdpater(var publicGroupList: List<PublicTeamsDisRes>, priv
 //            binding.content.text = publicgroup.address
 //            binding.publicDistance.text = publicgroup.distance.toString()+"km"
             binding.publicMoneyInfo.text = publicgroup.teamBalance.toString()
-
-            // 그룹 이미지 가지고 오기
-            Glide.with(binding.root.context)
-                .load(publicgroup.imageURL)
-                // 이미지 로드중 로드 실패시에는 로고 띄워줌
-                .placeholder(R.drawable.logo)
-                .error(R.drawable.logo)
-                .into(binding.groupImage)
-
+            
             binding.root.setOnClickListener {
                 listener.onGroupClick(publicgroup)
             }
