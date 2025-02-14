@@ -49,12 +49,13 @@ public class TeamService {
 
 
     // 좋아요 한 퍼블릭 팀
-    public List<PublicTeamDetailRes> showPublicLiked(Long userId){
+    public List<PublicTeamLikedRes> showPublicLiked(Long userId){
         List<UserTeam> userTeams = userTeamRepository.findUserTeamsByUserId(userId);
-        List<PublicTeamDetailRes> result = new ArrayList<>();
+        List<PublicTeamLikedRes> result = new ArrayList<>();
         for (UserTeam userTeam : userTeams) {
             if(userTeam.getTeam().isPublicTeam() && userTeam.isLike()){
-                PublicTeamDetailRes res = new PublicTeamDetailRes(userTeam,userTeam.getTeam());
+                PublicTeamLikedRes res = new PublicTeamLikedRes(userTeam,userTeam.getTeam());
+
                 result.add(res);
             }
         }

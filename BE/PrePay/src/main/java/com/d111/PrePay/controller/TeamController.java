@@ -36,7 +36,7 @@ public class TeamController {
     // 좋아요 한 퍼블릭 팀 보기
     @GetMapping("/public/liked")
     @Operation(summary = "좋아요 한 퍼블릭 팀")
-    public ResponseEntity<List<PublicTeamDetailRes>> showPublicLiked(@RequestHeader String access,@AuthenticationPrincipal CustomUserDetails userDetails){
+    public ResponseEntity<List<PublicTeamLikedRes>> showPublicLiked(@RequestHeader String access,@AuthenticationPrincipal CustomUserDetails userDetails){
         Long userId = userDetails.getUserId();
         return ResponseEntity.ok(teamService.showPublicLiked(userId));
     }
