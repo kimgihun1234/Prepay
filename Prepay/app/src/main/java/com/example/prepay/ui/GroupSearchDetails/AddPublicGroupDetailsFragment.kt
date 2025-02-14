@@ -71,6 +71,11 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
         mainActivity = context as MainActivity
     }
 
+    override fun onResume() {
+        super.onResume()
+        mainActivity.hideBottomNav(true)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 //        initEvent()
@@ -80,6 +85,12 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
         val mapFragment = childFragmentManager.findFragmentById(R.id.public_detail_map) as SupportMapFragment
         mapFragment.getMapAsync(readyCallback)
     }
+
+    override fun onPause() {
+        super.onPause()
+        mainActivity.hideBottomNav(false)
+    }
+
 
     private fun initViewModel() {
         viewModel.detailInfo.observe(viewLifecycleOwner) { it ->

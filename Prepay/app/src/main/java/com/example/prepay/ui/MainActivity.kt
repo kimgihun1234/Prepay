@@ -86,6 +86,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
             CommonUtils.MainFragmentName.PUBLIC_GROUP_DETAILS_FRAGMENT -> {
                 transaction.replace(R.id.main_container, AddPublicGroupDetailsFragment())
+                transaction.addToBackStack(null)
             }
         }
         transaction.commit()
