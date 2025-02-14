@@ -83,8 +83,8 @@ interface TeamService {
 
     //공개된 모든 팀 목록을 가져옵니다.
 
-    @GET("/team/public-teams")
-    suspend fun getPublicTeams(@Header("access") access: String): List<PublicTeamsRes>
+//    @GET("/team/public-teams")
+//    suspend fun getPublicTeams(@Header("access") access: String): List<PublicTeamsRes>
 
 //    @GET("/team/public-teams")
 //    suspend fun getPublicTeams(@Header("email") email: String): List<PublicTeamsRes>
@@ -99,13 +99,19 @@ interface TeamService {
     suspend fun getTeamStore(@Header("access") access: String, @Path("teamId") teamId: Long) : List<StoreLocation>
 
     //공개된 그룹의 좋아요 정보를 보냅니다.
-    @POST("/team/like")
-    suspend fun sendLikeStatus(@Header("access") access: String, @Body request: LikeTeamsReq): Map<String, Int>
 
-    @GET("/team/public-team/{teamid}")
-    suspend fun groupDetailInfo(@Header("access") access: String, @Path("teamid") teamid: Int): PublicTeamDetailsRes
+
+    @GET("/team/public-team/{teamId}")
+    suspend fun groupDetailInfo(@Header("access") access: String, @Path("teamId") teamId: Long): PublicTeamDetailsRes
 
     @GET("/team/public-team/2km")
     suspend fun getTeamStoreDistance(@Header("access") access : String, @Query("latitude") latitude : Double, @Query("longitude") longitude:Double) : List<PublicTeamsDisRes>
 
+    @POST("/team/like")
+    suspend fun sendLikeStatus(@Header("access") access: String, @Body request: LikeTeamsReq): Map<String, Int>
+
+
+    @GET("/team/public-team/{teamid}")
+    suspend fun groupDetailInfo(@Header("access") access: String, @Path("teamid") teamid: Int): PublicTeamDetailsRes
+    
 }
