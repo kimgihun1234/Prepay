@@ -194,8 +194,7 @@
         android:fontFamily="@font/samsung_font_2"
         android:text="SNS 계정으로 간편 로그인"
         android:textColor="#A9B0B5"
-        android:textSize="14
-        dp"
+        android:textSize="14dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
