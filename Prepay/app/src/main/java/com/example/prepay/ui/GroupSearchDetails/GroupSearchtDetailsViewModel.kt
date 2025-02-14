@@ -39,10 +39,11 @@ class GroupSearchDetailsViewModel : ViewModel() {
     private val _isLiked = MutableLiveData<Boolean>().apply { value = false }
     val isLiked: LiveData<Boolean> get() = _isLiked
 
-    fun getGroupDetails(email:String, teamId : Int) {
+    fun getGroupDetails(access: String, teamId: Long) {
+
         viewModelScope.launch {
             runCatching {
-                RetrofitUtil.teamService.groupDetailInfo(email, teamId)
+                RetrofitUtil.teamService.groupDetailInfo(access, teamId)
             }
                 .onSuccess {
                     Log.d(TAG, "getGroupDetails: 팀 상세 정보 전송 성공 :$it ")
@@ -59,12 +60,12 @@ class GroupSearchDetailsViewModel : ViewModel() {
         _isLiked.value = _isLiked.value?.not()
     }
 
-    fun sendLikeStatus(email: String, info: LikeTeamsReq) {
+    fun sendLikeStatus(access: String, info: LikeTeamsReq) {
         val currentStatus = _isLiked.value ?: false
 
         viewModelScope.launch {
             runCatching {
-                RetrofitUtil.teamService.sendLikeStatus(email, info)
+                RetrofitUtil.teamService.sendLikeStatus(access, info)
             }.onSuccess {
                 Log.d("LikeStatus", "좋아요 정보 보내기 완료, 현재 상태 : $currentStatus")
             }.onFailure {
