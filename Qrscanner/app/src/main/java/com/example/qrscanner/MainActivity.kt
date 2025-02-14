@@ -15,7 +15,7 @@ private const val TAG = "MainActivity_싸피"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        initFragment()
     }
 
     fun changeFragmentMain(name: CommonUtils.MainFragmentName, num: Int = -1) {
@@ -23,31 +23,25 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         when (name) {
             CommonUtils.MainFragmentName.LOGIN_FRAGMENT -> {
                 transaction.replace(R.id.main, LoginFragment())
+                transaction.addToBackStack(null)
             }
             CommonUtils.MainFragmentName.STORE_TEAM_FRAGMENT -> {
                 transaction.replace(R.id.main, StoreTeamFragment())
+                transaction.addToBackStack(null)
             }
             CommonUtils.MainFragmentName.TEAM_FRAGMENT -> {
                 transaction.replace(R.id.main, TeamFragment())
+                transaction.addToBackStack(null)
             }
         }
         transaction.commit()
     }
+
+    fun initFragment(){
+        changeFragmentMain(CommonUtils.MainFragmentName.LOGIN_FRAGMENT)
+    }
 }
-//import android.content.Intent
-//import android.media.MediaPlayer
-//import android.os.Bundle
-//import android.util.Log
-//import android.widget.Toast
-//import androidx.appcompat.app.AppCompatActivity
-//import androidx.lifecycle.lifecycleScope
-//import com.example.prepay.RetrofitUtil
-//import com.example.qrscanner.databinding.ActivityMainBinding
-//import com.example.qrscanner.response.PosReq
-//import com.example.qrscanner.response.orderDetail
-//import com.google.zxing.integration.android.IntentIntegrator
-//import kotlinx.coroutines.launch
-//
+
 //private const val TAG = "MainActivity_싸피"
 //class MainActivity : AppCompatActivity() {
 //    private val binding by lazy{
