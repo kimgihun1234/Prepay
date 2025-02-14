@@ -98,7 +98,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
             }
 
             // 숫자 값 관련 로직, 해당 숫자값은 받아올 수 있어야 함.
-            val leftMoney = 800000
+            val leftMoney = it.usedAmount
             animateMoneyChange(leftMoney)
 
             // 좋아요 관련 로직
