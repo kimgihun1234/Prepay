@@ -73,7 +73,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
     private var mMap: GoogleMap? = null
     private var currentMarker: Marker? = null
     private val viewModel: GroupSearchDetailsViewModel by viewModels()
-    private val activityViewModel : MainActivityViewModel by activityViewModels()
+    private val activityViewModel: MainActivityViewModel by activityViewModels()
     private lateinit var teamsRes: PublicTeamDetailsRes
     private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
     private var selectedImageMultipart: MultipartBody.Part? = null
@@ -84,6 +84,11 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
         mainActivity = context as MainActivity
     }
 
+    override fun onResume() {
+        super.onResume()
+        mainActivity.hideBottomNav(true)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -91,11 +96,18 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
         initViewModel()
 
 
-        
+
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-        val mapFragment = childFragmentManager.findFragmentById(R.id.public_detail_map) as SupportMapFragment
+        val mapFragment =
+            childFragmentManager.findFragmentById(R.id.public_detail_map) as SupportMapFragment
         mapFragment.getMapAsync(readyCallback)
     }
+
+    override fun onPause() {
+        super.onPause()
+        mainActivity.hideBottomNav(false)
+    }
+
 
     private fun initViewModel() {
         viewModel.detailInfo.observe(viewLifecycleOwner) { it ->
@@ -116,7 +128,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
                 binding.publicDetailImage.setImageResource(R.drawable.logo)
                 Log.d(TAG, "initViewModel: ${imageUrl}")
             }
-            
+
             Log.d(TAG, "initViewModel: ${teamsRes}")
 
             val imageURL = teamsRes.imageURL
@@ -132,27 +144,49 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
             val leftMoney = teamsRes.usedAmount
             animateMoneyChange(leftMoney)
 
+
             // 좋아요 관련 로직
             val checkLike = teamsRes.checkLike
             if (checkLike) {
                 binding.likeBtn.setImageResource(R.drawable.like_heart_fill)
             } else {
                 binding.likeBtn.setImageResource(R.drawable.like_heart_empty)
+
+                // 좋아요 초기 상태 반영
+                viewModel.isLiked.observe(viewLifecycleOwner) { isLiked ->
+                    binding.likeBtn.setImageResource(
+                        if (isLiked) R.drawable.like_heart_fill else R.drawable.like_heart_empty
+                    )
+
+                }
+
+                // 클릭 이벤트
+                binding.likeBtn.setOnClickListener {
+
+                    val checkLike =
+                        LikeTeamsReq(activityViewModel.teamId.value!!.toLong(), checkLike)
+                    sendlike(checkLike)
+
+                    val newLikeStatus = !(viewModel.isLiked.value ?: false)
+                    viewModel.toggleLike()
+
+
+                    val likeRequest = LikeTeamsReq(6, newLikeStatus)
+                    viewModel.sendLikeStatus("user1@gmail.com", likeRequest)
+                }
             }
 
-            binding.likeBtn.setOnClickListener {
-                val checkLike = LikeTeamsReq(activityViewModel.teamId.value!!.toLong(), checkLike)
-                sendlike(checkLike)
-
-            }
+            viewModel.getGroupDetails(SharedPreferencesUtil.getAccessToken()!!, activityViewModel.teamId.value!!.toInt())
         }
-        viewModel.getGroupDetails(SharedPreferencesUtil.getAccessToken()!!, activityViewModel.teamId.value!!.toLong())
     }
+
 
     private fun initEvent() {
+        binding.publicDetailTeamName.text = viewModel.detailInfo.value?.teamName
+        Log.d(TAG, "initEvent: ${viewModel.detailInfo.value?.teamName}")
+        binding.publicDetailText.text = viewModel.detailInfo.value?.teamMessage
 
     }
-
 
     private val readyCallback: OnMapReadyCallback by lazy {
         object : OnMapReadyCallback {
@@ -174,12 +208,18 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
         setCurrentLocation(location, markerTitle, markerSnippet)
     }
 
-    private fun setCurrentLocation(location: Location, markerTitle: String?, markerSnippet: String?) {
+    private fun setCurrentLocation(
+        location: Location,
+        markerTitle: String?,
+        markerSnippet: String?
+    ) {
         currentMarker?.remove()
 
         val currentLatLng = LatLng(location.latitude + 0.002, location.longitude + 0.002)
 
-        val marker = ResourcesCompat.getDrawable(resources, R.drawable.logo, requireActivity().theme)?.toBitmap(150, 150)
+        val marker =
+            ResourcesCompat.getDrawable(resources, R.drawable.logo, requireActivity().theme)
+                ?.toBitmap(150, 150)
 
         val markerOptions = MarkerOptions().apply {
             position(currentLatLng)
@@ -220,12 +260,14 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
 
     // 숫자 증가 애니메이션
     private fun animateMoneyChange(targetAmount: Int) {
-        val startAmount = binding.leftMoneyInfo.text.toString().replace(",", "").toIntOrNull() ?: 0
+        val startAmount =
+            binding.leftMoneyInfo.text.toString().replace(",", "").toIntOrNull() ?: 0
         val animator = ValueAnimator.ofInt(startAmount, targetAmount).apply {
             duration = 1500
             addUpdateListener { valueAnimator ->
                 val animatedValue = valueAnimator.animatedValue as Int
-                val formattedValue = NumberFormat.getNumberInstance(Locale.US).format(animatedValue)
+                val formattedValue =
+                    NumberFormat.getNumberInstance(Locale.US).format(animatedValue)
                 binding.leftMoneyInfo.text = formattedValue
 
             }
@@ -233,10 +275,13 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
         animator.start()
     }
 
-    fun sendlike(likeTeamsReq: LikeTeamsReq){
+    fun sendlike(likeTeamsReq: LikeTeamsReq) {
         lifecycleScope.launch {
             runCatching {
-                RetrofitUtil.teamService.sendLikeStatus(SharedPreferencesUtil.getAccessToken()!!,likeTeamsReq)
+                RetrofitUtil.teamService.sendLikeStatus(
+                    SharedPreferencesUtil.getAccessToken()!!,
+                    likeTeamsReq
+                )
             }.onSuccess {
 
             }.onFailure {
