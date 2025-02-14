@@ -149,7 +149,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             val sharedPref = this.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
             val accessToken = sharedPref.getString(KeyAccessToken, "") ?: ""
             Log.d(TAG, "불러온 AccessToken: $accessToken")
-
+36
             lifecycleScope.launch {
                 try {
                     val response = RetrofitUtil.teamService.signInTeam(

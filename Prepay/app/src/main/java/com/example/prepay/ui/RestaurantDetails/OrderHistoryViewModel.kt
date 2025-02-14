@@ -15,10 +15,10 @@ class OrderHistoryViewModel : ViewModel() {
     val orderHistoryListInfo : LiveData<List<OrderHistory>>
         get() = _orderHistoryListInfo
 
-    fun getAllOrderHistoryList(userId:Int, teamId:Long, storeId: Int) {
+    fun getAllOrderHistoryList(access:String, teamId:Long, storeId: Int) {
         viewModelScope.launch {
             runCatching {
-                RetrofitUtil.orderService.getDetailHistory(userId, OrderHistoryReq(teamId, storeId))
+                RetrofitUtil.orderService.getDetailHistory(access, OrderHistoryReq(teamId, storeId))
             } .onSuccess { response ->
                 _orderHistoryListInfo.postValue(response)
                 Log.d("OrderHistoryList", "getAllOrderHistoryList: 팀리스트 가져오기 성공: $response")
