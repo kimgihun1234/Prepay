@@ -96,7 +96,7 @@ public class SecurityConfig {
                 auth.requestMatchers("/user/login", "/", "/user/signup").permitAll()
                         .requestMatchers("/reissue").permitAll()
                         .requestMatchers( "/","/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/owner/teams").permitAll()
+                        .requestMatchers("/owner/**").permitAll()
 //                        .requestMatchers("/**").permitAll());
                         .anyRequest().authenticated());
 

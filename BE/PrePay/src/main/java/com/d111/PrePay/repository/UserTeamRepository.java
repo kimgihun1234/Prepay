@@ -4,7 +4,9 @@ import com.d111.PrePay.model.Team;
 import com.d111.PrePay.model.User;
 import com.d111.PrePay.model.UserTeam;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,4 +25,8 @@ public interface UserTeamRepository extends JpaRepository<UserTeam,Long>,UserTea
 
     void deleteByTeam_Id(Long teamId);
     List<UserTeam> findUserTeamsByUserId(Long userId);
+
+    @Modifying
+    @Query("UPDATE UserTeam ut set ut.usedAmount = 0")
+    int resetDailyPriceLimit();
 }
