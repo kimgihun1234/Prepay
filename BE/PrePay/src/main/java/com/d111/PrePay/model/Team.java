@@ -27,8 +27,6 @@ public class Team {
 
     private int countLimit;
 
-    private int teamBalance;
-
     private String teamMessage;
 
     private String teamImgUrl;

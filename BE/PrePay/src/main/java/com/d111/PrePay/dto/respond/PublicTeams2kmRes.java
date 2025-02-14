@@ -22,7 +22,8 @@ public class PublicTeams2kmRes {
         this.teamName = team.getTeamName();
         this.teamId = team.getId();
         this.teamMessage = team.getTeamMessage();
-        this.teamBalance = team.getTeamBalance();
+        this.teamBalance = team.getTeamStores().stream().mapToInt(teamStore->teamStore.getTeamStoreBalance()
+        ).sum();
         this.imgUrl=team.getTeamImgUrl();
     }
 }

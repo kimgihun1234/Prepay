@@ -414,8 +414,21 @@ public class TeamService {
         // 유저팀 가져올때 팀 같이 가져오기
 
         User user = userRepository.findUserById(userId);
+        List<UserTeam> userTeams = userTeamRepository.findUserTeamsByUserId(userId);
+        List<TeamRes> resultList = new ArrayList<>();
+        for (UserTeam userTeam : userTeams) {
+            int sumTeamBalance = 0;
+            TeamRes teamRes = new TeamRes(userTeam,sumTeamBalance);
+            List<TeamStore> teamStores = userTeam.getTeam().getTeamStores();
+            for (TeamStore teamStore : teamStores) {
+                sumTeamBalance += teamStore.getTeamStoreBalance();
+            }
+            teamRes.setTeamBalance(sumTeamBalance);
+            resultList.add(teamRes);
+        }
 
-        return user.getUserTeams().stream().map(TeamRes::new).collect(Collectors.toList());
+        return resultList;
+
     }
 
 

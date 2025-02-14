@@ -15,7 +15,7 @@ public class PublicTeamDetailRes {
     private boolean checkLike;
     private String teamName;
     private String address;
-    private int balance;
+    private int teamBalance;
 
     public PublicTeamDetailRes(UserTeam userTeam, Team team) {
         this.imageUrl=team.getTeamImgUrl();
@@ -24,7 +24,8 @@ public class PublicTeamDetailRes {
         this.teamMessage = team.getTeamMessage();
         this.checkLike= userTeam.isLike();;
         this.teamName = team.getTeamName();
-        this.balance = team.getTeamBalance();
+        this.teamBalance = team.getTeamStores().stream().mapToInt(teamStore->teamStore.getTeamStoreBalance()
+        ).sum();
         this.address = team.getTeamStores().get(0).getStore().getAddress();
     }
 }
