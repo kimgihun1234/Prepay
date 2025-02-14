@@ -151,7 +151,7 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
                     binding.registerBtn.isEnabled = false
                     val response = withContext(Dispatchers.IO) {
                         RetrofitUtil.teamService.makeTeam(
-                            "1",
+                            SharedPreferencesUtil.getAccessToken()!!,
                             teamMakeRequest,
                             selectedImageMultipart
                         )
@@ -230,7 +230,7 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
                 val response = withContext(Dispatchers.IO) {
                     delay(1000)
                     chargeReceipt?.let {
-                        RetrofitUtil.bootPayService.getBootPay("user1@gmail.com",
+                        RetrofitUtil.bootPayService.getBootPay(SharedPreferencesUtil.getAccessToken()!!,
                             it
                         )
                     }
