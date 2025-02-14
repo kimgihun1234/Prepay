@@ -99,10 +99,9 @@ interface TeamService {
     suspend fun getTeamStore(@Header("access") access: String, @Path("teamId") teamId: Long) : List<StoreLocation>
 
     //공개된 그룹의 좋아요 정보를 보냅니다.
-    @POST("/team/like")
 
-    @GET("/team/public-team/{teamid}")
-    suspend fun groupDetailInfo(@Header("access") access: String, @Path("teamid") teamid: Long): PublicTeamDetailsRes
+    @GET("/team/public-team/{teamId}")
+    suspend fun groupDetailInfo(@Header("access") access: String, @Path("teamId") teamId: Long): PublicTeamDetailsRes
 
     @GET("/team/public-team/2km")
     suspend fun getTeamStoreDistance(@Header("access") access : String, @Query("latitude") latitude : Double, @Query("longitude") longitude:Double) : List<PublicTeamsDisRes>
