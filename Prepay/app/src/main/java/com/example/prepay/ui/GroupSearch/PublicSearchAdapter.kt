@@ -70,7 +70,6 @@ class PublicSearchAdapter(var publicGroupList: List<PublicTeamsRes>, private val
         notifyDataSetChanged()
     }
 
-
     // 뷰홀더 생성
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PublicGroupViewHolder {
         val binding = ItemPublicGroupBinding.inflate(LayoutInflater.from(parent.context), parent, false)

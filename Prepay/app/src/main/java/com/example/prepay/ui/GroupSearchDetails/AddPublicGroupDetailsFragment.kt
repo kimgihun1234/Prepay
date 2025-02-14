@@ -101,21 +101,24 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
             val leftMoney = 800000
             animateMoneyChange(leftMoney)
 
-            // 좋아요 관련 로직
-            val checkLike = it.checkLike
-            if (checkLike) {
-                binding.likeBtn.setImageResource(R.drawable.like_heart_fill)
-            } else {
-                binding.likeBtn.setImageResource(R.drawable.like_heart_empty)
+            // 좋아요 초기 상태 반영
+            viewModel.isLiked.observe(viewLifecycleOwner) { isLiked ->
+                binding.likeBtn.setImageResource(
+                    if (isLiked) R.drawable.like_heart_fill else R.drawable.like_heart_empty
+                )
             }
 
+            // 클릭 이벤트
             binding.likeBtn.setOnClickListener {
-                val likeStatue = !checkLike
+                val newLikeStatus = !(viewModel.isLiked.value ?: false)
+                viewModel.toggleLike()
 
+                val likeRequest = LikeTeamsReq(6, newLikeStatus)
+                viewModel.sendLikeStatus("user1@gmail.com", likeRequest)
             }
 
         }
-        viewModel.getGroupDetails("user1@gmail.com", 1)
+        viewModel.getGroupDetails("user1@gmail.com", 6)
     }
 
     private fun initEvent() {
