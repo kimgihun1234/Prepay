@@ -36,7 +36,11 @@ class GroupSearchDetailsViewModel : ViewModel() {
     val detailInfo: LiveData<PublicTeamDetailsRes>
         get() = _detailInfo
 
-    fun getGroupDetails(email:String, teamId : Long) {
+    private val _isLiked = MutableLiveData<Boolean>().apply { value = false }
+    val isLiked: LiveData<Boolean> get() = _isLiked
+
+    fun getGroupDetails(email: String, teamId: Int) {
+
         viewModelScope.launch {
             runCatching {
                 RetrofitUtil.teamService.groupDetailInfo(email, teamId)
@@ -44,6 +48,7 @@ class GroupSearchDetailsViewModel : ViewModel() {
                 .onSuccess {
                     Log.d(TAG, "getGroupDetails: 팀 상세 정보 전송 성공 :$it ")
                     _detailInfo.value = it
+                    _isLiked.value = it.checkLike
                 }
                 .onFailure { e ->
                     Log.d(TAG, "getGroupDetails: ${e.message}")
@@ -51,16 +56,12 @@ class GroupSearchDetailsViewModel : ViewModel() {
         }
     }
 
-    private val _isLiked = MutableLiveData<Boolean>().apply { value = false }
-    val isLiked: LiveData<Boolean> get() = _isLiked
-
     fun toggleLike() {
         _isLiked.value = _isLiked.value?.not()
     }
 
     fun sendLikeStatus(email: String, info: LikeTeamsReq) {
         val currentStatus = _isLiked.value ?: false
-
 
         viewModelScope.launch {
             runCatching {
