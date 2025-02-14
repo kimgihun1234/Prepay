@@ -27,7 +27,7 @@ spring:
 #            user-name-attribute: sub
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create-drop
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
