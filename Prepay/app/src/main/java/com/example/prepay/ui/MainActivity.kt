@@ -149,7 +149,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             val sharedPref = this.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
             val accessToken = sharedPref.getString(KeyAccessToken, "") ?: ""
             Log.d(TAG, "불러온 AccessToken: $accessToken")
-
+36
             lifecycleScope.launch {
                 try {
                     val response = RetrofitUtil.teamService.signInTeam(
@@ -175,8 +175,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 }
 
                 R.id.navigation_group_search -> {
-                    groupSearchFragmentViewModel.getAllPublicTeamList()
-                    Log.d(TAG, "initEvent: $groupSearchFragmentViewModel")
                     changeFragmentMain(CommonUtils.MainFragmentName.GROUP_SEARCH_FRAGMENT)
                     true
                 }
