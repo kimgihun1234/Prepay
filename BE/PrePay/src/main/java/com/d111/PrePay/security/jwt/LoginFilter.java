@@ -87,13 +87,15 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         User user = userRepository.findUserByEmail(email);
         Long userId = user.getId();
 
+        log.info("일반 유저 이메일 : {} ", email);
+        log.info("일반 유저 PK : {} ", userId);
 
-        String access = jwtUtil.createJWT("access", email, 600000 * 6L, userId);
-        String refresh = jwtUtil.createJWT("refresh", email, 600000 * 12L, userId);
+        String access = jwtUtil.createJWT("access", email, 600000 * 3 * 6L, userId);
+        String refresh = jwtUtil.createJWT("refresh", email, 600000 * 4 * 6L, userId);
 
 
-        log.info("액세스 토큰 : {}",access);
-        log.info("리프레쉬 토큰 : {}",refresh);
+        log.info("액세스 토큰 : {}", access);
+        log.info("리프레쉬 토큰 : {}", refresh);
 
         addRefresh(email, refresh, 86400000L);
 
@@ -105,6 +107,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         response.getWriter().write("{\"nickname\":\"" + user.getNickname() + "\", \"message\":\"로그인 성공\"}");
         response.getWriter().flush();
 
+        log.info("로그인 성공");
 
     }
 

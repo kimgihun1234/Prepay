@@ -31,7 +31,7 @@ public class PosService {
     private final FCMService fcmService;
 
     @Transactional
-    public Long makeOrder(OrderCreateReq orderReq) {
+    public Long makeOrder(OrderCreateReq orderReq, String email) {
         Qr qr = qrRepository.findByUuid(orderReq.getQrUUID()).orElseThrow(() -> {
             log.error("qr uuid : {}", orderReq.getQrUUID());
             throw new NoQrException("존재하지 않는 qr");
@@ -50,9 +50,9 @@ public class PosService {
             return new NoSuchElementException("가게 없음");
         });
 
-        UserTeam userTeam = userTeamRepository.findByTeamIdAndUser_Email(orderReq.getTeamId(), orderReq.getEmail()).orElseThrow(() ->
+        UserTeam userTeam = userTeamRepository.findByTeamIdAndUser_Email(orderReq.getTeamId(), email).orElseThrow(() ->
         {
-            log.error("팀 아아디 : {}, 이메일 : {}", orderReq.getTeamId(), orderReq.getEmail());
+            log.error("팀 아아디 : {}, 이메일 : {}", orderReq.getTeamId(), email);
             return new RuntimeException("userTeam 찾기 실패");
         });
 

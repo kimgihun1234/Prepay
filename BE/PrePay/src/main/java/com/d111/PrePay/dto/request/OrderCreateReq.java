@@ -8,7 +8,6 @@ import java.util.List;
 @Getter
 @Setter
 public class OrderCreateReq {
-    private String email;
     private long teamId;
     private long storeId;
     private String qrUUID;

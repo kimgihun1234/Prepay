@@ -70,7 +70,6 @@ class PrePayApplicationTests {
         String qr1 = qrService.getPrivateQr("user1@gmail.com", 1L).getMessage();
         String qr2 = qrService.getPrivateQr("user2@gmail.com", 1L).getMessage();
         OrderCreateReq orderCreateReq1 = new OrderCreateReq();
-        orderCreateReq1.setEmail("user1@gmail.com");
         orderCreateReq1.setTeamId(1L);
         orderCreateReq1.setStoreId(1L);
         orderCreateReq1.setQrUUID(qr1);
@@ -79,7 +78,6 @@ class PrePayApplicationTests {
         orderCreateReq1.setDetails(list);
 
         OrderCreateReq orderCreateReq2 = new OrderCreateReq();
-        orderCreateReq2.setEmail("user2@gmail.com");
         orderCreateReq2.setTeamId(1L);
         orderCreateReq2.setStoreId(1L);
         orderCreateReq2.setQrUUID(qr2);
@@ -92,7 +90,7 @@ class PrePayApplicationTests {
         executorService.submit(() -> {
             executorService.submit(() -> {
                 try {
-                    posService.makeOrder(orderCreateReq1);
+                    posService.makeOrder(orderCreateReq1,"user1@gmail.com");
                 } finally {
                     latch.countDown();
                 }
@@ -100,7 +98,7 @@ class PrePayApplicationTests {
 
             executorService.submit(() -> {
                 try {
-                    posService.makeOrder(orderCreateReq2);
+                    posService.makeOrder(orderCreateReq2,"user2@gmail.com");
                 } finally {
                     latch.countDown();
                 }
