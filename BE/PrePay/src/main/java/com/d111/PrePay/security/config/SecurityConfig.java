@@ -86,18 +86,18 @@ public class SecurityConfig {
 
         http.httpBasic((auth) -> auth.disable());
 
-        http.oauth2Login((oauth2)->oauth2
-                .userInfoEndpoint((userInfoEndpointConfig) ->userInfoEndpointConfig
-                        .userService(customOAuth2UserService))
-                .successHandler(customSuccessHandler));
+//        http.oauth2Login((oauth2)->oauth2
+//                .userInfoEndpoint((userInfoEndpointConfig) ->userInfoEndpointConfig
+//                        .userService(customOAuth2UserService))
+//                .successHandler(customSuccessHandler));
 
 
         http.authorizeHttpRequests((auth) ->
                 auth.requestMatchers("/user/login", "/", "/user/signup").permitAll()
                         .requestMatchers("/reissue").permitAll()
                         .requestMatchers( "/","/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/**").permitAll());
-//                        .anyRequest().authenticated());
+//                        .requestMatchers("/**").permitAll());
+                        .anyRequest().authenticated());
 
         http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
 

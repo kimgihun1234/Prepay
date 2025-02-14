@@ -1,10 +1,12 @@
 package com.d111.PrePay.controller;
 
 import com.d111.PrePay.dto.respond.StandardRes;
+import com.d111.PrePay.security.dto.CustomUserDetails;
 import com.d111.PrePay.service.QrService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,16 +18,17 @@ public class QrController {
 
     @GetMapping("/{teamId}/party")
     @Operation(summary = "회식용 qr 생성")
-    public ResponseEntity<StandardRes> getPartyQr(@RequestHeader String userEmail, @PathVariable Long teamId) {
-        StandardRes result = qrService.getPartyQr(userEmail, teamId);
+    public ResponseEntity<StandardRes> getPartyQr(@RequestHeader String access, @AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long teamId) {
+        String email = userDetails.getUsername();
+        StandardRes result = qrService.getPartyQr(email, teamId);
         return ResponseEntity.status(result.getStatusCode()).body(result);
     }
 
     @GetMapping("/{teamId}/private")
     @Operation(summary = "개인용 qr 생성")
-    public ResponseEntity<StandardRes> getPrivateQr(@RequestHeader String userEmail, @PathVariable long teamId){
-
-        return ResponseEntity.ok(qrService.getPrivateQr(userEmail,teamId));
+    public ResponseEntity<StandardRes> getPrivateQr(@RequestHeader String access,@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable long teamId){
+        String email = userDetails.getUsername();
+        return ResponseEntity.ok(qrService.getPrivateQr(email,teamId));
     }
 
 }
