@@ -35,6 +35,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.prepay.RetrofitUtil
+import com.example.prepay.SharedPreferencesUtil
 import com.example.prepay.data.response.LikeTeamsReq
 import com.example.prepay.data.response.PublicTeamDetailsRes
 import com.example.prepay.data.response.PublicTeamsRes
@@ -136,156 +137,8 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
         binding.publicDetailTeamName.text = viewModel.detailInfo.value?.teamName
         Log.d(TAG, "initEvent: ${viewModel.detailInfo.value?.teamName}")
         binding.publicDetailText.text = viewModel.detailInfo.value?.teamMessage
-        
-
-
-//
-//        viewModel.groupId.observe(viewLifecycleOwner, Observer { id ->
-//            binding.publicDetailQrBtn.isEnabled = id != null && id > 0
-//        })
-//
-//        viewModel.groupName.observe(viewLifecycleOwner, Observer { name ->
-//            Log.d(TAG, "groupName updated: $name")
-//            binding.publicDetailTeamName.text = name
-//        })
-//
-//        viewModel.groupMessage.observe(viewLifecycleOwner, Observer { message ->
-//            Log.d(TAG, "groupContent updated: $message")
-//            binding.publicDetailText.text = message
-//        })
-//
-//        viewModel.groupLeftMoney.observe(viewLifecycleOwner, Observer { leftMoney ->
-//            Log.d(TAG, "groupLeftMoney updated: $leftMoney")
-//            //  binding.leftMoneyInfo.text = leftMoney.toString()
-//            animateMoneyChange(leftMoney)
-//        })
-//
-//        viewModel.groupImageURL.observe(viewLifecycleOwner, Observer { imageURL ->
-//            Log.d(TAG, "groupImageURL updated: $imageURL")
-//            if (!imageURL.isNullOrEmpty()) {
-//                Glide.with(requireContext())
-//                    .load(imageURL)
-//                    .into(binding.publicDetailImage)
-//            } else {
-//                binding.publicDetailImage.setImageResource(R.drawable.logo)
-//            }
-//        })
-
-//        // 좋아요 기능
-//        viewModel.isLiked.observe(viewLifecycleOwner, Observer { isLiked ->
-//            val imageRes = if (isLiked) R.drawable.like_heart_fill else R.drawable.like_heart_empty
-//            binding.likeBtn.setImageResource(imageRes)
-//        })
-
-
-//        binding.likeBtn.setOnClickListener {
-//            viewModel.toggleLike()
-//            val email = "user1@gmail.com"
-//            val info = activityViewModel.teamId.value?.let { LikeTeamsReq(it.toInt(), viewModel.isLiked.value ?: false) }
-//            Log.d(TAG, "onStop: ${activityViewModel.teamId.value}")
-//            info?.let { viewModel.sendLikeStatus(email, it) }
-//        }
-
-        /**
-         * QR 코드를 생성하여 다이얼로그로 표시하는 함수
-         *
-         * @param context 다이얼로그를 표시할 컨텍스트 (Fragment 내에서는 requireContext()를 사용)
-         * @param url QR 코드에 인코딩할 URL (기본값: "https://www.naver.com")
-         */
-//        fun showQRDialog(url: String = "https://www.naver.com") {
-//            val context = this@AddPublicGroupDetailsFragment.requireContext()
-//
-//            // 타이머 생성
-//            val timer = Timer()
-//
-//            // 다이얼로그 레이아웃 인플레이트
-//            val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_create_qr, null)
-//
-//            // QR 코드 생성 및 이미지뷰에 적용
-//            try {
-//                val barcodeEncoder = BarcodeEncoder()
-//                val bitmap = barcodeEncoder.encodeBitmap(url, BarcodeFormat.QR_CODE, 400, 400)
-//                val imageViewQrCode = dialogView.findViewById<ImageView>(R.id.imageViewQrCode)
-//                imageViewQrCode.setImageBitmap(bitmap)
-//            } catch (e: Exception) {
-//                Log.e("QRDialog", "QR 코드 생성 실패", e)
-//            }
-//
-//            // AlertDialog 생성
-//            val dialog = AlertDialog.Builder(context)
-//                .setView(dialogView)
-//                .setCancelable(true)  // 뒤로 가기 버튼 허용
-//                .create()
-//
-//
-//            // 다이얼로그 닫힐 때 타이머 취소
-//            dialog.setOnDismissListener {
-//                timer.cancel()
-//            }
-//
-//            // 다이얼로그 표시
-//            dialog.show()
-//
-//            // 60초 카운트다운 타이머 시작
-//            var seconds = 60
-//            val qrTimer = dialogView.findViewById<TextView>(R.id.qr_timer)
-//            qrTimer?.text = "남은 시간: 60초"
-//
-//            timer.scheduleAtFixedRate(object : TimerTask() {
-//                override fun run() {
-//                    seconds--
-//                    // UI 업데이트는 메인 스레드에서 수행
-//                    this@AddPublicGroupDetailsFragment.requireActivity().runOnUiThread {
-//                        qrTimer?.text = "남은 시간: ${seconds}초"
-//                    }
-//                    if (seconds <= 0) {
-//                        // 시간이 다 되었으면 다이얼로그를 닫고 타이머 취소
-//                        this@AddPublicGroupDetailsFragment.requireActivity().runOnUiThread {
-//                            if (dialog.isShowing) {
-//                                dialog.dismiss()
-//                            }
-//                        }
-//                        timer.cancel()
-//                    }
-//                }
-//            }, 1000, 1000)
-//        }
-//
-//        binding.publicDetailQrBtn.setOnClickListener {
-//            lifecycleScope.launch {
-//                runCatching {
-//                    RetrofitUtil.qrService.qrTeamCreate("user1@gmail.com", 2)
-//                }.onSuccess {
-//                    Log.d(TAG,it.message)
-//                    showQRDialog(it.message)
-//                }.onFailure {
-//                    mainActivity.showToast("qr불러오기가 실패했습니다")
-//                }
-//            }
-//        }
-
-
-        // GPT 코드
-//        binding.publicDetailQrBtn.setOnClickListener {
-//            viewModel.groupId.observe(viewLifecycleOwner) { groupId ->
-//                groupId?.let { id ->
-//                    lifecycleScope.launch {
-//                        runCatching {
-//                            RetrofitUtil.qrService.qrTeamCreate("user1@gmail.com", id)
-//                        }.onSuccess {
-//                            Log.d(TAG, it.message)
-//                            showQRDialog(it.message)
-//                        }.onFailure {
-//                            mainActivity.showToast("qr불러오기가 실패했습니다")
-//                        }
-//                    }
-//                } ?: mainActivity.showToast("그룹 ID가 없습니다.")
-//            }
-//        }
-
     }
-
-
+    
     private val readyCallback: OnMapReadyCallback by lazy {
         object : OnMapReadyCallback {
             override fun onMapReady(p0: GoogleMap) {
@@ -368,7 +221,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
     fun sendlike(likeTeamsReq: LikeTeamsReq){
         lifecycleScope.launch {
             runCatching {
-                RetrofitUtil.teamService.sendLikeStatus("user1@gmail.com",likeTeamsReq)
+                RetrofitUtil.teamService.sendLikeStatus(SharedPreferencesUtil.getAccessToken()!!,likeTeamsReq)
             }.onSuccess {
 
             }.onFailure {
