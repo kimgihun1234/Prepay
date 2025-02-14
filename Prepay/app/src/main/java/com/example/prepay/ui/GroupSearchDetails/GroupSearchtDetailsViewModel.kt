@@ -36,7 +36,7 @@ class GroupSearchDetailsViewModel : ViewModel() {
     val detailInfo: LiveData<PublicTeamDetailsRes>
         get() = _detailInfo
 
-    fun getGroupDetails(email:String, teamId : Int) {
+    fun getGroupDetails(email:String, teamId : Long) {
         viewModelScope.launch {
             runCatching {
                 RetrofitUtil.teamService.groupDetailInfo(email, teamId)

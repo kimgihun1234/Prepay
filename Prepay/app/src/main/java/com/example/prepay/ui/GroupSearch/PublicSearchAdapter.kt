@@ -40,7 +40,7 @@ class PublicSearchAdapter(var publicGroupList: List<PublicTeamsDisRes>, private 
             binding.publicSearchLikeBtn.setOnClickListener {
                 isLiked = !isLiked  // 상태 변경
                 updateHeartIcon()  // 아이콘 변경
-                val likereq = LikeTeamsReq(publicgroup.teamId,isLiked)
+                val likereq = LikeTeamsReq(publicgroup.teamId.toLong(), isLiked)
                 listener.onLikeClick(likereq)
             }
 
