@@ -45,18 +45,18 @@ public class DbInitConfig implements ApplicationRunner {
     public void initData() {
 
 
-        userService.userSignUp(new UserSignUpReq("shinypants@gmail.com", "123", "반짝이는바지"));
-        userService.userSignUp(new UserSignUpReq("1@gmail.com", "123", "김성수"));
-        userService.userSignUp(new UserSignUpReq("2@gmail.com", "123", "김기훈"));
+        userService.userSignUp(new UserSignUpReq("1@gmail.com", "123", "김기훈"));
+        userService.userSignUp(new UserSignUpReq("2@gmail.com", "123", "조성윤"));
         userService.userSignUp(new UserSignUpReq("3@gmail.com", "123", "차현우"));
-        userService.userSignUp(new UserSignUpReq("4@gmail.com", "123", "조성윤"));
-        userService.userSignUp(new UserSignUpReq("5@gmail.com", "123", "서현석"));
-        userService.userSignUp(new UserSignUpReq("6@gmail.com", "123", "경이현"));
+        userService.userSignUp(new UserSignUpReq("4@gmail.com", "123", "서현석"));
+        userService.userSignUp(new UserSignUpReq("5@gmail.com", "123", "경이현"));
+        userService.userSignUp(new UserSignUpReq("6@gmail.com", "123", "김성수"));
         userService.userSignUp(new UserSignUpReq("7@gmail.com", "123", "이재용"));
         userService.userSignUp(new UserSignUpReq("8@gmail.com", "123", "아이유"));
-        userService.userSignUp(new UserSignUpReq("9@gmail.com", "123", "싸피최고컨설턴트"));
-        userService.userSignUp(new UserSignUpReq("10@gmail.com", "123", "구미꿀주먹"));
-        userService.userSignUp(new UserSignUpReq("11@gmail.com", "123", "배고픈취준생"));
+        userService.userSignUp(new UserSignUpReq("9@gmail.com", "123", "반짝이는바지"));
+        userService.userSignUp(new UserSignUpReq("10@gmail.com", "123", "싸피최고컨설턴트"));
+        userService.userSignUp(new UserSignUpReq("11@gmail.com", "123", "구미꿀주먹"));
+        userService.userSignUp(new UserSignUpReq("12@gmail.com", "123", "배고픈취준생"));
         log.info("사람 넣기 완료");
 
 
