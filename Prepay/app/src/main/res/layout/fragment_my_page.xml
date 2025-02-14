@@ -8,46 +8,68 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/create_group_btn"
-        android:layout_width="93dp"
+        android:layout_width="100dp"
         android:layout_height="40dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="156dp"
-        android:background="@color/cardview_light_background"
-        android:text="그룹생성"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="24dp"
+        android:background="@null"
+        android:drawableLeft="@drawable/group_add_btn"
+        android:text="그룹 생성"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/enter_group_btn"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/enter_group_btn"
-        android:layout_width="93dp"
+        android:layout_width="100dp"
         android:layout_height="40dp"
-        android:layout_marginStart="19dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="44dp"
-        android:background="@color/cardview_light_background"
-        android:text="그룹입장"
-        android:textSize="15sp"
+        android:layout_marginEnd="16dp"
+        android:background="@null"
+        android:drawableLeft="@drawable/cord_input_btn"
+        android:text="코드 입력"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/create_group_btn"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="300dp"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:orientation="vertical"
         android:paddingStart="50dp"
-        android:paddingTop="150dp"
+        android:paddingTop="100dp"
         android:paddingEnd="50dp"
         android:paddingBottom="150dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/group_detail_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.372" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/group_detail_btn"
+        android:layout_width="150dp"
+        android:layout_height="145dp"
+        android:layout_marginStart="48dp"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:src="@drawable/group_detail_btn"
+        app:layout_constraintBottom_toBottomOf="@+id/pay_btn"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/pay_btn"
+        android:layout_width="150dp"
+        android:layout_height="145dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="150dp"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:src="@drawable/pay_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
