@@ -10,5 +10,5 @@ interface StoreService {
 
     @POST("store/stores")
     suspend fun getStores(@Body request : StoreIdReq,
-                          @Header("email") email : String) : List<StoreIdRes>
+                          @Header("access") access: String) : List<StoreIdRes>
 }
