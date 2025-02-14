@@ -8,10 +8,11 @@ import com.example.prepay.databinding.ItemPublicGroupBinding
 import com.bumptech.glide.Glide
 import com.example.prepay.R
 import com.example.prepay.data.response.LikeTeamsReq
+import com.example.prepay.data.response.PublicTeamsDisRes
 import com.example.prepay.data.response.PublicTeamsRes
 
 private const val TAG = "PublicSearchAdapter_싸피"
-class PublicSearchAdapter(var publicGroupList: List<PublicTeamsRes>, private val listener: OnPublicClickListener) :
+class PublicSearchAdapter(var publicGroupList: List<PublicTeamsDisRes>, private val listener: OnPublicClickListener) :
     RecyclerView.Adapter<PublicSearchAdapter.PublicGroupViewHolder>() {
 
     class PublicGroupViewHolder(private val binding: ItemPublicGroupBinding,private val listener: OnPublicClickListener) :
@@ -19,13 +20,13 @@ class PublicSearchAdapter(var publicGroupList: List<PublicTeamsRes>, private val
 
         private var isLiked = false  // 좋아요 상태 저장
 
-        fun bind(publicgroup: PublicTeamsRes) {
+        fun bind(publicgroup: PublicTeamsDisRes) {
             binding.publicName.text = publicgroup.teamName
             binding.publicMoneyInfo.text = publicgroup.teamBalance.toString()
 
             // 그룹 이미지 불러오기
             Glide.with(binding.root.context)
-                .load(publicgroup.imageURL)
+                .load(publicgroup.imageUrl)
                 .placeholder(R.drawable.logo)
                 .error(R.drawable.logo)
                 .into(binding.groupImage)
@@ -65,7 +66,7 @@ class PublicSearchAdapter(var publicGroupList: List<PublicTeamsRes>, private val
     }
 
     // 좋아요 그룹 정렬
-    fun likeUpdateSort(likeGroupList: List<PublicTeamsRes>) {
+    fun likeUpdateSort(likeGroupList: List<PublicTeamsDisRes>) {
         publicGroupList = likeGroupList
         notifyDataSetChanged()
     }

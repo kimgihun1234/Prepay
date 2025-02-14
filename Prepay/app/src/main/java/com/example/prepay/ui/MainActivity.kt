@@ -175,8 +175,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 }
 
                 R.id.navigation_group_search -> {
-                    groupSearchFragmentViewModel.getAllPublicTeamList()
-                    Log.d(TAG, "initEvent: $groupSearchFragmentViewModel")
                     changeFragmentMain(CommonUtils.MainFragmentName.GROUP_SEARCH_FRAGMENT)
                     true
                 }
