@@ -3,6 +3,7 @@ package com.example.prepay.ui.GroupSearch
 import android.Manifest
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
+import android.content.SharedPreferences
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -15,6 +16,7 @@ import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.example.prepay.ui.MainActivityViewModel
+import com.example.prepay.SharedPreferencesUtil
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
 import androidx.fragment.app.activityViewModels
@@ -55,6 +57,7 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
     private val viewModel: GroupSearchFragmentViewModel by viewModels()
     private val activityViewModel: MainActivityViewModel by activityViewModels()
 
+
     // GPS관련 변수
     private var isUserLocationSet = false
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
@@ -94,14 +97,10 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-        initAdapter()
-
         //GPS 관련 코드
-
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         requestPermission()
+
         initEvent()
         initAdapter()
         initViewModel()
@@ -139,17 +138,13 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
             publicSearchAdapter.publicGroupList = it
             publicSearchAdapter.notifyDataSetChanged()
         }
-
-//        // 임시로 코드 작성
-//        val email = "user1@gmail.com"
-//        groupSearchFragmentViewModel.getSortDistancePublicTeamList(groupSearchFragmentViewModel.userLocation.value!!.latitude, groupSearchFragmentViewModel.userLocation.value!!.longitude)
-        groupSearchFragmentViewModel.getSortDistancePublicTeamList(36.1084,128.415)
     }
 
     private fun initViewModel() {
         groupSearchFragmentViewModel.userLocation.observe(viewLifecycleOwner) { curlocation ->
             // 위치 정보가 변경될 때마다 호출
             Log.d(TAG,"변화"+curlocation.toString())
+            groupSearchFragmentViewModel.getSortDistancePublicTeamList(curlocation.latitude, curlocation.longitude)
         }
     }
 
@@ -160,13 +155,13 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
     }
 
     fun sendlike(likeTeamsReq: LikeTeamsReq){
-       lifecycleScope.launch {
+        lifecycleScope.launch {
            runCatching {
-               RetrofitUtil.teamService.sendLikeStatus("user1@gmail.com",likeTeamsReq)
+               RetrofitUtil.teamService.sendLikeStatus(SharedPreferencesUtil.getAccessToken()!!, likeTeamsReq)
            }.onSuccess {
-
-           }.onFailure {
-
+               Log.d(TAG, "sendlike: 성공")
+           }.onFailure { e ->
+               Log.d(TAG, "sendlike: ${e.message}")
            }
        }
     }
@@ -231,7 +226,6 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
     private val readyCallback: OnMapReadyCallback by lazy {
         object : OnMapReadyCallback {
             override fun onMapReady(p0: GoogleMap) {
-
                 setDefaultLocation()
             }
         }
@@ -337,8 +331,8 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
 
 
     override fun onGroupClick(publicgroup: PublicTeamsDisRes) {
-        TODO("Not yet implemented")
+        activityViewModel.setTeamId(publicgroup.teamId.toLong())
+        mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.PUBLIC_GROUP_DETAILS_FRAGMENT)
     }
-
 }
 

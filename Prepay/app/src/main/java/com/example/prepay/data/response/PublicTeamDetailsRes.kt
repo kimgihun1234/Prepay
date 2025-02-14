@@ -6,7 +6,9 @@ data class PublicTeamDetailsRes(
     val usedAmount: Int,
     val teamMessage: String,
     val checkLike: Boolean,
-    val teamName: String
+    val teamName: String,
+    val address : String,
+    val balance: Int
 )
 
 //imageurl, team_balance, teammessage, isLike, teamName, latitude, longitude, address

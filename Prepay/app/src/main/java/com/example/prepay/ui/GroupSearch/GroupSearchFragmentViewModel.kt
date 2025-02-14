@@ -1,20 +1,14 @@
 package com.example.prepay.ui.GroupSearch
 
-
-import android.os.Build.VERSION_CODES.P
 import android.location.Location
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.example.prepay.RetrofitUtil
-import com.example.prepay.data.response.LikeTeamsReq
 import com.example.prepay.SharedPreferencesUtil
 import com.example.prepay.data.response.PublicTeamsRes
-import com.example.prepay.data.response.Team
-import com.example.prepay.data.response.TeamUserRes
 import com.example.prepay.data.response.PublicTeamsDisRes
 import kotlinx.coroutines.launch
 
@@ -33,19 +27,19 @@ class GroupSearchFragmentViewModel : ViewModel(){
 
 
 
-    fun getAllPublicTeamList() {
-        viewModelScope.launch {
-            runCatching {
-                RetrofitUtil.teamService.getPublicTeams(SharedPreferencesUtil.getAccessToken()!!)
-            }.onSuccess {
-                Log.d("GroupSearchViewModel", "공개 팀 리스트 가져오기 성공: $it")
-                _getPublicTeams.value = it
-            }.onFailure { e ->
-                Log.d("GroupSearchViewModel", "getAllPublicTeamList: 실패")
-                _getPublicTeams.value = emptyList()
-            }
-        }
-    }
+//    fun getAllPublicTeamList() {
+//        viewModelScope.launch {
+//            runCatching {
+//                RetrofitUtil.teamService.getPublicTeams(SharedPreferencesUtil.getAccessToken()!!)
+//            }.onSuccess {
+//                Log.d("GroupSearchViewModel", "공개 팀 리스트 가져오기 성공: $it")
+//                _getPublicTeams.value = it
+//            }.onFailure { e ->
+//                Log.d("GroupSearchViewModel", "getAllPublicTeamList: 실패")
+//                _getPublicTeams.value = emptyList()
+//            }
+//        }
+//    }
 
 
     val email = "user1@gmail.com"
