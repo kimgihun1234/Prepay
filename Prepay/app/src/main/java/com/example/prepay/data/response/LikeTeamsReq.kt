@@ -1,6 +1,6 @@
 package com.example.prepay.data.response
 
 data class LikeTeamsReq(
-    val teamId: Long,
+    val teamId: Int,
     val checkLike: Boolean
 )
