@@ -14,6 +14,7 @@ import com.example.qrscanner.response.orderDetail
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.coroutines.launch
 
+private const val TAG = "MainActivity_싸피"
 class MainActivity : AppCompatActivity() {
     private val binding by lazy{
         ActivityMainBinding.inflate(layoutInflater)
@@ -49,14 +50,13 @@ class MainActivity : AppCompatActivity() {
         // PosReq 객체 생성
         val posReq = PosReq(
             details = orderDetails,
-            email = parts[1],
             qrUUID = parts[0],
             storeId = num,
             teamId = parts[2].toInt()
         )
         lifecycleScope.launch {
             runCatching {
-                RetrofitUtil.posService.posTransfer(posReq)
+                RetrofitUtil.posService.posTransfer(parts[1],posReq)
             }.onSuccess {
                 Log.d("QR_SCAN","아이디어가 작동하였습니다")
             }.onFailure {error ->

@@ -22,7 +22,7 @@ class ReceivedCookiesInterceptor : Interceptor {
             }
 
             // cookie 내부 데이터에 저장
-            ApplicationClass.sharedPreferencesUtil.addUserCookie(cookies)
+            //ApplicationClass.sharedPreferencesUtil.addUserCookie(cookies)
             Log.d(TAG, "intercept: ${cookies}")
         }
         return originalResponse

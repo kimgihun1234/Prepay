@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.data.response.LikeTeamsReq
+import com.example.prepay.SharedPreferencesUtil
 import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.data.response.Team
 import com.example.prepay.data.response.TeamUserRes
@@ -31,12 +32,10 @@ class GroupSearchFragmentViewModel : ViewModel(){
     val userLocation: LiveData<Location> get() = _userLocation
 
 
-
-    val email = "user1@gmail.com"
     fun getAllPublicTeamList() {
         viewModelScope.launch {
             runCatching {
-                RetrofitUtil.teamService.getPublicTeams(email)
+                RetrofitUtil.teamService.getPublicTeams(SharedPreferencesUtil.getAccessToken()!!)
             }.onSuccess {
                 Log.d("GroupSearchViewModel", "공개 팀 리스트 가져오기 성공: $it")
                 _getPublicTeams.value = it
@@ -63,7 +62,7 @@ class GroupSearchFragmentViewModel : ViewModel(){
     fun getSortDistancePublicTeamList(latitude : Double, longitude : Double) {
         viewModelScope.launch {
             runCatching {
-                RetrofitUtil.teamService.getTeamStoreDistance(email, latitude, longitude)
+                RetrofitUtil.teamService.getTeamStoreDistance(SharedPreferencesUtil.getAccessToken()!!, latitude, longitude)
             }.onSuccess {
                 Log.d("GroupSearchViewModel", "공개 팀 리스트 가져오기 성공: $it")
                 _sortDistancePublicTeams.value = sortDistance(it)

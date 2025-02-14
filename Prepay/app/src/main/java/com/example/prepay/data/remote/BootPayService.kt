@@ -10,7 +10,7 @@ import retrofit2.http.POST
 interface BootPayService {
 
     @POST("bootpay-charge")
-    suspend fun getBootPay(@Header ("email") email: String,
+    suspend fun getBootPay(@Header("access") access: String,
                            @Body request: BootPayChargeReq
     ): Response<BootPayChargeRes>
 
