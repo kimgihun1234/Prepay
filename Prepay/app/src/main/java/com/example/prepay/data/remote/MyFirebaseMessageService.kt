@@ -17,7 +17,7 @@ class MyFirebaseMessageService : com.google.firebase.messaging.FirebaseMessaging
         // 새로운 토큰 수신 시 서버로 전송
         // TokenReq 객체 생성 후 전달
         val tokenReq = TokenReq(token)
-        MainActivity.uploadToken(tokenReq)
+        LoginActivity.uploadToken(tokenReq)
     }
 
     // Foreground, Background 모두 처리하기 위해서는 data에 값을 담아서 넘긴다.
@@ -50,7 +50,7 @@ class MyFirebaseMessageService : com.google.firebase.messaging.FirebaseMessaging
 
         val builder1 = NotificationCompat.Builder(
             this,
-            MainActivity.channel_id
+            LoginActivity.channel_id
         )
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setContentTitle(messageTitle)
