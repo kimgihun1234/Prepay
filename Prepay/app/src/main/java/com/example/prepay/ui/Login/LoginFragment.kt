@@ -80,39 +80,31 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
         // SharedPreferences를 통한 자동 로그인 체크
         val sharedPref = requireContext().getSharedPreferences(prefsName, Context.MODE_PRIVATE)
 
-        // 저장된 아이디와 비밀번호 읽어오기 (저장되지 않았다면 기본값은 빈 문자열로)
-//        val savedId = sharedPref.getString(keyUserId, "") ?: ""
-//        val savedPw = sharedPref.getString(keyUserPw, "") ?: ""
+//         저장된 아이디와 비밀번호 읽어오기 (저장되지 않았다면 기본값은 빈 문자열로)
+        val savedId = sharedPref.getString(keyUserId, "") ?: ""
+        val savedPw = sharedPref.getString(keyUserPw, "") ?: ""
 
-//        // 저장된 아이디와 패스워드가 모두 있으면, 자동으로 로그인 API를 호출하여 자동 로그인 처리
-//        if (savedId.isNotEmpty() && savedPw.isNotEmpty()) {
-//            // 자동 로그인: 저장된 값으로 login() 함수를 호출
-//            login(savedId, savedPw)
-//            return
-//        }
-
-        // 카카오 로그인 버튼 클릭 처리 (예: testButton)
-        binding.kakaoLoginBtn.setOnClickListener {
-            kakaoLogin()
+        // 저장된 아이디와 패스워드가 모두 있으면, 자동으로 로그인 API를 호출하여 자동 로그인 처리
+        if (savedId.isNotEmpty() && savedPw.isNotEmpty()) {
+            // 자동 로그인: 저장된 값으로 login() 함수를 호출
+            login(savedId, savedPw)
+            return
         }
 
-
+        // editView list
         editTexts = listOf(
             view.findViewById(R.id.login_id_text),
             view.findViewById(R.id.log_in_password_text)
         )
 
+        // 이벤트
         initEvent()
 
+        // 스타일 관련 함수
         setStyleCatchphrase(view)
         initFocusChangeListener()
         setUpTextWatcher()
 
-        // --- login 관련 기능 ---
-
-        binding.LoginBtn.setOnClickListener {
-            login()
-        }
     }
 
     fun initEvent(){
@@ -129,6 +121,16 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
         binding.backBtn.setOnClickListener {
             loginActivity.changeFragmentLogin(CommonUtils.LoginFragmentName.START_LOGIN_FRAGMENT)
         }
+        // --- login 관련 기능 ---
+        binding.LoginBtn.setOnClickListener {
+            login()
+        }
+        // 카카오 로그인 버튼 클릭 처리 (예: testButton)
+        binding.kakaoLoginBtn.setOnClickListener {
+            kakaoLogin()
+        }
+
+
     }
 
     // 캐치프라이 스타일 지정
@@ -194,10 +196,29 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
                     }
                 }
                 override fun afterTextChanged(s: Editable?) {
+                    checkSubmitButtonState()
                 }
             })
         }
     }
+
+    // 모든 EditText가 채워졌는지 확인하여 submit 버튼의 색상을 변경하는 함수
+    private fun checkSubmitButtonState() {
+        // 모든 EditText의 텍스트가 비어있지 않은지 체크
+        val isAllFilled = editTexts.all { it.text.toString().trim().isNotEmpty() }
+
+        // 채워졌다면 활성화 색상, 아니라면 비활성화 색상 적용 (예: 활성화 시 #0066CC, 미완료 시 회색)
+        binding.LoginBtn.apply {
+            isEnabled = isAllFilled
+            setBackgroundResource(
+                if (isAllFilled)
+                    R.drawable.submit_button_style
+                else
+                    R.drawable.disable_button_style // 비활성화 색상
+            )
+        }
+    }
+
 
     // 로그인 함수
     private fun login(id: String? = null, password: String? = null) {
@@ -289,7 +310,6 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
                 performKakaoLogin(token.accessToken)
             }
         }
-
         // 카카오톡이 설치되어 있다면 카카오톡으로 로그인 시도
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(requireContext())) {
             UserApiClient.instance.loginWithKakaoTalk(requireContext()) { token, error ->
