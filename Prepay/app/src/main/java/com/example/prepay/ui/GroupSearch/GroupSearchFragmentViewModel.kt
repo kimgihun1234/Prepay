@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.prepay.RetrofitUtil
+import com.example.prepay.SharedPreferencesUtil
 import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.data.response.Team
 import kotlinx.coroutines.launch
@@ -15,12 +16,11 @@ class GroupSearchFragmentViewModel : ViewModel(){
     val getPublicTeams: LiveData<List<PublicTeamsRes>>
         get() = _getPublicTeams
 
-    val email = "user1@gmail.com"
     fun getAllPublicTeamList() {
 
         viewModelScope.launch {
             runCatching {
-                RetrofitUtil.teamService.getPublicTeams(email)
+                RetrofitUtil.teamService.getPublicTeams(SharedPreferencesUtil.getAccessToken()!!)
             }.onSuccess {
                 Log.d("GroupSearchViewModel", "공개 팀 리스트 가져오기 성공: $it")
                 _getPublicTeams.value = it

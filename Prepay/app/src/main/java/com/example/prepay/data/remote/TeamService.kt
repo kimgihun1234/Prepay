@@ -59,7 +59,7 @@ interface TeamService {
     @POST("/team/ban")
     suspend fun banUser(@Header("access") access: String, @Body request: BanUserReq): Map<String,String>
 
-    //특정 사용자를 팀에서 강퇴합니다.
+    //특정 사용자를 회식권한을 줍니다.
     @POST("/team/privilege")
     suspend fun privilegeUser(@Header("access") access: String, @Body request: PrivilegeUserReq): Map<String,String>
 
