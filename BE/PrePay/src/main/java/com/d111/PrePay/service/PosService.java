@@ -62,6 +62,7 @@ public class PosService {
 
         log.info("총 주문 금액 : {}", orderHistory.getTotalPrice());
         if (teamStore.getTeamStoreBalance() - orderHistory.getTotalPrice() < 0) {
+            log.error("주문자 : {}",user.getEmail());
             log.error("팀 잔액 : {},현재주문 금액 : {}", teamStore.getTeamStoreBalance(), orderHistory.getTotalPrice());
             throw new NotEnoughBalanceException("팀 잔액이 부족합니다,");
         } else if (team.getDailyPriceLimit() - userTeam.getUsedAmount() < orderHistory.getTotalPrice()) {

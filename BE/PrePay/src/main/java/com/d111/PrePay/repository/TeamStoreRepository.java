@@ -6,7 +6,6 @@ import com.d111.PrePay.model.TeamStore;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,4 +25,6 @@ public interface TeamStoreRepository extends JpaRepository<TeamStore,Long> {
 
 
     Optional<TeamStore> findByTeamIdAndStoreId(Long teamId, Long storeId);
+
+    Optional<TeamStore> findById(Long id);
 }

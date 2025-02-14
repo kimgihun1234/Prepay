@@ -1,11 +1,18 @@
 spring:
   config:
-    import: optional:file:.env[.properties]
+    import: optional:file:.env[.properties]  # .env
   datasource:
-    url: ${DB_PROD_URL}
-    username: ${DB_PROD_USERNAME}
-    password: ${DB_PROD_PASSWORD}
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
   security:
     oauth2:
       client:
@@ -25,29 +32,22 @@ spring:
             token-uri: https://oauth2.googleapis.com/token
             user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
             user-name-attribute: sub
-  jpa:
-    hibernate:
-      ddl-auto: none
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
   jwt:
     secret: ${JWT_SECRET}
+  servlet:
+    multipart:
+      enabled: true
 logging:
   level:
     root: INFO
     org.springframework.web: DEBUG
     org.hibernate.SQL: debug
     org.hibernate.orm.jdbc.bind: trace
+
 bootpay:
   key: ${BOOTPAY_PRIVATE_KEY}
   appid: ${BOOTPAY_APPID}
-
-kakao:
-  client_id: ${KAKAO_CLIENT_ID}
-
 fcm:
   url: ${FCM_API_URL}
-springdoc:
-  swagger-ui:
-    display-request-duration: true
+kakao:
+  client_id: ${KAKAO_CLIENT_ID}
