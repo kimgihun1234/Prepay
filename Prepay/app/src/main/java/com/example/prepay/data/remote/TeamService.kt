@@ -6,6 +6,7 @@ import com.example.prepay.data.response.GetUserOfTeamRes
 import com.example.prepay.data.response.LikeTeamsReq
 import com.example.prepay.data.response.MoneyChangeReq
 import com.example.prepay.data.response.PrivilegeUserReq
+import com.example.prepay.data.response.PublicTeamsDisRes
 import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.data.response.SignInTeamReq
 import com.example.prepay.data.response.StoreLocation
@@ -26,12 +27,16 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface TeamService {
 
     //팀 가맹점 추가
-    @POST("/team/store")
-    suspend fun createStore(@Header("userId") userId: Long, @Body request: TeamStoreReq): Response<TeamStoreRes>
+    @Multipart
+    @POST("team/store")
+    suspend fun createStore(@Header("userId") userId: Long,
+                            @Part("request") request: TeamStoreReq,
+                            @Part image: MultipartBody.Part?): Response<TeamStoreRes>
     //팀을 생성하는 과정
     @Multipart
     @POST("team/signup")
@@ -91,4 +96,6 @@ interface TeamService {
     @POST("/team/like")
     suspend fun sendLikeStatus(@Header("email") email: String, @Body request: LikeTeamsReq): Map<String, Int>
 
+    @GET("/team/public-team/2km")
+    suspend fun getTeamStoreDistance(@Header("email") email : String, @Query("latitude") latitude : Double, @Query("longitude") longitude:Double) : List<PublicTeamsDisRes>
 }

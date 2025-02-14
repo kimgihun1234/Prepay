@@ -159,7 +159,6 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
                         receiptIdText = receiptId
                         priceText = price.toString()
                         Toast.makeText(requireContext(), "팀이 성공적으로 생성되었습니다.", Toast.LENGTH_SHORT).show()
-
                         val teamIdRes : TeamIdRes? = response.body()
                         teamIdRes?.let { createGroupViewModel.updateTeamId(it) }
                         Log.d(TAG, "teamId: ${teamIdRes?.teamId}")
@@ -189,11 +188,12 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
                     Toast.makeText(requireContext(), "팀 ID 또는 스토어 ID가 없습니다.", Toast.LENGTH_SHORT).show()
                     return@launch
                 }
-
+                Log.d(TAG, "storeId: $storeId")
+                Log.d(TAG, "teamId: $teamId")
                 val request = TeamStoreReq(storeId, teamId, priceText.toInt())
-
+                Log.d(TAG, "selectedImageMultipart: $selectedImageMultipart")
                 val response = withContext(Dispatchers.IO) {
-                    RetrofitUtil.teamService.createStore(1, request)
+                    RetrofitUtil.teamService.createStore(1, request, selectedImageMultipart)
                 }
 
                 Log.d(TAG, "response: $response")
@@ -274,7 +274,7 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
         return registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 result.data?.data?.let { uri ->
-                    binding.imageBtn.text = getFileNameFromUri(uri)
+                    binding.image.setImageURI(uri)
                     selectedImageMultipart = getMultipartBodyFromUri(uri, "image")
                 }
             }
