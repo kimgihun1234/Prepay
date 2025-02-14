@@ -254,7 +254,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                     RetrofitUtil.qrService.qrPrivateCreate(SharedPreferencesUtil.getAccessToken()!!,activityViewModel.teamId.value!!.toInt())
                 }.onSuccess {
                     Log.d(TAG,it.message)
-                    showQRDialog(it.message+":"+"user1@gmail.com"+":"+activityViewModel.teamId.value.toString())
+                    showQRDialog(it.message+":"+SharedPreferencesUtil.getAccessToken()!!+":"+activityViewModel.teamId.value.toString())
                 }.onFailure {
                     mainActivity.showToast("qr불러오기가 실패했습니다")
                 }
