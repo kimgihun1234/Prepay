@@ -97,7 +97,6 @@ interface TeamService {
     @POST("/team/like")
     suspend fun sendLikeStatus(@Header("email") email: String, @Body request: LikeTeamsReq): Map<String, String>
 
-
     @GET("/team/public-team/{teamid}")
     suspend fun groupDetailInfo(@Header("email") email: String, @Path("teamid") teamid: Int): PublicTeamDetailsRes
 
