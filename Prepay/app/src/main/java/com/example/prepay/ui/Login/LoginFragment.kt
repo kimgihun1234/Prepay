@@ -23,6 +23,7 @@ import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
+import com.example.prepay.SharedPreferencesUtil
 import com.example.prepay.databinding.FragmentLoginBinding
 import com.example.prepay.response.KakaoLoginRequest
 import com.example.prepay.response.LoginRequest
@@ -231,31 +232,37 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
             return
         }
         lifecycleScope.launch {
-            try {
+            runCatching {
                 val loginRequest = LoginRequest(userId, userPw)
                 RetrofitUtil.userService.login(loginRequest)
-                // 사용자가 '자동 로그인' 체크한 경우, 입력한 아이디/비밀번호를 저장
-                if (binding.autoIdCheckbox.isChecked) {
-                    val sharedPref =
-                        requireContext().getSharedPreferences(prefsName, Context.MODE_PRIVATE)
-                    with(sharedPref.edit()) {
-                        putString(keyUserId, userId)
-                        putString(keyUserPw, userPw)
-                        apply()
+            }.onSuccess { response ->
+                if (response.isSuccessful) {
+                    val accessToken = response.headers()["access"]
+                    if (accessToken != null) {
+                        // Access Token 저장
+                        SharedPreferencesUtil.saveAccessToken(accessToken)
+                        Log.d(TAG, "Access Token 저장됨: $accessToken")
                     }
+                    if (binding.autoIdCheckbox.isChecked) {
+                        // 사용자 정보 저장
+                        SharedPreferencesUtil.saveUserCredentials(userId, userPw)
+                        Log.d(TAG, "사용자 정보 저장됨: $userId")
+                    }
+                    Toast.makeText(requireContext(), "로그인 성공", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(requireContext(), MainActivity::class.java))
+                    activity?.finish()
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "로그인 실패: ${response.code()}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-                Toast.makeText(requireContext(), "로그인 성공", Toast.LENGTH_SHORT).show()
-                val intent = Intent(requireContext(), MainActivity::class.java)
-                startActivity(intent)
-                activity?.finish()
-
-            } catch (e: Exception) {
-                e.printStackTrace()
+            }.onFailure {
                 Toast.makeText(requireContext(), "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show()
             }
         }
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -356,6 +363,7 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
                     val saveToken = sharedPref.getString(KeyAccessToken, "") ?: ""
                     Log.d(TAG, "${httpHeaders["access"]?.get(0)}")
                     val userToken = httpHeaders["access"]?.get(0)
+                    SharedPreferencesUtil.saveAccessToken(userToken!!)
                     with(sharedPref.edit()) {
                         putString(KeyAccessToken, userToken)
                         apply()

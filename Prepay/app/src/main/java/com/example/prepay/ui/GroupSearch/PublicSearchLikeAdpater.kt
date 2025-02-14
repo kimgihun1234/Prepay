@@ -8,8 +8,8 @@ import com.example.prepay.R
 import com.example.prepay.data.response.PublicTeamsDisRes
 import com.example.prepay.databinding.ItemPublicGroupBinding
 
-class PublicSearchDistanceAdpater(var publicGroupList: List<PublicTeamsDisRes>, private val listener: OnClickLinstener) :
-    RecyclerView.Adapter<PublicSearchDistanceAdpater.PublicGroupViewHolder>() {
+class PublicSearchLikeAdpater(var publicGroupList: List<PublicTeamsDisRes>, private val listener: OnClickLinstener) :
+    RecyclerView.Adapter<PublicSearchLikeAdpater.PublicGroupViewHolder>() {
 
     class PublicGroupViewHolder(private val binding: ItemPublicGroupBinding,private val listener: OnClickLinstener) :
         RecyclerView.ViewHolder(binding.root) {
@@ -21,7 +21,7 @@ class PublicSearchDistanceAdpater(var publicGroupList: List<PublicTeamsDisRes>, 
 
             // 그룹 이미지 가지고 오기
             Glide.with(binding.root.context)
-                .load(publicgroup.imageUrl)
+                .load(publicgroup.imageURL)
                 // 이미지 로드중 로드 실패시에는 로고 띄워줌
                 .placeholder(R.drawable.logo)
                 .error(R.drawable.logo)

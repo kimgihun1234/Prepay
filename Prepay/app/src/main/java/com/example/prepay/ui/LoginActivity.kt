@@ -12,6 +12,7 @@ import com.example.prepay.BaseActivity
 import com.example.prepay.CommonUtils
 import com.example.prepay.PermissionChecker
 import com.example.prepay.R
+import com.example.prepay.SharedPreferencesUtil
 import com.example.prepay.data.remote.FirebaseTokenService
 import com.example.prepay.data.response.TokenReq
 import com.example.prepay.databinding.ActivityLoginBinding
@@ -39,7 +40,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
         super.onCreate(savedInstanceState)
         changeFragmentLogin(CommonUtils.LoginFragmentName.START_LOGIN_FRAGMENT)
         checkPermission()
-
+        SharedPreferencesUtil.init(this)
         // Kakao SDK 초기화
         KakaoSdk.init(this, getString(R.string.scheme_kakao_app_key))
     }

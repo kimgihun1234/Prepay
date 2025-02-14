@@ -281,15 +281,16 @@
 
         <ImageView
             android:id="@+id/image"
-            android:layout_width="105dp"
-            android:layout_height="63dp"
-            android:layout_marginStart="16dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="52dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="17dp"
             android:src="@drawable/dog_logo"
             app:layout_constraintBottom_toTopOf="@+id/search_restaurant"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/group_name_text" />
+            app:layout_constraintTop_toBottomOf="@+id/group_name_text"
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </android.widget.ScrollView>

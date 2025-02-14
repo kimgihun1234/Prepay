@@ -14,6 +14,7 @@ import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
+import com.example.prepay.SharedPreferencesUtil
 import com.example.prepay.data.response.BootPayChargeReq
 import com.example.prepay.data.model.dto.Restaurant
 import com.example.prepay.data.response.StoreIdReq
@@ -49,7 +50,7 @@ class AddRestaurantFragment : BaseFragment<FragmentAddRestaurantBinding>(
 
         binding.searchResults.visibility = View.GONE
 
-        groupDetailsFragmentViewModel.getStoreId(StoreIdReq(0.0,0.0, 1))
+        groupDetailsFragmentViewModel.getStoreId(SharedPreferencesUtil.getAccessToken()!!,StoreIdReq(0.0,0.0, 1))
         initRecyclerView()
         setOnQueryTextListener()
         initEvent()

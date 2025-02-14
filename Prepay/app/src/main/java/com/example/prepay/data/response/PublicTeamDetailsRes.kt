@@ -8,3 +8,6 @@ data class PublicTeamDetailsRes(
     val checkLike: Boolean,
     val teamName: String
 )
+
+//imageurl, team_balance, teammessage, isLike, teamName, latitude, longitude, address
+
