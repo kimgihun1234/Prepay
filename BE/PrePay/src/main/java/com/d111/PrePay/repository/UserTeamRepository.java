@@ -22,4 +22,5 @@ public interface UserTeamRepository extends JpaRepository<UserTeam,Long>,UserTea
     Optional<UserTeam> findByTeamIdAndUser_Email(Long teamId, String changeUserEmail);
 
     void deleteByTeam_Id(Long teamId);
+    List<UserTeam> findUserTeamsByUserId(Long userId);
 }

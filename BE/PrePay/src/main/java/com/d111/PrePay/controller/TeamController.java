@@ -32,7 +32,15 @@ import java.util.Map;
 @Slf4j
 public class TeamController {
     private final TeamService teamService;
-    private final ImageService imageService;
+
+    // 좋아요 한 퍼블릭 팀 보기
+    @PostMapping("/public/liked")
+    @Operation(summary = "좋아요 한 퍼블릭 팀")
+    public ResponseEntity<List<PublicTeamDetailRes>> showPublicLiked(@RequestHeader String access,@AuthenticationPrincipal CustomUserDetails userDetails){
+        Long userId = userDetails.getUserId();
+        return ResponseEntity.ok(teamService.showPublicLiked(userId));
+    }
+
 
     // 퍼블릭 팀 좋아요
     @PostMapping("/like")

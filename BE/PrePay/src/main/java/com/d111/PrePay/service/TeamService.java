@@ -22,6 +22,7 @@ import com.d111.PrePay.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,6 +46,21 @@ public class TeamService {
     private final PartyRequestRepository partyRequestRepository;
     private final ImageService imageService;
     private final StoreService storeService;
+
+
+    // 좋아요 한 퍼블릭 팀
+    public List<PublicTeamDetailRes> showPublicLiked(Long userId){
+        List<UserTeam> userTeams = userTeamRepository.findUserTeamsByUserId(userId);
+        List<PublicTeamDetailRes> result = new ArrayList<>();
+        for (UserTeam userTeam : userTeams) {
+            if(userTeam.getTeam().isPublicTeam() && userTeam.isLike()){
+                PublicTeamDetailRes res = new PublicTeamDetailRes(userTeam,userTeam.getTeam());
+                result.add(res);
+            }
+        }
+        return result;
+    }
+
 
 
     // 팀 이미지 업로드
