@@ -236,7 +236,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
     fun sendlike(likeTeamsReq: LikeTeamsReq){
         lifecycleScope.launch {
             runCatching {
-                RetrofitUtil.teamService.sendLikeStatus("user1@gmail.com",likeTeamsReq)
+                RetrofitUtil.teamService.sendLikeStatus(SharedPreferencesUtil.getAccessToken()!!,likeTeamsReq)
             }.onSuccess {
 
             }.onFailure {
