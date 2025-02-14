@@ -1,16 +1,22 @@
 package com.example.prepay.ui.GroupSearchDetails
 
 import android.animation.ValueAnimator
+import android.app.Activity.RESULT_OK
+import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import com.example.prepay.BaseFragment
 import com.example.prepay.R
@@ -46,6 +52,10 @@ import com.example.prepay.ui.MainActivityViewModel
 //import com.journeyapps.barcodescanner.BarcodeEncoder
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 import java.io.IOException
 import java.text.NumberFormat
 import java.util.Locale
@@ -65,6 +75,8 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
     private val viewModel: GroupSearchDetailsViewModel by viewModels()
     private val activityViewModel : MainActivityViewModel by activityViewModels()
     private lateinit var teamsRes: PublicTeamDetailsRes
+    private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
+    private var selectedImageMultipart: MultipartBody.Part? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,6 +103,20 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
             Log.d(TAG, "initViewModel: ${it}")
             binding.publicDetailTeamName.text = teamsRes.teamName
             binding.publicDetailText.text = teamsRes.teamMessage
+            binding.publicDetailText.text = teamsRes.teamMessage
+            binding.leftMoneyInfo.text = teamsRes.balance.toString()
+            binding.publicDetailLocation.text = teamsRes.address
+            val imageUrl = teamsRes.imageURL
+            if (!imageUrl.isNullOrEmpty()) {
+                Glide.with(requireContext())
+                    .load(Uri.parse(imageUrl)) // Uri로 변환 후 로드
+                    .into(binding.publicDetailImage)
+                Log.d(TAG, "이미지: ${imageUrl}")
+            } else {
+                binding.publicDetailImage.setImageResource(R.drawable.logo)
+                Log.d(TAG, "initViewModel: ${imageUrl}")
+            }
+            
             Log.d(TAG, "initViewModel: ${teamsRes}")
 
             val imageURL = teamsRes.imageURL
