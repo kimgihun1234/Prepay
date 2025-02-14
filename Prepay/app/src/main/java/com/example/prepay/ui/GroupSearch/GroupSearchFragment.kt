@@ -11,14 +11,14 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.toBitmap
 import com.example.prepay.ui.MainActivityViewModel
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.prepay.BaseFragment
@@ -30,14 +30,16 @@ import com.example.prepay.data.response.LikeTeamsReq
 import com.example.prepay.data.response.PublicTeamsDisRes
 import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.databinding.FragmentGroupSearchBinding
-import com.example.prepay.ui.GroupSearchDetails.AddPublicGroupDetailsFragment
-import com.example.prepay.ui.GroupSearchDetails.GroupSearchDetailsViewModel
 import com.example.prepay.ui.MainActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.Locale
@@ -52,10 +54,9 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
     private lateinit var publicSearchAdapter: PublicSearchAdapter
     private val viewModel: GroupSearchFragmentViewModel by viewModels()
     private val activityViewModel: MainActivityViewModel by activityViewModels()
-    private lateinit var publicSearchDistanceAdpater: PublicSearchDistanceAdpater
-
 
     // GPS관련 변수
+    private var isUserLocationSet = false
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private val groupSearchFragmentViewModel: GroupSearchFragmentViewModel by viewModels()
 
@@ -66,7 +67,6 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
 
-    private var isUserLocationSet = false
     private var location = Location("dummy").apply {
         latitude = 36.107097
         longitude = 128.416369
@@ -109,19 +109,24 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
 
     private fun initEvent() {
         binding.distanceSort.setOnClickListener {
-
-            publicSearchDistanceAdpater = PublicSearchDistanceAdpater(arrayListOf(),this)
-            binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-            binding.recyclerView.adapter = publicSearchDistanceAdpater
-            groupSearchFragmentViewModel.sortDistancePublicTeams.observe(viewLifecycleOwner) { it ->
-                publicSearchDistanceAdpater.publicGroupList = it
-                publicSearchDistanceAdpater.notifyDataSetChanged()
+            Log.d(TAG, "initEvent: ${groupSearchFragmentViewModel.sortDistancePublicTeams.value}")
+            groupSearchFragmentViewModel.sortDistancePublicTeams.observe(viewLifecycleOwner) { teams ->
+                val sortedDisTeams = teams.sortedBy { it.distance }
+                Log.d(TAG, "sortedDisTeams: ${sortedDisTeams}")
             }
 
-            groupSearchFragmentViewModel.getSortDistancePublicTeamList(groupSearchFragmentViewModel.userLocation.value!!.latitude, groupSearchFragmentViewModel.userLocation.value!!.longitude)
-            Log.d(TAG, "initEvent: ${groupSearchFragmentViewModel.userLocation.value!!.latitude}")
-            Log.d(TAG, "initEvent: ${groupSearchFragmentViewModel.userLocation.value!!.longitude}")
-            Log.d(TAG, "initEvent: ${groupSearchFragmentViewModel.getSortDistancePublicTeamList(groupSearchFragmentViewModel.userLocation.value!!.latitude, groupSearchFragmentViewModel.userLocation.value!!.longitude)}")
+//            publicSearchDistanceAdpater = PublicSearchDistanceAdpater(arrayListOf(),this)
+//            binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+//            binding.recyclerView.adapter = publicSearchDistanceAdpater
+//            groupSearchFragmentViewModel.sortDistancePublicTeams.observe(viewLifecycleOwner) { it ->
+//                publicSearchDistanceAdpater.publicGroupList = it
+//                publicSearchDistanceAdpater.notifyDataSetChanged()
+//            }
+//
+//            groupSearchFragmentViewModel.getSortDistancePublicTeamList(groupSearchFragmentViewModel.userLocation.value!!.latitude, groupSearchFragmentViewModel.userLocation.value!!.longitude)
+//            Log.d(TAG, "initEvent: ${groupSearchFragmentViewModel.userLocation.value!!.latitude}")
+//            Log.d(TAG, "initEvent: ${groupSearchFragmentViewModel.userLocation.value!!.longitude}")
+//            Log.d(TAG, "initEvent: ${groupSearchFragmentViewModel.getSortDistancePublicTeamList(groupSearchFragmentViewModel.userLocation.value!!.latitude, groupSearchFragmentViewModel.userLocation.value!!.longitude)}")
         }
     }
 
@@ -130,14 +135,15 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
         publicSearchAdapter = PublicSearchAdapter(arrayListOf(),this)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = publicSearchAdapter
-        groupSearchFragmentViewModel.getPublicTeams.observe(viewLifecycleOwner){it->
+        groupSearchFragmentViewModel.sortDistancePublicTeams.observe(viewLifecycleOwner){it->
             publicSearchAdapter.publicGroupList = it
             publicSearchAdapter.notifyDataSetChanged()
         }
 
 //        // 임시로 코드 작성
 //        val email = "user1@gmail.com"
-        groupSearchFragmentViewModel.getAllPublicTeamList()
+//        groupSearchFragmentViewModel.getSortDistancePublicTeamList(groupSearchFragmentViewModel.userLocation.value!!.latitude, groupSearchFragmentViewModel.userLocation.value!!.longitude)
+        groupSearchFragmentViewModel.getSortDistancePublicTeamList(36.1084,128.415)
     }
 
     private fun initViewModel() {
@@ -147,10 +153,6 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
         }
     }
 
-    override fun onGroupClick(publicgroup: PublicTeamsRes) {
-        Log.d(TAG, "onGroupClick: ")
-        mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.PUBLIC_GROUP_DETAILS_FRAGMENT)
-    }
 
     override fun onLikeClick(publicgroup: LikeTeamsReq) {
         Log.d(TAG,"클릭하였습니다")
@@ -226,6 +228,15 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
         ) { dialog, _ -> dialog.cancel() }
         builder.create().show()
     }
+    private val readyCallback: OnMapReadyCallback by lazy {
+        object : OnMapReadyCallback {
+            override fun onMapReady(p0: GoogleMap) {
+
+                setDefaultLocation()
+            }
+        }
+    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -289,6 +300,35 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
             address.getAddressLine(0).toString()
         }
     }
+
+    private fun setDefaultLocation() {
+
+        //초기 위치를 서울로
+        val location = Location("")
+        location.latitude = 37.56
+        location.longitude = 126.97
+
+        val markerTitle = "위치정보 가져올 수 없음"
+        val markerSnippet = "위치 퍼미션과 GPS 활성 여부 확인 필요"
+
+        if(checker.checkPermission(requireActivity(),runtimePermissions)){
+            mFusedLocationClient.lastLocation.addOnSuccessListener {
+                setCurrentLocation(it)
+            }
+        } else{
+            setCurrentLocation(location,markerTitle,markerSnippet)
+        }
+    }
+
+    fun setCurrentLocation(location: Location){
+        val markerTitle: String = getCurrentAddress(location)
+        val markerSnippet = "위도: ${location.latitude.toString()}, 경도: ${location.longitude }"
+
+    }
+    fun setCurrentLocation(location: Location, markerTitle: String?, markerSnippet: String?) {
+
+    }
+
 
 
     /******** 위치서비스 활성화 여부 check *********/

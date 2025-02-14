@@ -6,8 +6,9 @@ data class PublicTeamsDisRes(
     val teamMessage: String,
     val teamBalance: Int,
     val teamInitializerNickname: String,
-    val imageURL: String,
+    val imageUrl: String,
     val latitude: Double,
     val longitude: Double,
-    val isLike: Boolean
+    val distance: Double,
+    val like: Boolean
 )

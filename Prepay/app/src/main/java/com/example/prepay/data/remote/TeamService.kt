@@ -82,8 +82,13 @@ interface TeamService {
     suspend fun getStoreOfTeam(@Header("access") access: String, @Path("teamId") teamId: Long): List<TeamIdStoreRes>
 
     //공개된 모든 팀 목록을 가져옵니다.
+
     @GET("/team/public-teams")
     suspend fun getPublicTeams(@Header("access") access: String): List<PublicTeamsRes>
+
+//    @GET("/team/public-teams")
+//    suspend fun getPublicTeams(@Header("email") email: String): List<PublicTeamsRes>
+
 
     //특정 키워드로 공개된 팀을 검색합니다.
     @GET("/team/public-teams/{keyword}")
@@ -95,6 +100,7 @@ interface TeamService {
 
     //공개된 그룹의 좋아요 정보를 보냅니다.
     @POST("/team/like")
+    suspend fun sendLikeStatus(@Header("email") email: String, @Body request: LikeTeamsReq): Map<String, String>
 
     @GET("/team/public-team/{teamid}")
     suspend fun groupDetailInfo(@Header("email") email: String, @Path("teamid") teamid: Int): PublicTeamDetailsRes
