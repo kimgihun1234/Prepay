@@ -82,8 +82,8 @@ interface TeamService {
     suspend fun getStoreOfTeam(@Header("userId") userId: Long, @Path("teamId") teamId: Long): List<TeamIdStoreRes>
 
     //공개된 모든 팀 목록을 가져옵니다.
-    @GET("/team/public-teams")
-    suspend fun getPublicTeams(@Header("email") email: String): List<PublicTeamsRes>
+//    @GET("/team/public-teams")
+//    suspend fun getPublicTeams(@Header("email") email: String): List<PublicTeamsRes>
 
     //특정 키워드로 공개된 팀을 검색합니다.
     @GET("/team/public-teams/{keyword}")
