@@ -6,6 +6,7 @@ import com.example.prepay.data.response.GetUserOfTeamRes
 import com.example.prepay.data.response.LikeTeamsReq
 import com.example.prepay.data.response.MoneyChangeReq
 import com.example.prepay.data.response.PrivilegeUserReq
+import com.example.prepay.data.response.PublicTeamDetailsRes
 import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.data.response.SignInTeamReq
 import com.example.prepay.data.response.StoreLocation
@@ -89,6 +90,8 @@ interface TeamService {
 
     //공개된 그룹의 좋아요 정보를 보냅니다.
     @POST("/team/like")
-    suspend fun sendLikeStatus(@Header("email") email: String, @Body request: LikeTeamsReq): Map<String, Int>
+    suspend fun sendLikeStatus(@Header("email") email: String, @Body request: LikeTeamsReq): Map<String, String>
 
+    @GET("/team/public-team/{teamid}")
+    suspend fun groupDetailInfo(@Header("email") email: String, @Path("teamid") teamid: Int): PublicTeamDetailsRes
 }
