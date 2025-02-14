@@ -43,7 +43,27 @@ public class DbInitConfig implements ApplicationRunner {
     }
 
     public void initData() {
-        for (int i = 1; i < 15; i++) {
+
+
+        userService.userSignUp(new UserSignUpReq("shinypants@gmail.com", "123", "반짝이는바지"));
+        userService.userSignUp(new UserSignUpReq("1@gmail.com", "123", "김성수"));
+        userService.userSignUp(new UserSignUpReq("2@gmail.com", "123", "김기훈"));
+        userService.userSignUp(new UserSignUpReq("3@gmail.com", "123", "차현우"));
+        userService.userSignUp(new UserSignUpReq("4@gmail.com", "123", "조성윤"));
+        userService.userSignUp(new UserSignUpReq("5@gmail.com", "123", "서현석"));
+        userService.userSignUp(new UserSignUpReq("6@gmail.com", "123", "경이현"));
+        userService.userSignUp(new UserSignUpReq("7@gmail.com", "123", "이재용"));
+        userService.userSignUp(new UserSignUpReq("8@gmail.com", "123", "아이유"));
+        userService.userSignUp(new UserSignUpReq("9@gmail.com", "123", "싸피최고컨설턴트"));
+        userService.userSignUp(new UserSignUpReq("10@gmail.com", "123", "구미꿀주먹"));
+        userService.userSignUp(new UserSignUpReq("11@gmail.com", "123", "배고픈취준생"));
+        log.info("사람 넣기 완료");
+
+
+
+        ////////////////////////////////////////////////////////////////////////
+
+        /*for (int i = 1; i < 15; i++) {
             String email = "user" + i + "@gmail.com";
             userService.userSignUp(new UserSignUpReq(email, email, "user" + i));
         }
@@ -76,7 +96,7 @@ public class DbInitConfig implements ApplicationRunner {
             teamService.createTeam(new TeamCreateReq(k, true, 500000, 0, k+"publicteam 테스트메시지2","000000"), i, null);
         }
 
-        for (long i = 1; i < 10; i++) {
+        for (long i = 1; i < 11; i++) {
             Optional<Team> opTeam = teamRepository.findById(i);
             Team team = opTeam.get();
             team.setTeamImgUrl("https://storage.googleapis.com/kyung0216-10d14.appspot.com/e7b077fd-bbdf-47d5-9de8-934f4cccfddd_example.jpg");
@@ -147,7 +167,7 @@ public class DbInitConfig implements ApplicationRunner {
 
         }
 
-        log.info("주문 내역 삽입 완료");
+        log.info("주문 내역 삽입 완료");*/
 
     }
 }

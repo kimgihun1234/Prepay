@@ -49,9 +49,9 @@ pipeline {
                     credentialsId: 'GITLAB-PAT'
             }
         }
-        stage('Copy Google Services JSONs') {
+        stage('Copy Files') {
             steps {
-                echo 'Copying google-services.json to resources directory...'
+                echo 'Copying files...'
                 withCredentials([file(credentialsId: 'FIREBASE-SERVICE-KEY.JSON', variable: 'GOOGLE_SERVICES_JSON')]) {
                     sh 'cp $GOOGLE_SERVICES_JSON BE/PrePay/src/main/resources/firebase-service-key.json'
                 }
