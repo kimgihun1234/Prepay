@@ -278,8 +278,6 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         }
     }
 
-
-
     fun initialView(){
         lifecycleScope.launch{
             kotlin.runCatching {
