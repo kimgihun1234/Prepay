@@ -4,6 +4,7 @@ import com.d111.PrePay.dto.request.FcmTokenReq;
 import com.d111.PrePay.dto.respond.StandardRes;
 import com.d111.PrePay.dto.respond.TokenRes;
 import com.d111.PrePay.dto.respond.UserSignUpRes;
+import com.d111.PrePay.security.dto.CustomUserDetails;
 import com.d111.PrePay.service.KaKaoService;
 import com.d111.PrePay.service.UserService;
 import com.d111.PrePay.dto.request.UserSignUpReq;
@@ -18,6 +19,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
@@ -75,7 +77,9 @@ public class UserController {
     @PostMapping("/setFcmToken")
     @Operation(summary = "fcm 토큰 설정"
     )
-    public ResponseEntity<StandardRes>setFcmToken(@RequestBody FcmTokenReq req, @RequestHeader String email ){
+    public ResponseEntity<StandardRes>setFcmToken(@RequestBody FcmTokenReq req, @RequestHeader String access,
+                                                  @AuthenticationPrincipal CustomUserDetails userDetails){
+        String email = userDetails.getUsername();
         return ResponseEntity.ok(userService.setFcmToken(req, email));
     }
 
