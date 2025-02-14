@@ -10,6 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class GetPrepaidTeamsRes {
+    private Long teamId;
     private String teamName;
     private int storeBalance;
     private String imgUrl;
@@ -21,6 +22,7 @@ public class GetPrepaidTeamsRes {
 
     public GetPrepaidTeamsRes(TeamStore teamStore, Team team) {
         User teamInitializer = team.getTeamInitializer();
+        this.teamId = team.getId();
         this.teamName = team.getTeamName();
         this.storeBalance = teamStore.getTeamStoreBalance();
         this.imgUrl = team.getTeamImgUrl();
