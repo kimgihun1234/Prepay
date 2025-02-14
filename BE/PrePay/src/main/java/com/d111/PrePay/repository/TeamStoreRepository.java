@@ -27,4 +27,6 @@ public interface TeamStoreRepository extends JpaRepository<TeamStore,Long> {
     Optional<TeamStore> findByTeamIdAndStoreId(Long teamId, Long storeId);
 
     Optional<TeamStore> findById(Long id);
+
+    List<TeamStore> findByStoreId(Long storeId);
 }
