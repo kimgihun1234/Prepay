@@ -556,9 +556,13 @@ public class TeamService {
     public List<PublicTeams2kmRes> get2kmPublicTeams(String email, float latitude, float longitude) {
         List<Store> stores = storeRepository.findAll();
         List<Store> in2Km = new ArrayList<>();
+        HashMap<Long, Double> map = new HashMap<>();
         for (Store store : stores) {
-            if (storeService.calDistance(store.getLongitude(), store.getLatitude(), longitude, latitude)) {
+            double dis = storeService.calDistance(store.getLongitude(), store.getLatitude(), longitude, latitude);
+            log.info("거리 : {}", dis);
+            if (storeService.calDistance(store.getLongitude(), store.getLatitude(), longitude, latitude) < 2L) {
                 in2Km.add(store);
+                map.put(store.getId(), dis);
             }
         }
 
@@ -588,9 +592,11 @@ public class TeamService {
                     PublicTeams2kmRes res = new PublicTeams2kmRes(team);
                     res.setLatitude(store.getLatitude());
                     res.setLongitude(store.getLongitude());
+                    res.setTeamInitializerNickname(team.getTeamInitializer().getNickname());
                     if (opUserTeam.isPresent()) {
                         res.setLike(opUserTeam.get().isLike());
                     }
+                    res.setDistance(map.get(store.getId()));
                     result.add(res);
                 }
             }

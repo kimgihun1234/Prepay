@@ -42,7 +42,7 @@ public class StoreService {
             result.add(storesRes);
         }
         for (Store store : stores) {
-            if (calDistance(store.getLongitude(), store.getLatitude(), coordinatesReq.getLongitude(), coordinatesReq.getLatitude())) {
+            if (calDistance(store.getLongitude(), store.getLatitude(), coordinatesReq.getLongitude(), coordinatesReq.getLatitude())<2F) {
                 boolean check = false;
                 for (TeamStore teamStore : teamStores) {
                     if (teamStore.getStore() == store) {
@@ -62,7 +62,7 @@ public class StoreService {
     }
 
     // 경도 위도로 2km 이내이면 true
-    public boolean calDistance(float storeLongitude, float storeLatitude, float userLongitude, float userLatitude) {
+    public double calDistance(float storeLongitude, float storeLatitude, float userLongitude, float userLatitude) {
         final int EARTH_RADIUS_KM = 6371; // 지구 반지름 (km)
 
         // 라디안으로 변환
@@ -82,6 +82,6 @@ public class StoreService {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
         double distanceKm = EARTH_RADIUS_KM * c; // 최종 거리 (km)
-        return distanceKm <= 2.0; // 2km 이내인지 확인
+        return distanceKm; // 2km 이내인지 확인
     }
 }
