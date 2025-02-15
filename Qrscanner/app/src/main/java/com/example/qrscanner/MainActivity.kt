@@ -1,6 +1,7 @@
 package com.example.qrscanner
 
 import android.os.Bundle
+import android.util.Log
 import com.example.qrscanner.base.BaseActivity
 import com.example.qrscanner.databinding.ActivityMainBinding
 import com.example.qrscanner.ui.LoginFragment
@@ -8,14 +9,12 @@ import com.example.qrscanner.ui.StoreTeamFragment
 import com.example.qrscanner.ui.TeamFragment
 import com.example.qrscanner.util.CommonUtils
 
-private val KeyAccessToken = "AccessToken"
-private val prefsName = "user_prefs"
-
 private const val TAG = "MainActivity_싸피"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initFragment()
+        changeFragmentMain(CommonUtils.MainFragmentName.LOGIN_FRAGMENT)
+        Log.d(TAG, "onCreate: LOGIN_FRAGMENT")
     }
 
     fun changeFragmentMain(name: CommonUtils.MainFragmentName, num: Int = -1) {
@@ -35,10 +34,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
         }
         transaction.commit()
-    }
-
-    fun initFragment(){
-        changeFragmentMain(CommonUtils.MainFragmentName.LOGIN_FRAGMENT)
     }
 }
 
