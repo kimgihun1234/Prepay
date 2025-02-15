@@ -22,7 +22,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         when (name) {
             CommonUtils.MainFragmentName.LOGIN_FRAGMENT -> {
                 transaction.replace(R.id.main, LoginFragment())
-                transaction.addToBackStack(null)
             }
             CommonUtils.MainFragmentName.STORE_TEAM_FRAGMENT -> {
                 transaction.replace(R.id.main, StoreTeamFragment())
