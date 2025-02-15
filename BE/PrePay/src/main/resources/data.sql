@@ -218,6 +218,41 @@ INSERT INTO order_history (company_dinner,
                            user_user_id)
 VALUES (1, -- company_dinner (0 = false, 1 = true)
         0, -- refund_requested (0 = false, 1 = true)
+        150000, -- total_price
+        0, -- with_draw (0 = false, 1 = true)
+        1739507338, -- order_date (Unix timestamp in milliseconds)
+        2, -- store_store_id (assuming store with ID 1 exists)
+        1, -- team_team_id (assuming team with ID 2 exists)
+        1 -- user_user_id (assuming user with ID 3 exists)
+       );
+-- 방금 삽입된 order_history의 ID를 가져옵니다
+SET
+    @last_order_history_id = LAST_INSERT_ID();
+-- detail_history 테이블에 데이터 삽입
+INSERT INTO detail_history (detail_price,
+                            quantity,
+                            order_history_order_history_id,
+                            product)
+VALUES (15000, -- detail_price
+        10, -- quantity
+        @last_order_history_id, -- order_history_order_history_id
+        '삼겹살' -- product
+       );
+
+
+
+
+-- order_history 테이블에 데이터 삽입
+INSERT INTO order_history (company_dinner,
+                           refund_requested,
+                           total_price,
+                           with_draw,
+                           order_date,
+                           store_store_id,
+                           team_team_id,
+                           user_user_id)
+VALUES (1, -- company_dinner (0 = false, 1 = true)
+        0, -- refund_requested (0 = false, 1 = true)
         45000, -- total_price
         0, -- with_draw (0 = false, 1 = true)
         1739507338, -- order_date (Unix timestamp in milliseconds)
@@ -237,6 +272,39 @@ VALUES (9000, -- detail_price
         5, -- quantity
         @last_order_history_id, -- order_history_order_history_id
         '제일순살국밥' -- product
+       );
+
+
+-- order_history 테이블에 데이터 삽입
+INSERT INTO order_history (company_dinner,
+                           refund_requested,
+                           total_price,
+                           with_draw,
+                           order_date,
+                           store_store_id,
+                           team_team_id,
+                           user_user_id)
+VALUES (0, -- company_dinner (0 = false, 1 = true)
+        0, -- refund_requested (0 = false, 1 = true)
+        8000, -- total_price
+        0, -- with_draw (0 = false, 1 = true)
+        1739507338, -- order_date (Unix timestamp in milliseconds)
+        3, -- store_store_id (assuming store with ID 1 exists)
+        1, -- team_team_id (assuming team with ID 2 exists)
+        1 -- user_user_id (assuming user with ID 3 exists)
+       );
+-- 방금 삽입된 order_history의 ID를 가져옵니다
+SET
+    @last_order_history_id = LAST_INSERT_ID();
+-- detail_history 테이블에 데이터 삽입
+INSERT INTO detail_history (detail_price,
+                            quantity,
+                            order_history_order_history_id,
+                            product)
+VALUES (8000, -- detail_price
+        1, -- quantity
+        @last_order_history_id, -- order_history_order_history_id
+        '제일국밥' -- product
        );
 
 -- order_history 테이블에 데이터 삽입

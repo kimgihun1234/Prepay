@@ -22,7 +22,7 @@ public class StoreController {
 
     @PostMapping("/stores")
     @Operation(summary = "팀 가맹점 추가용 가맹점 리스트 조회")
-    public ResponseEntity<List<StoresRes>> getNewNearStores(@RequestBody StoresReq req, @RequestHeader String access, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<List<StoresRes>> getNewNearStores(@RequestBody StoresReq req, @AuthenticationPrincipal CustomUserDetails userDetails) {
         String email = userDetails.getUsername();
         return ResponseEntity.ok(storeService.getNewNearStores(req,email));
     }

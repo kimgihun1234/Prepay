@@ -17,7 +17,7 @@ public class BootpayController {
     private final BootpayService bootpayService;
 
     @PostMapping("/bootpay-charge")
-    public ResponseEntity<StandardRes> makeCharge(@RequestHeader String access, @AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody BootChargeReq bootChargeReq) {
+    public ResponseEntity<StandardRes> makeCharge(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody BootChargeReq bootChargeReq) {
         String email = userDetails.getUsername();
         PaymentResponse result = bootpayService.makeCharge(bootChargeReq , email);
 
