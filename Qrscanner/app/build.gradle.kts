@@ -56,4 +56,11 @@ dependencies {
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
     // https://github.com/square/retrofit/tree/master/retrofit-converters/gson
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    // LiveData, ViewModel관련 내용
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
+
 }
