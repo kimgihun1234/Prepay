@@ -1,7 +1,7 @@
 package com.example.prepay
 
 import com.example.qrscanner.base.ApplicationClass
-import com.example.qrscanner.remode.PosService
+import com.example.qrscanner.remote.PosService
 
 
 class RetrofitUtil {

@@ -87,9 +87,6 @@ interface TeamService {
     @GET("/team/public-teams")
     suspend fun getPublicTeams(@Header("access") access: String, @Query("latitude") latitude : Double, @Query("longitude") longitude:Double): List<PublicTeamsRes>
 
-//    @GET("/team/public-teams")
-//    suspend fun getPublicTeams(@Header("email") email: String): List<PublicTeamsRes>
-
 
     //특정 키워드로 공개된 팀을 검색합니다.
     @GET("/team/public-teams/{keyword}")
