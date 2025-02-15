@@ -8,4 +8,8 @@
         android:id="@+id/navigation_group_search"
         android:enabled="true"
         android:title="Group Search" />
+    <item
+        android:id="@+id/navigation_notification"
+        android:enabled="true"
+        android:title="알림" />
 </menu>
