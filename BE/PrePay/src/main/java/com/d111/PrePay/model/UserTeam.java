@@ -35,6 +35,7 @@ public class UserTeam {
     private User user;
 
     @OneToMany(mappedBy = "userTeam", cascade = CascadeType.REMOVE)
+    @Builder.Default
     private List<PartyRequest> partyRequests = new ArrayList<>();
 
 

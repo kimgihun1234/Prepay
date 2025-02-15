@@ -40,12 +40,16 @@ public class Team {
     private User teamInitializer;
 
     @OneToMany(mappedBy = "team")
+    @Builder.Default
     private List<UserTeam> userTeams = new ArrayList<>();
 
     @OneToMany(mappedBy = "team")
+    @Builder.Default
     private List<TeamStore> teamStores = new ArrayList<>();
 
+
     @OneToMany(mappedBy = "team")
+    @Builder.Default
     private List<OrderHistory> orderHistories = new ArrayList<>();
 
 }

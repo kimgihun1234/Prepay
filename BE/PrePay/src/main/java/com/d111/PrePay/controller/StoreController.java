@@ -1,6 +1,6 @@
 package com.d111.PrePay.controller;
 
-import com.d111.PrePay.dto.request.CoordinatesReq;
+
 import com.d111.PrePay.dto.request.StoresReq;
 import com.d111.PrePay.dto.respond.StoresRes;
 import com.d111.PrePay.security.dto.CustomUserDetails;

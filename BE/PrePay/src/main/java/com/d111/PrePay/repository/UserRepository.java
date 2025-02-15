@@ -16,6 +16,5 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Query("SELECT u FROM User u join FETCH u.userTeams ut join FETCH ut.team " +
             "WHERE ut.user.id=:userId")
     User findUserById(@Param("userId") Long userId);
-    User findByEmailAndUserPasswordEquals(String userLoginId, String password);
     User findByKakaoId(Long id);
 }

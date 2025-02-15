@@ -1,6 +1,5 @@
 package com.d111.PrePay.service;
 
-import com.d111.PrePay.dto.request.KaKaoUserInfo;
 import com.d111.PrePay.dto.respond.TokenRes;
 import com.d111.PrePay.model.User;
 import com.d111.PrePay.repository.UserRepository;
