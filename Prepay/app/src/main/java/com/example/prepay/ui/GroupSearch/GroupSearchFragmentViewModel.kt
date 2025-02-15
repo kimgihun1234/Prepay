@@ -13,6 +13,7 @@ import com.example.prepay.data.response.PublicLikeRes
 import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.data.response.PublicTeamsDisRes
 import kotlinx.coroutines.launch
+import retrofit2.http.Query
 
 private const val TAG = "GroupSearchFragmentView"
 class GroupSearchFragmentViewModel : ViewModel(){
@@ -44,10 +45,10 @@ class GroupSearchFragmentViewModel : ViewModel(){
         }
     }
 
-    fun getTeamLikeList(){
+    fun getTeamLikeList(latitude : Double, longitude:Double){
         viewModelScope.launch{
             runCatching {
-                RetrofitUtil.teamService.getlikeTeamList(SharedPreferencesUtil.getAccessToken()!!)
+                RetrofitUtil.teamService.getlikeTeamList(SharedPreferencesUtil.getAccessToken()!!,latitude,longitude)
             }.onSuccess {
                 _getPublicLikeTeams.value = it
             }.onFailure {

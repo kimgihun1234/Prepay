@@ -112,6 +112,6 @@ interface TeamService {
     suspend fun sendLikeStatus(@Header("access") access: String, @Body request: LikeTeamsReq): Map<String, Int>
 
     @GET("/team/public/liked")
-    suspend fun getlikeTeamList(@Header("access") access: String): List<PublicLikeRes>
+    suspend fun getlikeTeamList(@Header("access") access: String,@Query("latitude") latitude : Double, @Query("longitude") longitude:Double): List<PublicLikeRes>
 
 }

@@ -78,6 +78,9 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
     }
     private lateinit var currentLocation: Location
 
+    private var select = 1
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivity= context as MainActivity
@@ -105,19 +108,21 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
         initViewModel()
         initEvent()
         initAdapter()
-        groupSearchFragmentViewModel.getPublicTeamList()
     }
 
     private fun initEvent() {
         binding.likeSort.setOnClickListener {
-            groupSearchFragmentViewModel.getTeamLikeList()
+            select = 1
+            //groupSearchFragmentViewModel.getTeamLikeList()
             binding.recyclerView.adapter = publicLikeTeamAdapter
+            binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         }
 
         binding.distanceSort.setOnClickListener {
-            getLastLocation()
-            groupSearchFragmentViewModel.getPublicTeamList()
+            select = 2
             binding.recyclerView.adapter = publicDistanceSearchAdapter
+            binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+            getLastLocation()
             Log.d(TAG, "initEvent: ${groupSearchFragmentViewModel.sortDistancePublicTeams.value}")
         }
 
@@ -128,23 +133,28 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
         publicLikeTeamAdapter = PublicSearchLikeAdapter(arrayListOf(),this)
         publicDistanceSearchAdapter = PublicSearchDistanceAdapter(arrayListOf(),this)
 
-        getLastLocation()
+        /*getLastLocation()
         groupSearchFragmentViewModel.getPublicTeamList()
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.adapter = publicDistanceSearchAdapter
+        binding.recyclerView.adapter = publicDistanceSearchAdapter*/
     }
 
     private fun initViewModel() {
         groupSearchFragmentViewModel.userLocation.observe(viewLifecycleOwner) { curlocation ->
             // 위치 정보가 변경될 때마다 호출
             Log.d(TAG,"변화"+curlocation.toString())
-            groupSearchFragmentViewModel.getSortDistancePublicTeamList(curlocation.latitude, curlocation.longitude)
-            publicDistanceSearchAdapter.notifyDataSetChanged()
+            if(select ==1){
+                groupSearchFragmentViewModel.getTeamLikeList(curlocation.latitude, curlocation.longitude)
+            }
+            else{
+                groupSearchFragmentViewModel.getSortDistancePublicTeamList(curlocation.latitude, curlocation.longitude)
+            }
         }
 
         groupSearchFragmentViewModel.sortDistancePublicTeams.observe(viewLifecycleOwner){it->
             Log.d(TAG,it.toString())
             publicDistanceSearchAdapter.publicGroupList = it
+            publicDistanceSearchAdapter.notifyDataSetChanged()
         }
         groupSearchFragmentViewModel.getPublicLikeTeams.observe(viewLifecycleOwner){it->
             publicLikeTeamAdapter.publiclikeList = it
@@ -343,7 +353,7 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
                 if (location != null) {
                     Log.d(TAG, "최근 위치 가져오기 성공: ${location.latitude}, ${location.longitude}")
                     groupSearchFragmentViewModel.updateLocation(location)
-                    isUserLocationSet = true // 중복 업데이트 방지
+                    //isUserLocationSet = true // 중복 업데이트 방지
                 } else {
                     Log.d(TAG, "최근 위치 정보가 없음, 새로 요청 필요")
                     startLocationUpdates() // 최신 위치 요청
