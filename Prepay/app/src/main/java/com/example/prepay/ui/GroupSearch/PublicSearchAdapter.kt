@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.prepay.CommonUtils
 import com.example.prepay.DistanceManager
 import com.example.prepay.databinding.ItemPublicGroupBinding
 import com.example.prepay.R
@@ -21,7 +22,7 @@ class PublicSearchAdapter(var publicGroupList: List<PublicTeamsRes>, private val
 
         fun bind(publicgroup: PublicTeamsRes) {
             binding.publicName.text = publicgroup.teamName
-            binding.publicMoneyInfo.text = publicgroup.teamBalance.toString()
+            binding.publicMoneyInfo.text = CommonUtils.makeComma(publicgroup.teamBalance)
             //binding.publicDistance.text = publicgroup.
             binding.publicAddress.text = publicgroup.address
             binding.publicDistance.text = DistanceManager.formatDistance(publicgroup.distance)
