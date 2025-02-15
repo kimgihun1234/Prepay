@@ -9,6 +9,7 @@ import com.example.qrscanner.ui.StoreTeamFragment
 import com.example.qrscanner.ui.TeamFragment
 import com.example.qrscanner.util.CommonUtils
 
+
 private const val TAG = "MainActivity_싸피"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
     override fun onCreate(savedInstanceState: Bundle?) {
