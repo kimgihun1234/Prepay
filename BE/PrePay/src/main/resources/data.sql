@@ -1,5 +1,5 @@
 use test_db;
-INSERT INTO store (latitude, longitude, user_register_permission, address, store_img_url, store_name, type, store_escription)
+INSERT INTO store (latitude, longitude, user_register_permission, address, store_img_url, store_name, type, store_description)
 VALUES (36.10680576, 128.418318, 0, '경북 구미시 인동가산로 20',
         'https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/%ED%88%AC%EC%8D%B8.png?alt=media&token=7a8d40e4-c4bd-48ec-a05c-8930e54ff522',
         '투썸플레이스 인동점', '카페','투썸플레이스 설명임'),
@@ -336,7 +336,7 @@ INSERT INTO order_history (company_dinner,
                            user_user_id)
 VALUES (1, -- company_dinner (0 = false, 1 = true)
         0, -- refund_requested (0 = false, 1 = true)
-        540000, -- total_price
+        54000, -- total_price
         0, -- with_draw (0 = false, 1 = true)
         1739507338, -- order_date (Unix timestamp in milliseconds)
         10, -- store_store_id (assuming store with ID 1 exists)
