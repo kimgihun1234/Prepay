@@ -68,15 +68,14 @@ class SignupFragment: BaseFragment<FragmentSignUpBinding>(
 
         dbHelper = UserDBHelper(requireContext())
 
-        setStyleText(view)
         initFocusChangeListener()  // editView 테두리 색 바꾸기
-        setUpTextWatcher()  // hint 글자 크기 바꾸기
+
         binding.signUpIdText.doAfterTextChanged {checkUserID()}  // 아이디 유효성 검사
         binding.signUpPasswordText.doAfterTextChanged { checkPassword() }
         binding.signUpPasswordConfirmText.doAfterTextChanged {checkRePassword()} // 비밀번호 재입력 유효성 검사
         binding.signUpNickText.doAfterTextChanged {checkUserNick()}
         binding.signUpSubmit.setOnClickListener { signUp() }
-
+        setUpTextWatcher()  // hint 글자 크기 바꾸기
         binding.backBtn.setOnClickListener {
             loginActivity.changeFragmentLogin(CommonUtils.LoginFragmentName.START_LOGIN_FRAGMENT)
         }
@@ -96,9 +95,7 @@ class SignupFragment: BaseFragment<FragmentSignUpBinding>(
             }
         }
     }
-
-
-    // TextView 크기 변환 이벤트
+    // EditView 크기 변환 이벤트
     private fun setUpTextWatcher() {
         editTexts.forEach {
             it.addTextChangedListener(object : TextWatcher {
@@ -111,48 +108,23 @@ class SignupFragment: BaseFragment<FragmentSignUpBinding>(
                     }
                 }
                 override fun afterTextChanged(s: Editable?) {
+                    checkSubmitButtonState()
                 }
             })
         }
     }
-
-    // 문자열 스타일 지정
-    private fun setStyleText(view: View) {
-        val text = "프리페이로 새로운 선결제를 경험해보세요" // 전체 문자열 정의
-        val spannableString = SpannableString(text)  // SpannableString 객체 생성
-
-        // "바람" 부분의 시작 인덱스와 끝 인덱스 계산
-        val target = "프리페이"
-        val start = text.indexOf(target)
-        val end = start + target.length
-
-        // 색상 적용 (예: #0066CC)
-        spannableString.setSpan(
-            ForegroundColorSpan(Color.parseColor("#0066CC")),
-            start,
-            end,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        // 굵기 적용 (Bold)
-        spannableString.setSpan(
-            StyleSpan(Typeface.BOLD),
-            start,
-            end,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        // 텍스트 크기 적용
-        spannableString.setSpan(
-            AbsoluteSizeSpan(20, true),
-            start,
-            end,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        // TextView에 설정
-        val signupText: TextView = view.findViewById(R.id.sign_up_logo_text)
-        signupText.text = spannableString
+    // 모든 EditText가 채워졌는지 확인하여 submit 버튼의 색상을 변경하는 함수
+    private fun checkSubmitButtonState() {
+        // 이메일 사용 가능(!checkId), 비밀번호 일치(checkPassword), 닉네임 사용 가능(!checkNickname)여야 함.
+        if (checkId && checkPassword && checkNickname) {
+            binding.signUpSubmit.setBackgroundResource(R.drawable.submit_button_style)
+        } else {
+            binding.signUpSubmit.setBackgroundResource(R.drawable.disable_button_style)
+        }
+        Log.d("ssafy", "${checkId}, ${checkPassword}, $checkNickname" )
     }
 
-
+    // 회원가입 코드
     private fun signUp() {
         val userId = binding.signUpIdText.text.toString().trim()
         val password = binding.signUpPasswordText.text.toString().trim()
@@ -164,7 +136,7 @@ class SignupFragment: BaseFragment<FragmentSignUpBinding>(
             return
         }
         // 유효성 검사 (ID, 비밀번호, 닉네임 모두 통과해야 함)
-        if (!checkId || checkPassword || !checkNickname) {
+        if (checkId || checkPassword || checkNickname) {
             val insertSuccess = dbHelper.insertData(userId, password, nickname)
             if (insertSuccess) {
                 lifecycleScope.launch {
@@ -197,7 +169,7 @@ class SignupFragment: BaseFragment<FragmentSignUpBinding>(
             showToast("입력된 정보를 다시 확인하세요.")
         }
     }
-
+    // 아이디 체크
     private fun checkUserID() {
         val userId = binding.signUpIdText.text.toString().trim()
         val idPattern = android.util.Patterns.EMAIL_ADDRESS
@@ -206,20 +178,20 @@ class SignupFragment: BaseFragment<FragmentSignUpBinding>(
         if (!userId.matches(idPattern.toRegex())) {
             idMessage?.setTextColor(ContextCompat.getColor(requireContext(), R.color.errorMessage))
             if (userId.isEmpty()) {
-                idMessage?.text = "아이디가 입력되지 않았습니다."
+                idMessage?.text = "이메일이 입력되지 않았습니다."
                 return
             } else {
-                idMessage?.text = "아이디 형식이 올바르지 않습니다."
+                idMessage?.text = "이메일 형식이 올바르지 않습니다."
                 return
             }
         }
-        checkId = dbHelper.checkId(userId)
+        checkId = !dbHelper.checkId(userId)
 
-        if (!checkId) {
-            idMessage?.text  = "사용 가능한 아이디입니다."
+        if (checkId) {
+            idMessage?.text  = "사용 가능한 이메일입니다."
             idMessage?.setTextColor(ContextCompat.getColor(requireContext(), R.color.successMessage))
         } else {
-            idMessage?.text  = "이미 존재하는 아이디입니다."
+            idMessage?.text  = "사용 중인 이메일입니다."
             idMessage?.setTextColor(ContextCompat.getColor(requireContext(), R.color.errorMessage))
         }
     }
@@ -228,14 +200,20 @@ class SignupFragment: BaseFragment<FragmentSignUpBinding>(
         val passwordMessage = binding.passwordConfirmMessage
 
         // 비밀번호 길이 확인 (예: 최소 6자 이상)
-        if (password.length < 6) {
-            passwordMessage.text = "비밀번호는 최소 6자 이상이어야 합니다."
+        if (password.isEmpty()) {
+            passwordMessage.text = "비밀번호가 입력되지 않았습니다."
             passwordMessage.setTextColor(ContextCompat.getColor(requireContext(), R.color.errorMessage))
-            checkPassword = false
-            return
-        } else {
-            passwordMessage.text = "사용 가능한 비밀번호입니다."
-            passwordMessage.setTextColor(ContextCompat.getColor(requireContext(), R.color.successMessage))
+        }
+        else {
+            if (password.length < 6) {
+                passwordMessage.text = "비밀번호는 최소 6자 이상이어야 합니다."
+                passwordMessage.setTextColor(ContextCompat.getColor(requireContext(), R.color.errorMessage))
+                checkPassword = false
+                return
+            } else {
+                passwordMessage.text = "사용 가능한 비밀번호입니다."
+                passwordMessage.setTextColor(ContextCompat.getColor(requireContext(), R.color.successMessage))
+            }
         }
     }
 
@@ -245,7 +223,7 @@ class SignupFragment: BaseFragment<FragmentSignUpBinding>(
         val rePasswordMessage = binding.rePasswordConfirmMessage // 뷰 바인딩 사용
 
         // 비밀번호 확인
-        if (password == rePassword) {
+        if (password.isNotEmpty() && password == rePassword) {
             rePasswordMessage.text = "비밀번호가 일치합니다."
             rePasswordMessage.setTextColor(ContextCompat.getColor(requireContext(), R.color.successMessage))
             checkPassword = true
@@ -261,13 +239,36 @@ class SignupFragment: BaseFragment<FragmentSignUpBinding>(
         val nickMessage = binding.signInNickMessage
 
         // 닉네임 확인
-        checkNickname = dbHelper.checkNick(nickname)
-        if (!checkNickname) {
-            nickMessage.text = "사용가능한 닉네임입니다."
-            nickMessage.setTextColor(ContextCompat.getColor(requireContext(), R.color.successMessage))
+        if (nickname.isEmpty()) {
+            nickMessage.text = "닉네임이 입력되지 않았습니다."
+            checkNickname = false
+            nickMessage.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.errorMessage
+                )
+            )
         } else {
-            nickMessage.text = "이미 사용 중인 닉네임입니다."
-            nickMessage.setTextColor(ContextCompat.getColor(requireContext(), R.color.errorMessage))
+            checkNickname = dbHelper.checkNick(nickname)
+            if (!checkNickname) {
+                nickMessage.text = "사용가능한 닉네임입니다."
+                checkNickname = true
+                nickMessage.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.successMessage
+                    )
+                )
+            } else {
+                nickMessage.text = "이미 사용 중인 닉네임입니다."
+                nickMessage.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.errorMessage
+                    )
+                )
+                checkNickname = false
+            }
         }
     }
 }

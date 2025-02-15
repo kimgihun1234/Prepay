@@ -2,7 +2,8 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Prepay" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <item name="colorPrimary">#FFFFFF</item>
+        <item name="android:statusBarColor">#FBFBFF</item> //Status Bar색 변경
+        <item name="android:windowLightStatusBar">true</item> //글자 색 어둡게 설정
 
 <!--        <item name ="colorPrimary">#191970</item>-->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
