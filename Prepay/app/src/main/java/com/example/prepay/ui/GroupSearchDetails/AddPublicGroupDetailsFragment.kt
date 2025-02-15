@@ -145,14 +145,13 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
     }
 
 
-
     private fun initViewModel() {
         viewModel.detailInfo.observe(viewLifecycleOwner) { it ->
             teamsRes = it
             Log.d(TAG, "initViewModel: ${it}")
             binding.publicDetailTeamName.text = teamsRes.teamName
             binding.publicDetailText.text = teamsRes.teamMessage
-            binding.leftMoneyInfo.text = teamsRes.balance.toString()
+            binding.leftMoneyInfo.text = teamsRes.teamBalance.toString()
             binding.publicDetailLocation.text = teamsRes.address
             val imageUrl = teamsRes.imageUrl
             if (!imageUrl.isNullOrEmpty()) {
@@ -172,6 +171,11 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
             heartCheck = teamsRes.checkLike
             toggle(heartCheck)
             // 숫자 값 관련 로직, 해당 숫자값은 받아올 수 있어야 함.
+            val location = Location("").apply {
+                latitude = lat
+                longitude = lon
+            }
+            setCurrentLocation(location, "팀 위치", "현재 팀의 위치입니다.")
             val leftMoney = teamsRes.usedAmount
         }
     }
