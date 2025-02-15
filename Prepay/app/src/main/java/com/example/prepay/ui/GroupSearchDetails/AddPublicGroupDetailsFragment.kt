@@ -40,6 +40,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.prepay.CommonUtils
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.SharedPreferencesUtil
 import com.example.prepay.data.response.LikeTeamsReq
@@ -48,6 +49,8 @@ import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.ui.GroupSearch.GroupSearchFragmentViewModel
 import com.example.prepay.ui.GroupSearch.PublicSearchAdapter
 import com.example.prepay.ui.MainActivityViewModel
+import com.google.zxing.BarcodeFormat
+import com.journeyapps.barcodescanner.BarcodeEncoder
 //import com.google.zxing.BarcodeFormat
 //import com.journeyapps.barcodescanner.BarcodeEncoder
 import kotlinx.coroutines.coroutineScope
@@ -123,6 +126,19 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
             toggle(heartCheck)
             val checkLike = LikeTeamsReq(activityViewModel.storeId.value!!.toLong(), heartCheck)
             sendlike(checkLike)
+        }
+        binding.publicDetailQrBtn.setOnClickListener{
+            lifecycleScope.launch {
+                runCatching {
+                    RetrofitUtil.qrService.qrPrivateCreate(SharedPreferencesUtil.getAccessToken()!!, activityViewModel.storeId.value!!.toInt())
+                }.onSuccess {
+                    Log.d(TAG,it.message)
+                    showQRDialog(it.message+":"+SharedPreferencesUtil.getAccessToken()!!+":"+activityViewModel.storeId.value.toString())
+                }.onFailure { e ->
+                    Log.d(TAG, "qr실패: ${e.message}")
+                    mainActivity.showToast("qr불러오기가 실패했습니다")
+                }
+            }
         }
     }
 
@@ -200,7 +216,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
     ) {
         currentMarker?.remove()
 
-        val currentLatLng = LatLng(location.latitude + 0.002, location.longitude + 0.002)
+        val currentLatLng = LatLng(viewModel.detailInfo.value!!.latitude, viewModel.detailInfo.value!!.longitude)
 
         val marker =
             ResourcesCompat.getDrawable(resources, R.drawable.logo, requireActivity().theme)
@@ -273,5 +289,65 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
 
             }
         }
+    }
+
+    fun showQRDialog(url: String = "https://www.naver.com") {
+        val context = this@AddPublicGroupDetailsFragment.requireContext()
+
+        // 타이머 생성
+        val timer = Timer()
+
+        // 다이얼로그 레이아웃 인플레이트
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_create_qr, null)
+
+        // QR 코드 생성 및 이미지뷰에 적용
+        try {
+            val barcodeEncoder = BarcodeEncoder()
+            val bitmap = barcodeEncoder.encodeBitmap(url, BarcodeFormat.QR_CODE, 400, 400)
+            val imageViewQrCode = dialogView.findViewById<ImageView>(R.id.imageViewQrCode)
+            imageViewQrCode.setImageBitmap(bitmap)
+        } catch (e: Exception) {
+            Log.e("QRDialog", "QR 코드 생성 실패", e)
+        }
+
+        // AlertDialog 생성
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(context)
+            .setView(dialogView)
+            .setCancelable(true)  // 뒤로 가기 버튼 허용
+            .create()
+
+
+        // 다이얼로그 닫힐 때 타이머 취소
+        dialog.setOnDismissListener {
+            timer.cancel()
+            viewModel.getGroupDetails(SharedPreferencesUtil.getAccessToken()!!, activityViewModel.storeId.value!!.toLong())
+        }
+
+        // 다이얼로그 표시
+        dialog.show()
+
+        // 60초 카운트다운 타이머 시작
+        var seconds = 60
+        val qrTimer = dialogView.findViewById<TextView>(R.id.qr_timer)
+        qrTimer?.text = "남은 시간: 60초"
+
+        timer.scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                seconds--
+                // UI 업데이트는 메인 스레드에서 수행
+                this@AddPublicGroupDetailsFragment.requireActivity().runOnUiThread {
+                    qrTimer?.text = "남은 시간: ${seconds}초"
+                }
+                if (seconds <= 0) {
+                    // 시간이 다 되었으면 다이얼로그를 닫고 타이머 취소
+                    this@AddPublicGroupDetailsFragment.requireActivity().runOnUiThread {
+                        if (dialog.isShowing) {
+                            dialog.dismiss()
+                        }
+                    }
+                    timer.cancel()
+                }
+            }
+        }, 1000, 1000)
     }
 }
