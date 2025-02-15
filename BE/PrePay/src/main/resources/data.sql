@@ -41,32 +41,32 @@ INSERT INTO team (team_name,
                   color,
                   team_img_url,
                   test_db.team.user_id)
-VALUES ('기훈솔루션', 0, 8000, 0, '오늘 걷지 않으면 내일은 뛰어야한다!', 0, NULL, NULL, 1),
-       ('아이유애나', 1, 6000, 0, '아이유가 좋은 이유~', 0, NULL,
+VALUES ('기훈솔루션', 0, 8000, 0, '오늘 걷지 않으면 내일은 뛰어야한다!', 0, '#21c8f1', null, 1),
+       ('아이유애나', 1, 6000, 0, '아이유가 좋은 이유~', 0, '#9f75b9',
         'https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/%EC%95%84%EC%9D%B4%EC%9C%A0.webp?alt=media&token=527551e5-ce4e-45c5-9164-d6389a8297b3',
         8),
-       ('알고리즘 스터디', 0, 7000, 0, '일일 1골드 B형 가보자!', 0, NULL, NULL, 1),
-       ('구미 취준생 모여라', 1, 10000, 0, '힘들겠지만 오늘도 파이팅….', 0, NULL,
+       ('알고리즘 스터디', 0, 7000, 0, '일일 1골드 B형 가보자!', 0, '#e89800', NULL, 1),
+       ('구미 취준생 모여라', 1, 10000, 0, '힘들겠지만 오늘도 파이팅….', 0, '#777777',
         'https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/%EC%9D%B4%EB%94%94%EC%95%BC%20%ED%8C%80.png?alt=media&token=8d998bf7-535d-4670-bbff-a953f673a9e7',
         10),
        ('삼성전자 개발팀', 0, 10000, 0, '삼성전자 개발팀을 위한 선결제 그룹입니다.', 0, '#0c4da2', NULL, 8),
-       ('핵밥 먹자용', 0, 10000, 0, '싸피 12기 파이팅', 0, NULL,
+       ('핵밥 먹자용', 0, 10000, 0, '싸피 12기 파이팅', 0, '#21c8f1',
         'https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/%ED%95%B5%EB%B0%A5.png?alt=media&token=dc85a7b3-1d90-418e-a469-',
         8),
-       ('살롱드미뇽', 0, 20000, 0, '머리를 자릅시다.', 0, NULL,
+       ('살롱드미뇽', 0, 20000, 0, '머리를 자릅시다.', 0, '#21c8f1',
         'https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/%EC%82%B4%EB%A1%B1%EB%93%9C%EB%AF%B8%EB%87%BD.jpg?alt=media&token=2e516725-f6d2-42cb-84bc-e1e36200425d',
         5),
-       ('독서동아리', 0, 6000, 0, '책 읽고 밥 먹어요', 0, NULL, NULL, 3),
-       ('코딩하는사람들', 1, 10000, 0, '모각코 ㄱㄱㄱ 같이 코딩해요', 0, NULL,
+       ('독서동아리', 0, 6000, 0, '책 읽고 밥 먹어요', 0, '#21c8f1', NULL, 3),
+       ('코딩하는사람들', 1, 10000, 0, '모각코 ㄱㄱㄱ 같이 코딩해요', 0, '#21c8f1',
         'https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/%EC%BD%94%EB%94%A9%20%EC%82%AC%EC%A7%84.jpg?alt=media&token=a3b1eddb-aa64-47db-b479-2176b911234a',
         2),
-       ('투썸 같이먹어요', 1, 5000, 0, '커피 마시고 좋은 하루 보내세요', 0, NULL,
+       ('투썸 같이먹어요', 1, 5000, 0, '커피 마시고 좋은 하루 보내세요', 0, '#21c8f1',
         'https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/%ED%88%AC%EC%8D%B8.png?alt=media&token=7a8d40e4-c4bd-48ec-a05c-',
         11),
-       ('치킨 먹자용', 1, 25000, 0, '치맥 한번 하시죠', 0, NULL,
+       ('치킨 먹자용', 1, 25000, 0, '치맥 한번 하시죠', 0, '#21c8f1',
         'https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/%EC%8B%A0%EC%A7%B1%EA%B5%AC.png?alt=media&token=b3d50446-00fe-455e-',
         4),
-       ('구미친구들', 0, 8500, 0, '구미 밥친구 모임', 0, NULL,
+       ('구미친구들', 0, 8500, 0, '구미 밥친구 모임', 0, '#21c8f1',
         'https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/%EC%8B%A0%EC%A7%B1%EA%B5%AC.png?alt=media&token=b3d50446-00fe-455e-',
         9);
 
@@ -139,7 +139,7 @@ INSERT INTO user_team (is_like, position, privilege, usage_count, used_amount, t
 VALUES (false, false, false, 0, 0, 4, 1);
 
 INSERT INTO user_team (is_like, position, privilege, usage_count, used_amount, team_id, user_id)
-VALUES (false, true, true, 0, 0, 5, 8); -- 삼성전자 개발팀
+VALUES (false, true, true, 0, 0, 5, 7); -- 삼성전자 개발팀
 INSERT INTO user_team (is_like, position, privilege, usage_count, used_amount, team_id, user_id)
 VALUES (false, false, false, 0, 0, 5, 2); --
 INSERT INTO user_team (is_like, position, privilege, usage_count, used_amount, team_id, user_id)
