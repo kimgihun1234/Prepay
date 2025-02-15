@@ -6,6 +6,7 @@ import com.example.prepay.data.response.GetUserOfTeamRes
 import com.example.prepay.data.response.LikeTeamsReq
 import com.example.prepay.data.response.MoneyChangeReq
 import com.example.prepay.data.response.PrivilegeUserReq
+import com.example.prepay.data.response.PublicLikeRes
 import com.example.prepay.data.response.PublicTeamDetailsRes
 import com.example.prepay.data.response.PublicTeamsDisRes
 import com.example.prepay.data.response.PublicTeamsRes
@@ -83,8 +84,8 @@ interface TeamService {
 
     //공개된 모든 팀 목록을 가져옵니다.
 
-//    @GET("/team/public-teams")
-//    suspend fun getPublicTeams(@Header("access") access: String): List<PublicTeamsRes>
+    @GET("/team/public-teams")
+    suspend fun getPublicTeams(@Header("access") access: String): List<PublicTeamsRes>
 
 //    @GET("/team/public-teams")
 //    suspend fun getPublicTeams(@Header("email") email: String): List<PublicTeamsRes>
@@ -109,5 +110,8 @@ interface TeamService {
 
     @POST("/team/like")
     suspend fun sendLikeStatus(@Header("access") access: String, @Body request: LikeTeamsReq): Map<String, Int>
+
+    @GET("/team/public/liked")
+    suspend fun getlikeTeamList(@Header("access") access: String): List<PublicLikeRes>
 
 }

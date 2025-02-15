@@ -77,7 +77,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
     private lateinit var teamsRes: PublicTeamDetailsRes
     private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
     private var selectedImageMultipart: MultipartBody.Part? = null
-
+    private var heartCheck =false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,11 +91,9 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        initEvent()
         initViewModel()
-
-
+        init()
+        initEvent()
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         val mapFragment =
@@ -108,6 +106,27 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
         mainActivity.hideBottomNav(false)
     }
 
+    private fun init(){
+        // 좋아요 관련 로직
+        //animateMoneyChange(leftMoney)
+        viewModel.getGroupDetails(SharedPreferencesUtil.getAccessToken()!!, activityViewModel.storeId.value!!.toLong())
+    }
+
+
+    private fun initEvent(){
+        binding.publicDetailTeamName.text = viewModel.detailInfo.value?.teamName
+        Log.d(TAG, "initEvent: ${viewModel.detailInfo.value?.teamName}")
+        binding.publicDetailText.text = viewModel.detailInfo.value?.teamMessage
+        // 클릭 이벤트
+        binding.likeBtn.setOnClickListener {
+            heartCheck = !heartCheck
+            toggle(heartCheck)
+            val checkLike = LikeTeamsReq(activityViewModel.storeId.value!!.toLong(), heartCheck)
+            sendlike(checkLike)
+        }
+    }
+
+
 
     private fun initViewModel() {
         viewModel.detailInfo.observe(viewLifecycleOwner) { it ->
@@ -115,10 +134,9 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
             Log.d(TAG, "initViewModel: ${it}")
             binding.publicDetailTeamName.text = teamsRes.teamName
             binding.publicDetailText.text = teamsRes.teamMessage
-            binding.publicDetailText.text = teamsRes.teamMessage
             binding.leftMoneyInfo.text = teamsRes.balance.toString()
             binding.publicDetailLocation.text = teamsRes.address
-            val imageUrl = teamsRes.imageURL
+            val imageUrl = teamsRes.imageUrl
             if (!imageUrl.isNullOrEmpty()) {
                 Glide.with(requireContext())
                     .load(Uri.parse(imageUrl)) // Uri로 변환 후 로드
@@ -131,7 +149,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
 
             Log.d(TAG, "initViewModel: ${teamsRes}")
 
-            val imageURL = teamsRes.imageURL
+            val imageURL = teamsRes.imageUrl
             if (!imageURL.isNullOrEmpty()) {
                 Glide.with(requireContext())
                     .load(imageURL)
@@ -139,54 +157,21 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
             } else {
                 binding.publicDetailImage.setImageResource(R.drawable.logo)
             }
-
+            heartCheck = teamsRes.checkLike
+            toggle(heartCheck)
             // 숫자 값 관련 로직, 해당 숫자값은 받아올 수 있어야 함.
             val leftMoney = teamsRes.usedAmount
-            animateMoneyChange(leftMoney)
-
-
-            // 좋아요 관련 로직
-            val checkLike = teamsRes.checkLike
-            if (checkLike) {
-                binding.likeBtn.setImageResource(R.drawable.like_heart_fill)
-            } else {
-                binding.likeBtn.setImageResource(R.drawable.like_heart_empty)
-
-                // 좋아요 초기 상태 반영
-                viewModel.isLiked.observe(viewLifecycleOwner) { isLiked ->
-                    binding.likeBtn.setImageResource(
-                        if (isLiked) R.drawable.like_heart_fill else R.drawable.like_heart_empty
-                    )
-
-                }
-
-                // 클릭 이벤트
-                binding.likeBtn.setOnClickListener {
-
-                    val checkLike =
-                        LikeTeamsReq(activityViewModel.teamId.value!!.toLong(), checkLike)
-                    sendlike(checkLike)
-
-                    val newLikeStatus = !(viewModel.isLiked.value ?: false)
-                    viewModel.toggleLike()
-
-
-                    val likeRequest = LikeTeamsReq(activityViewModel.teamId.value!!, newLikeStatus)
-                    viewModel.sendLikeStatus(SharedPreferencesUtil.getAccessToken()!!, likeRequest)
-                }
-            }
-
-            viewModel.getGroupDetails(SharedPreferencesUtil.getAccessToken()!!, activityViewModel.teamId.value!!.toLong())
         }
     }
 
-
-    private fun initEvent() {
-        binding.publicDetailTeamName.text = viewModel.detailInfo.value?.teamName
-        Log.d(TAG, "initEvent: ${viewModel.detailInfo.value?.teamName}")
-        binding.publicDetailText.text = viewModel.detailInfo.value?.teamMessage
-
+    private fun toggle(heartCheck : Boolean){
+        if (heartCheck) {
+            binding.likeBtn.setImageResource(R.drawable.like_heart_fill)
+        } else {
+            binding.likeBtn.setImageResource(R.drawable.like_heart_empty)
+        }
     }
+
 
     private val readyCallback: OnMapReadyCallback by lazy {
         object : OnMapReadyCallback {

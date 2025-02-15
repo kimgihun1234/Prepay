@@ -43,6 +43,8 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
         mainActivity = requireActivity() as MainActivity
     }
 
+    
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()

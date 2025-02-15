@@ -7,5 +7,5 @@ data class PublicTeamsRes(
     val teamBalance: Int,
     val teamInitializerNickname: String,
     val like: Boolean,
-    val imageURL: String
+    val imgUrl: String
 )
