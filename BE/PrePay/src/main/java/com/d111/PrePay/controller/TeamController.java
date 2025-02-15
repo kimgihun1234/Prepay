@@ -35,7 +35,10 @@ public class TeamController {
     // 좋아요 한 퍼블릭 팀 보기
     @GetMapping("/public/liked")
     @Operation(summary = "좋아요 한 퍼블릭 팀")
-    public ResponseEntity<List<PublicTeamLikedRes>> showPublicLiked(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam float latitude, @RequestParam float longitude) {
+    public ResponseEntity<List<PublicTeamLikedRes>> showPublicLiked(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @RequestParam(defaultValue = "36.1015719197493") float latitude,
+            @RequestParam(defaultValue = "128.422009486894") float longitude) {
         Long userId = userDetails.getUserId();
         return ResponseEntity.ok(teamService.showPublicLiked(userId,latitude,longitude));
     }

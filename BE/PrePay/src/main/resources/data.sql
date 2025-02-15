@@ -188,6 +188,10 @@ INSERT INTO team_store (team_store_balance, store_store_id, team_team_id)
 VALUES (50000, 4, 11);
 -- 치킨 먹자용 / 차이앤웍
 
+INSERT INTO team_store (team_store_balance, store_store_id, team_team_id)
+VALUES (100000, 1, 5);
+-- 치킨 먹자용 / 차이앤웍
+
 -- 팀에 상점 추가 완료
 
 -- order_history 테이블에 데이터 삽입
@@ -254,8 +258,6 @@ VALUES (15000, -- detail_price
         @last_order_history_id, -- order_history_order_history_id
         '삼겹살' -- product
        );
-
-
 
 
 -- order_history 테이블에 데이터 삽입
