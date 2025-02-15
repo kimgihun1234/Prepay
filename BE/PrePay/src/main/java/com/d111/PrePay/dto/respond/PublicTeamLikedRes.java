@@ -17,6 +17,7 @@ public class PublicTeamLikedRes {
     private String teamName;
     private String address;
     private int teamBalance;
+    private float distance;
 
     public PublicTeamLikedRes(UserTeam userTeam, Team team) {
         this.teamId = team.getId();

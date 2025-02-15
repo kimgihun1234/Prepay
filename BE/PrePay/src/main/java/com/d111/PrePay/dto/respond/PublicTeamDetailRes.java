@@ -16,6 +16,8 @@ public class PublicTeamDetailRes {
     private String teamName;
     private String address;
     private int teamBalance;
+    private float latitude;
+    private float longitude;
 
     public PublicTeamDetailRes(UserTeam userTeam, Team team) {
         this.imageUrl=team.getTeamImgUrl();
@@ -27,5 +29,7 @@ public class PublicTeamDetailRes {
         this.teamBalance = team.getTeamStores().stream().mapToInt(teamStore->teamStore.getTeamStoreBalance()
         ).sum();
         this.address = team.getTeamStores().get(0).getStore().getAddress();
+        this.latitude=team.getTeamStores().get(0).getStore().getLatitude();
+        this.longitude=team.getTeamStores().get(0).getStore().getLongitude();
     }
 }

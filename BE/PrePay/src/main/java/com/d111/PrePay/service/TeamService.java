@@ -22,7 +22,6 @@ import com.d111.PrePay.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -49,19 +48,20 @@ public class TeamService {
 
 
     // 좋아요 한 퍼블릭 팀
-    public List<PublicTeamLikedRes> showPublicLiked(Long userId){
+    public List<PublicTeamLikedRes> showPublicLiked(Long userId, float latitude, float longitude) {
         List<UserTeam> userTeams = userTeamRepository.findUserTeamsByUserId(userId);
         List<PublicTeamLikedRes> result = new ArrayList<>();
         for (UserTeam userTeam : userTeams) {
-            if(userTeam.getTeam().isPublicTeam() && userTeam.isLike()){
-                PublicTeamLikedRes res = new PublicTeamLikedRes(userTeam,userTeam.getTeam());
-
+            if (userTeam.getTeam().isPublicTeam() && userTeam.isLike()) {
+                PublicTeamLikedRes res = new PublicTeamLikedRes(userTeam, userTeam.getTeam());
+                Store store = userTeam.getTeam().getTeamStores().get(0).getStore();
+                float dis = storeService.calDistance(store.getLongitude(), store.getLatitude(), longitude, latitude);
+                res.setDistance(dis);
                 result.add(res);
             }
         }
         return result;
     }
-
 
 
     // 팀 이미지 업로드
@@ -418,7 +418,7 @@ public class TeamService {
         List<TeamRes> resultList = new ArrayList<>();
         for (UserTeam userTeam : userTeams) {
             int sumTeamBalance = 0;
-            TeamRes teamRes = new TeamRes(userTeam,sumTeamBalance);
+            TeamRes teamRes = new TeamRes(userTeam, sumTeamBalance);
             List<TeamStore> teamStores = userTeam.getTeam().getTeamStores();
             for (TeamStore teamStore : teamStores) {
                 sumTeamBalance += teamStore.getTeamStoreBalance();
@@ -578,7 +578,6 @@ public class TeamService {
         } else {
             userTeam = opUserTeam.get();
         }
-
         return new PublicTeamDetailRes(userTeam, userTeam.getTeam());
     }
 

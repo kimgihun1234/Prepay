@@ -41,10 +41,13 @@ INSERT INTO team (team_name,
                   team_img_url,
                   test_db.team.user_id)
 VALUES ('기훈솔루션', 0, 8000, 0, '오늘 걷지 않으면 내일은 뛰어야한다!', 0, NULL, NULL, 1),
-       ('아이유애나', 1, 6000, 0, '아이유가 좋은 이유~', 0, NULL, NULL, 8),
+       ('아이유애나', 1, 6000, 0, '아이유가 좋은 이유~', 0, NULL,
+        'https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/%EC%95%84%EC%9D%B4%EC%9C%A0.webp?alt=media&token=527551e5-ce4e-45c5-9164-d6389a8297b3',
+        8),
        ('알고리즘 스터디', 0, 7000, 0, '일일 1골드 B형 가보자!', 0, NULL, NULL, 1),
        ('구미 취준생 모여라', 1, 10000, 0, '힘들겠지만 오늘도 파이팅….', 0, NULL,
-        'https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/%EC%9D%B4%EB%94%94%EC%95%BC%20%ED%8C%80.png?alt=media&token=8d998bf7-535d-4670-bbff-a953f673a9e7',10),
+        'https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/%EC%9D%B4%EB%94%94%EC%95%BC%20%ED%8C%80.png?alt=media&token=8d998bf7-535d-4670-bbff-a953f673a9e7',
+        10),
        ('삼성전자 개발팀', 0, 10000, 0, '삼성전자 개발팀을 위한 선결제 그룹입니다.', 0, '#0c4da2', NULL, 10),
        ('핵밥 먹자용', 0, 10000, 0, '싸피 12기 파이팅', 0, NULL,
         'https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/%ED%95%B5%EB%B0%A5.png?alt=media&token=dc85a7b3-1d90-418e-a469-',
@@ -156,8 +159,18 @@ VALUES (50000, 1, 3); -- 알고리즘 스터디 / 투썸
 INSERT INTO team_store (team_store_balance, store_store_id, team_team_id)
 VALUES (50000, 6, 3); -- 알고리즘 스터디 / 에이바우트
 INSERT INTO team_store (team_store_balance, store_store_id, team_team_id)
-VALUES (50000, 3, 3);
--- 알고리즘 스터디 / 에이바우트
+VALUES (50000, 3, 3); -- 알고리즘 스터디 / 에이바우트
+
+INSERT INTO team_store (team_store_balance, store_store_id, team_team_id)
+VALUES (50000, 6, 9); -- 코딩하는 사람들 / 에이바우트
+
+INSERT INTO team_store (team_store_balance, store_store_id, team_team_id)
+VALUES (50000, 7, 10); -- 투썸 같이먹어요 / 복터진짐
+
+INSERT INTO team_store (team_store_balance, store_store_id, team_team_id)
+VALUES (50000, 4, 11);
+-- 치킨 먹자용 / 차이앤웍
+
 -- 팀에 상점 추가 완료
 
 -- order_history 테이블에 데이터 삽입

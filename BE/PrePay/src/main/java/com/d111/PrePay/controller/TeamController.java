@@ -10,7 +10,6 @@ import com.d111.PrePay.dto.respond.StoresRes;
 import com.d111.PrePay.dto.respond.TeamDetailRes;
 import com.d111.PrePay.dto.respond.TeamRes;
 import com.d111.PrePay.security.dto.CustomUserDetails;
-import com.d111.PrePay.service.ImageService;
 import com.d111.PrePay.service.TeamService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -36,9 +35,9 @@ public class TeamController {
     // 좋아요 한 퍼블릭 팀 보기
     @GetMapping("/public/liked")
     @Operation(summary = "좋아요 한 퍼블릭 팀")
-    public ResponseEntity<List<PublicTeamLikedRes>> showPublicLiked(@RequestHeader String access,@AuthenticationPrincipal CustomUserDetails userDetails){
+    public ResponseEntity<List<PublicTeamLikedRes>> showPublicLiked(@RequestHeader String access, @AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam float latitude, @RequestParam float longitude) {
         Long userId = userDetails.getUserId();
-        return ResponseEntity.ok(teamService.showPublicLiked(userId));
+        return ResponseEntity.ok(teamService.showPublicLiked(userId,latitude,longitude));
     }
 
 
@@ -254,7 +253,7 @@ public class TeamController {
 
     @GetMapping("/{teamId}/stores")
     @Operation(summary = "팀 가맹점 조회")
-    public ResponseEntity<List<StoresRes>> getMyTeamStores(@RequestHeader String access,@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long teamId) {
+    public ResponseEntity<List<StoresRes>> getMyTeamStores(@RequestHeader String access, @AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long teamId) {
 //        Long userId = userDetails.getUserId();
 
         Long userId = userDetails.getUserId();
@@ -273,14 +272,14 @@ public class TeamController {
     @GetMapping("/public-teams/{keyword}")
     @Operation(summary = "<b>퍼블릭 팀 검색")
     public ResponseEntity<List<PublicTeamsRes>> getPublicTeamsByKeyword(@RequestHeader String access,
-            @PathVariable String keyword) {
+                                                                        @PathVariable String keyword) {
         return ResponseEntity.ok(teamService.getPublicTeamsByKeyword(keyword));
     }
 
     @GetMapping("/public-team/{teamId}")
     @Operation(summary = "퍼블릭 팀 디테일")
     public ResponseEntity<PublicTeamDetailRes> getPublicTeamDetail(@RequestHeader String access,
-            @AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable long teamId) {
+                                                                   @AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable long teamId) {
         String email = userDetails.getUsername();
         return ResponseEntity.ok(teamService.getPublicTeamDetail(email, teamId));
     }
@@ -288,7 +287,7 @@ public class TeamController {
     @GetMapping("/public-team/2km")
     @Operation(summary = "2km 이내의 퍼블릭 팀 조회")
     public ResponseEntity<List<PublicTeams2kmRes>> get2kmPublicTeams(@RequestHeader String access,
-            @AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam float latitude, @RequestParam float longitude) {
+                                                                     @AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam float latitude, @RequestParam float longitude) {
         String email = userDetails.getUsername();
         return ResponseEntity.ok(teamService.get2kmPublicTeams(email, latitude, longitude));
     }
