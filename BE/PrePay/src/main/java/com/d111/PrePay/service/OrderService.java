@@ -33,7 +33,7 @@ public class OrderService {
                 resultList.add(result);
             }
             return resultList;
-        } else if (req.getStoreId() == 0) {
+        } else if (req.getTeamId() == 0) {
             List<OrderHistory> originalList = orderHistoryRepository.findOrderHistoriesByStoreIdEquals(req.getTeamId());
             List<OrderHistoryRes> resultList = new ArrayList<>();
             for (OrderHistory orderHistory : originalList) {
@@ -41,7 +41,7 @@ public class OrderService {
                 resultList.add(result);
             }
             return resultList;
-        } else if (req.getTeamId() == 0) {
+        } else if (req.getStoreId() == 0) {
             List<OrderHistory> originalList = orderHistoryRepository.findOrderHistoriesByTeamIdEquals(req.getStoreId());
             List<OrderHistoryRes> resultList = new ArrayList<>();
             for (OrderHistory orderHistory : originalList) {
