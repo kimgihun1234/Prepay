@@ -2,10 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/navigation_mypage"
+        android:icon="@drawable/mypage_btn"
         android:enabled="true"
-        android:title="MyPage" />
+        android:title="내 그룹" />
     <item
         android:id="@+id/navigation_group_search"
+        android:icon="@drawable/group_search_btn"
         android:enabled="true"
-        android:title="Group Search" />
+        android:title="공개 그룹" />
+    <item
+        android:id="@+id/my_payment_history"
+        android:icon="@drawable/payment_history_btn"
+        android:enabled="true"
+        android:title="내역 조회" />
 </menu>
