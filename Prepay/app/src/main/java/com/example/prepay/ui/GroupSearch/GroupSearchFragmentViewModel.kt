@@ -33,10 +33,10 @@ class GroupSearchFragmentViewModel : ViewModel(){
     val userLocation: LiveData<Location> get() = _userLocation
 
 
-    fun getPublicTeamList(){
+    fun getPublicTeamList(latitude : Double, longitude:Double){
         viewModelScope.launch{
             runCatching {
-                RetrofitUtil.teamService.getPublicTeams(SharedPreferencesUtil.getAccessToken()!!)
+                RetrofitUtil.teamService.getPublicTeams(SharedPreferencesUtil.getAccessToken()!!,latitude,longitude)
             }.onSuccess {
                 _getPublicTeams.value = it
             }.onFailure {

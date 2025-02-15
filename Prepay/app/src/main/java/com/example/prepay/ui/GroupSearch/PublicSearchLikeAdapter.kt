@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.prepay.DistanceManager
 import com.example.prepay.R
 import com.example.prepay.data.response.LikeTeamsReq
 import com.example.prepay.data.response.PublicLikeRes
-import com.example.prepay.data.response.PublicTeamsDisRes
 import com.example.prepay.databinding.ItemPublicGroupBinding
 
 class PublicSearchLikeAdapter(var publiclikeList: List<PublicLikeRes>, private val listener: OnPublicLikeClickListener) :
@@ -18,9 +18,9 @@ class PublicSearchLikeAdapter(var publiclikeList: List<PublicLikeRes>, private v
         private var isLiked = false  // 좋아요 상태 저장
         fun bind(publiclike: PublicLikeRes) {
             binding.publicName.text = publiclike.teamName
-//            binding.content.text = publicgroup.address
-//            binding.publicDistance.text = publicgroup.distance.toString()+"km"
-            binding.publicMoneyInfo.text = publiclike.balance.toString()
+            binding.publicAddress.text = publiclike.address
+            binding.publicDistance.text = DistanceManager.formatDistance(publiclike.distance)
+            binding.publicMoneyInfo.text = publiclike.teamBalance.toString()
             // 그룹 이미지 가지고 오기
             Glide.with(binding.root.context)
                 .load(publiclike.imageUrl)
@@ -37,7 +37,7 @@ class PublicSearchLikeAdapter(var publiclikeList: List<PublicLikeRes>, private v
                 isLiked = !isLiked  // 상태 변경
                 updateHeartIcon()  // 아이콘 변경
                 val likereq = LikeTeamsReq(publiclike.teamId.toLong(), isLiked)
-                listener.onPublicLikeClick(likereq)
+                listener.onPublicGroupLikeLikeClick(likereq)
             }
 
             // 부모 레이아웃 터치 이벤트 방지 (하트 버튼 클릭 시 아이템 클릭 방지)
@@ -47,7 +47,7 @@ class PublicSearchLikeAdapter(var publiclikeList: List<PublicLikeRes>, private v
             }
 
             binding.root.setOnClickListener {
-                listener.onPublicGroupClick(publiclike)
+                listener.onPublicGroupLikeClick(publiclike)
             }
 
         }

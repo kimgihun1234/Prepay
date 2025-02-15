@@ -3,7 +3,6 @@ package com.example.prepay.ui.GroupSearch
 import android.Manifest
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
-import android.content.SharedPreferences
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -13,8 +12,6 @@ import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.drawable.toBitmap
 import com.example.prepay.ui.MainActivityViewModel
 import com.example.prepay.SharedPreferencesUtil
 import com.google.android.gms.location.LocationCallback
@@ -37,28 +34,24 @@ import com.example.prepay.ui.MainActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.Locale
-import kotlin.math.log
 
 private const val TAG = "GroupSearchFragment"
 class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
     FragmentGroupSearchBinding::bind,
     R.layout.fragment_group_search
-), OnPublicClickListener,OnPublicLikeClickListener {
+), OnPublicKmLimitClickListener,OnPublicLikeClickListener,OnPublicClickListener {
     private lateinit var mainActivity: MainActivity
     private val activityViewModel: MainActivityViewModel by activityViewModels()
 
     //adapter 정보
     private lateinit var publicDistanceSearchAdapter: PublicSearchDistanceAdapter
     private lateinit var publicLikeTeamAdapter : PublicSearchLikeAdapter
+    private lateinit var publicGroupAdapter: PublicSearchAdapter
 
     // GPS관련 변수
     private var isUserLocationSet = false
@@ -106,37 +99,40 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         requestPermission()
         initViewModel()
-        initEvent()
         initAdapter()
+        initEvent()
     }
 
     private fun initEvent() {
+        select = 3
+        binding.recyclerView.adapter = publicGroupAdapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        getLastLocation()
         binding.likeSort.setOnClickListener {
             select = 1
             //groupSearchFragmentViewModel.getTeamLikeList()
             binding.recyclerView.adapter = publicLikeTeamAdapter
-            binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+            getLastLocation()
         }
 
         binding.distanceSort.setOnClickListener {
             select = 2
             binding.recyclerView.adapter = publicDistanceSearchAdapter
-            binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
             getLastLocation()
             Log.d(TAG, "initEvent: ${groupSearchFragmentViewModel.sortDistancePublicTeams.value}")
         }
 
+        binding.all.setOnClickListener {
+            select = 3
+            binding.recyclerView.adapter = publicGroupAdapter
+            getLastLocation()
+        }
     }
-
 
     private fun initAdapter(){
         publicLikeTeamAdapter = PublicSearchLikeAdapter(arrayListOf(),this)
         publicDistanceSearchAdapter = PublicSearchDistanceAdapter(arrayListOf(),this)
-
-        /*getLastLocation()
-        groupSearchFragmentViewModel.getPublicTeamList()
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.adapter = publicDistanceSearchAdapter*/
+        publicGroupAdapter = PublicSearchAdapter(arrayListOf(),this)
     }
 
     private fun initViewModel() {
@@ -146,8 +142,11 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
             if(select ==1){
                 groupSearchFragmentViewModel.getTeamLikeList(curlocation.latitude, curlocation.longitude)
             }
-            else{
+            else if(select==2){
                 groupSearchFragmentViewModel.getSortDistancePublicTeamList(curlocation.latitude, curlocation.longitude)
+            }
+            else{
+                groupSearchFragmentViewModel.getPublicTeamList(curlocation.latitude, curlocation.longitude)
             }
         }
 
@@ -160,8 +159,11 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
             publicLikeTeamAdapter.publiclikeList = it
             publicLikeTeamAdapter.notifyDataSetChanged()
         }
+        groupSearchFragmentViewModel.getPublicTeams.observe(viewLifecycleOwner){it->
+            publicGroupAdapter.publicGroupList = it
+            publicGroupAdapter.notifyDataSetChanged()
+        }
     }
-
     fun sendlike(likeTeamsReq: LikeTeamsReq){
         lifecycleScope.launch {
            runCatching {
@@ -175,21 +177,30 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
     }
 
 
-    override fun onGroupClick(publicgroup: PublicTeamsDisRes) {
+    override fun onKmLimitGroupClick(publicgroup: PublicTeamsDisRes) {
         activityViewModel.setStoreId(publicgroup.teamId)
         mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.PUBLIC_GROUP_DETAILS_FRAGMENT)
     }
 
-    override fun onLikeClick(likeReq: LikeTeamsReq) {
-        sendlike(likeReq)
-    }
-
-    override fun onPublicGroupClick(publicGroupLike:PublicLikeRes){
+    override fun onPublicGroupLikeClick(publicGroupLike: PublicLikeRes) {
         activityViewModel.setStoreId(publicGroupLike.teamId)
         mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.PUBLIC_GROUP_DETAILS_FRAGMENT)
     }
 
-    override fun onPublicLikeClick(publiclike:LikeTeamsReq){
+    override fun onGroupClick(publicgroup: PublicTeamsRes) {
+        activityViewModel.setStoreId(publicgroup.teamId)
+        mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.PUBLIC_GROUP_DETAILS_FRAGMENT)
+    }
+
+    override fun onLikeClick(publicgroupLike: LikeTeamsReq) {
+        sendlike(publicgroupLike)
+    }
+
+    override fun onKmLimitLikeGroupClick(likeReq: LikeTeamsReq) {
+        sendlike(likeReq)
+    }
+
+    override fun onPublicGroupLikeLikeClick(publiclike:LikeTeamsReq){
         sendlike(publiclike)
     }
 
