@@ -15,6 +15,9 @@ public class OrderHistoryRes {
     private boolean isWithdraw;
     private boolean refundRequested;
     private boolean isCompanyDinner;
+    private String storeImgUrl;
+    private String storeName;
+    private boolean checkPublic;
 
     public OrderHistoryRes(OrderHistory orderHistory) {
         this.orderHistoryId = orderHistory.getId();
@@ -23,5 +26,8 @@ public class OrderHistoryRes {
         this.isWithdraw = orderHistory.isWithDraw();
         this.refundRequested = orderHistory.isRefundRequested();
         this.isCompanyDinner = orderHistory.isCompanyDinner();
+        this.storeName = orderHistory.getStore().getStoreName();
+        this.storeImgUrl=orderHistory.getStore().getStoreImgUrl();
+        this.checkPublic = orderHistory.getTeam().isPublicTeam();
     }
 }

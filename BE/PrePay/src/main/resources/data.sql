@@ -49,7 +49,7 @@ VALUES ('기훈솔루션', 0, 8000, 0, '오늘 걷지 않으면 내일은 뛰어
        ('구미 취준생 모여라', 1, 10000, 0, '힘들겠지만 오늘도 파이팅….', 0, NULL,
         'https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/%EC%9D%B4%EB%94%94%EC%95%BC%20%ED%8C%80.png?alt=media&token=8d998bf7-535d-4670-bbff-a953f673a9e7',
         10),
-       ('삼성전자 개발팀', 0, 10000, 0, '삼성전자 개발팀을 위한 선결제 그룹입니다.', 0, '#0c4da2', NULL, 10),
+       ('삼성전자 개발팀', 0, 10000, 0, '삼성전자 개발팀을 위한 선결제 그룹입니다.', 0, '#0c4da2', NULL, 8),
        ('핵밥 먹자용', 0, 10000, 0, '싸피 12기 파이팅', 0, NULL,
         'https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/%ED%95%B5%EB%B0%A5.png?alt=media&token=dc85a7b3-1d90-418e-a469-',
         8),
@@ -124,7 +124,7 @@ INSERT INTO user_team (is_like, position, privilege, usage_count, used_amount, t
 VALUES (false, false, false, 0, 0, 3, 6); -- 알고리즘 스터디  김성수 추가
 
 INSERT INTO user_team (is_like, position, privilege, usage_count, used_amount, team_id, user_id)
-VALUES (false, true, true, 0, 0, 4, 10); --
+VALUES (false, true, true, 0, 0, 4, 10); -- 구미 취준생 모여라
 INSERT INTO user_team (is_like, position, privilege, usage_count, used_amount, team_id, user_id)
 VALUES (false, false, false, 0, 0, 4, 2); --
 INSERT INTO user_team (is_like, position, privilege, usage_count, used_amount, team_id, user_id)
@@ -137,10 +137,26 @@ INSERT INTO user_team (is_like, position, privilege, usage_count, used_amount, t
 VALUES (false, false, false, 0, 0, 4, 6); --
 INSERT INTO user_team (is_like, position, privilege, usage_count, used_amount, team_id, user_id)
 VALUES (false, false, false, 0, 0, 4, 1);
---
+
+INSERT INTO user_team (is_like, position, privilege, usage_count, used_amount, team_id, user_id)
+VALUES (false, true, true, 0, 0, 5, 8); -- 삼성전자 개발팀
+INSERT INTO user_team (is_like, position, privilege, usage_count, used_amount, team_id, user_id)
+VALUES (false, false, false, 0, 0, 5, 2); --
+INSERT INTO user_team (is_like, position, privilege, usage_count, used_amount, team_id, user_id)
+VALUES (false, false, false, 0, 0, 5, 3); --
+INSERT INTO user_team (is_like, position, privilege, usage_count, used_amount, team_id, user_id)
+VALUES (false, false, false, 0, 0, 5, 4); --
+INSERT INTO user_team (is_like, position, privilege, usage_count, used_amount, team_id, user_id)
+VALUES (false, false, false, 0, 0, 5, 5); --
+INSERT INTO user_team (is_like, position, privilege, usage_count, used_amount, team_id, user_id)
+VALUES (false, false, false, 0, 0, 5, 6); --
+INSERT INTO user_team (is_like, position, privilege, usage_count, used_amount, team_id, user_id)
+VALUES (false, false, false, 0, 0, 5, 1);
 
 -- 팀에 사람 추가 완료
 
+INSERT INTO team_store (team_store_balance, store_store_id, team_team_id)
+VALUES (200000, 1, 5); -- 구미 취준생 / 이디야
 INSERT INTO team_store (team_store_balance, store_store_id, team_team_id)
 VALUES (2147483647, 5, 4); -- 구미 취준생 / 이디야
 INSERT INTO team_store (team_store_balance, store_store_id, team_team_id)
@@ -413,3 +429,67 @@ VALUES (6500, -- detail_price
         '아이스모카' -- product
        );
 
+-- order_history 테이블에 데이터 삽입
+INSERT INTO order_history (company_dinner,
+                           refund_requested,
+                           total_price,
+                           with_draw,
+                           order_date,
+                           store_store_id,
+                           team_team_id,
+                           user_user_id)
+VALUES (0, -- company_dinner (0 = false, 1 = true)
+        0, -- refund_requested (0 = false, 1 = true)
+        5500, -- total_price
+        0, -- with_draw (0 = false, 1 = true)
+        1739507338, -- order_date (Unix timestamp in milliseconds)
+        1, -- store_store_id (assuming store with ID 1 exists)
+        5, -- team_team_id (assuming team with ID 2 exists)
+        7 -- user_user_id (assuming user with ID 3 exists)
+       );
+-- 방금 삽입된 order_history의 ID를 가져옵니다
+SET
+    @last_order_history_id = LAST_INSERT_ID();
+-- detail_history 테이블에 데이터 삽입
+INSERT INTO detail_history (detail_price,
+                            quantity,
+                            order_history_order_history_id,
+                            product)
+VALUES (5500, -- detail_price
+        1, -- quantity
+        @last_order_history_id, -- order_history_order_history_id
+        '복숭아아이스티' -- product
+       );
+
+
+-- order_history 테이블에 데이터 삽입
+INSERT INTO order_history (company_dinner,
+                           refund_requested,
+                           total_price,
+                           with_draw,
+                           order_date,
+                           store_store_id,
+                           team_team_id,
+                           user_user_id)
+VALUES (0, -- company_dinner (0 = false, 1 = true)
+        0, -- refund_requested (0 = false, 1 = true)
+        5500, -- total_price
+        0, -- with_draw (0 = false, 1 = true)
+        1739507338, -- order_date (Unix timestamp in milliseconds)
+        1, -- store_store_id (assuming store with ID 1 exists)
+        5, -- team_team_id (assuming team with ID 2 exists)
+        6 -- user_user_id (assuming user with ID 3 exists)
+       );
+-- 방금 삽입된 order_history의 ID를 가져옵니다
+SET
+    @last_order_history_id = LAST_INSERT_ID();
+-- detail_history 테이블에 데이터 삽입
+INSERT INTO detail_history (detail_price,
+                            quantity,
+                            order_history_order_history_id,
+                            product)
+VALUES (5500, -- detail_price
+        1, -- quantity
+        @last_order_history_id, -- order_history_order_history_id
+        '복숭아아이스티' -- product
+       );
