@@ -51,6 +51,7 @@ class StoreTeamFragment : BaseFragment<FragmentStoreTeamBinding>(
     private fun initEvent() {
         binding.qrCodeBtn.setOnClickListener {
             startQRCodeScanner()
+            Log.d(TAG, "initEvent: ${activityViewModel.storeId.value}")
         }
     }
 
@@ -70,25 +71,31 @@ class StoreTeamFragment : BaseFragment<FragmentStoreTeamBinding>(
         Log.d(TAG, "initAdapter: 성공")
     }
 
-    // QR 코드 스캔을 시작하는 함수
+    // ✅ 수정: Fragment에서 onActivityResult가 동작하도록 변경
     fun startQRCodeScanner() {
-        val integrator = IntentIntegrator(requireActivity()) // Fragment에서 사용할 경우 forSupportFragment
+        Log.d(TAG, "startQRCodeScanner: ")
+        val integrator = IntentIntegrator.forSupportFragment(this) // ✅ 변경된 부분
         integrator.setPrompt("Scan a QR code")
-        integrator.setOrientationLocked(false) // 화면 회전 가능
-        integrator.initiateScan() // QR 코드 스캔 시작
+        integrator.setOrientationLocked(false)
+        integrator.initiateScan()
+        Log.d(TAG, "startQRCodeScanner: 완료")
     }
+
+
     fun handleQRCodeScanResult(scanResult: String) {
         // QR 코드 데이터 처리
         Log.d("QR_SCAN", "QR 성공코드가 찍혔습니다: $scanResult")
         playBeepSound()
         val parts = scanResult.split(":")
+        Log.d(TAG, "parts: ${parts[1]}")
         // 주문 상세 정보 리스트 생성
         val orderDetails = listOf(
-            orderDetail(detailPrice = 10000, product = "커피", quantity = 2),
-            orderDetail(detailPrice = 5000, product = "샌드위치", quantity = 1)
+            orderDetail(detailPrice = 1000, product = "커피", quantity = 2),
+            orderDetail(detailPrice = 500, product = "샌드위치", quantity = 1)
         )
         //숫자 입력
         var num = activityViewModel.storeId.value
+        Log.d(TAG, "storeId 값: $num") // ✅ storeId 값 확인
         // PosReq 객체 생성
         val posReq = num?.let {
             PosReq(
@@ -98,6 +105,7 @@ class StoreTeamFragment : BaseFragment<FragmentStoreTeamBinding>(
                 teamId = parts[2].toInt()
             )
         }
+        Log.d(TAG, "posReq 생성 완료: $posReq") // ✅ PosReq 객체가 정상 생성되었는지 확인
         lifecycleScope.launch {
             runCatching {
                 posReq?.let { RetrofitUtil.posService.posTransfer(parts[1], it) }
@@ -114,6 +122,7 @@ class StoreTeamFragment : BaseFragment<FragmentStoreTeamBinding>(
 
         if (result != null) {
             if (result.contents != null) {
+                Log.d(TAG, "onActivityResult: ")
                 handleQRCodeScanResult(result.contents) // QR 코드 결과 처리
             } else {
                 // QR 코드 스캔 취소 시
