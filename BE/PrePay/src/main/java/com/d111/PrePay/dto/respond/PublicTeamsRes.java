@@ -14,6 +14,8 @@ public class PublicTeamsRes {
     private String teamInitializerNickname;
     private boolean isLike;
     private String imgUrl;
+    private String address;
+    private float distance;
 
     public PublicTeamsRes(Team team) {
         this.teamName = team.getTeamName();

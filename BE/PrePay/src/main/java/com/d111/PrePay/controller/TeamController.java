@@ -35,7 +35,10 @@ public class TeamController {
     // 좋아요 한 퍼블릭 팀 보기
     @GetMapping("/public/liked")
     @Operation(summary = "좋아요 한 퍼블릭 팀")
-    public ResponseEntity<List<PublicTeamLikedRes>> showPublicLiked(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam float latitude, @RequestParam float longitude) {
+    public ResponseEntity<List<PublicTeamLikedRes>> showPublicLiked(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @RequestParam(defaultValue = "36.1015719197493") float latitude,
+            @RequestParam(defaultValue = "128.422009486894") float longitude) {
         Long userId = userDetails.getUserId();
         return ResponseEntity.ok(teamService.showPublicLiked(userId,latitude,longitude));
     }
@@ -248,9 +251,9 @@ public class TeamController {
 
     @GetMapping("/public-teams")
     @Operation(summary = "<b>퍼블릭 팀 리스트 조회")
-    public ResponseEntity<List<PublicTeamsRes>> getPublicTeams(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<List<PublicTeamsRes>> getPublicTeams(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam(defaultValue = "36.1015719197493") float latitude, @RequestParam(defaultValue = "128.422009486894") float longitude) {
         String email = userDetails.getUsername();
-        return ResponseEntity.ok(teamService.getPublicTeams(email));
+        return ResponseEntity.ok(teamService.getPublicTeams(email,latitude,longitude));
     }
 
     @GetMapping("/public-teams/{keyword}")
@@ -268,7 +271,7 @@ public class TeamController {
 
     @GetMapping("/public-team/2km")
     @Operation(summary = "2km 이내의 퍼블릭 팀 조회")
-    public ResponseEntity<List<PublicTeams2kmRes>> get2kmPublicTeams(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam float latitude, @RequestParam float longitude) {
+    public ResponseEntity<List<PublicTeams2kmRes>> get2kmPublicTeams(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam(defaultValue = "36.1015719197493") float latitude, @RequestParam(defaultValue = "128.422009486894") float longitude) {
         String email = userDetails.getUsername();
         return ResponseEntity.ok(teamService.get2kmPublicTeams(email, latitude, longitude));
     }

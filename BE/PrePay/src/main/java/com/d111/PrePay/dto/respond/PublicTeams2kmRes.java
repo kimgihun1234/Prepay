@@ -17,6 +17,7 @@ public class PublicTeams2kmRes {
     private float latitude;
     private float longitude;
     private double distance;
+    private String address;
 
     public PublicTeams2kmRes(Team team) {
         this.teamName = team.getTeamName();
