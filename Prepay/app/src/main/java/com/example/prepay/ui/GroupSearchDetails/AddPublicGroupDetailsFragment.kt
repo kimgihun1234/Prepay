@@ -81,6 +81,8 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
     private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
     private var selectedImageMultipart: MultipartBody.Part? = null
     private var heartCheck =false
+    var lat = 36.5
+    var lon = 128.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -165,14 +167,8 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
 
             Log.d(TAG, "initViewModel: ${teamsRes}")
 
-            val imageURL = teamsRes.imageUrl
-            if (!imageURL.isNullOrEmpty()) {
-                Glide.with(requireContext())
-                    .load(imageURL)
-                    .into(binding.publicDetailImage)
-            } else {
-                binding.publicDetailImage.setImageResource(R.drawable.logo)
-            }
+            lat = teamsRes.latitude
+            lon = teamsRes.longitude
             heartCheck = teamsRes.checkLike
             toggle(heartCheck)
             // 숫자 값 관련 로직, 해당 숫자값은 받아올 수 있어야 함.
@@ -216,7 +212,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
     ) {
         currentMarker?.remove()
 
-        val currentLatLng = LatLng(viewModel.detailInfo.value!!.latitude, viewModel.detailInfo.value!!.longitude)
+        val currentLatLng = LatLng(lat, lon)
 
         val marker =
             ResourcesCompat.getDrawable(resources, R.drawable.logo, requireActivity().theme)
