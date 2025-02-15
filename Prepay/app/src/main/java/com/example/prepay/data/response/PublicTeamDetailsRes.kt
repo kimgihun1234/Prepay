@@ -10,7 +10,10 @@ data class PublicTeamDetailsRes(
     val address : String,
     val teamBalance: Int,
     val latitude : Double,
-    val longitude : Double
+    val longitude : Double,
+    val storeUrl: String,
+    val storeName: String,
+    val storeDescription: String
 )
 
 //imageurl, team_balance, teammessage, isLike, teamName, latitude, longitude, address

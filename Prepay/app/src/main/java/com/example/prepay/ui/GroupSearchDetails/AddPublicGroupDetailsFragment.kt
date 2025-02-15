@@ -166,6 +166,19 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
 
             Log.d(TAG, "initViewModel: ${teamsRes}")
 
+
+            val storeImageUrl = teamsRes.storeUrl
+            if (!storeImageUrl.isNullOrEmpty()) {
+                Glide.with(requireContext())
+                    .load(Uri.parse(storeImageUrl)) // Uri로 변환 후 로드
+                    .into(binding.storeView)
+            } else {
+                binding.storeView.setImageResource(R.drawable.logo)
+                Log.d(TAG, "initViewModel: ${imageUrl}")
+            }
+            binding.storeTitle.text = teamsRes.storeName
+            binding.storeDescription.text = teamsRes.storeDescription
+
             lat = teamsRes.latitude
             lon = teamsRes.longitude
             heartCheck = teamsRes.checkLike
