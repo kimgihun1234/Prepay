@@ -1,0 +1,125 @@
+package com.example.qrscanner
+
+import android.os.Bundle
+import com.example.qrscanner.base.BaseActivity
+import com.example.qrscanner.databinding.ActivityMainBinding
+import com.example.qrscanner.ui.LoginFragment
+import com.example.qrscanner.ui.StoreTeamFragment
+import com.example.qrscanner.ui.TeamFragment
+import com.example.qrscanner.util.CommonUtils
+
+private val KeyAccessToken = "AccessToken"
+private val prefsName = "user_prefs"
+
+private const val TAG = "MainActivity_싸피"
+class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initFragment()
+    }
+
+    fun changeFragmentMain(name: CommonUtils.MainFragmentName, num: Int = -1) {
+        val transaction = supportFragmentManager.beginTransaction()
+        when (name) {
+            CommonUtils.MainFragmentName.LOGIN_FRAGMENT -> {
+                transaction.replace(R.id.main, LoginFragment())
+                transaction.addToBackStack(null)
+            }
+            CommonUtils.MainFragmentName.STORE_TEAM_FRAGMENT -> {
+                transaction.replace(R.id.main, StoreTeamFragment())
+                transaction.addToBackStack(null)
+            }
+            CommonUtils.MainFragmentName.TEAM_FRAGMENT -> {
+                transaction.replace(R.id.main, TeamFragment())
+                transaction.addToBackStack(null)
+            }
+        }
+        transaction.commit()
+    }
+
+    fun initFragment(){
+        changeFragmentMain(CommonUtils.MainFragmentName.LOGIN_FRAGMENT)
+    }
+}
+
+//private const val TAG = "MainActivity_싸피"
+//class MainActivity : AppCompatActivity() {
+//    private val binding by lazy{
+//        ActivityMainBinding.inflate(layoutInflater)
+//    }
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        setContentView(binding.root)
+//        binding.qrbtn.setOnClickListener {
+//            startQRCodeScanner()
+//        }
+//    }
+//
+//    // QR 코드 스캔을 시작하는 함수
+//    fun startQRCodeScanner() {
+//        val integrator = IntentIntegrator(this) // Fragment에서 사용할 경우 forSupportFragment
+//        integrator.setPrompt("Scan a QR code")
+//        integrator.setOrientationLocked(false) // 화면 회전 가능
+//        integrator.initiateScan() // QR 코드 스캔 시작
+//    }
+//
+//    fun handleQRCodeScanResult(scanResult: String) {
+//        // QR 코드 데이터 처리
+//        Log.d("QR_SCAN", "QR 성공코드가 찍혔습니다: $scanResult")
+//        playBeepSound()
+//        val parts = scanResult.split(":")
+//        // 주문 상세 정보 리스트 생성
+//        val orderDetails = listOf(
+//            orderDetail(detailPrice = 10000, product = "커피", quantity = 2),
+//            orderDetail(detailPrice = 5000, product = "샌드위치", quantity = 1)
+//        )
+//        //숫자 입력
+//        var num = binding.storeInput.text.toString().toIntOrNull() ?: 1
+//        // PosReq 객체 생성
+//        val posReq = PosReq(
+//            details = orderDetails,
+//            qrUUID = parts[0],
+//            storeId = num,
+//            teamId = parts[2].toInt()
+//        )
+//        lifecycleScope.launch {
+//            runCatching {
+//                RetrofitUtil.posService.posTransfer(parts[1],posReq)
+//            }.onSuccess {
+//                Log.d("QR_SCAN","아이디어가 작동하였습니다")
+//            }.onFailure {error ->
+//                Log.e("QR_SCAN","아이디어가 실패하였습니다: ${error.localizedMessage}", error)
+//            }
+//        }
+//    }
+//
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+//
+//        if (result != null) {
+//            if (result.contents != null) {
+//                handleQRCodeScanResult(result.contents) // QR 코드 결과 처리
+//            } else {
+//                // QR 코드 스캔 취소 시
+//                Log.d("QR_SCAN", "QR 코드 스캔 취소됨")
+//            }
+//        } else {
+//            // 예외 처리 (IntentIntegrator가 반환한 결과가 null일 때)
+//            Log.e("QR_SCAN", "QR 코드 스캔 결과 처리 중 오류 발생")
+//        }
+//    }
+//
+//    // 🔊 QR 코드 스캔 성공 시 "띠링" 효과음 재생 함수
+//    private fun playBeepSound() {
+//        val mediaPlayer = MediaPlayer.create(this, R.raw.beep_sound) // 🔹 beep_sound.mp3 파일을 사용
+//        if (mediaPlayer != null) {
+//            mediaPlayer.start()
+//            mediaPlayer.setOnCompletionListener {
+//                mediaPlayer.release() // 재생 완료 후 리소스 해제
+//            }
+//        } else {
+//            Log.e("playBeepSound", "미디어 플레이어 초기화 실패.")
+//        }
+//    }
+//}

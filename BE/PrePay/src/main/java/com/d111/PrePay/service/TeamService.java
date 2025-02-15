@@ -587,7 +587,6 @@ public class TeamService {
         HashMap<Long, Double> map = new HashMap<>();
         for (Store store : stores) {
             double dis = storeService.calDistance(store.getLongitude(), store.getLatitude(), longitude, latitude);
-            log.info("거리 : {}", dis);
             if (storeService.calDistance(store.getLongitude(), store.getLatitude(), longitude, latitude) < 2L) {
                 in2Km.add(store);
                 map.put(store.getId(), dis);
@@ -596,7 +595,6 @@ public class TeamService {
 
         List<PublicTeams2kmRes> result = new ArrayList<>();
         for (Store store : in2Km) {
-            log.info("가게명 : {}", store.getStoreName());
             List<TeamStore> teamStores = store.getTeamStores();
             for (TeamStore teamStore : teamStores) {
                 Team team = teamStore.getTeam();
@@ -607,15 +605,9 @@ public class TeamService {
                         break;
                     }
                 }
-                log.info("팀명 : {}", team.getTeamName());
-                if (check) {
-                    log.info("중복된 팀");
-                    continue;
-                }
+                if (check) continue;
 
                 if (team.isPublicTeam()) {
-                    log.info("팀 추가 : {}", team.getTeamName());
-
                     Optional<UserTeam> opUserTeam = userTeamRepository.findByTeamIdAndUser_Email(team.getId(), email);
                     PublicTeams2kmRes res = new PublicTeams2kmRes(team);
                     res.setLatitude(store.getLatitude());

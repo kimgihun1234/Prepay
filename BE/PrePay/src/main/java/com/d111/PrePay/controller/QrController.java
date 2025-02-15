@@ -18,7 +18,7 @@ public class QrController {
 
     @GetMapping("/{teamId}/party")
     @Operation(summary = "회식용 qr 생성")
-    public ResponseEntity<StandardRes> getPartyQr(@RequestHeader String access, @AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long teamId) {
+    public ResponseEntity<StandardRes> getPartyQr(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long teamId) {
         String email = userDetails.getUsername();
         StandardRes result = qrService.getPartyQr(email, teamId);
         return ResponseEntity.status(result.getStatusCode()).body(result);
@@ -26,7 +26,7 @@ public class QrController {
 
     @GetMapping("/{teamId}/private")
     @Operation(summary = "개인용 qr 생성")
-    public ResponseEntity<StandardRes> getPrivateQr(@RequestHeader String access,@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable long teamId){
+    public ResponseEntity<StandardRes> getPrivateQr(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable long teamId){
         String email = userDetails.getUsername();
         return ResponseEntity.ok(qrService.getPrivateQr(email,teamId));
     }

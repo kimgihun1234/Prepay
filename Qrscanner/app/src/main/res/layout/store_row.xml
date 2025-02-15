@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="4dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/focus_shape_alll_round"
+        android:padding="16dp">
+
+        <!-- 날짜 섹션 -->
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="2024-02-15" />
+
+        <!-- 가격 섹션 -->
+        <LinearLayout
+            android:id="@+id/price_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/round_background"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            app:layout_constraintTop_toBottomOf="@id/date">
+
+            <TextView
+                android:id="@+id/price_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="가격"
+                android:textColor="@color/gray_600"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="50,000원" />
+        </LinearLayout>
+
+        <!-- 상태 표시 칩 그룹 -->
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/status_chips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/price_section">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/refund_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="환불"
+                android:textColor="@color/white"
+                app:chipBackgroundColor="@color/red_500"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/withdraw_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="철회"
+                android:textColor="@color/white"
+                app:chipBackgroundColor="@color/orange_500"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/company_dinner_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="회식"
+                android:textColor="@color/white"
+                app:chipBackgroundColor="@color/green_500"
+                android:visibility="gone"
+                tools:visibility="visible" />
+        </com.google.android.material.chip.ChipGroup>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

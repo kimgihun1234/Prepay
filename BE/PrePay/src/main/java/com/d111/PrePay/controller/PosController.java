@@ -21,7 +21,7 @@ public class PosController {
             "<br>long : storeId" +
             "<br>boolean companyDinner ->회식이면 true" +
             "<br> List(DetailHistoryReq) details")
-    public ResponseEntity<Long> makeOrder(@RequestBody OrderCreateReq orderCreateReq, @RequestHeader String access , @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<Long> makeOrder(@RequestBody OrderCreateReq orderCreateReq, @AuthenticationPrincipal CustomUserDetails userDetails) {
         String email = userDetails.getUsername();
         return ResponseEntity.ok(posService.makeOrder(orderCreateReq,email));
     }

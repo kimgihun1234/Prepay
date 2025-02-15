@@ -1,8 +1,6 @@
 package com.d111.PrePay.config;
 
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.PathItem;
-import io.swagger.v3.oas.models.Paths;
+import io.swagger.v3.oas.models.*;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.MediaType;
@@ -10,9 +8,9 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
-import io.swagger.v3.oas.models.Operation;
-import io.swagger.v3.oas.models.tags.Tag;
 
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,6 +21,8 @@ public class SwaggerConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
+
+        String securitySchemeName = "access";
         return new OpenAPI()
                 .info(new Info().title("API 문서")
                         .description("Swagger에서 로그인 API 수동 등록")
@@ -36,14 +36,24 @@ public class SwaggerConfig {
                                         .description("로그인 요청 정보")
                                         .content(new Content().addMediaType("application/json",
                                                 new MediaType().schema(new Schema<Map<String, String>>()
-                                                        .addProperties("email", new Schema<String>().type("string").example("user@example.com"))
-                                                        .addProperties("password", new Schema<String>().type("string").example("password123"))
+                                                        .addProperties("email", new Schema<String>().type("string").example("1@gmail.com"))
+                                                        .addProperties("password", new Schema<String>().type("string").example("123"))
                                                 )
                                         ))
                                         .required(true)
                                 )
                                 .responses(new ApiResponses()
                                         .addApiResponse("200", new ApiResponse().description("로그인 성공"))
-                                        .addApiResponse("401", new ApiResponse().description("인증 실패"))))));
+                                        .addApiResponse("401", new ApiResponse().description("인증 실패"))))))
+                .components(new Components()
+                        .addSecuritySchemes(securitySchemeName,
+                                new SecurityScheme()
+                                        .type(SecurityScheme.Type.APIKEY)
+                                        .in(SecurityScheme.In.HEADER)
+                                        .name("access")
+                                        .description("API 요청 시 사용할 커스텀 access 헤더")))
+                .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
+                .info(new Info().title("My API").version("1.0")
+                        .description("Swagger 문서를 위한 API 설명"));
     }
 }
