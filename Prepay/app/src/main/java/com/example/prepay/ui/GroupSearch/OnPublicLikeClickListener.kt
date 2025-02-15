@@ -5,6 +5,6 @@ import com.example.prepay.data.response.PublicLikeRes
 
 
 interface OnPublicLikeClickListener {
-    fun onPublicGroupClick(publicGroupLike: PublicLikeRes)
-    fun onPublicLikeClick(publicLike: LikeTeamsReq)
+    fun onPublicGroupLikeClick(publicGroupLike: PublicLikeRes)
+    fun onPublicGroupLikeLikeClick(publicLike: LikeTeamsReq)
 }

@@ -85,7 +85,7 @@ interface TeamService {
     //공개된 모든 팀 목록을 가져옵니다.
 
     @GET("/team/public-teams")
-    suspend fun getPublicTeams(@Header("access") access: String): List<PublicTeamsRes>
+    suspend fun getPublicTeams(@Header("access") access: String, @Query("latitude") latitude : Double, @Query("longitude") longitude:Double): List<PublicTeamsRes>
 
 //    @GET("/team/public-teams")
 //    suspend fun getPublicTeams(@Header("email") email: String): List<PublicTeamsRes>
