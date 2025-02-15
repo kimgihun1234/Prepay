@@ -485,7 +485,7 @@ public class TeamService {
 
     //퍼블릭 팀 리스트 조회
     // 완료
-    public List<PublicTeamsRes> getPublicTeams(String email) {
+    public List<PublicTeamsRes> getPublicTeams(String email, float latitude, float longitude) {
         List<Team> teams = teamRepository.findTeamsWithUserByPublicTeam(true);
         List<PublicTeamsRes> resultList = new ArrayList<>();
         for (Team team : teams) {
@@ -497,6 +497,10 @@ public class TeamService {
             } else {
                 publicTeamsRes.setLike(false);
             }
+            Store store = team.getTeamStores().get(0).getStore();
+            float distance = storeService.calDistance(store.getLongitude(), store.getLatitude(), longitude, latitude);
+            publicTeamsRes.setDistance(distance);
+            publicTeamsRes.setAddress(store.getAddress());
             resultList.add(publicTeamsRes);
         }
         return resultList;
@@ -584,12 +588,14 @@ public class TeamService {
     public List<PublicTeams2kmRes> get2kmPublicTeams(String email, float latitude, float longitude) {
         List<Store> stores = storeRepository.findAll();
         List<Store> in2Km = new ArrayList<>();
-        HashMap<Long, Double> map = new HashMap<>();
+        HashMap<Long, Double> disMap = new HashMap<>();
+        HashMap<Long, String> addMap = new HashMap<>();
         for (Store store : stores) {
             double dis = storeService.calDistance(store.getLongitude(), store.getLatitude(), longitude, latitude);
             if (storeService.calDistance(store.getLongitude(), store.getLatitude(), longitude, latitude) < 2L) {
                 in2Km.add(store);
-                map.put(store.getId(), dis);
+                addMap.put(store.getId(), store.getAddress());
+                disMap.put(store.getId(), dis);
             }
         }
 
@@ -616,7 +622,8 @@ public class TeamService {
                     if (opUserTeam.isPresent()) {
                         res.setLike(opUserTeam.get().isLike());
                     }
-                    res.setDistance(map.get(store.getId()));
+                    res.setAddress(addMap.get(store.getId()));
+                    res.setDistance(disMap.get(store.getId()));
                     result.add(res);
                 }
             }
