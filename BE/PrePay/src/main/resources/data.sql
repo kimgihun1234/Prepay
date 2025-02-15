@@ -1,35 +1,35 @@
 use test_db;
-INSERT INTO store (latitude, longitude, user_register_permission, address, store_img_url, store_name, type)
+INSERT INTO store (latitude, longitude, user_register_permission, address, store_img_url, store_name, type, store_escription)
 VALUES (36.10680576, 128.418318, 0, '경북 구미시 인동가산로 20',
         'https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/%ED%88%AC%EC%8D%B8.png?alt=media&token=7a8d40e4-c4bd-48ec-a05c-8930e54ff522',
-        '투썸플레이스 인동점', '카페'),
+        '투썸플레이스 인동점', '카페','투썸플레이스 설명임'),
        (36.10556191, 128.4207523, 0, '경북 구미시 여헌로7길 46',
         'https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/%ED%95%9C%EB%8F%88%EC%B0%B8%EC%86%A3%EA%BC%AC%EA%B8%B0.jpg?alt=media&token=2c43cf8a-8c91-4c2a-9d2d-2d5520ff4db3',
-        '한돈참숯꼬기 인동점', '식당'),
+        '한돈참숯꼬기 인동점', '식당', '한돈참숯꼬기 설명임'),
        (36.10747075, 128.4193179, 0, '경북 구미시 인동중앙로1길 16',
         'https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/%EC%A0%9C%EC%9D%BC%EC%88%9C%EB%8C%80.jpg?alt=media&token=2dbf36e9-b3d0-4a29-84d1-96052416c2de',
-        '전국제일순대 인동직영점', '식당'),
+        '전국제일순대 인동직영점', '식당','전국제일순대 설명임'),
        (36.10266058, 128.4212725, 0, '경북 구미시 진평2길 27',
         'https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/%EC%B0%A8%EC%9D%B4%EC%95%A4%EC%9B%8D.jpg?alt=media&token=b3931fd0-59f6-4e7b-a733-7e2b4538c2ea',
-        '차이앤웍', '식당'),
+        '차이앤웍', '식당','차이앤웍 설명임'),
        (36.10960074, 128.4158019, 0, '경북 구미시 3공단3로 302',
         'https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/%EC%9D%B4%EB%94%94%EC%95%BC.png?alt=media&token=12734fe3-8cd9-4b9a-91b6-16a261ba936c',
-        '삼성전자2공장 이디야', '카페'),
+        '삼성전자2공장 이디야', '카페','삼성전자2공장 이디야 설명임'),
        (36.10262024, 128.4235472, 0, '경북 구미시 인동북길 43',
         'https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/%EC%97%90%EC%9D%B4%EB%B0%94%EC%9A%B0%ED%8A%B8.png?alt=media&token=fd2ad24e-d60f-4ab8-af19-f3e8743f8e5b',
-        '에이바우트커피 인동점', '카페'),
+        '에이바우트커피 인동점', '카페','에이바우트커피 인동점 설명임'),
        (36.10075104, 128.4249629, 0, '경북 구미시 인동북길 67',
         'https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/%EB%B3%B5%ED%84%B0%EC%A7%84%EC%A7%91.jpg?alt=media&token=029f264d-5b88-40fd-ae89-c6260f7fc2fc',
-        '복터진집 본점', '식당'),
+        '복터진집 본점', '식당','복터진집 본점 설명임'),
        (36.10817914, 128.4182366, 0, '경북 구미시 인동가산로 5',
         'https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/%ED%95%B5%EB%B0%A5.png?alt=media&token=18c648a7-a891-466a-a7ab-058674723d8b',
-        '핵밥 구미인동점', '식당'),
+        '핵밥 구미인동점', '식당','핵밥 구미인동점 설명임'),
        (36.10712319, 128.4180014, 0, '경북 구미시 인동가산로 14',
         'https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/%EB%AF%B8%EC%9A%A9%EC%8B%A4.png?alt=media&token=4aa29380-ed58-4923-9a54-fd6a9a36a4fc',
-        '글로우업헤어', '미용실'),
+        '글로우업헤어', '미용실','글로우업헤어 설명임'),
        (36.10730119, 128.4195667, 0, '경북 구미시 인동중앙로1길 12',
         'https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/%EA%B5%90%EB%B0%98.png?alt=media&token=7f86b229-ec45-43e6-803c-dc681658d01d',
-        '교반인동점', '식당');
+        '교반인동점', '식당','교반인동점 설명임');
 
 
 INSERT INTO team (team_name,
@@ -182,7 +182,7 @@ INSERT INTO team_store (team_store_balance, store_store_id, team_team_id)
 VALUES (50000, 6, 9); -- 코딩하는 사람들 / 에이바우트
 
 INSERT INTO team_store (team_store_balance, store_store_id, team_team_id)
-VALUES (50000, 7, 10); -- 투썸 같이먹어요 / 복터진짐
+VALUES (100000, 1, 10); -- 투썸 같이먹어요 / 투썸
 
 INSERT INTO team_store (team_store_balance, store_store_id, team_team_id)
 VALUES (50000, 4, 11);

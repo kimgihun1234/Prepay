@@ -1,5 +1,6 @@
 package com.d111.PrePay.dto.respond;
 
+import com.d111.PrePay.model.Store;
 import com.d111.PrePay.model.Team;
 import com.d111.PrePay.model.UserTeam;
 import lombok.Getter;
@@ -18,18 +19,25 @@ public class PublicTeamDetailRes {
     private int teamBalance;
     private float latitude;
     private float longitude;
+    private String storeUrl;
+    private String storeName;
+    private String storeDescription;
 
     public PublicTeamDetailRes(UserTeam userTeam, Team team) {
-        this.imageUrl=team.getTeamImgUrl();
-        this.dailyLimit=team.getDailyPriceLimit();
-        this.usedAmount=userTeam.getUsedAmount();
+        this.imageUrl = team.getTeamImgUrl();
+        this.dailyLimit = team.getDailyPriceLimit();
+        this.usedAmount = userTeam.getUsedAmount();
         this.teamMessage = team.getTeamMessage();
-        this.checkLike= userTeam.isLike();;
+        this.checkLike = userTeam.isLike();
         this.teamName = team.getTeamName();
-        this.teamBalance = team.getTeamStores().stream().mapToInt(teamStore->teamStore.getTeamStoreBalance()
+        this.teamBalance = team.getTeamStores().stream().mapToInt(teamStore -> teamStore.getTeamStoreBalance()
         ).sum();
-        this.address = team.getTeamStores().get(0).getStore().getAddress();
-        this.latitude=team.getTeamStores().get(0).getStore().getLatitude();
-        this.longitude=team.getTeamStores().get(0).getStore().getLongitude();
+        Store store = team.getTeamStores().get(0).getStore();
+        this.address = store.getAddress();
+        this.latitude = store.getLatitude();
+        this.longitude = store.getLongitude();
+        this.storeUrl = store.getStoreImgUrl();
+        this.storeName = store.getStoreName();
+        this.storeDescription = store.getStoreDescription();
     }
 }

@@ -34,6 +34,8 @@ public class Store {
 
     private String storeImgUrl;
 
+    private String storeDescription;
+
     @OneToMany(mappedBy = "store")
     private List<TeamStore> teamStores = new ArrayList<>();
 
