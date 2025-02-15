@@ -3,6 +3,7 @@ package com.example.prepay.data.remote
 import com.example.prepay.data.model.dto.OrderHistory
 import com.example.prepay.data.model.dto.Receipt
 import com.example.prepay.data.response.OrderHistoryReq
+import com.example.prepay.data.response.OrderHistoryRes
 import com.example.prepay.ui.RestaurantDetails.OrderHistoryAdapter
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -20,4 +21,7 @@ interface OrderService {
     @GET("order/history/{detailHistoryId}")
     suspend fun getDetailReceipt(@Path("detailHistoryId") detailHistoryId : Int,
                                  @Header("access") access: String) : List<Receipt>
+
+    @GET("order/myHistory")
+    suspend fun getMyHistoryList(@Header("access") access: String) : List<OrderHistoryRes>
 }

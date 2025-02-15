@@ -49,7 +49,8 @@ object CommonUtils {
         RESTAURANT_DETAILS_FRAGMENT("RestaurantDetailsFragment"),
         ADD_RESTAURANT_FRAGMENT("AddRestaurantFragment"),
         DETAIL_RESTAURANT_FRAGMENT("DetailRestaurantFragment"),
-        PUBLIC_GROUP_DETAILS_FRAGMENT("PublicGroupDetailsFragment")
+        PUBLIC_GROUP_DETAILS_FRAGMENT("PublicGroupDetailsFragment"),
+        NOTIFICATION_FRAGMENT("NotificationFragment")
     }
 
     enum class GroupFragmentName(var str: String) {
