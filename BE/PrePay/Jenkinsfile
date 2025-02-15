@@ -1,0 +1,153 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE = credentials('DOCKER_IMAGE') // 빌드해서 만든 이미지명 지정
+        DOCKER_CONTAINER = credentials('DOCKER_CONTAINER') // 컨테이너명
+        DOCKER_PORT = credentials('DOCKER_PORT') 
+        DOCKER_PATH = '/home/ubuntu/jenkins' // EC2 서버의 Docker 저장 경로
+
+        EC2_USER = credentials('EC2_USER')
+        EC2_IP = credentials('EC2_IP')
+        SSH_KEY = credentials('EC2_PEM')
+
+        JWT_SECRET = credentials('JWT_SECRET')
+
+
+        FCM_API_URL = credentials('FCM_API_URL')
+
+        SPRING_PROFILES_ACTIVE = 'prod'
+        DB_URL = credentials('DB_URL')
+        DB_USERNAME = credentials('DB_USERNAME')
+        DB_PASSWORD = credentials('DB_PASSWORD')
+
+        client_secret = credentials('client_secret')
+        KAKAO_CLIENT_ID = credentials('KAKAO_CLIENT_ID')
+
+        GOOGLE_SERVICES_JSON = credentials('FIREBASE-SERVICE-KEY.JSON')
+        FCM_SERVICE_KEY_JSON = credentials('FCM_SERVICE_KEY.JSON')
+
+        BOOTPAY_PRIVATE_KEY=credentials('BOOTPAY_PRIVATE_KEY')
+        BOOTPAY_APPID=credentials('BOOTPAY_APPID')
+
+        JAVA_HOME = '/opt/java/openjdk'
+        GRADLE_HOME = '/opt/gradle/gradle-8.11.1'
+        PATH = "${JAVA_HOME}/bin:${GRADLE_HOME}/bin:${env.PATH}"
+    }
+
+    tools {// 젠킨스에 등록해둔 이름으로...
+        jdk 'JDK17'
+        gradle 'Gradle 8.11.1'
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                echo 'Cloning the repository...'
+                git branch: 'develope-back',
+                    url: 'https://lab.ssafy.com/s12-webmobile4-sub1/S12P11D111.git',
+                    credentialsId: 'GITLAB-PAT'
+            }
+        }
+        stage('Copy Files') {
+            steps {
+                echo 'Copying files...'
+                withCredentials([file(credentialsId: 'FIREBASE-SERVICE-KEY.JSON', variable: 'GOOGLE_SERVICES_JSON')]) {
+                    sh 'cp $GOOGLE_SERVICES_JSON BE/PrePay/src/main/resources/firebase-service-key.json'
+                }
+                withCredentials([file(credentialsId: 'FCM_SERVICE_KEY.JSON', variable: 'GOOGLE_SERVICES_JSON')]) {
+                    sh 'cp $FCM_SERVICE_KEY_JSON BE/PrePay/src/main/resources/fcm-google-services.json'
+                }
+            }
+        }
+        stage('Build Application') {
+            steps {
+                echo 'Building the application with Gradle Wrapper...'
+                dir('BE/PrePay') {
+                    sh 'gradle clean build'
+                    sh 'ls -al $(pwd)/build/libs'
+                }
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                echo 'Building the Docker image...'
+                dir('BE/PrePay') {
+                    sh 'cp build/libs/PrePay-0.0.1-SNAPSHOT.jar .'
+                    sh 'docker build -t ${DOCKER_IMAGE}:latest .'
+                }
+            }
+        }
+        stage('Save and Transfer Docker Image') {
+            steps {
+                echo 'Saving and transferring Docker image to EC2...'
+                sh """
+                docker save ${DOCKER_IMAGE}:latest | gzip > PrePay-0.0.1-SNAPSHOT.tar.gz
+                """
+                sshPublisher(publishers: [
+                    sshPublisherDesc(
+                        configName: 'EC2-Server',
+                        transfers: [
+                            sshTransfer(
+                                sourceFiles: 'PrePay-0.0.1-SNAPSHOT.tar.gz'
+                            )
+                        ]
+                    )
+                ])
+            }
+        }
+        stage('Deploy to EC2') {
+            steps {
+                echo 'Deploying the application on EC2...'
+                sshPublisher(publishers: [
+                    sshPublisherDesc(
+                        configName: 'EC2-Server',
+                        transfers: [
+                            sshTransfer(
+                                execCommand: """
+                                    
+                                    mkdir -p ${DOCKER_PATH}
+                                    docker stop ${DOCKER_CONTAINER} || true
+                                    docker rm ${DOCKER_CONTAINER} || true
+                                    docker rmi ${DOCKER_IMAGE}:latest || true
+                                    docker load < ${DOCKER_PATH}/PrePay-0.0.1-SNAPSHOT.tar.gz
+                                    docker run -d --name ${DOCKER_CONTAINER} \
+                                      -p ${DOCKER_PORT}:${DOCKER_PORT} \
+                                      -e SPRING_PROFILES_ACTIVE=prod \
+                                      -e SERVER_PORT=${DOCKER_PORT} \
+                                      -e DB_PROD_URL=${DB_URL} \
+                                      -e DB_PROD_USERNAME=${DB_USERNAME} \
+                                      -e DB_PROD_PASSWORD=${DB_PASSWORD} \
+                                      -e JWT_SECRET=${JWT_SECRET} \
+                                      -e BOOTPAY_PRIVATE_KEY=${BOOTPAY_PRIVATE_KEY} \
+                                      -e BOOTPAY_APPID=${BOOTPAY_APPID} \
+                                      -e client_secret=${client_secret} \
+                                      -e FCM_API_URL=${FCM_API_URL}\
+                                      -e KAKAO_CLIENT_ID=${KAKAO_CLIENT_ID} \
+                                      -e TZ=Asia/Seoul\
+                                      ${DOCKER_IMAGE}:latest
+                                """.stripIndent()
+                            )
+                        ]
+                    )
+                ])
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Cleaning workspace...'
+            cleanWs()
+        }
+        success {
+            echo 'Deployment successful!'
+         
+            sh """ curl -v -X POST -H 'Content-Type: application/json' -d '{"text":"빌드 성공: ${env.JOB_NAME} #${env.BUILD_NUMBER}\n(<${env.BUILD_URL}|Details>)"}' https://meeting.ssafy.com/hooks/7a4x37w5c7yh8nk7he171i7ano """
+        }
+        failure {
+            echo 'Deployment failed.'
+            sh """ curl -v -X POST -H 'Content-Type: application/json' -d '{"text":"빌드 실패: ${env.JOB_NAME} #${env.BUILD_NUMBER}\n(<${env.BUILD_URL}|Details>)"}' https://meeting.ssafy.com/hooks/7a4x37w5c7yh8nk7he171i7ano """
+        }
+    }
+}

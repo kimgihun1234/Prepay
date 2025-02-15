@@ -1,0 +1,53 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  datasource:
+    url: ${DB_PROD_URL}
+    username: ${DB_PROD_USERNAME}
+    password: ${DB_PROD_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          google:
+#            client-name: google
+#            client-id: 202764704036-eveuh9apr9ipii0rdrnijv31dbkrhcsc.apps.googleusercontent.com
+#            client-secret: ${client_secret}
+#            redirect-uri: http://localhost:8080/login/oauth2/code/google
+#            authorization-grant-type: authorization_code
+#            scope:
+#              - profile
+#              - email
+#        provider:
+#          google:
+#            authorization-uri: https://accounts.google.com/o/oauth2/auth
+#            token-uri: https://oauth2.googleapis.com/token
+#            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+#            user-name-attribute: sub
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+  jwt:
+    secret: ${JWT_SECRET}
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.hibernate.SQL: debug
+    org.hibernate.orm.jdbc.bind: trace
+bootpay:
+  key: ${BOOTPAY_PRIVATE_KEY}
+  appid: ${BOOTPAY_APPID}
+
+kakao:
+  client_id: ${KAKAO_CLIENT_ID}
+
+fcm:
+  url: ${FCM_API_URL}
+springdoc:
+  swagger-ui:
+    display-request-duration: true
