@@ -8,7 +8,6 @@ import com.d111.PrePay.security.jwt.LoginFilter;
 import com.d111.PrePay.security.oauth2.CustomSuccessHandler;
 import com.d111.PrePay.security.repository.RefreshRepository;
 import com.d111.PrePay.security.service.CustomOAuth2UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -97,6 +96,7 @@ public class SecurityConfig {
                         .requestMatchers("/reissue").permitAll()
                         .requestMatchers( "/","/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/owner/**").permitAll()
+                        .requestMatchers("/pos/**").permitAll()
 //                        .requestMatchers("/**").permitAll());
                         .anyRequest().authenticated());
 
