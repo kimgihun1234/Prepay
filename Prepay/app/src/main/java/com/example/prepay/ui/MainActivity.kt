@@ -54,7 +54,7 @@ private val prefsName = "user_prefs"
 
 private const val TAG = "MainActivity_싸피"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
-    private val groupSearchFragmentViewModel : GroupSearchFragmentViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initFragment()

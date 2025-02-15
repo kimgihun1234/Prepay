@@ -6,31 +6,48 @@
     android:layout_height="match_parent"
     tools:context=".ui.MyPage.MyPageFragment">
 
+    <ImageView
+        android:layout_width="172dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/sunpick_prepay"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/create_group_btn"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="88dp"
-        android:layout_marginEnd="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="104dp"
+        android:layout_marginEnd="4dp"
         android:background="@null"
-        android:drawableLeft="@drawable/group_add_btn"
+        android:drawableLeft="@drawable/group_add"
+        android:drawablePadding="2dp"
+        android:fontFamily="@font/samsung_font_2"
+        android:scaleX="0.9"
         android:text="그룹 생성"
+        android:textColor="#9CA4AB"
+        android:textStyle="bold"
         android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/enter_group_btn"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- 세로 중앙 정렬 -->
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/enter_group_btn"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="88dp"
-        android:layout_marginEnd="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="104dp"
+        android:layout_marginEnd="36dp"
         android:background="@null"
-        android:drawableLeft="@drawable/cord_input_btn"
+        android:drawableLeft="@drawable/group_join"
+        android:fontFamily="@font/samsung_font_2"
         android:text="코드 입력"
+        android:scaleX="0.9"
+        android:drawablePadding="1dp"
         android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="#9CA4AB"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,7 +55,7 @@
         android:id="@+id/viewPager"
         android:layout_width="0dp"
         android:layout_height="400dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="12dp"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:orientation="vertical"
