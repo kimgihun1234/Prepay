@@ -60,7 +60,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         initFragment()
         initEvent()
         init()
-        setSupportActionBar(binding.toolbar)
         setupToolbarListener()
     }
 

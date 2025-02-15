@@ -12,7 +12,7 @@
         android:id="@+id/back_btn"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="20dp"
         android:background="#00ff0000"
         android:importantForAccessibility="no"
         android:src="@drawable/arrow_down_sign_to_navigate"
@@ -49,10 +49,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="HardcodedText" />
-
-    <!-- 캐치 프라이즈 -->
-
-    <!--  아이디 label   -->
 
     <TextView
         android:id="@+id/catchphrase"
@@ -100,7 +96,7 @@
         android:hint="이메일을 입력하세요"
         android:inputType="textEmailAddress"
         android:paddingStart="24dp"
-        android:textColorHint="#78828A"
+        android:textColorHint="#9E9E9E"
         android:textSize="15sp"
         android:textFontWeight="400"
         app:layout_constraintEnd_toEndOf="parent"
@@ -138,7 +134,7 @@
         android:hint="비밀번호를 입력하세요"
         android:importantForAutofill="no"
         android:inputType="textPassword"
-        android:textColorHint="#78828A"
+        android:textColorHint="#9E9E9E"
         android:paddingStart="24dp"
         android:textSize="15sp"
         android:textFontWeight="400"
@@ -146,7 +142,8 @@
         app:layout_constraintHorizontal_bias="0.518"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_id_text"
-        tools:ignore="HardcodedText,RtlSymmetry" />
+        tools:ignore="HardcodedText,RtlSymmetry"
+        tools:targetApi="p" />
 
     <CheckBox
         android:id="@+id/auto_id_checkbox"
@@ -170,16 +167,15 @@
         android:layout_width="340dp"
         android:layout_height="58dp"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="36dp"
-        android:background="@drawable/submit_button_style"
+        android:background="@drawable/disable_button_style"
         android:fontFamily="@font/samsung_font_2"
         android:text="로그인"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/log_in_password_text"
         tools:ignore="HardcodedText" />
@@ -193,7 +189,7 @@
         android:layout_marginEnd="116dp"
         android:fontFamily="@font/samsung_font_2"
         android:text="SNS 계정으로 간편 로그인"
-        android:textColor="#A9B0B5"
+        android:textColor="#A6A6A6"
         android:textSize="14dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.52"
@@ -209,7 +205,7 @@
         android:fontFamily="@font/samsung_font_2"
         android:gravity="center"
         android:text="비밀번호 찾기"
-        android:textColor="#A9B0B5"
+        android:textColor="#9CA4AB"
         android:textFontWeight="500"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/log_in_password_text"
@@ -225,20 +221,21 @@
         android:gravity="center"
         android:text="회원가입"
         android:textAlignment="center"
-        android:textColor="@color/text_main_color"
+        android:textColor="#0066CC"
         android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/LoginBtn"
         tools:ignore="HardcodedText"
-        tools:targetApi="p"/>
+        tools:targetApi="p" />
 
     <ImageView
         android:id="@+id/google_login_btn"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="16dp"
         android:src="@drawable/google_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.401"
@@ -249,7 +246,7 @@
         android:id="@+id/kakao_login_btn"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="16dp"
         android:src="@drawable/kakao_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.113"
