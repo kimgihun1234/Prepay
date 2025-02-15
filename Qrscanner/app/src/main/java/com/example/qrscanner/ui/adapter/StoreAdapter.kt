@@ -1,6 +1,7 @@
 package com.example.qrscanner.ui.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.qrscanner.databinding.StoreRowBinding
@@ -19,9 +20,9 @@ class StoreAdapter  (var storeList: List<StoreRes>) : RecyclerView.Adapter<Store
 
             binding.date.text = dateString
             binding.price.text = storeRes.totalPrice.toString()
-            binding.refund.text = storeRes.refundRequested.toString()
-            binding.withdraw.text = storeRes.withdraw.toString()
-            binding.companyDinner.text = storeRes.companyDinner.toString()
+            binding.refundChip.visibility = if (storeRes.refundRequested) View.GONE else View.VISIBLE
+            binding.withdrawChip.visibility = if (storeRes.withdraw) View.GONE else View.VISIBLE
+            binding.companyDinnerChip.visibility = if (storeRes.companyDinner) View.GONE else View.VISIBLE
         }
     }
 
