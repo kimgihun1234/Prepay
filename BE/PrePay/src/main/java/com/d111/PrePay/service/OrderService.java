@@ -77,4 +77,13 @@ public class OrderService {
         refundRequestRepository.save(refundRequest);
         return refundRequest.id;
     }
+
+    public List<OrderHistoryRes> getMyOrderHistory(String email) {
+        List<OrderHistory> orderList = orderHistoryRepository.findByUser_Email(email);
+        List<OrderHistoryRes> result = new ArrayList<>();
+        for (OrderHistory orderHistory : orderList) {
+            result.add(new OrderHistoryRes(orderHistory));
+        }
+        return result;
+    }
 }
