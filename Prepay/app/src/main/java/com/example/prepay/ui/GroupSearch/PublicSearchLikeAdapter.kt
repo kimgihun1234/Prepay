@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.prepay.CommonUtils
 import com.example.prepay.DistanceManager
 import com.example.prepay.R
 import com.example.prepay.data.response.LikeTeamsReq
@@ -20,7 +21,7 @@ class PublicSearchLikeAdapter(var publiclikeList: List<PublicLikeRes>, private v
             binding.publicName.text = publiclike.teamName
             binding.publicAddress.text = publiclike.address
             binding.publicDistance.text = DistanceManager.formatDistance(publiclike.distance)
-            binding.publicMoneyInfo.text = publiclike.teamBalance.toString()
+            binding.publicMoneyInfo.text = CommonUtils.makeComma(publiclike.teamBalance)
             // 그룹 이미지 가지고 오기
             Glide.with(binding.root.context)
                 .load(publiclike.imageUrl)
