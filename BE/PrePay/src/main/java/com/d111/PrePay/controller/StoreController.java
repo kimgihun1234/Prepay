@@ -2,6 +2,7 @@ package com.d111.PrePay.controller;
 
 
 import com.d111.PrePay.dto.request.StoresReq;
+import com.d111.PrePay.dto.respond.AllStoreRes;
 import com.d111.PrePay.dto.respond.StoresRes;
 import com.d111.PrePay.security.dto.CustomUserDetails;
 import com.d111.PrePay.service.StoreService;
@@ -26,4 +27,12 @@ public class StoreController {
         String email = userDetails.getUsername();
         return ResponseEntity.ok(storeService.getNewNearStores(req,email));
     }
+
+    @GetMapping("/stores/all")
+    @Operation(summary = "전체 가게 조회")
+    public ResponseEntity<List<AllStoreRes>> getAllStores(){
+        return ResponseEntity.ok(storeService.getAllStores());
+    }
+
+
 }

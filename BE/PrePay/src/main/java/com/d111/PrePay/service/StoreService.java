@@ -2,6 +2,7 @@ package com.d111.PrePay.service;
 
 import com.d111.PrePay.dto.request.CreateStoreReq;
 import com.d111.PrePay.dto.request.StoresReq;
+import com.d111.PrePay.dto.respond.AllStoreRes;
 import com.d111.PrePay.dto.respond.StoresRes;
 import com.d111.PrePay.model.Store;
 import com.d111.PrePay.model.TeamStore;
@@ -22,6 +23,20 @@ import java.util.Optional;
 public class StoreService {
     private final StoreRepository storeRepository;
     private final UserTeamRepository userTeamRepository;
+
+    // 모든 가게 조회
+    public List<AllStoreRes> getAllStores(){
+        List<Store> stores = storeRepository.findAll();
+        List<AllStoreRes> result = new ArrayList<>();
+
+        for (Store store : stores) {
+            AllStoreRes res = new AllStoreRes(store);
+            result.add(res);
+        }
+
+        return result;
+    }
+
 
     public void makeStore(CreateStoreReq createStoreReq) {
         Store store = new Store(createStoreReq);
