@@ -188,9 +188,6 @@ INSERT INTO team_store (team_store_balance, store_store_id, team_team_id)
 VALUES (50000, 4, 11);
 -- 치킨 먹자용 / 차이앤웍
 
-INSERT INTO team_store (team_store_balance, store_store_id, team_team_id)
-VALUES (100000, 1, 5);
--- 치킨 먹자용 / 차이앤웍
 
 -- 팀에 상점 추가 완료
 

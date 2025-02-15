@@ -34,13 +34,13 @@ public class StoreService {
         UserTeam userTeam = userTeamRepository.findByTeamIdAndUser_Email(coordinatesReq.getTeamId(), email).orElseThrow();
         List<TeamStore> teamStores = userTeam.getTeam().getTeamStores();
         List<StoresRes> result = new ArrayList<>();
-        for (TeamStore teamStore : teamStores) {
-            StoresRes storesRes = new StoresRes(teamStore);
-            storesRes.setLatitude(teamStore.getStore().getLatitude());
-            storesRes.setLongitude(teamStore.getStore().getLongitude());
-            storesRes.setMyteam(true);
-            result.add(storesRes);
-        }
+//        for (TeamStore teamStore : teamStores) {
+//            StoresRes storesRes = new StoresRes(teamStore);
+//            storesRes.setLatitude(teamStore.getStore().getLatitude());
+//            storesRes.setLongitude(teamStore.getStore().getLongitude());
+//            storesRes.setMyteam(true);
+//            result.add(storesRes);
+//        }
         for (Store store : stores) {
             if (calDistance(store.getLongitude(), store.getLatitude(), coordinatesReq.getLongitude(), coordinatesReq.getLatitude())<2F) {
                 boolean check = false;
