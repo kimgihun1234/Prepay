@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.prepay.CommonUtils
 import com.example.prepay.DistanceManager
 import com.example.prepay.R
 import com.example.prepay.data.response.LikeTeamsReq
@@ -19,7 +20,7 @@ class PublicSearchDistanceAdapter(var publicGroupList: List<PublicTeamsDisRes>, 
         fun bind(publicgroup: PublicTeamsDisRes) {
             binding.publicName.text = publicgroup.teamName
             binding.publicDistance.text = DistanceManager.formatDistance(publicgroup.distance)
-            binding.publicMoneyInfo.text = publicgroup.teamBalance.toString()
+            binding.publicMoneyInfo.text = CommonUtils.makeComma(publicgroup.teamBalance)
             binding.publicAddress.text = publicgroup.address
             // 그룹 이미지 가지고 오기
             Glide.with(binding.root.context)

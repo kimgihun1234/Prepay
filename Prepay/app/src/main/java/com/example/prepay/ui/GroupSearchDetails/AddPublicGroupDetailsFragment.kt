@@ -151,7 +151,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
             Log.d(TAG, "initViewModel: ${it}")
             binding.publicDetailTeamName.text = teamsRes.teamName
             binding.publicDetailText.text = teamsRes.teamMessage
-            binding.leftMoneyInfo.text = teamsRes.teamBalance.toString()
+            binding.leftMoneyInfo.text =  CommonUtils.makeComma(teamsRes.teamBalance)
             binding.publicDetailLocation.text = teamsRes.address
             val imageUrl = teamsRes.imageUrl
             if (!imageUrl.isNullOrEmpty()) {
