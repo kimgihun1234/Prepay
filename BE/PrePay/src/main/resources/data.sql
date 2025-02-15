@@ -1,3 +1,4 @@
+use test_db;
 INSERT INTO store (latitude, longitude, user_register_permission, address, store_img_url, store_name, type)
 VALUES (36.10680576, 128.418318, 0, '경북 구미시 인동가산로 20',
         'https://firebasestorage.googleapis.com/v0/b/kyung0216-10d14.appspot.com/o/%ED%88%AC%EC%8D%B8.png?alt=media&token=7a8d40e4-c4bd-48ec-a05c-8930e54ff522',
