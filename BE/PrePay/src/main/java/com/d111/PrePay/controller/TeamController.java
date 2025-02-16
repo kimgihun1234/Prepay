@@ -186,21 +186,18 @@ public class TeamController {
         return ResponseEntity.ok(teamService.getTeamInviteCode(email, teamId));
     }
 
-    @PostMapping(value = "/store", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/store")
     @Operation(summary = "팀 가맹점 추가")
     public ResponseEntity<TeamCreateStoreRes> createStore(
-            @RequestPart("request") TeamCreateStoreReq req,
-            @RequestPart(value = "image", required = false) MultipartFile image,
-            @RequestHeader String access,
+            @RequestBody TeamCreateStoreReq req,
             @AuthenticationPrincipal CustomUserDetails userDetails) throws IOException {
-        return ResponseEntity.ok(teamService.createStore(req, image));
+        return ResponseEntity.ok(teamService.createStore(req));
     }
 
 
     @GetMapping("/{teamId}/user")
     @Operation(summary = "팀 유저 조회")
     public List<GetUserOfTeamRes> getUserOfTeam(@PathVariable Long teamId,
-                                                @RequestHeader String access,
                                                 @AuthenticationPrincipal CustomUserDetails userDetails) {
 //        Long userId = accessToken.getUserId();
         Long userId = userDetails.getUserId();
@@ -211,7 +208,6 @@ public class TeamController {
     @GetMapping("/{teamId}")
     @Operation(summary = "팀 상세 정보 조회")
     public ResponseEntity<TeamDetailRes> getTeamDetails(@PathVariable Long teamId,
-                                                        @RequestHeader String access,
                                                         @AuthenticationPrincipal CustomUserDetails userDetails) {
 //        Long userId = accessToken.getUserId();
         Long userId = userDetails.getUserId();
@@ -223,7 +219,6 @@ public class TeamController {
     @Operation(summary = "팀 생성")
     public ResponseEntity<TeamCreateRes> createTeam(@RequestPart("request") TeamCreateReq request,
                                                     @RequestPart(value = "image", required = false) MultipartFile image,
-                                                    @RequestHeader String access,
                                                     @AuthenticationPrincipal CustomUserDetails userDetails) throws IOException {
         Long userId = userDetails.getUserId();
         return ResponseEntity.ok(teamService.createTeam(request, userId, image));

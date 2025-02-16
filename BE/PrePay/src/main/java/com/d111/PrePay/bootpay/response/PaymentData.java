@@ -1,11 +1,13 @@
 package com.d111.PrePay.bootpay.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PaymentData {
     // 결제 기본 정보
     @JsonProperty("receipt_id")

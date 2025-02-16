@@ -265,24 +265,13 @@ public class TeamService {
     // 팀 가맹점 추가
     // 확인
     @Transactional
-    public TeamCreateStoreRes createStore(TeamCreateStoreReq req, MultipartFile image) {
-        log.info("팀아이디 : {}, 스토어아이디 : {}, 돈 : {}", req.getTeamId(), req.getStoreId(), req.getBalance());
+    public TeamCreateStoreRes createStore(TeamCreateStoreReq req) {
+        log.info("팀아이디 : {}, 스토어아이디 : {}", req.getTeamId(), req.getStoreId());
         Team findTeam = teamRepository.findById(req.getTeamId()).orElseThrow();
         Store findStore = storeRepository.findById(req.getStoreId()).orElseThrow();
 
-        if (image != null && !image.isEmpty()) {
-            String imgUrl = null;
-            try {
-                imgUrl = imageService.uploadImage(image);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
 
-            findStore.setStoreImgUrl(imgUrl);
-            storeRepository.save(findStore);
-        }
-
-        TeamStore teamStore = new TeamStore(findTeam, findStore, req.getBalance());
+        TeamStore teamStore = new TeamStore(findTeam, findStore);
         TeamStore savedTeamStore = teamStoreRepository.save(teamStore);
 
         TeamCreateStoreRes teamCreateStoreRes = TeamCreateStoreRes.builder()
@@ -417,6 +406,7 @@ public class TeamService {
         List<UserTeam> userTeams = userTeamRepository.findUserTeamsByUserId(userId);
         List<TeamRes> resultList = new ArrayList<>();
         for (UserTeam userTeam : userTeams) {
+            if (userTeam.getTeam().isPublicTeam()) continue;
             int sumTeamBalance = 0;
             TeamRes teamRes = new TeamRes(userTeam, sumTeamBalance);
             List<TeamStore> teamStores = userTeam.getTeam().getTeamStores();

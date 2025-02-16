@@ -11,6 +11,4 @@ import lombok.Setter;
 public class TeamCreateStoreReq {
     private Long storeId;
     private Long teamId;
-    private int balance;
-
 }
