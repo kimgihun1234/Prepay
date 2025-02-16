@@ -1,97 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
-    android:background="@drawable/round_background">
+    android:layout_height="90dp"
+    android:layout_marginBottom="4dp"
+    app:cardElevation="1dp"
+    app:cardBackgroundColor="@color/white">
 
-    <ImageButton
-        android:id="@+id/public_search_like_btn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="24dp"
-        android:background="#00FFFFFF"
-        android:scaleType="fitCenter"
-        android:src="@drawable/like_heart_empty"
-        app:layout_constraintStart_toEndOf="@+id/public_distance"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/public_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:text="식당이름"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/group_image"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageButton
+            android:id="@+id/public_search_like_btn"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="16dp"
+            android:background="#00FFFFFF"
+            android:scaleType="fitCenter"
+            android:src="@drawable/like_heart_empty"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/public_address"
-        android:layout_width="wrap_content"
-        android:layout_height="18dp"
-        android:layout_marginStart="24dp"
-        android:text="대구광역시 중구 동성로"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/group_image"
-        app:layout_constraintTop_toBottomOf="@+id/public_name" />
+        <TextView
+            android:id="@+id/public_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="식당이름"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/group_image"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/public_money_name_tag"
-        android:layout_width="wrap_content"
-        android:layout_height="18dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="4dp"
-        android:text="선결제 잔액"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/group_image"
-        app:layout_constraintTop_toBottomOf="@+id/public_address" />
+        <TextView
+            android:id="@+id/public_address"
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:layout_marginTop="4dp"
+            android:text="대구광역시 중구 동성로"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/public_name"
+            app:layout_constraintTop_toBottomOf="@+id/public_name" />
 
-    <TextView
-        android:id="@+id/public_money_info"
-        android:layout_width="wrap_content"
-        android:layout_height="18dp"
-        android:layout_marginStart="8dp"
-        android:text="800,000"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/public_money_name_tag"
-        app:layout_constraintStart_toEndOf="@+id/public_money_name_tag" />
+        <TextView
+            android:id="@+id/public_money_name_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:layout_marginTop="4dp"
+            android:text="선결제 잔액"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@+id/public_address"
+            app:layout_constraintTop_toBottomOf="@+id/public_address" />
 
-    <TextView
-        android:id="@+id/public_distance"
-        android:layout_width="50dp"
-        android:layout_height="16dp"
-        android:layout_marginStart="16dp"
-        android:text="10km"
-        android:textColor="#807F7F"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/public_address"
-        app:layout_constraintStart_toEndOf="@+id/public_address" />
+        <TextView
+            android:id="@+id/public_money_info"
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:layout_marginStart="8dp"
+            android:text="800,000"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/public_money_name_tag"
+            app:layout_constraintStart_toEndOf="@+id/public_money_name_tag" />
 
-    <ImageView
-        android:id="@+id/group_image"
-        android:layout_width="74dp"
-        android:layout_height="74dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:srcCompat="@drawable/dog_logo" />
+        <TextView
+            android:id="@+id/public_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:layout_marginStart="8dp"
+            android:text="10km"
+            android:textColor="#807F7F"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/public_name"
+            app:layout_constraintStart_toEndOf="@+id/public_name" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/shape_all_round" />
+        <ImageView
+            android:id="@+id/group_image"
+            android:layout_width="74dp"
+            android:layout_height="74dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/dog_logo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
