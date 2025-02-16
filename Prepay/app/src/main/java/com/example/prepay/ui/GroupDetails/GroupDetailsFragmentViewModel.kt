@@ -9,8 +9,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.SharedPreferencesUtil
+import com.example.prepay.data.model.dto.OrderHistory
 import com.example.prepay.data.model.dto.Restaurant
 import com.example.prepay.data.response.BanUserReq
+import com.example.prepay.data.response.OrderHistoryReq
 import com.example.prepay.data.response.StoreIdReq
 import com.example.prepay.data.response.StoreIdRes
 import com.example.prepay.data.response.Team
@@ -41,6 +43,11 @@ class GroupDetailsFragmentViewModel : ViewModel() {
     private val _moneyValue = MutableLiveData<Int>()
     val moneyValue: LiveData<Int> get() = _moneyValue
 
+    private val _teamOrderListInfo = MutableLiveData<List<OrderHistory>>()
+    val teamOrderListInfo: LiveData<List<OrderHistory>>
+        get() = _teamOrderListInfo
+
+
     // 한도 변경 값 변경
     fun setMoneyValue(value: Int) {
         _moneyValue.value = value
@@ -63,6 +70,20 @@ class GroupDetailsFragmentViewModel : ViewModel() {
                 _storeListInfo.value = it
             }.onFailure { e ->
                 _storeListInfo.value = emptyList()
+            }
+        }
+    }
+
+    fun getMyTeamOrderHistory(access: String, rq: OrderHistoryReq){
+        viewModelScope.launch {
+            runCatching {
+                RetrofitUtil.orderService.getDetailHistory(access, rq)
+            } .onSuccess { response ->
+                _teamOrderListInfo.postValue(response)
+                Log.d("OrderHistoryList", "getAllOrderHistoryList: 팀리스트 가져오기 성공: $response")
+            } .onFailure { e ->
+                Log.d("getAllOrderHistoryList","getAllOrderHistoryList: ${e.message}")
+                _teamOrderListInfo.value = emptyList()
             }
         }
     }

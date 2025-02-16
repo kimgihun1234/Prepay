@@ -13,187 +13,51 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/team_name"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/prepay_store_list_btn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="SSAFY"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:fontFamily="@font/samsung_font_2"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="HardcodedText" />
-
-        <!-- 뒤로 가기 버튼 -->
-        <ImageButton
-            android:id="@+id/back_btn"
-            android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginTop="20dp"
-            android:background="#00ff0000"
-            android:importantForAccessibility="no"
-            android:src="@drawable/arrow_down_sign_to_navigate"
-            app:layout_constraintEnd_toStartOf="@+id/time_name"
-            app:layout_constraintHorizontal_bias="0.205"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageButton
-        android:id="@+id/dining_together_qr_btn"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="16dp"
-        android:background="@drawable/round_button"
-        android:scaleType="fitCenter"
-        android:padding="16dp"
-        android:src="@drawable/qr_code"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toTopOf="@+id/textView4" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="204dp"
-            android:layout_height="70dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="692dp"
-            android:background="@drawable/round_background"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/usePossiblePriceTxt"
-        android:layout_width="116dp"
-        android:layout_height="29dp"
-        android:layout_marginStart="80dp"
-        android:text=""
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView4"
-        app:layout_constraintStart_toStartOf="@+id/textView4"
-        app:layout_constraintTop_toTopOf="@+id/textView4" />
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="592dp"
-            android:background="@color/white"
-            android:text="사용 가능 금액"
-            android:textColor="#0066CC"
-            app:layout_constraintStart_toStartOf="@+id/textView4"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageButton
-        android:id="@+id/qr_btn"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/round_button"
-        android:src="@drawable/qr_code"
-        android:scaleType="fitCenter"
-        android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView4" />
-
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="452dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/grouptext_round_backgound"
-            android:padding="8dp"
-            android:paddingStart="16dp"
-            android:text="그룹 제휴점 지도"
-            android:textColor="@color/white"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="56dp"
+            android:background="@null"
+            android:drawablePadding="2dp"
+            android:fontFamily="@font/samsung_font_2"
+            android:scaleX="0.9"
+            android:text="선결제 리스트"
+            android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="312dp"
-            android:layout_height="192dp"
-            android:layout_marginTop="268dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.161"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView7" />
-
-        <TextView
-        android:id="@+id/textView8"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/grouptext_round_backgound"
-        android:padding="8dp"
-        android:paddingStart="16dp"
-        android:text="SSAFY(그룹명) 제휴 목록"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/map" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="0dp"
-        android:layout_height="256dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="628dp"
-            android:layout_marginEnd="96dp"
-            android:background="@color/white"
-            android:text="회식 결제"
-            android:textColor="#0066CC"
-            app:layout_constraintEnd_toStartOf="@+id/qr_btn"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="592dp"
-            android:layout_marginEnd="4dp"
-            android:background="@color/white"
-            android:text="결제"
-            android:textColor="#0066CC"
-            app:layout_constraintEnd_toEndOf="@+id/qr_btn"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/add_restaurant"
-            android:layout_width="34dp"
-            android:layout_height="37dp"
-            android:layout_marginEnd="14dp"
-            android:text="+"
-            android:textSize="24sp"
-            android:textColor="@color/white"
-            android:background="@drawable/round_background"
-            app:layout_constraintBottom_toBottomOf="@+id/textView8"
-            app:layout_constraintEnd_toEndOf="@+id/textView8"
-            app:layout_constraintTop_toTopOf="@+id/textView8" />
+            android:id="@+id/list_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="56dp"
+            android:background="@null"
+            android:drawablePadding="2dp"
+            android:fontFamily="@font/samsung_font_2"
+            android:scaleX="0.9"
+            android:text="결제 내역"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/prepay_store_list_btn"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/group_details_container"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/main_page_bg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/prepay_store_list_btn" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -19,26 +19,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/restaurant_distance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="19dp"
-        android:text="10km"
-        android:textColor="#D9D9D9"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/restaurant_name"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
         android:id="@+id/textView18"
         android:layout_width="63dp"
         android:layout_height="21dp"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="24dp"
         android:text="현재 잔액"
         android:textColor="#D9D9D9"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/restaurant_distance"
+        app:layout_constraintStart_toEndOf="@+id/restaurant_name"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -56,11 +44,10 @@
         android:layout_width="60dp"
         android:layout_height="40dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:text="상세"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/restaurant_prepay_money"
         app:layout_constraintTop_toTopOf="parent" />
 
 
