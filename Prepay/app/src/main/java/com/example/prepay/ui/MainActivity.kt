@@ -29,6 +29,8 @@ import com.example.prepay.ui.CreateGroup.CreatePrivateGroupFragment
 import com.example.prepay.ui.CreateGroup.CreatePublicGroupFragment
 import com.example.prepay.ui.GroupDetails.AddRestaurantFragment
 import com.example.prepay.ui.GroupDetails.GroupDetailsFragment
+import com.example.prepay.ui.GroupDetails.GroupPaymentHistoryFragment
+import com.example.prepay.ui.GroupDetails.GroupPrepayStoreListFragment
 import com.example.prepay.ui.GroupSearch.GroupSearchFragment
 import com.example.prepay.ui.GroupSearch.GroupSearchFragmentViewModel
 import com.example.prepay.ui.GroupSearchDetails.AddPublicGroupDetailsFragment
@@ -107,6 +109,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
             CommonUtils.GroupFragmentName.CREATE_PRIVATE_GROUP_FRAGMENT -> {
                 transaction.replace(R.id.create_group_container, CreatePrivateGroupFragment())
+            }
+        }
+        transaction.commit()
+    }
+
+    fun changeFragmentGroupDetail(name: CommonUtils.GroupDetailFragmentName, num: Int = -1) {
+        val transaction = supportFragmentManager.beginTransaction()
+        when (name) {
+            CommonUtils.GroupDetailFragmentName.GROUP_PREPAY_STORE_LIST_FRAGMENT -> {
+                transaction.replace(R.id.group_details_container, GroupPrepayStoreListFragment())
+            }
+            CommonUtils.GroupDetailFragmentName.GROUP_PREPAY_HISTORY_FRAGMENT -> {
+                transaction.replace(R.id.group_details_container,GroupPaymentHistoryFragment())
             }
         }
         transaction.commit()
