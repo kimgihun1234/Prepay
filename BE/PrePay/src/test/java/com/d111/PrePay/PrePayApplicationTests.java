@@ -53,7 +53,6 @@ class PrePayApplicationTests {
         TeamCreateStoreReq req = new TeamCreateStoreReq();
         req.setStoreId(1L);
         req.setTeamId(1L);
-        req.setBalance(1000);
         teamService.createStore(req);
 
         TeamIdReq teamId = new TeamIdReq(1L);
