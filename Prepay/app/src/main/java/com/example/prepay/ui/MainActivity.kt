@@ -186,7 +186,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     changeFragmentMain(CommonUtils.MainFragmentName.GROUP_SEARCH_FRAGMENT)
                     true
                 }
-                R.id.navigation_notification -> {
+                R.id.my_payment_history -> {
                     changeFragmentMain(CommonUtils.MainFragmentName.NOTIFICATION_FRAGMENT)
                     true
                 }
