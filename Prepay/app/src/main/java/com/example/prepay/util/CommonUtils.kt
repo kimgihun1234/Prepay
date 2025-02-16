@@ -58,4 +58,8 @@ object CommonUtils {
         CREATE_PUBLIC_GROUP_FRAGMENT("CreatePublicGroupFragment"),
     }
 
+    enum class GroupDetailFragmentName(var str: String){
+        GROUP_PREPAY_STORE_LIST_FRAGMENT("GroupPrepayStoreListFragment"),
+        GROUP_PREPAY_HISTORY_FRAGMENT("GroupPrepayHistoryFragment")
+    }
 }

@@ -75,18 +75,15 @@ private const val TAG = "GroupDetailsFragment_싸피"
 class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     FragmentGroupDetailsBinding::bind,
     R.layout.fragment_group_details
-), RestaurantAdapter.OnRestaurantClickListener, OnTeamUserActionListener{
+), OnTeamUserActionListener{
     private lateinit var mainActivity: MainActivity
-    private lateinit var restaurantAdapter: RestaurantAdapter
     private lateinit var teamUserAdapter: TeamUserAdapter
-    private lateinit var restaurantList: List<TeamIdStoreRes>
     private lateinit var teamTeamUserResList: List<TeamUserRes>
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
     //activityViewModel
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val viewModel: GroupDetailsFragmentViewModel by viewModels()
-    private val restaurantDetailsViewModel : RestaurantDetailsViewModel by viewModels()
 
     private var inviteCode = "0"
 
@@ -124,6 +121,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initShow()
         initEvent()
         initAdapter()
         initViewModel()
@@ -136,13 +134,14 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         mainActivity.hideBottomNav(false)
     }
 
+    private fun initShow(){
+        mainActivity.changeFragmentGroupDetail(CommonUtils.GroupDetailFragmentName.GROUP_PREPAY_STORE_LIST_FRAGMENT)
+    }
+
+
     private fun initAdapter(){
         teamTeamUserResList = emptyList()
-        restaurantList = emptyList()
-        restaurantAdapter = RestaurantAdapter(restaurantList,this)
         teamUserAdapter = TeamUserAdapter(teamTeamUserResList,this, true)
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.adapter = restaurantAdapter
         binding.rvMemberList.layoutManager = LinearLayoutManager(requireContext())
         binding.rvMemberList.adapter = teamUserAdapter
     }
@@ -162,7 +161,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         viewModel.moneyValue.observe(viewLifecycleOwner) { it->
             Log.d(TAG,"가격변동"+it.toString())
             //binding.usePossiblePriceTxt.text = it.toString()
-            changeMoneyView()
+            //changeMoneyView()
         }
     }
 
@@ -171,19 +170,12 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         navigationView = binding.navigationView
     }
 
-
     private fun initEvent() {
-        binding.diningTogetherQrBtn.setOnClickListener {
-            lifecycleScope.launch {
-                runCatching {
-                    RetrofitUtil.qrService.qrTeamCreate(SharedPreferencesUtil.getAccessToken()!!,activityViewModel.teamId.value!!.toInt())
-                }.onSuccess {
-                    Log.d(TAG,it.message)
-                    showQRDialog(it.message)
-                }.onFailure {
-                    mainActivity.showToast("qr불러오기가 실패했습니다")
-                }
-            }
+        binding.prepayStoreListBtn.setOnClickListener {
+            mainActivity.changeFragmentGroupDetail(CommonUtils.GroupDetailFragmentName.GROUP_PREPAY_STORE_LIST_FRAGMENT)
+        }
+        binding.listBtn.setOnClickListener {
+            mainActivity.changeFragmentGroupDetail(CommonUtils.GroupDetailFragmentName.GROUP_PREPAY_HISTORY_FRAGMENT)
         }
 
         binding.groupInviteBtn.setOnClickListener {
@@ -192,25 +184,9 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         binding.groupExitBtn.setOnClickListener {
             showGroupExitDialog()
         }
-        binding.addRestaurant.setOnClickListener {
-            addRestaurantClick()
-        }
 
         binding.moneyChangeBtn.setOnClickListener {
             showMoneyChangeDialog()
-        }
-        binding.qrBtn.setOnClickListener {
-            lifecycleScope.launch {
-                runCatching {
-                    RetrofitUtil.qrService.qrPrivateCreate(SharedPreferencesUtil.getAccessToken()!!,activityViewModel.teamId.value!!.toInt())
-                }.onSuccess {
-                    Log.d(TAG,it.message)
-                    showQRDialog(it.message+":"+SharedPreferencesUtil.getAccessToken()!!+":"+activityViewModel.teamId.value.toString())
-                }.onFailure {
-                    mainActivity.showToast("qr불러오기가 실패했습니다")
-                }
-            }
-            //mainActivity.broadcast("hello","hello")
         }
     }
 
@@ -220,7 +196,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                 RetrofitUtil.teamService.getTeamDetails(SharedPreferencesUtil.getAccessToken()!!, activityViewModel.teamId.value!!)
             }.onSuccess {
                 Log.d(TAG,"얼마 사용"+it.dailyPriceLimit+" "+it.usedAmount)
-                binding.usePossiblePriceTxt.text = CommonUtils.makeComma(viewModel.moneyValue.value!!.toInt() - it.usedAmount)
+                //binding.usePossiblePriceTxt.text = CommonUtils.makeComma(viewModel.moneyValue.value!!.toInt() - it.usedAmount)
                 viewModel.updatePosition(it.position)
                 inviteCode = (it.teamPassword ?: "초대코드없음").toString()
             }.onFailure {
@@ -236,32 +212,13 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             kotlin.runCatching {
                 RetrofitUtil.teamService.getTeamDetails(SharedPreferencesUtil.getAccessToken()!!,activityViewModel.teamId.value!!)
             }.onSuccess {
-                binding.usePossiblePriceTxt.text = CommonUtils.makeComma(it.dailyPriceLimit-it.usedAmount)
+                //binding.usePossiblePriceTxt.text = CommonUtils.makeComma(it.dailyPriceLimit-it.usedAmount)
                 viewModel.updatePosition(it.position)
                 inviteCode = (it.teamPassword ?: "초대코드없음").toString()
             }.onFailure {
                 Log.d(TAG,"실패하였습니다")
             }
         }
-    }
-
-    //클릭 이벤트 등 집합
-    private fun addRestaurantClick() {
-        bringStoreId()
-    }
-
-    private fun bringStoreId() {
-        mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.ADD_RESTAURANT_FRAGMENT)
-    }
-
-    override fun onRestaurantClick(storeName : String, teamIdStoreResId: Int) {
-        Log.d(TAG, "teamIdStoreResId: $teamIdStoreResId")
-        activityViewModel.setStoreId(teamIdStoreResId)
-        activityViewModel.setStoreName(storeName)
-        Log.d(TAG, "storeName: $storeName")
-        val restaurantData = RestaurantData(storeName, teamIdStoreResId)
-        restaurantDetailsViewModel.setRestaurantData(restaurantData)
-        mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.RESTAURANT_DETAILS_FRAGMENT)
     }
 
     override fun onManageClick(teamUserRes: TeamUserRes) {
@@ -272,72 +229,6 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         showGroupResignDialog(teamUserRes)
     }
 
-    /**
-     * QR 코드를 생성하여 다이얼로그로 표시하는 함수
-     *
-     * @param context 다이얼로그를 표시할 컨텍스트 (Fragment 내에서는 requireContext()를 사용)
-     * @param url QR 코드에 인코딩할 URL (기본값: "https://www.naver.com")
-     */
-    fun showQRDialog(url: String = "https://www.naver.com") {
-        val context = this@GroupDetailsFragment.requireContext()
-
-        // 타이머 생성
-        val timer = Timer()
-
-        // 다이얼로그 레이아웃 인플레이트
-        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_create_qr, null)
-
-        // QR 코드 생성 및 이미지뷰에 적용
-        try {
-            val barcodeEncoder = BarcodeEncoder()
-            val bitmap = barcodeEncoder.encodeBitmap(url, BarcodeFormat.QR_CODE, 400, 400)
-            val imageViewQrCode = dialogView.findViewById<ImageView>(R.id.imageViewQrCode)
-            imageViewQrCode.setImageBitmap(bitmap)
-        } catch (e: Exception) {
-            Log.e("QRDialog", "QR 코드 생성 실패", e)
-        }
-
-        // AlertDialog 생성
-        val dialog = androidx.appcompat.app.AlertDialog.Builder(context)
-            .setView(dialogView)
-            .setCancelable(true)  // 뒤로 가기 버튼 허용
-            .create()
-
-
-        // 다이얼로그 닫힐 때 타이머 취소
-        dialog.setOnDismissListener {
-            timer.cancel()
-            initialView()
-        }
-
-        // 다이얼로그 표시
-        dialog.show()
-
-        // 60초 카운트다운 타이머 시작
-        var seconds = 60
-        val qrTimer = dialogView.findViewById<TextView>(R.id.qr_timer)
-        qrTimer?.text = "남은 시간: 60초"
-
-        timer.scheduleAtFixedRate(object : TimerTask() {
-            override fun run() {
-                seconds--
-                // UI 업데이트는 메인 스레드에서 수행
-                this@GroupDetailsFragment.requireActivity().runOnUiThread {
-                    qrTimer?.text = "남은 시간: ${seconds}초"
-                }
-                if (seconds <= 0) {
-                    // 시간이 다 되었으면 다이얼로그를 닫고 타이머 취소
-                    this@GroupDetailsFragment.requireActivity().runOnUiThread {
-                        if (dialog.isShowing) {
-                            dialog.dismiss()
-                        }
-                    }
-                    timer.cancel()
-                    initialView()
-                }
-            }
-        }, 1000, 1000)
-    }
 
     //다이얼로그 보여주는 부분
     private fun showInviteCodeInputDialog() {
