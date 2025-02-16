@@ -10,5 +10,6 @@ data class TeamDetailRes(
     val teamMessage: String,
     val teamName: String,
     val teamPassword: Any,
-    val color: String
+    val color: String,
+    val teamBalance: Int
 )
