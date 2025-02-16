@@ -67,7 +67,7 @@ class GroupPrepayStoreListFragment: BaseFragment<FragmentGroupPrepayStoreListBin
                 runCatching {
                     RetrofitUtil.qrService.qrTeamCreate(SharedPreferencesUtil.getAccessToken()!!,activityViewModel.teamId.value!!.toInt())
                 }.onSuccess {
-                    showQRDialog(it.message)
+                    showQRDialog(it.message+":"+ SharedPreferencesUtil.getAccessToken()!!+":"+activityViewModel.teamId.value.toString())
                 }.onFailure {
                     mainActivity.showToast("qr불러오기가 실패했습니다")
                 }
