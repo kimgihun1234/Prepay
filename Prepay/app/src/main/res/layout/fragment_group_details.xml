@@ -70,7 +70,7 @@
         android:layout_width="116dp"
         android:layout_height="29dp"
         android:layout_marginStart="80dp"
-        android:text="20,000원"
+        android:text=""
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView4"
         app:layout_constraintStart_toStartOf="@+id/textView4"

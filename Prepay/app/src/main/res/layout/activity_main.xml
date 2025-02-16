@@ -14,6 +14,8 @@
         android:layout_height="match_parent"
         android:background="#FBFBFF">
 
+
+        <!-- FragmentContainerView: 상단은 AppBarLayout의 아래쪽, 하단은 BottomNavigationView의 위쪽에 제약 -->
         <!-- BottomNavigationView -->
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/main_container"
@@ -25,7 +27,7 @@
             app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appbar"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView

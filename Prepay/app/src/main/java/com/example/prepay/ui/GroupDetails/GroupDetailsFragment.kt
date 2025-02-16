@@ -80,37 +80,6 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
 
     //activityViewModel
     private val activityViewModel: MainActivityViewModel by activityViewModels()
-
-    // value
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)  // 부모 클래스의 onCreate 호출 (Fragment의 기본 동작 유지)
-        mainActivity = context as MainActivity  // 현재 프래그먼트를 포함하는 액티비티(MainActivity)를 가져와 mainActivity 변수에 저장
-        Log.d(TAG, activityViewModel.teamId.value.toString())
-        setHasOptionsMenu(true)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-
-
-
-        initEvent()
-        initAdapter()
-        initViewModel()
-        initDrawerLayout()
-        initialView()
-        //GPS 관련 코드
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(readyCallback)
-    }
-
-
-
-
     private lateinit var restaurantAdapter: RestaurantAdapter
     private lateinit var teamUserAdapter: TeamUserAdapter
     private lateinit var restaurantList: List<TeamIdStoreRes>
@@ -121,19 +90,6 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
 
     private val viewModel: GroupDetailsFragmentViewModel by viewModels()
     private val restaurantDetailsViewModel : RestaurantDetailsViewModel by viewModels()
-
-
-
-
-
-
-
-
-
-//
-//    val teamId = activityViewModel.teamId.value.toString()
-//    val pageTitle = binding.teamName
-//    pageTitle.text = teamId
 
 
     //GPS관련 변수
@@ -154,7 +110,13 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     )
     private var inviteCode = "0"
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)  // 부모 클래스의 onCreate 호출 (Fragment의 기본 동작 유지)
+        mainActivity = context as MainActivity  // 현재 프래그먼트를 포함하는 액티비티(MainActivity)를 가져와 mainActivity 변수에 저장
+        Log.d(TAG, activityViewModel.teamId.value.toString())
 
+        setHasOptionsMenu(true)
+    }
 
 
     override fun onStart() {
@@ -194,6 +156,18 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         mFusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initEvent()
+        initAdapter()
+        initViewModel()
+        initDrawerLayout()
+        initialView()
+        //GPS 관련 코드
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(readyCallback)
+    }
 
     override fun onPause() {
         super.onPause()

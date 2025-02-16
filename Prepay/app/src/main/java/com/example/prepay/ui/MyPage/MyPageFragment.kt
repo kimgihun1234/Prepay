@@ -15,15 +15,19 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
+import com.example.prepay.RetrofitUtil
+import com.example.prepay.SharedPreferencesUtil
 import com.example.prepay.databinding.FragmentMyPageBinding
 import com.example.prepay.ui.GroupDetails.GroupDetailsFragment
 import com.example.prepay.ui.MainActivity
 import com.example.prepay.ui.MainActivityViewModel
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import kotlinx.coroutines.launch
 import java.util.Timer
 import java.util.TimerTask
 
@@ -42,6 +46,8 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
         super.onCreate(savedInstanceState)
         mainActivity = requireActivity() as MainActivity
     }
+
+    
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -80,6 +86,29 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
         binding.enterGroupBtn.setOnClickListener {
             mainActivity.enterDialog()
         }
+        binding.groupDetailBtn.setOnClickListener {
+            val currentPosition = binding.viewPager.currentItem
+            val selectedTeam = cardAdapter.teamList.getOrNull(currentPosition)
+            selectedTeam?.let {
+                activityViewModel.setTeamId(it.teamId.toLong())
+                mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.GROUP_DETAILS_FRAGMENT)
+            }
+        }
+
+        binding.payBtn.setOnClickListener {
+            val currentPosition = binding.viewPager.currentItem
+            val selectedTeam = cardAdapter.teamList.getOrNull(currentPosition)
+            lifecycleScope.launch {
+                runCatching {
+                    RetrofitUtil.qrService.qrPrivateCreate(SharedPreferencesUtil.getAccessToken()!!,selectedTeam!!.teamId)
+                }.onSuccess {
+                    showQRDialog(it.message+":"+ SharedPreferencesUtil.getAccessToken()!!+":"+selectedTeam!!.teamId.toString())
+                }.onFailure {
+                    mainActivity.showToast("qr불러오기가 실패했습니다")
+                }
+            }
+        }
+
         mainActivity.hideBottomNav(false)
     }
 

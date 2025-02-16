@@ -22,4 +22,12 @@ object DistanceManager {
     private fun compareRadians(degrees: Double): Double {
         return Math.toRadians(degrees)
     }
+
+    fun formatDistance(distance: Double): String {
+        return if (distance >= 1.0) {
+            String.format("%.1fkm", distance)
+        } else {
+            String.format("%.1fm", distance * 1000)
+        }
+    }
 }

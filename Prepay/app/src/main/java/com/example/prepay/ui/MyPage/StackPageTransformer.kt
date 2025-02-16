@@ -11,10 +11,10 @@ class StackPageTransformer : ViewPager2.PageTransformer {
 
         val translationFactor = when {
             position < 0 -> { // 현재 페이지 또는 왼쪽에 있는 페이지
-                -position * (page.height * 0.8f) // 90% 겹치도록 설정
+                -position * (page.height * 0.95f) // 90% 겹치도록 설정
             }
             position > 0 -> { // 오른쪽에 있는 페이지
-                -position * (page.height * 0.8f)
+                -position * (page.height * 0.95f)
             }
             else -> 0f
         }
@@ -25,5 +25,6 @@ class StackPageTransformer : ViewPager2.PageTransformer {
         } else {
             0f // 그 외의 카드들은 반투명하게 설정
         }
+        page.alpha = 1 - kotlin.math.abs(position) * 0.4f
     }
 }

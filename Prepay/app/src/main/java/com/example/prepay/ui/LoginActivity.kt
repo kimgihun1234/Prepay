@@ -42,6 +42,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "onCreate: START_LOGIN_FRAGMENT")
         changeFragmentLogin(CommonUtils.LoginFragmentName.START_LOGIN_FRAGMENT)
         checkPermission()
         SharedPreferencesUtil.init(this)
