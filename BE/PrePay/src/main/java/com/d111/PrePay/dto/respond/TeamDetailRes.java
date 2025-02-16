@@ -21,6 +21,7 @@ public class TeamDetailRes {
     private String teamMessage;
     private String teamPassword;
     private String color;
+    private int teamBalance;
 
     public TeamDetailRes(Team team, UserTeam userTeam){
         this.teamId = team.getId();

@@ -318,7 +318,11 @@ public class TeamService {
 //                .orElseThrow(() -> new RuntimeException("유저팀을 찾을 수 없습니다."));
         UserTeam findUserTeam = userTeamRepository.findUserTeamByTeamIdAndUserIdWithTeam(teamId, userId);
         Team findTeam = findUserTeam.getTeam();
-
+        List<TeamStore> teamStores = findTeam.getTeamStores();
+        int sum = 0;
+        for (TeamStore teamStore : teamStores) {
+            sum += teamStore.getTeamStoreBalance();
+        }
         TeamDetailRes res = TeamDetailRes.builder()
                 .teamId(teamId)
                 .teamName(findTeam.getTeamName())
@@ -329,6 +333,7 @@ public class TeamService {
                 .position(findUserTeam.isPosition())
                 .teamPassword(findTeam.getTeamPassword())
                 .usedAmount(findUserTeam.getUsedAmount())
+                .teamBalance(sum)
                 .color(findTeam.getColor())
                 .build();
 
