@@ -77,21 +77,24 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     R.layout.fragment_group_details
 ), OnTeamUserActionListener{
     private lateinit var mainActivity: MainActivity
+
     private lateinit var teamUserAdapter: TeamUserAdapter
     private lateinit var teamTeamUserResList: List<TeamUserRes>
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
     //activityViewModel
     private val activityViewModel: MainActivityViewModel by activityViewModels()
+    private lateinit var currentLocation: Location
     private val viewModel: GroupDetailsFragmentViewModel by viewModels()
+
 
     private var inviteCode = "0"
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        mainActivity= context as MainActivity
+        super.onCreate(savedInstanceState)  // 부모 클래스의 onCreate 호출 (Fragment의 기본 동작 유지)
+        mainActivity = context as MainActivity  // 현재 프래그먼트를 포함하는 액티비티(MainActivity)를 가져와 mainActivity 변수에 저장
         Log.d(TAG, activityViewModel.teamId.value.toString())
+
         setHasOptionsMenu(true)
     }
 

@@ -2,6 +2,7 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="0dp"
@@ -19,12 +20,67 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_marginStart="80dp"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="8dp"
             android:text="SSAFY"
             android:textColor="@android:color/white"
             android:textSize="24sp"
+            android:fontFamily="@font/samsung_font_1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvSubTitle" />
+
+        <TextView
+            android:id="@+id/card_dummy2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="8dp"
+            android:text="원"
+            android:textColor="@android:color/white"
+            android:textSize="34sp"
+            android:fontFamily="@font/samsung_font_1"
+            app:layout_constraintBottom_toBottomOf="@+id/tvBalance"
+            app:layout_constraintStart_toEndOf="@+id/tvBalance" />
+
+        <TextView
+            android:id="@+id/card_dummy3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="24dp"
+            android:text="사용 가능 금액"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:fontFamily="@font/samsung_font_1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+
+        <TextView
+            android:id="@+id/card_dummy4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="32dp"
+            android:text="* * * *  * * * *"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:fontFamily="@font/samsung_font_1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvBalance" />
+
+        <TextView
+            android:id="@+id/card_dummy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="60dp"
+            android:text="SUNPICK"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            android:fontFamily="@font/samsung_font_1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvSubTitle" />
 
         <TextView
             android:id="@+id/tvSubTitle"
@@ -32,7 +88,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tvTitle"
             android:layout_marginStart="80dp"
-            android:layout_marginTop="71dp"
+            android:layout_marginTop="65dp"
+            android:fontFamily="@font/samsung_font_1"
             android:text="Private"
             android:textColor="@android:color/white"
             android:textSize="18sp"
@@ -44,12 +101,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="128dp"
-            android:layout_marginTop="156dp"
-            android:text="잔액 8,000,000 원"
-            android:textSize="20sp"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="4dp"
+            android:text="8,000,000"
+            android:textSize="34sp"
+            android:fontFamily="@font/samsung_font_1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/card_dummy3" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

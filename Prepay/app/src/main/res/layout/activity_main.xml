@@ -11,15 +11,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#FBFBFF">
+
 
         <!-- FragmentContainerView: 상단은 AppBarLayout의 아래쪽, 하단은 BottomNavigationView의 위쪽에 제약 -->
-
         <!-- BottomNavigationView -->
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/main_container"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:background="@drawable/main_page_bg"
@@ -36,6 +37,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:itemTextAppearanceActive="@style/BottomNavTextStyle"
+            app:itemTextAppearanceInactive="@style/BottomNavTextStyle"
+            android:background="@color/white"
             app:menu="@menu/bottom_nav" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
