@@ -13,7 +13,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.activity.viewModels
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.prepay.ApplicationClass
 import com.example.prepay.BaseActivity
 import com.example.prepay.CommonUtils
@@ -22,7 +21,6 @@ import com.example.prepay.RetrofitUtil
 import com.example.prepay.SharedPreferencesUtil
 import com.example.prepay.data.remote.FirebaseTokenService
 import com.example.prepay.data.response.SignInTeamReq
-import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.data.response.TokenReq
 import com.example.prepay.databinding.ActivityMainBinding
 import com.example.prepay.databinding.DialogVisitCodeBinding
@@ -33,12 +31,11 @@ import com.example.prepay.ui.GroupDetails.AddRestaurantFragment
 import com.example.prepay.ui.GroupDetails.GroupDetailsFragment
 import com.example.prepay.ui.GroupSearch.GroupSearchFragment
 import com.example.prepay.ui.GroupSearch.GroupSearchFragmentViewModel
-import com.example.prepay.ui.GroupSearch.OnPublicClickListener
-import com.example.prepay.ui.GroupSearch.PublicSearchAdapter
 import com.example.prepay.ui.GroupSearchDetails.AddPublicGroupDetailsFragment
 import com.example.prepay.ui.MyPage.MyPageFragment
 import com.example.prepay.ui.RestaurantDetails.AddDetailRestaurantFragment
 import com.example.prepay.ui.RestaurantDetails.RestaurantDetailsFragment
+import com.example.prepay.ui.Notification.NotificationFragment
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.CoroutineScope
@@ -71,6 +68,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
             CommonUtils.MainFragmentName.GROUP_SEARCH_FRAGMENT -> {
                 transaction.replace(R.id.main_container, GroupSearchFragment())
+            }
+            CommonUtils.MainFragmentName.NOTIFICATION_FRAGMENT -> {
+                transaction.replace(R.id.main_container, NotificationFragment())
             }
             CommonUtils.MainFragmentName.CREATE_GROUP_FRAGMENT -> {
                 transaction.replace(R.id.main_container, CreateGroupFragment())
@@ -184,6 +184,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
                 R.id.navigation_group_search -> {
                     changeFragmentMain(CommonUtils.MainFragmentName.GROUP_SEARCH_FRAGMENT)
+                    true
+                }
+                R.id.my_payment_history -> {
+                    changeFragmentMain(CommonUtils.MainFragmentName.NOTIFICATION_FRAGMENT)
                     true
                 }
                 else -> false

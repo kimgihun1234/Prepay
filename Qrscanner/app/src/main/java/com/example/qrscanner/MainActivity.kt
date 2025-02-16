@@ -1,6 +1,7 @@
 package com.example.qrscanner
 
 import android.os.Bundle
+import android.util.Log
 import com.example.qrscanner.base.BaseActivity
 import com.example.qrscanner.databinding.ActivityMainBinding
 import com.example.qrscanner.ui.LoginFragment
@@ -8,14 +9,13 @@ import com.example.qrscanner.ui.StoreTeamFragment
 import com.example.qrscanner.ui.TeamFragment
 import com.example.qrscanner.util.CommonUtils
 
-private val KeyAccessToken = "AccessToken"
-private val prefsName = "user_prefs"
 
 private const val TAG = "MainActivity_싸피"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        changeFragmentMain(CommonUtils.MainFragmentName.LOGIN_FRAGMENT)
+        Log.d(TAG, "onCreate: LOGIN_FRAGMENT")
     }
 
     fun changeFragmentMain(name: CommonUtils.MainFragmentName, num: Int = -1) {
@@ -26,28 +26,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
             CommonUtils.MainFragmentName.STORE_TEAM_FRAGMENT -> {
                 transaction.replace(R.id.main, StoreTeamFragment())
+                transaction.addToBackStack(null)
             }
             CommonUtils.MainFragmentName.TEAM_FRAGMENT -> {
                 transaction.replace(R.id.main, TeamFragment())
+                transaction.addToBackStack(null)
             }
         }
         transaction.commit()
     }
 }
-//import android.content.Intent
-//import android.media.MediaPlayer
-//import android.os.Bundle
-//import android.util.Log
-//import android.widget.Toast
-//import androidx.appcompat.app.AppCompatActivity
-//import androidx.lifecycle.lifecycleScope
-//import com.example.prepay.RetrofitUtil
-//import com.example.qrscanner.databinding.ActivityMainBinding
-//import com.example.qrscanner.response.PosReq
-//import com.example.qrscanner.response.orderDetail
-//import com.google.zxing.integration.android.IntentIntegrator
-//import kotlinx.coroutines.launch
-//
+
 //private const val TAG = "MainActivity_싸피"
 //class MainActivity : AppCompatActivity() {
 //    private val binding by lazy{

@@ -10,7 +10,7 @@
         android:id="@+id/public_detail_qr_btn"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="128dp"
         android:background="@drawable/round_button"
         android:padding="16dp"
         android:scaleType="fitCenter"
@@ -63,16 +63,6 @@
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/public_detail_location" />
-
-    <TextView
-        android:id="@+id/won_tag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="원"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/left_money_info"
-        app:layout_constraintStart_toEndOf="@+id/left_money_info" />
 
     <TextView
         android:id="@+id/left_money_info"
@@ -130,5 +120,36 @@
         android:src="@drawable/like_heart_empty"
         app:layout_constraintStart_toEndOf="@+id/like_regist"
         app:layout_constraintTop_toBottomOf="@+id/public_detail_team_name" />
+
+    <ImageView
+        android:id="@+id/storeView"
+        android:layout_width="89dp"
+        android:layout_height="107dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/left_money_tag"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/storeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="82dp"
+        android:text="TextView"
+        android:textSize="20dp"
+        app:layout_constraintStart_toEndOf="@+id/storeView"
+        app:layout_constraintTop_toBottomOf="@+id/public_detail_map" />
+
+    <TextView
+        android:id="@+id/storeDescription"
+        android:layout_width="236dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="13dp"
+        android:text="TextView"
+        app:layout_constraintStart_toEndOf="@+id/storeView"
+        app:layout_constraintTop_toBottomOf="@+id/storeTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

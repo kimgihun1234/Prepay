@@ -9,8 +9,8 @@
 
     <ImageButton
         android:id="@+id/public_search_like_btn"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="24dp"
         android:background="#00FFFFFF"
@@ -86,6 +86,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         tools:srcCompat="@drawable/dog_logo" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/shape_all_round" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

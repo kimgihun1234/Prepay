@@ -6,6 +6,7 @@ import com.example.prepay.data.response.GetUserOfTeamRes
 import com.example.prepay.data.response.LikeTeamsReq
 import com.example.prepay.data.response.MoneyChangeReq
 import com.example.prepay.data.response.PrivilegeUserReq
+import com.example.prepay.data.response.PublicLikeRes
 import com.example.prepay.data.response.PublicTeamDetailsRes
 import com.example.prepay.data.response.PublicTeamsDisRes
 import com.example.prepay.data.response.PublicTeamsRes
@@ -83,11 +84,8 @@ interface TeamService {
 
     //공개된 모든 팀 목록을 가져옵니다.
 
-//    @GET("/team/public-teams")
-//    suspend fun getPublicTeams(@Header("access") access: String): List<PublicTeamsRes>
-
-//    @GET("/team/public-teams")
-//    suspend fun getPublicTeams(@Header("email") email: String): List<PublicTeamsRes>
+    @GET("/team/public-teams")
+    suspend fun getPublicTeams(@Header("access") access: String, @Query("latitude") latitude : Double, @Query("longitude") longitude:Double): List<PublicTeamsRes>
 
 
     //특정 키워드로 공개된 팀을 검색합니다.
@@ -109,5 +107,8 @@ interface TeamService {
 
     @GET("/team/public-team/{teamid}")
     suspend fun groupDetailInfo(@Header("access") access: String, @Path("teamid") teamid: Long): PublicTeamDetailsRes
+
+    @GET("/team/public/liked")
+    suspend fun getlikeTeamList(@Header("access") access: String,@Query("latitude") latitude : Double, @Query("longitude") longitude:Double): List<PublicLikeRes>
     
 }

@@ -44,12 +44,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/ai_sort"
+        android:id="@+id/all"
         android:layout_width="104dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
-        android:text="인기순"
+        android:text="전체"
         app:layout_constraintStart_toEndOf="@+id/distance_sort"
         app:layout_constraintTop_toTopOf="parent" />
 
