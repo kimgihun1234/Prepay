@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -25,7 +24,7 @@ public class StoreService {
     private final UserTeamRepository userTeamRepository;
 
     // 모든 가게 조회
-    public List<AllStoreRes> getAllStores(){
+    public List<AllStoreRes> getAllStores() {
         List<Store> stores = storeRepository.findAll();
         List<AllStoreRes> result = new ArrayList<>();
 
@@ -44,11 +43,11 @@ public class StoreService {
 
     }
 
-    public List<StoresRes> getNewNearStores(StoresReq coordinatesReq, String email) {
+    public List<AllStoreRes> getNewStoresForPrivate(long teamId, String email) {
         List<Store> stores = storeRepository.findAll();
-        UserTeam userTeam = userTeamRepository.findByTeamIdAndUser_Email(coordinatesReq.getTeamId(), email).orElseThrow();
+        UserTeam userTeam = userTeamRepository.findByTeamIdAndUser_Email(teamId, email).orElseThrow();
         List<TeamStore> teamStores = userTeam.getTeam().getTeamStores();
-        List<StoresRes> result = new ArrayList<>();
+        List<AllStoreRes> result = new ArrayList<>();
 //        for (TeamStore teamStore : teamStores) {
 //            StoresRes storesRes = new StoresRes(teamStore);
 //            storesRes.setLatitude(teamStore.getStore().getLatitude());
@@ -57,20 +56,16 @@ public class StoreService {
 //            result.add(storesRes);
 //        }
         for (Store store : stores) {
-            if (calDistance(store.getLongitude(), store.getLatitude(), coordinatesReq.getLongitude(), coordinatesReq.getLatitude())<2F) {
-                boolean check = false;
-                for (TeamStore teamStore : teamStores) {
-                    if (teamStore.getStore() == store) {
-                        check=true;
-                    }
+            boolean check = false;
+            for (TeamStore teamStore : teamStores) {
+                if (teamStore.getStore() == store) {
+                    check = true;
                 }
-                if(check)continue;
-                StoresRes storesRes = new StoresRes(store);
-                storesRes.setMyteam(false);
-                storesRes.setLongitude(store.getLongitude());
-                storesRes.setLatitude(store.getLatitude());
-                result.add(storesRes);
             }
+            if (check) continue;
+            AllStoreRes storesRes = new AllStoreRes(store);
+            result.add(storesRes);
+
         }
 
         return result;

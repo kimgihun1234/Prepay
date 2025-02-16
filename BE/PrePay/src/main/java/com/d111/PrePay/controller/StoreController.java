@@ -21,11 +21,11 @@ public class StoreController {
 
     private final StoreService storeService;
 
-    @PostMapping("/stores")
+    @GetMapping("/stores/{teamId}")
     @Operation(summary = "팀 가맹점 추가용 가맹점 리스트 조회")
-    public ResponseEntity<List<StoresRes>> getNewNearStores(@RequestBody StoresReq req, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<List<AllStoreRes>> getNewStoresForPrivate(@RequestParam long teamId, @AuthenticationPrincipal CustomUserDetails userDetails) {
         String email = userDetails.getUsername();
-        return ResponseEntity.ok(storeService.getNewNearStores(req,email));
+        return ResponseEntity.ok(storeService.getNewStoresForPrivate(teamId,email));
     }
 
     @GetMapping("/stores/all")

@@ -10,8 +10,6 @@ public class AllStoreRes {
     private String storeName;
     private String address;
     private String type;
-    private float longitude;
-    private float latitude;
     private String storeImgUrl;
     private String storeDescription;
 
@@ -20,8 +18,6 @@ public class AllStoreRes {
         this.storeName = store.getStoreName();
         this.address = store.getAddress();
         this.type = store.getType();
-        this.longitude = store.getLongitude();
-        this.latitude = store.getLatitude();
         this.storeImgUrl = store.getStoreImgUrl();
         this.storeDescription = store.getStoreDescription();
     }
