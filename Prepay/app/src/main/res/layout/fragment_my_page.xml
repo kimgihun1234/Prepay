@@ -33,6 +33,8 @@
         app:layout_constraintEnd_toStartOf="@+id/enter_group_btn"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- 세로 중앙 정렬 -->
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/enter_group_btn"
         android:layout_width="wrap_content"
@@ -51,6 +53,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="0dp"
+        android:layout_height="400dp"
+        android:layout_marginTop="8dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:paddingStart="50dp"
+        android:paddingTop="100dp"
+        android:paddingEnd="50dp"
+        android:paddingBottom="150dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_group_btn" />
 
     <ImageButton
         android:id="@+id/group_detail_btn"
@@ -74,23 +92,5 @@
         android:src="@drawable/pay_btn"
         app:layout_constraintBottom_toBottomOf="@+id/group_detail_btn"
         app:layout_constraintEnd_toEndOf="parent" />
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:orientation="vertical"
-        android:paddingStart="20dp"
-        android:paddingTop="130dp"
-        android:paddingEnd="20dp"
-        android:paddingBottom="120dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.372" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -74,8 +74,6 @@ class PermissionChecker(activityOrFragment: Any) {
         }
     }
 
-
-
     //사용자가 권한을 허용하지 않았을때, 설정창으로 이동
     private fun moveToSettings() {
         val alertDialog = AlertDialog.Builder( context )

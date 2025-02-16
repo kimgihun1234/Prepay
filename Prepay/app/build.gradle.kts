@@ -97,4 +97,7 @@ dependencies {
 
     // 색깔
     implementation("androidx.palette:palette:1.0.0")
+
+    // splash
+    implementation("androidx.core:core-splashscreen:1.0.0")
 }

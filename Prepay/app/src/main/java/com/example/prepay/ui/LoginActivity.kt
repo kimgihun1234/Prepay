@@ -6,7 +6,10 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
+import androidx.core.splashscreen.SplashScreen
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.prepay.ApplicationClass
 import com.example.prepay.BaseActivity
 import com.example.prepay.CommonUtils
@@ -25,6 +28,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.util.Utility
+import okhttp3.internal.http2.Header
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

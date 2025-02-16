@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
+
+    <color name="black">#394750</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="text_main_color">#0066CC</color>
+    <color name="text_main_color">#FFFFFF</color>
     <color name="errorMessage">#CF0401</color>
     <color name="successMessage">#20B03D</color>
     <color name="plater1">#EC9B3B</color>
@@ -14,4 +15,7 @@
     <color name="plater7">#8571BF</color>
     <color name="plater8">#187498</color>
     <color name="plater9">#83C4C3</color>
+    <color name="checked_color">#0066CC</color>
+    <color name="unchecked_color">#394750</color>
 </resources>
+
