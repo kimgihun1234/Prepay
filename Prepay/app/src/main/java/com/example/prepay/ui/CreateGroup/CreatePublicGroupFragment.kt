@@ -26,13 +26,12 @@ import com.example.prepay.SharedPreferencesUtil
 import com.example.prepay.data.response.BootPayChargeReq
 import com.example.prepay.data.model.dto.PublicPrivateTeam
 import com.example.prepay.data.model.dto.Restaurant
-import com.example.prepay.data.response.StoreIdReq
 import com.example.prepay.data.response.TeamIdRes
 import com.example.prepay.data.response.TeamStoreReq
 import com.example.prepay.databinding.FragmentCreatePublicGroupBinding
-import com.example.prepay.ui.GroupDetails.GroupDetailsFragmentViewModel
 import com.example.prepay.ui.GroupDetails.RestaurantSearchAdapter
 import com.example.prepay.ui.MainActivity
+import com.example.prepay.ui.MainActivityViewModel
 import com.example.prepay.util.BootPayManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancelChildren
@@ -60,7 +59,6 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
     private lateinit var priceText: String
 
     private lateinit var editTexts: List<EditText>
-    private val groupDetailsFragmentViewModel: GroupDetailsFragmentViewModel by viewModels()
     private lateinit var searchAdapter: RestaurantSearchAdapter
     private var selectedRestaurantName: String = ""
 
@@ -78,7 +76,9 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
             binding.textInputText
         )
         binding.searchResults.visibility = View.GONE
-        groupDetailsFragmentViewModel.getStoreId(SharedPreferencesUtil.getAccessToken()!!,StoreIdReq(0.0,0.0, 1))
+
+
+        createGroupViewModel.getAllStore(SharedPreferencesUtil.getAccessToken()!!)
         initRecyclerView()
         setOnQueryTextListener()
         initEvent()
@@ -86,7 +86,7 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
         initFocusChangeListener()
     }
     private fun observeStoresListInfo() {
-        groupDetailsFragmentViewModel.storesListInfo.observe(viewLifecycleOwner) { stores ->
+        createGroupViewModel.storeListInfo.observe(viewLifecycleOwner) { stores ->
             val queryText = binding.searchRestaurant.query.toString()
 
             if (stores.isNotEmpty() && queryText.isNotEmpty()) {
@@ -192,10 +192,10 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
                 }
                 Log.d(TAG, "storeId: $storeId")
                 Log.d(TAG, "teamId: $teamId")
-                val request = TeamStoreReq(storeId, teamId, priceText.toInt())
+                val request = TeamStoreReq(storeId, teamId)
                 Log.d(TAG, "selectedImageMultipart: $selectedImageMultipart")
                 val response = withContext(Dispatchers.IO) {
-                    RetrofitUtil.teamService.createStore(SharedPreferencesUtil.getAccessToken()!!, request, selectedImageMultipart)
+                    RetrofitUtil.teamService.createStore(SharedPreferencesUtil.getAccessToken()!!, request)
                 }
 
                 Log.d(TAG, "response: $response")
@@ -366,7 +366,7 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
     }
 
     private fun filterSearchResults(query: String) {
-        val storeList = groupDetailsFragmentViewModel.storesListInfo.value
+        val storeList = createGroupViewModel.storeListInfo.value
         if (storeList == null) {
             Log.e(TAG, "storesListInfo is null, cannot filter results.")
             return
@@ -379,8 +379,9 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
 
     private fun getSearchResults(query: String): List<Restaurant> {
         // 여기에 식당 검색 로직 추가
-        val storeList = groupDetailsFragmentViewModel.storesListInfo.value
-        Log.d(TAG, "getSearchResults: ${groupDetailsFragmentViewModel.storesListInfo.value}")
+
+        val storeList = createGroupViewModel.storeListInfo.value
+        Log.d(TAG, "getSearchResults: ${createGroupViewModel.storeListInfo.value}")
         return storeList?.map { store ->
             Restaurant(store.storeId, store.storeName)
         }?.filter { it.name.contains(query, ignoreCase = true) } ?: emptyList()
