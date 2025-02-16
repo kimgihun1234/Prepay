@@ -6,31 +6,74 @@
     android:layout_height="match_parent"
     tools:context=".ui.MyPage.MyPageFragment">
 
+    <ImageView
+        android:layout_width="172dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/sunpick_prepay"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/create_group_btn"
-        android:layout_width="93dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="156dp"
-        android:background="@color/cardview_light_background"
-        android:text="그룹생성"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="104dp"
+        android:layout_marginEnd="4dp"
+        android:background="@null"
+        android:drawableLeft="@drawable/group_add"
+        android:drawablePadding="2dp"
+        android:fontFamily="@font/samsung_font_2"
+        android:scaleX="0.9"
+        android:text="그룹 생성"
+        android:textColor="#9CA4AB"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/enter_group_btn"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/enter_group_btn"
-        android:layout_width="93dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="19dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="44dp"
-        android:background="@color/cardview_light_background"
-        android:text="그룹입장"
-        android:textSize="15sp"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="104dp"
+        android:layout_marginEnd="36dp"
+        android:background="@null"
+        android:drawableLeft="@drawable/group_join"
+        android:fontFamily="@font/samsung_font_2"
+        android:text="코드 입력"
+        android:scaleX="0.9"
+        android:drawablePadding="1dp"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="#9CA4AB"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/create_group_btn"
         app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageButton
+        android:id="@+id/group_detail_btn"
+        android:layout_width="150dp"
+        android:layout_height="145dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="100dp"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:src="@drawable/group_detail_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/pay_btn"
+        android:layout_width="150dp"
+        android:layout_height="145dp"
+        android:layout_marginEnd="32dp"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:src="@drawable/pay_btn"
+        app:layout_constraintBottom_toBottomOf="@+id/group_detail_btn"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
