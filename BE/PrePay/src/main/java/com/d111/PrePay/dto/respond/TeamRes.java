@@ -17,6 +17,7 @@ public class TeamRes {
     private int teamBalance;
     private Long teamId;
     private String color;
+    private long genDate;
 
     public TeamRes(UserTeam userTeam, int teamBalance) {
         this.teamId = userTeam.getTeam().getId();
@@ -25,6 +26,7 @@ public class TeamRes {
         this.balance = userTeam.getTeam().getDailyPriceLimit() - userTeam.getUsedAmount();
         this.teamBalance = teamBalance;
         this.color=userTeam.getTeam().getColor();
+        this.genDate = userTeam.getTeam().getGenDate();
         log.info("dailyLimit : {} , usedAmount : {}", userTeam.getTeam().getDailyPriceLimit(), userTeam.getUsedAmount());
     }
 }

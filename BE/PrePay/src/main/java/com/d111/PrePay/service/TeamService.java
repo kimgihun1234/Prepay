@@ -357,7 +357,7 @@ public class TeamService {
                 .countLimit(request.getCountLimit())
                 .teamMessage(request.getTeamMessage())
                 .color(teamColor)
-
+                .genDate(System.currentTimeMillis())
                 .teamInitializer(userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("유저를 찾을 수 없습니다.")))
                 .build();
 

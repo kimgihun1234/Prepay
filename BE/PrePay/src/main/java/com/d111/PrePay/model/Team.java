@@ -35,6 +35,8 @@ public class Team {
 
     private String color;
 
+    private long genDate;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User teamInitializer;
