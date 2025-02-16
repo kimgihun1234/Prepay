@@ -82,6 +82,16 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
         binding.enterGroupBtn.setOnClickListener {
             mainActivity.enterDialog()
         }
+        binding.groupDetailBtn.setOnClickListener {
+            val currentPosition = binding.viewPager.currentItem
+            val selectedTeam = cardAdapter.teamList.getOrNull(currentPosition)
+            selectedTeam?.let {
+                activityViewModel.setTeamId(it.teamId.toLong())
+                mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.GROUP_DETAILS_FRAGMENT)
+            }
+        }
+
+
         mainActivity.hideBottomNav(false)
     }
 
