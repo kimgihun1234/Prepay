@@ -91,6 +91,8 @@ interface TeamService {
     @POST("/team/code")
     suspend fun makeCode(@Header("access") access: String,@Body request: TeamIdReq) :CodeRes
 
+    @GET("/team/code")
+    suspend fun getCode(@Header("access") access: String,@Query("teamId") teamId: Long) :CodeRes
 
     //특정 키워드로 공개된 팀을 검색합니다.
     @GET("/team/public-teams/{keyword}")

@@ -265,6 +265,15 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         binding.etInviteCode.text = inviteCode
         if(viewModel.userposition.value==false){
             binding.inviteCodeMakeBtn.visibility = View.GONE
+            lifecycleScope.launch {
+            val response = getCode(activityViewModel.teamId.value!!)
+                if (response != null) {
+                    Log.d(TAG, "결과값 성공: ${response.inviteCode}")
+                    binding.etInviteCode.text = response.inviteCode
+                } else {
+                Log.e(TAG, "초대 코드 생성 실패")
+                }
+            }
         }
         binding.inviteCodeMakeBtn.setOnClickListener {
             lifecycleScope.launch {
@@ -381,6 +390,23 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             return@withContext null // 실패 시 null 반환
         }
     }
+
+    private suspend fun getCode(teamId: Long): CodeRes? {
+        return withContext(Dispatchers.IO) {
+            runCatching {
+                RetrofitUtil.teamService.getCode(
+                    SharedPreferencesUtil.getAccessToken()!!,
+                    teamId
+                )
+            }.onSuccess { response ->
+                return@withContext response
+            }.onFailure { e ->
+                Log.e(TAG, "API 호출 실패: ${e.message}", e)
+            }
+            return@withContext null // 실패 시 null 반환
+        }
+    }
+
 
     fun moneyChange(moneychange: MoneyChangeReq){
         lifecycleScope.launch {
