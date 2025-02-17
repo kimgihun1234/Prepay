@@ -147,7 +147,7 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/grouptext_round_backgound"
         android:text="등록"
@@ -190,52 +190,104 @@
 
     <RadioGroup
         android:id="@+id/color_selector"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_width="281dp"
+        android:layout_height="104dp"
         android:layout_marginTop="8dp"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/color_text">
 
-        <RadioButton
-            android:id="@+id/radio1"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/radio_selector1"
-            android:button="@null" />
+        <!-- GridLayout을 사용하여 5개의 열로 두 줄을 구성 -->
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:columnCount="5"
+            android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/radio2"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/radio_selector2"
-            android:button="@null" />
+            <!-- 첫 번째 행: 첫 번째 5개의 RadioButton -->
+            <RadioButton
+                android:id="@+id/radio1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/radio_selector1"
+                android:button="@null" />
 
-        <RadioButton
-            android:id="@+id/radio3"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/radio_selector3"
-            android:button="@null"/>
+            <RadioButton
+                android:id="@+id/radio2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/radio_selector2"
+                android:button="@null" />
 
-        <RadioButton
-            android:id="@+id/radio4"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/radio_selector4"
-            android:button="@null"/>
+            <RadioButton
+                android:id="@+id/radio3"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/radio_selector3"
+                android:button="@null" />
 
-        <RadioButton
-            android:id="@+id/radio5"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/radio_selector5"
-            android:button="@null"/>
+            <RadioButton
+                android:id="@+id/radio4"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/radio_selector4"
+                android:button="@null" />
+
+            <RadioButton
+                android:id="@+id/radio5"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/radio_selector5"
+                android:button="@null" />
+
+            <!-- 두 번째 행: 나머지 5개의 RadioButton -->
+            <RadioButton
+                android:id="@+id/radio6"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/radio_selector6"
+                android:button="@null" />
+
+            <RadioButton
+                android:id="@+id/radio7"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/radio_selector7"
+                android:button="@null" />
+
+            <RadioButton
+                android:id="@+id/radio8"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/radio_selector8"
+                android:button="@null" />
+
+            <RadioButton
+                android:id="@+id/radio9"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/radio_selector9"
+                android:button="@null" />
+
+            <RadioButton
+                android:id="@+id/radio10"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/radio_selector10"
+                android:button="@null" />
+
+        </GridLayout>
 
     </RadioGroup>
 </androidx.constraintlayout.widget.ConstraintLayout>
