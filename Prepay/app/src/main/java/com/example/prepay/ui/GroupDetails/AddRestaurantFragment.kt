@@ -17,13 +17,14 @@ import com.example.prepay.RetrofitUtil
 import com.example.prepay.SharedPreferencesUtil
 import com.example.prepay.data.response.BootPayChargeReq
 import com.example.prepay.data.model.dto.Restaurant
-import com.example.prepay.data.response.StoreIdReq
+import com.example.prepay.data.response.TeamStoreReq
 import com.example.prepay.databinding.FragmentAddRestaurantBinding
 import com.example.prepay.ui.CreateGroup.CreateGroupViewModel
 import com.example.prepay.ui.MainActivity
 import com.example.prepay.ui.MainActivityViewModel
 import com.example.prepay.util.BootPayManager
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -50,7 +51,8 @@ class AddRestaurantFragment : BaseFragment<FragmentAddRestaurantBinding>(
 
         binding.searchResults.visibility = View.GONE
 
-        groupDetailsFragmentViewModel.getStoreId(SharedPreferencesUtil.getAccessToken()!!,StoreIdReq(0.0,0.0, 1))
+        groupDetailsFragmentViewModel.getStoreId(SharedPreferencesUtil.getAccessToken()!!, activityViewModel.teamId.value!!.toString().toLong())
+        Log.d(TAG, "AddRestaurantFragment: ${activityViewModel.teamId.value!!.toString().toLong()}")
         initRecyclerView()
         setOnQueryTextListener()
         initEvent()
@@ -86,19 +88,19 @@ class AddRestaurantFragment : BaseFragment<FragmentAddRestaurantBinding>(
                     BootPayManager.startPayment(requireActivity(), selectedRestaurantName, totalPrice) { receiptId, price ->
 
                         Log.d(TAG, "storeId: $storeId")
-                        Log.d(TAG, "teamId: $teamId, price: ${price}, ${totalPrice.toInt()}")
+                        Log.d(TAG, "teamId: $teamId, price: ${price}")
                         Log.d(TAG, "receiptId: $receiptId")
-
+                        registerStore(storeId,teamId)
                         lifecycleScope.launch {
-
                             try {
                                 val chargeReceipt = teamId?.let { teamId -> storeId?.let { storeId ->
-                                    BootPayChargeReq(teamId.toInt(),
-                                        storeId, totalPrice.toInt(), receiptId)
+                                    BootPayChargeReq(
+                                        teamId.toInt(),storeId, totalPrice.toInt(), receiptId)
                                 } }
                                 val response = withContext(Dispatchers.IO) {
+                                    delay(1000)
                                     chargeReceipt?.let { it ->
-                                        RetrofitUtil.bootPayService.getBootPay("user1@gmail.com",
+                                        RetrofitUtil.bootPayService.getBootPay(SharedPreferencesUtil.getAccessToken()!!,
                                             it
                                         )
                                     }
@@ -120,6 +122,38 @@ class AddRestaurantFragment : BaseFragment<FragmentAddRestaurantBinding>(
             }
         }
     }
+
+    private fun registerStore(storeId: Int?, teamId: Long?) {
+        lifecycleScope.launch {
+            try {
+                Log.d("registerStore", "storeId: $storeId")
+                Log.d("registerStore", "teamId: $teamId")
+
+                if (teamId == null || storeId == null) {
+                    Toast.makeText(requireContext(), "팀 ID 또는 스토어 ID가 없습니다.", Toast.LENGTH_SHORT).show()
+                    return@launch
+                }
+                val request = TeamStoreReq(storeId, teamId.toInt())
+                val response = withContext(Dispatchers.IO) {
+                    RetrofitUtil.teamService.createStore(SharedPreferencesUtil.getAccessToken()!!, request)
+                }
+
+                Log.d(TAG, "response: $response")
+
+                if (response.isSuccessful) {
+                    Toast.makeText(requireContext(), "스토어가 성공적으로 연결되었습니다.", Toast.LENGTH_SHORT).show()
+                } else {
+                    Log.e(TAG, "스토어 연결 실패: ${response?.errorBody()?.string()}")
+                }
+
+            } catch (e: Exception) {
+                Log.e(TAG, "네트워크 요청 실패: ${e.localizedMessage}", e)
+            } finally {
+
+            }
+        }
+    }
+
 
     private fun setOnQueryTextListener() {
         binding.addRestaurantName.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
