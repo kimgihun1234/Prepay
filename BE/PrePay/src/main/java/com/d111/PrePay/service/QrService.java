@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Slf4j
@@ -33,14 +34,14 @@ public class QrService {
         if (byTeamIdAndUserEmail.isPresent()) {
             userTeam = byTeamIdAndUserEmail.get();
         } else {
-            return new StandardRes("소속되지 않은 팀입니다. email or teamId 재확인", 400);
+            throw new NoSuchElementException("소속되지 않은 팀입니다. email or teamId 재확인");
         }
         if (userTeam.isPrivilege()) {
             Qr qr = new Qr(QrType.COMPANY_PARTY,userTeam.getUser());
             qrRepository.save(qr);
             return new StandardRes(qr.getUuid(), 201);
         } else {
-            throw new RuntimeException("회식 권한이 없습니다.");
+            throw new NoSuchElementException("회식 권한이 없습니다.");
         }
     }
 

@@ -22,7 +22,6 @@ import java.util.Optional;
 
 @Component
 @Profile({"local","prod"})
-
 @RequiredArgsConstructor
 @Slf4j
 public class DbInitConfig implements ApplicationRunner {

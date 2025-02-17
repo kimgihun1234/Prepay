@@ -2,6 +2,7 @@ package com.d111.PrePay.service;
 
 import com.d111.PrePay.dto.request.DetailHistoryReq;
 import com.d111.PrePay.dto.request.OrderCreateReq;
+import com.d111.PrePay.exception.FcmException;
 import com.d111.PrePay.exception.NoQrException;
 import com.d111.PrePay.exception.NotEnoughBalanceException;
 import com.d111.PrePay.model.*;
@@ -38,9 +39,9 @@ public class PosService {
         });
 
         if (qr.getGenDate() < System.currentTimeMillis() - 1000 * 60) {
-            throw new RuntimeException("시간 초과");
+            throw new NoQrException("시간 초과");
         } else if (qr.isUsed()) {
-            throw new RuntimeException("사용된 QR");
+            throw new NoQrException("사용된 QR");
         }
         qr.setUsed(true);
         OrderHistory orderHistory = new OrderHistory(orderReq);
@@ -53,7 +54,7 @@ public class PosService {
         UserTeam userTeam = userTeamRepository.findByTeamIdAndUser_Email(orderReq.getTeamId(), email).orElseThrow(() ->
         {
             log.error("팀 아아디 : {}, 이메일 : {}", orderReq.getTeamId(), email);
-            return new RuntimeException("userTeam 찾기 실패");
+            return new NoSuchElementException("userTeam 찾기 실패");
         });
 
         Team team = userTeam.getTeam();
@@ -87,7 +88,7 @@ public class PosService {
             fcmService.sendDataMessageTo(user.getFcmToken(), "완료", "주문이 완료되었습니다.");
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("fcm 오류 발생");
+            throw new FcmException("fcm 오류 발생");
         }
 
         return orderHistory.getId();

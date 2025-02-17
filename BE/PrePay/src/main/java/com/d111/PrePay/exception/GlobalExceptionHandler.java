@@ -1,6 +1,7 @@
 package com.d111.PrePay.exception;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.protocol.HTTP;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -25,6 +27,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<Object> handleNoSuchElementException(NoSuchElementException e){
+        log.error("NoSuchElementSuchException",e);
+        StackTraceElement[] stackTrace = e.getStackTrace();
+        StackTraceElement stackTraceElement = stackTrace[0];
         Map<String, Object> response = makeResponse(e, HttpStatus.NOT_FOUND);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }

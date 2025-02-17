@@ -22,6 +22,7 @@ import com.d111.PrePay.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -176,17 +177,16 @@ public class TeamService {
     @Transactional
     public GetUserOfTeamRes signInTeam(Long userId, SignInTeamReq req) {
         Team findTeam = teamRepository.findByTeamPassword(req.getTeamPassword())
-                .orElseThrow(() -> new RuntimeException("일치하는 팀이 없습니다."));
+                .orElseThrow(() -> new NoSuchElementException("일치하는 팀이 없습니다."));
 
         User findUser = userRepository.findById(userId).orElseThrow();
 
         if (userTeamRepository.existsByUserAndTeam(findUser, findTeam)) {
-            log.error("이미 가입된 팀입니다.");
-            throw new RuntimeException();
+            throw new DuplicateKeyException("이미 가입된 팀입니다.");
         }
 
         if (findTeam.getCodeGenDate() < System.currentTimeMillis() - 1000 * 60 * 60 * 3) {
-            throw new RuntimeException("초대 코드 시간 만료");
+            throw new NoSuchElementException("초대 코드 시간 만료");
         }
         UserTeam userTeam = UserTeam.builder()
                 .team(findTeam)
@@ -267,8 +267,8 @@ public class TeamService {
     @Transactional
     public TeamCreateStoreRes createStore(TeamCreateStoreReq req) {
         log.info("팀아이디 : {}, 스토어아이디 : {}", req.getTeamId(), req.getStoreId());
-        Team findTeam = teamRepository.findById(req.getTeamId()).orElseThrow();
-        Store findStore = storeRepository.findById(req.getStoreId()).orElseThrow();
+        Team findTeam = teamRepository.findById(req.getTeamId()).orElseThrow(() -> new NoSuchElementException("팀 없음"));
+        Store findStore = storeRepository.findById(req.getStoreId()).orElseThrow(() -> new NoSuchElementException("스토어 없음"));
 
 
         TeamStore teamStore = new TeamStore(findTeam, findStore);
@@ -526,7 +526,7 @@ public class TeamService {
         Team team = teamRepository.findById(teamId).orElseThrow();
         String teamPassword = team.getTeamPassword();
         if (teamPassword == null || System.currentTimeMillis() - (1000 * 60 * 60 * 3) > team.getCodeGenDate()) {
-            throw new RuntimeException("코드 시간 만료 재발급 문의");
+            throw new NoSuchElementException("코드 시간 만료 재발급 문의");
         }
 
         return new InviteCodeRes(teamPassword, team.getCodeGenDate());
@@ -563,7 +563,7 @@ public class TeamService {
         UserTeam userTeam;
         if (opUserTeam.isEmpty()) {
             User user = userRepository.findUserByEmail(email);
-            Team team = teamRepository.findById(teamId).orElseThrow(() -> new RuntimeException("팀 없음"));
+            Team team = teamRepository.findById(teamId).orElseThrow(() -> new NoSuchElementException("팀 없음"));
             userTeam = UserTeam.builder()
                     .team(team)
                     .user(user)
@@ -625,5 +625,11 @@ public class TeamService {
         }
         log.info("리스트 사이즈 : {}", result.size());
         return result;
+    }
+
+    public PrivateStoreDetail getPrivateDetail(String email, long teamId, long storeId) {
+        TeamStore teamStore = teamStoreRepository.findByTeamIdAndStoreId(teamId, storeId).orElseThrow(()->new NoSuchElementException("teamStore 없음"));
+        Store store = teamStore.getStore();
+        return new PrivateStoreDetail(teamStore,store);
     }
 }

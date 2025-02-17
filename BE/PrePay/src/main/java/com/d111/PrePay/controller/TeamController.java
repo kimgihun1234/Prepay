@@ -270,4 +270,10 @@ public class TeamController {
         String email = userDetails.getUsername();
         return ResponseEntity.ok(teamService.get2kmPublicTeams(email, latitude, longitude));
     }
+
+    @GetMapping("/team/detail")
+    @Operation(summary = "프라이빗 팀 상점 상세 조회")
+    public ResponseEntity<PrivateStoreDetail> getPrivateDetail(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam long teamId, @RequestParam long storeId) {
+        return ResponseEntity.ok(teamService.getPrivateDetail(userDetails.getUsername(),teamId, storeId));
+    }
 }

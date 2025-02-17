@@ -3,6 +3,8 @@ package com.d111.PrePay.bootpay;
 import com.d111.PrePay.bootpay.response.PaymentResponse;
 import com.d111.PrePay.bootpay.util.Bootpay;
 import com.d111.PrePay.dto.request.BootChargeReq;
+import com.d111.PrePay.exception.BootpayException;
+import com.d111.PrePay.exception.FcmException;
 import com.d111.PrePay.model.TeamStore;
 import com.d111.PrePay.model.User;
 import com.d111.PrePay.repository.TeamStoreRepository;
@@ -57,7 +59,7 @@ public class BootpayService {
             log.info("결제 금액 {}", response.getData().getPrice());
             log.info("검증 : {}", str);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new BootpayException("부트페이에서 오류 발생");
         }
         TeamStore teamStore = teamStoreRepository.findByTeamIdAndStoreId(bootChargeReq.getTeamId(), bootChargeReq.getStoreId()).orElseThrow();
         teamStore.setTeamStoreBalance(teamStore.getTeamStoreBalance() + bootChargeReq.getAmount());
@@ -68,7 +70,7 @@ public class BootpayService {
         try {
             fcmService.sendDataMessageTo(user.getFcmToken(), "완료", "금액 : " + response.getData().getPrice() + "원 " + teamName + " 그룹의 " + storeName + " 가게에 " + "충전이 완료되었습니다.");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new FcmException("Fcm 예외 발생");
         }
 
 
@@ -88,7 +90,7 @@ public class BootpayService {
             bootpayTokenDate = System.currentTimeMillis();
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new BootpayException("부트페이 예외 발생");
         }
 
     }
