@@ -34,16 +34,17 @@
             android:id="@+id/bottom_navigation"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:itemTextAppearanceActive="@style/BottomNavTextStyle"
             app:itemTextAppearanceInactive="@style/BottomNavTextStyle"
             app:menu="@menu/bottom_nav"
-            app:itemBackground="@android:color/transparent"
             app:itemIconTint="@color/selector_icon_color"
-            app:itemTextColor="@color/selector_text_color" />
+            app:itemTextColor="@color/selector_text_color"
+            app:itemActiveIndicatorStyle="@android:color/transparent"
+            app:itemRippleColor="@android:color/transparent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- 내비게이션 드로어 영역 -->
