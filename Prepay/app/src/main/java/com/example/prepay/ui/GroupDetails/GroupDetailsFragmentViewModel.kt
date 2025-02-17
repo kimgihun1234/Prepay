@@ -5,18 +5,19 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.example.prepay.RetrofitUtil
+
 import com.example.prepay.SharedPreferencesUtil
 import com.example.prepay.data.model.dto.OrderHistory
 import com.example.prepay.data.model.dto.Restaurant
 import com.example.prepay.data.response.BanUserReq
 import com.example.prepay.data.response.OrderHistoryReq
-import com.example.prepay.data.response.StoreIdReq
+ import com.example.prepay.data.response.StoreIdReq
 import com.example.prepay.data.response.StoreIdRes
 import com.example.prepay.data.response.Team
 import com.example.prepay.data.response.TeamDetailRes
+import com.example.prepay.data.response.StoreRes
 import com.example.prepay.data.response.TeamIdStoreRes
 import com.example.prepay.data.response.TeamUserRes
 import kotlinx.coroutines.launch
@@ -34,8 +35,8 @@ class GroupDetailsFragmentViewModel : ViewModel() {
     val userLocation: LiveData<Location> get() = _userLocation
 
 
-    private val _storesListInfo = MutableLiveData<List<StoreIdRes>>()
-    val storesListInfo: LiveData<List<StoreIdRes>>
+    private val _storesListInfo = MutableLiveData<List<StoreRes>>()
+    val storesListInfo: LiveData<List<StoreRes>>
         get() = _storesListInfo
 
     private val _userposition = MutableLiveData<Boolean>()
@@ -138,10 +139,10 @@ class GroupDetailsFragmentViewModel : ViewModel() {
             }
         }
     }
-    fun getStoreId(access:String,storeReq : StoreIdReq) {
+    fun getStoreId(access:String, teamId: Long) {
         viewModelScope.launch {
             runCatching {
-                RetrofitUtil.storeService.getStores(storeReq, access)
+                RetrofitUtil.storeService.getStores(access, teamId)
             } .onSuccess {
                 Log.d("StoreId", "스토어 값들 가져오기 성공: $it")
                 _storesListInfo.value = it
@@ -153,6 +154,4 @@ class GroupDetailsFragmentViewModel : ViewModel() {
             }
         }
     }
-
-    fun get
 }

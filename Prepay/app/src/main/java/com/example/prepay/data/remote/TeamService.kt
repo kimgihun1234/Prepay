@@ -34,11 +34,10 @@ import retrofit2.http.Query
 interface TeamService {
 
     //팀 가맹점 추가
-    @Multipart
     @POST("team/store")
     suspend fun createStore(@Header("access") access: String,
-                            @Part("request") request: TeamStoreReq,
-                            @Part image: MultipartBody.Part?): Response<TeamStoreRes>
+                            @Body request: TeamStoreReq): Response<TeamStoreRes>
+
     //팀을 생성하는 과정
     @Multipart
     @POST("team/signup")
