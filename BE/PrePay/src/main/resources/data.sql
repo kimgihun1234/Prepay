@@ -205,7 +205,7 @@ INSERT INTO order_history (company_dinner,
 VALUES (0, -- company_dinner (0 = false, 1 = true)
         0, -- refund_requested (0 = false, 1 = true)
         30000, -- total_price
-        0, -- with_draw (0 = false, 1 = true)
+        1, -- with_draw (0 = false, 1 = true)
         1739507338, -- order_date (Unix timestamp in milliseconds)
         2, -- store_store_id (assuming store with ID 1 exists)
         1, -- team_team_id (assuming team with ID 2 exists)
@@ -238,7 +238,7 @@ INSERT INTO order_history (company_dinner,
 VALUES (1, -- company_dinner (0 = false, 1 = true)
         0, -- refund_requested (0 = false, 1 = true)
         150000, -- total_price
-        0, -- with_draw (0 = false, 1 = true)
+        1, -- with_draw (0 = false, 1 = true)
         1739507338, -- order_date (Unix timestamp in milliseconds)
         2, -- store_store_id (assuming store with ID 1 exists)
         1, -- team_team_id (assuming team with ID 2 exists)
@@ -271,7 +271,7 @@ INSERT INTO order_history (company_dinner,
 VALUES (1, -- company_dinner (0 = false, 1 = true)
         0, -- refund_requested (0 = false, 1 = true)
         45000, -- total_price
-        0, -- with_draw (0 = false, 1 = true)
+        1, -- with_draw (0 = false, 1 = true)
         1739507338, -- order_date (Unix timestamp in milliseconds)
         3, -- store_store_id (assuming store with ID 1 exists)
         1, -- team_team_id (assuming team with ID 2 exists)
@@ -304,7 +304,7 @@ INSERT INTO order_history (company_dinner,
 VALUES (0, -- company_dinner (0 = false, 1 = true)
         0, -- refund_requested (0 = false, 1 = true)
         8000, -- total_price
-        0, -- with_draw (0 = false, 1 = true)
+        1, -- with_draw (0 = false, 1 = true)
         1739507338, -- order_date (Unix timestamp in milliseconds)
         3, -- store_store_id (assuming store with ID 1 exists)
         1, -- team_team_id (assuming team with ID 2 exists)
@@ -336,7 +336,7 @@ INSERT INTO order_history (company_dinner,
 VALUES (1, -- company_dinner (0 = false, 1 = true)
         0, -- refund_requested (0 = false, 1 = true)
         54000, -- total_price
-        0, -- with_draw (0 = false, 1 = true)
+        1, -- with_draw (0 = false, 1 = true)
         1739507338, -- order_date (Unix timestamp in milliseconds)
         10, -- store_store_id (assuming store with ID 1 exists)
         1, -- team_team_id (assuming team with ID 2 exists)
@@ -378,7 +378,7 @@ INSERT INTO order_history (company_dinner,
 VALUES (0, -- company_dinner (0 = false, 1 = true)
         0, -- refund_requested (0 = false, 1 = true)
         4500, -- total_price
-        0, -- with_draw (0 = false, 1 = true)
+        1, -- with_draw (0 = false, 1 = true)
         1739507338, -- order_date (Unix timestamp in milliseconds)
         6, -- store_store_id (assuming store with ID 1 exists)
         2, -- team_team_id (assuming team with ID 2 exists)
@@ -410,7 +410,7 @@ INSERT INTO order_history (company_dinner,
 VALUES (0, -- company_dinner (0 = false, 1 = true)
         0, -- refund_requested (0 = false, 1 = true)
         6500, -- total_price
-        0, -- with_draw (0 = false, 1 = true)
+        1, -- with_draw (0 = false, 1 = true)
         1739507338, -- order_date (Unix timestamp in milliseconds)
         6, -- store_store_id (assuming store with ID 1 exists)
         2, -- team_team_id (assuming team with ID 2 exists)
@@ -442,7 +442,7 @@ INSERT INTO order_history (company_dinner,
 VALUES (0, -- company_dinner (0 = false, 1 = true)
         0, -- refund_requested (0 = false, 1 = true)
         5500, -- total_price
-        0, -- with_draw (0 = false, 1 = true)
+        1, -- with_draw (0 = false, 1 = true)
         1739507338, -- order_date (Unix timestamp in milliseconds)
         1, -- store_store_id (assuming store with ID 1 exists)
         5, -- team_team_id (assuming team with ID 2 exists)
@@ -475,7 +475,7 @@ INSERT INTO order_history (company_dinner,
 VALUES (0, -- company_dinner (0 = false, 1 = true)
         0, -- refund_requested (0 = false, 1 = true)
         5500, -- total_price
-        0, -- with_draw (0 = false, 1 = true)
+        1, -- with_draw (0 = false, 1 = true)
         1739507338, -- order_date (Unix timestamp in milliseconds)
         1, -- store_store_id (assuming store with ID 1 exists)
         5, -- team_team_id (assuming team with ID 2 exists)
@@ -493,4 +493,45 @@ VALUES (5500, -- detail_price
         1, -- quantity
         @last_order_history_id, -- order_history_order_history_id
         '복숭아아이스티' -- product
+       );
+
+
+
+-- order_history 테이블에 데이터 삽입
+INSERT INTO order_history (company_dinner,
+                           refund_requested,
+                           total_price,
+                           with_draw,
+                           order_date,
+                           store_store_id,
+                           team_team_id,
+                           user_user_id)
+VALUES (0, -- company_dinner (0 = false, 1 = true)
+        0, -- refund_requested (0 = false, 1 = true)
+        30000, -- total_price
+        0, -- with_draw (0 = false, 1 = true)
+        1739507338, -- order_date (Unix timestamp in milliseconds)
+        2, -- store_store_id (assuming store with ID 1 exists)
+        1, -- team_team_id (assuming team with ID 2 exists)
+        1 -- user_user_id (assuming user with ID 3 exists)
+       );
+
+
+-- order_history 테이블에 데이터 삽입
+INSERT INTO order_history (company_dinner,
+                           refund_requested,
+                           total_price,
+                           with_draw,
+                           order_date,
+                           store_store_id,
+                           team_team_id,
+                           user_user_id)
+VALUES (0, -- company_dinner (0 = false, 1 = true)
+        0, -- refund_requested (0 = false, 1 = true)
+        30000, -- total_price
+        0, -- with_draw (0 = false, 1 = true)
+        1739507338, -- order_date (Unix timestamp in milliseconds)
+        3, -- store_store_id (assuming store with ID 1 exists)
+        1, -- team_team_id (assuming team with ID 2 exists)
+        3 -- user_user_id (assuming user with ID 3 exists)
        );

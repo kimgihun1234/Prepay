@@ -35,7 +35,7 @@ public class PosService {
     public Long makeOrder(OrderCreateReq orderReq, String email) {
         Qr qr = qrRepository.findByUuid(orderReq.getQrUUID()).orElseThrow(() -> {
             log.error("qr uuid : {}", orderReq.getQrUUID());
-            throw new NoQrException("존재하지 않는 qr");
+            return new NoQrException("존재하지 않는 qr");
         });
 
         if (qr.getGenDate() < System.currentTimeMillis() - 1000 * 60) {
@@ -60,7 +60,6 @@ public class PosService {
         Team team = userTeam.getTeam();
         User user = userTeam.getUser();
         TeamStore teamStore = teamStoreRepository.findTeamStoreByTeamAndStore(team, store);
-
         log.info("총 주문 금액 : {}", orderHistory.getTotalPrice());
         if (teamStore.getTeamStoreBalance() - orderHistory.getTotalPrice() < 0) {
             log.error("주문자 : {}", user.getEmail());

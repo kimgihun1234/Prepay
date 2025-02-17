@@ -5,8 +5,10 @@ import com.d111.PrePay.bootpay.util.Bootpay;
 import com.d111.PrePay.dto.request.BootChargeReq;
 import com.d111.PrePay.exception.BootpayException;
 import com.d111.PrePay.exception.FcmException;
+import com.d111.PrePay.model.OrderHistory;
 import com.d111.PrePay.model.TeamStore;
 import com.d111.PrePay.model.User;
+import com.d111.PrePay.repository.OrderHistoryRepository;
 import com.d111.PrePay.repository.TeamStoreRepository;
 import com.d111.PrePay.repository.UserRepository;
 import com.d111.PrePay.service.FCMService;
@@ -31,6 +33,7 @@ import java.util.Optional;
 public class BootpayService {
     private final UserRepository userRepository;
     private final TeamStoreRepository teamStoreRepository;
+    private final OrderHistoryRepository orderHistoryRepository;
     private Long bootpayTokenDate = null;
     private String bootpayToken;
     @Value("${bootpay.appid}")
@@ -63,9 +66,19 @@ public class BootpayService {
         }
         TeamStore teamStore = teamStoreRepository.findByTeamIdAndStoreId(bootChargeReq.getTeamId(), bootChargeReq.getStoreId()).orElseThrow();
         teamStore.setTeamStoreBalance(teamStore.getTeamStoreBalance() + bootChargeReq.getAmount());
+
+        OrderHistory orderHistory = new OrderHistory(bootChargeReq);
+        orderHistory.setTeam(teamStore.getTeam());
+
         String storeName = teamStore.getStore().getStoreName();
         String teamName = teamStore.getTeam().getTeamName();
         User user = userRepository.findUserByEmail(email);
+
+
+        orderHistory.setUser(user);
+        orderHistory.setStore(teamStore.getStore());
+        orderHistoryRepository.save(orderHistory);
+
         log.info(user.getFcmToken());
         try {
             fcmService.sendDataMessageTo(user.getFcmToken(), "완료", "금액 : " + response.getData().getPrice() + "원 " + teamName + " 그룹의 " + storeName + " 가게에 " + "충전이 완료되었습니다.");
