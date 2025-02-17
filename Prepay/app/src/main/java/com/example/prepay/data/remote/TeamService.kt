@@ -109,5 +109,5 @@ interface TeamService {
 
     @GET("/team/public/liked")
     suspend fun getlikeTeamList(@Header("access") access: String,@Query("latitude") latitude : Double, @Query("longitude") longitude:Double): List<PublicLikeRes>
-    
+
 }

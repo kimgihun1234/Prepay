@@ -77,7 +77,7 @@ class SignupFragment: BaseFragment<FragmentSignUpBinding>(
         binding.signUpSubmit.setOnClickListener { signUp() }
         setUpTextWatcher()  // hint 글자 크기 바꾸기
         binding.backBtn.setOnClickListener {
-            loginActivity.changeFragmentLogin(CommonUtils.LoginFragmentName.START_LOGIN_FRAGMENT)
+            loginActivity.changeFragmentLogin(CommonUtils.LoginFragmentName.LOGIN_FRAGMENT)
         }
     }
 
