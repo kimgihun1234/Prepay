@@ -14,7 +14,7 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
+        manifestPlaceholders["KAKAO_SCHEME"] = "kakaoo"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -100,4 +100,7 @@ dependencies {
 
     // splash
     implementation("androidx.core:core-splashscreen:1.0.0")
+
+
+
 }
