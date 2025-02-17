@@ -9,7 +9,7 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="180dp"
+        android:layout_width="184dp"
         android:layout_height="54dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="32dp"
@@ -50,102 +50,108 @@
         android:id="@+id/content_layout"
         android:layout_width="match_parent"
         android:layout_height="684dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="18dp"
         android:background="#F5F6FD"
         android:padding="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView22">
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="3dp"
-            android:background="@color/white" />
 
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPager"
-            android:layout_width="400dp"
-            android:layout_height="256dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="28dp"
-            android:layout_marginEnd="19dp"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:orientation="vertical"
-            android:paddingStart="30dp"
-            android:paddingTop="14dp"
-            android:paddingEnd="30dp"
-            android:paddingBottom="30dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/main_innor_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/main_page_box"
+            android:elevation="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/create_group_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_marginTop="36dp"
-            android:layout_marginEnd="92dp"
-            android:background="@null"
-            android:drawableLeft="@drawable/group_add"
-            android:drawablePadding="0dp"
-            android:fontFamily="@font/samsung_font_2"
-            android:letterSpacing="-0.04"
-            android:scaleX="0.9"
-            android:text="그룹 생성"
-            android:textColor="#9CA4AB"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/enter_group_btn"
-            app:layout_constraintTop_toBottomOf="@+id/viewPager" />
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPager"
+                android:layout_width="377dp"
+                android:layout_height="306dp"
+                android:layout_marginTop="0dp"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:orientation="vertical"
+                android:paddingStart="14dp"
+                android:paddingTop="40dp"
+                android:paddingEnd="14dp"
+                android:paddingBottom="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/enter_group_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_marginTop="36dp"
-            android:layout_marginEnd="64dp"
-            android:background="@null"
-            android:drawableLeft="@drawable/group_join"
-            android:drawablePadding="1dp"
-            android:fontFamily="@font/samsung_font_2"
-            android:letterSpacing="-0.04"
-            android:scaleX="0.9"
-            android:text="코드 입력"
-            android:textColor="#9CA4AB"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/viewPager" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/create_group_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="120dp"
+                android:background="@null"
+                android:drawableLeft="@drawable/group_add"
+                android:drawablePadding="0dp"
+                android:fontFamily="@font/samsung_font_2"
+                android:letterSpacing="-0.04"
+                android:scaleX="0.9"
+                android:text="그룹 생성"
+                android:textColor="#9CA4AB"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/enter_group_btn"
+                app:layout_constraintTop_toBottomOf="@+id/viewPager" />
 
-        <ImageButton
-            android:id="@+id/group_detail_btn"
-            android:layout_width="150dp"
-            android:layout_height="145dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginBottom="100dp"
-            android:background="@null"
-            android:scaleType="fitCenter"
-            android:src="@drawable/group_detail_btn"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/enter_group_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginTop="36dp"
+                android:layout_marginEnd="64dp"
+                android:background="@null"
+                android:drawableLeft="@drawable/group_join"
+                android:drawablePadding="1dp"
+                android:fontFamily="@font/samsung_font_2"
+                android:letterSpacing="-0.04"
+                android:scaleX="0.9"
+                android:text="코드 입력"
+                android:textColor="#9CA4AB"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/viewPager" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageButton
             android:id="@+id/pay_btn"
             android:layout_width="150dp"
             android:layout_height="145dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginEnd="80dp"
-            android:layout_marginBottom="8dp"
             android:background="@null"
             android:scaleType="fitCenter"
             android:src="@drawable/pay_btn"
-            app:layout_constraintBottom_toBottomOf="@+id/group_detail_btn"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:layout_editor_absoluteX="258dp" />
+
+        <ImageButton
+            android:id="@+id/group_detail_btn"
+            android:layout_width="150dp"
+            android:layout_height="145dp"
+            android:layout_marginTop="85dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/group_detail_btn"
+            app:layout_constraintTop_toBottomOf="@+id/main_innor_box"
+            tools:layout_editor_absoluteX="121dp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
