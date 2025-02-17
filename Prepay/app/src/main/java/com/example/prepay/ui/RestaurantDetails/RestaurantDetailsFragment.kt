@@ -92,7 +92,7 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
         }
         Log.d("RestaurantDetailsFragment", "getAllOrderHistoryList() 호출됨")
 
-
+        // 영수증 호출
         orderHistoryAdapter.imageButtonClick = object : OrderHistoryAdapter.ImageButtonClick {
             override fun onClick(itemView: View, order: OrderHistory, orderHistoryId : Int) {
                 val dialogBinding = DialogReceiptBinding.inflate(LayoutInflater.from(itemView.context))
@@ -114,7 +114,7 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
                     receiptHistoryAdapter.notifyDataSetChanged()
                 }
                 Log.d(TAG, "onClick: $orderHistoryId")
-                receiptViewModel.getAllReceiptList(orderHistoryId,SharedPreferencesUtil.getAccessToken()!!)
+                receiptViewModel.getAllReceiptList(orderHistoryId, SharedPreferencesUtil.getAccessToken()!!)
 
                 dialogBinding.recyclerView.layoutManager = LinearLayoutManager(itemView.context)
                 dialogBinding.useName.text = order.orderHistoryId.toString()
