@@ -60,8 +60,6 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private var mMap: GoogleMap? = null
     private var currentMarker: Marker? = null
-    var lat = 36.5
-    var lon = 128.0
     private val GPS_ENABLE_REQUEST_CODE = 2001
 
     /** permission check **/
@@ -124,7 +122,7 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
             Log.d(TAG,"결과 값"+it.toString())
             binding.restaurantNameBootpay.text = it.storeName
             binding.restaurantAddress.text = it.storeDescription
-            binding.totalAmount.text = it.balance.toString()
+            binding.totalAmount.text = CommonUtils.makeComma(it.balance)
             Glide.with(binding.root.context)
                 .load(it.storeImgUrl)
                 // 이미지 로드중 로드 실패시에는 로고 띄워줌
@@ -241,10 +239,10 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
     ) {
         currentMarker?.remove()
 
-        val currentLatLng = LatLng(location.latitude, location.latitude)
+        val currentLatLng = LatLng(location.latitude, location.longitude)
 
         val marker =
-            ResourcesCompat.getDrawable(resources, R.drawable.logo, requireActivity().theme)
+            ResourcesCompat.getDrawable(resources, R.drawable.location_icon, requireActivity().theme)
                 ?.toBitmap(150, 150)
 
         val markerOptions = MarkerOptions().apply {

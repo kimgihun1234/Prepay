@@ -41,6 +41,16 @@ class AddDetailRestaurantFragment: BaseFragment<FragmentDetailRestaurantBinding>
         initEvent()
     }
 
+    override fun onResume() {
+        super.onResume()
+        mainActivity.hideBottomNav(true)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mainActivity.hideBottomNav(false)
+    }
+
     private fun initEvent() {
 
         Log.d(TAG, "restaurantDetailsViewModel: ${restaurantDetailsViewModel.restaurantData.value}")
