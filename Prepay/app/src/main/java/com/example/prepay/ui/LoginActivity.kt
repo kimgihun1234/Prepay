@@ -55,8 +55,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
         if (!savedId.isNullOrEmpty() && !savedPw.isNullOrEmpty()) {
             // 자동 로그인: 저장된 값으로 login() 함수를 호출
             Log.d(TAG, "${savedId}")
-//            autoLogin(savedId, savedPw)
-//            return
+            autoLogin(savedId, savedPw)
+            return
         }
 
         Log.d(TAG, "onCreate: START_LOGIN_FRAGMENT")
@@ -109,6 +109,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
                     val accessToken = response.headers()["access"]
                     if (accessToken != null) {
                         // Access Token 저장
+                        val nickname = response.body()!!.nickname
+                        SharedPreferencesUtil.setNickName(nickname)
                         SharedPreferencesUtil.saveAccessToken(accessToken)
                         Log.d(TAG, "Access Token 저장됨: $accessToken")
                     }

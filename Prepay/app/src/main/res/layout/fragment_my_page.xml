@@ -50,8 +50,8 @@
         android:id="@+id/content_layout"
         android:layout_width="match_parent"
         android:layout_height="684dp"
-        android:layout_marginTop="18dp"
-        android:background="#F5F6FD"
+        android:layout_marginTop="12dp"
+        android:background="#FCFCFF"
         android:padding="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +66,7 @@
             android:layout_marginTop="30dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/main_page_box"
-            android:elevation="2dp"
+            android:elevation="3dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -83,75 +83,77 @@
                 android:paddingStart="14dp"
                 android:paddingTop="40dp"
                 android:paddingEnd="14dp"
-                android:paddingBottom="24dp"
+                android:paddingBottom="30dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/create_group_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="120dp"
-                android:background="@null"
-                android:drawableLeft="@drawable/group_add"
-                android:drawablePadding="0dp"
-                android:fontFamily="@font/samsung_font_2"
-                android:letterSpacing="-0.04"
-                android:scaleX="0.9"
-                android:text="그룹 생성"
-                android:textColor="#9CA4AB"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/enter_group_btn"
-                app:layout_constraintTop_toBottomOf="@+id/viewPager" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/enter_group_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_marginTop="36dp"
-                android:layout_marginEnd="64dp"
-                android:background="@null"
-                android:drawableLeft="@drawable/group_join"
-                android:drawablePadding="1dp"
-                android:fontFamily="@font/samsung_font_2"
-                android:letterSpacing="-0.04"
-                android:scaleX="0.9"
-                android:text="코드 입력"
-                android:textColor="#9CA4AB"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/viewPager" />
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageButton
             android:id="@+id/pay_btn"
-            android:layout_width="150dp"
-            android:layout_height="145dp"
+            android:layout_width="158dp"
+            android:layout_height="113dp"
             android:layout_alignParentBottom="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="47dp"
+            android:layout_marginBottom="72dp"
             android:background="@null"
             android:scaleType="fitCenter"
             android:src="@drawable/pay_btn"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:layout_editor_absoluteX="258dp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/main_innor_box"
+            app:layout_constraintVertical_bias="0.0" />
 
         <ImageButton
             android:id="@+id/group_detail_btn"
-            android:layout_width="150dp"
-            android:layout_height="145dp"
-            android:layout_marginTop="85dp"
+            android:layout_width="142dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="56dp"
             android:background="@null"
             android:scaleType="fitCenter"
             android:src="@drawable/group_detail_btn"
             app:layout_constraintTop_toBottomOf="@+id/main_innor_box"
-            tools:layout_editor_absoluteX="121dp" />
+            tools:layout_editor_absoluteX="80dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/create_group_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="137dp"
+            android:background="@null"
+            android:drawableLeft="@drawable/group_add"
+            android:drawablePadding="0dp"
+            android:fontFamily="@font/samsung_font_2"
+            android:letterSpacing="-0.04"
+            android:scaleX="0.9"
+            android:text="그룹 생성"
+            android:textColor="#9CA4AB"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/main_innor_box"
+            tools:layout_editor_absoluteX="33dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/enter_group_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="51dp"
+            android:background="@null"
+            android:drawableLeft="@drawable/group_join"
+            android:drawablePadding="1dp"
+            android:fontFamily="@font/samsung_font_2"
+            android:letterSpacing="-0.04"
+            android:scaleX="0.9"
+            android:text="코드 입력"
+            android:textColor="#9CA4AB"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/group_detail_btn"
+            tools:layout_editor_absoluteX="195dp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

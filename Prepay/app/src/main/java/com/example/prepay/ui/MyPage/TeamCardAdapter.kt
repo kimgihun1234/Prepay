@@ -15,7 +15,7 @@ class TeamCardAdapter(var teamList: List<Team>) : RecyclerView.Adapter<TeamCardA
         fun bind(card: Team) {
             binding.tvTitle.text = card.teamName
             binding.tvSubTitle.text = card.balance.toString()
-            binding.tvBalance.text = card.balance.toString()
+            binding.tvBalance.text = String.format("%,d", card.balance)
             binding.cardview.setCardBackgroundColor(
                 runCatching {
                     val colorCode = card.color?.takeIf { it != "null" } ?: "#FFFFFF" // "null"을 기본값 #FFFFFF로 처리
