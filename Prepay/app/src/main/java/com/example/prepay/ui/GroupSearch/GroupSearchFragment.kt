@@ -229,10 +229,12 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
         groupSearchFragmentViewModel.sortDistancePublicTeams.observe(viewLifecycleOwner){it->
             Log.d(TAG,it.toString())
             publicDistanceSearchAdapter.publicGroupList = it
+            Log.d(TAG,"결과 값"+it.toString())
             publicDistanceSearchAdapter.notifyDataSetChanged()
         }
         groupSearchFragmentViewModel.getPublicLikeTeams.observe(viewLifecycleOwner){it->
             publicLikeTeamAdapter.publiclikeList = it
+            Log.d(TAG,"결과 값"+it.toString())
             publicLikeTeamAdapter.notifyDataSetChanged()
         }
         groupSearchFragmentViewModel.getPublicTeams.observe(viewLifecycleOwner){it->
