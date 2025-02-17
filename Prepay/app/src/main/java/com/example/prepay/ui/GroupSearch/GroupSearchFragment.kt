@@ -11,7 +11,9 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.View
+import android.widget.SearchView
 import android.widget.Toast
+import androidx.core.view.isVisible
 import com.example.prepay.ui.MainActivityViewModel
 import com.example.prepay.SharedPreferencesUtil
 import com.google.android.gms.location.LocationCallback
@@ -39,6 +41,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.Locale
+import java.util.Objects
 
 private const val TAG = "GroupSearchFragment"
 class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
@@ -127,6 +130,79 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
             binding.recyclerView.adapter = publicGroupAdapter
             getLastLocation()
         }
+        binding.searchText.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                Log.d(TAG, "onQueryTextSubmit: $query")
+                query?.let { filterSearchResults(it) }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                Log.d(TAG, "onQueryTextChange: $newText")
+                if (newText.isNullOrEmpty() || newText=="") {
+                    binding.recyclerView.isVisible = true
+                    updateAdapterWithOriginalList()
+                } else {
+                    binding.recyclerView.isVisible = true
+                    filterSearchResults(newText)
+                }
+                return false
+            }
+
+            private fun updateAdapterWithOriginalList() {
+                when (select) {
+                    1 -> groupSearchFragmentViewModel.getPublicLikeTeams.value?.let {
+                        Log.d(TAG, "publicGroupAdapter: $it")
+                        publicLikeTeamAdapter.publiclikeList = it
+                    }
+                    2 -> groupSearchFragmentViewModel.sortDistancePublicTeams.value?.let{
+                        Log.d(TAG, "publicDistanceSearchAdapter: $it")
+                        publicDistanceSearchAdapter.publicGroupList = it
+                    }
+                    else -> groupSearchFragmentViewModel.getPublicTeams.value?.let {
+                        Log.d(TAG, "publicLikeTeamAdapter: $it")
+                        publicGroupAdapter.publicGroupList = it
+                    }
+                }
+            }
+
+
+            private fun filterSearchResults(newText: String) {
+                val originalList = getOriginalList()
+
+                val filterList = originalList.filter { searchable ->
+                    searchable.searchableText.contains(newText, ignoreCase = true)
+                }
+                updateAdapterBasedOnSelection(filterList)
+
+            }
+
+            private fun updateAdapterBasedOnSelection(filterList: List<Searchable>) {
+                when (select) {
+                    1-> {
+                        publicLikeTeamAdapter.publiclikeList = filterList as List<PublicLikeRes>
+                        publicLikeTeamAdapter.notifyDataSetChanged()
+                    }
+                    2-> {
+                        publicDistanceSearchAdapter.publicGroupList = filterList as List<PublicTeamsDisRes>
+                        publicDistanceSearchAdapter.notifyDataSetChanged()
+                    }
+                    else-> {
+                        publicGroupAdapter.publicGroupList = filterList as List<PublicTeamsRes>
+                        publicGroupAdapter.notifyDataSetChanged()
+                    }
+                }
+            }
+
+            private fun getOriginalList(): List<Searchable> {
+                return when(select) {
+                    1 -> groupSearchFragmentViewModel.getPublicLikeTeams.value ?: emptyList()
+                    2 -> groupSearchFragmentViewModel.sortDistancePublicTeams.value ?: emptyList()
+                    else -> groupSearchFragmentViewModel.getPublicTeams.value ?: emptyList()
+                }
+            }
+
+        })
     }
 
     private fun initAdapter(){
