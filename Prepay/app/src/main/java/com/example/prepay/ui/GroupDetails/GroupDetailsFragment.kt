@@ -134,6 +134,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
         }
+        viewModel.getTeamDetail(SharedPreferencesUtil.getAccessToken()!!,activityViewModel.teamId.value!!)
     }
 
     override fun onPause() {
@@ -165,10 +166,8 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         viewModel.getMyTeamRestaurantList(SharedPreferencesUtil.getAccessToken()!!,activityViewModel.teamId.value!!)
         viewModel.getMyTeamUserList(SharedPreferencesUtil.getAccessToken()!!,activityViewModel.teamId.value!!);
 
-        viewModel.moneyValue.observe(viewLifecycleOwner) { it->
-            Log.d(TAG,"가격변동"+it.toString())
-            //binding.usePossiblePriceTxt.text = it.toString()
-            //changeMoneyView()
+        viewModel.teamDetail.observe(viewLifecycleOwner){it->
+            binding.groupDetailTitle.text = it.teamName
         }
     }
 
@@ -194,6 +193,16 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
 
         binding.moneyChangeBtn.setOnClickListener {
             showMoneyChangeDialog()
+        }
+        binding.detailHamburgerBtn.setOnClickListener {
+            if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
+                drawerLayout.closeDrawer(GravityCompat.END)
+            } else {
+                drawerLayout.openDrawer(GravityCompat.END)
+            }
+        }
+        binding.groupDetailBackBtn.setOnClickListener {
+            mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
         }
     }
 
@@ -287,7 +296,8 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             }
             val moneychange = MoneyChangeReq(moneyValue,activityViewModel.teamId.value!!.toInt())
             moneyChange(moneychange)
-            viewModel.setMoneyValue(moneychange.dailyPriceLimit)
+            Log.d(TAG,"실행됩니다")
+            activityViewModel.setMoneyValue(moneychange.dailyPriceLimit)
             dialog.dismiss()
         }
         binding.btnCancel.setOnClickListener {

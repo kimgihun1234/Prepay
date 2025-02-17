@@ -5,5 +5,6 @@ data class TeamIdStoreRes(
     val storeId: Int,
     val storeName: String,
     val latitude: Double,
-    val longitude: Double
+    val longitude: Double,
+    val imgUrl: String,
 )

@@ -23,6 +23,8 @@ import com.example.prepay.ui.CreateGroup.CreateGroupViewModel
 import com.example.prepay.ui.MainActivity
 import com.example.prepay.ui.MainActivityViewModel
 import com.example.prepay.util.BootPayManager
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.SupportMapFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -44,6 +46,16 @@ class AddRestaurantFragment : BaseFragment<FragmentAddRestaurantBinding>(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivity = context as MainActivity
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mainActivity.hideBottomNav(true)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mainActivity.hideBottomNav(false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

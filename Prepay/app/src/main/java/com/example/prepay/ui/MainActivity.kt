@@ -89,6 +89,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
             CommonUtils.MainFragmentName.ADD_RESTAURANT_FRAGMENT -> {
                 transaction.replace(R.id.main_container, AddRestaurantFragment())
+                transaction.addToBackStack(null)
             }
             CommonUtils.MainFragmentName.DETAIL_RESTAURANT_FRAGMENT -> {
                 transaction.replace(R.id.main_container, AddDetailRestaurantFragment())
