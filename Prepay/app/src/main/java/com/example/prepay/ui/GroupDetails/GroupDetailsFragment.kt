@@ -127,10 +127,10 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         super.onViewCreated(view, savedInstanceState)
         initShow()
         initEvent()
-        initAdapter()
         initViewModel()
         initDrawerLayout()
         initialView()
+        initAdapter()
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
         }
@@ -149,7 +149,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
 
     private fun initAdapter(){
         teamTeamUserResList = emptyList()
-        teamUserAdapter = TeamUserAdapter(teamTeamUserResList,this, true)
+        teamUserAdapter = TeamUserAdapter(teamTeamUserResList,this, false)
         binding.rvMemberList.layoutManager = LinearLayoutManager(requireContext())
         binding.rvMemberList.adapter = teamUserAdapter
     }
@@ -160,8 +160,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             teamUserAdapter.notifyDataSetChanged()
         }
         viewModel.userposition.observe(viewLifecycleOwner){it->
-            teamUserAdapter.userposition = it
-            teamUserAdapter.notifyDataSetChanged()
+            teamUserAdapter.updateUserPosition(it)
         }
         viewModel.getMyTeamRestaurantList(SharedPreferencesUtil.getAccessToken()!!,activityViewModel.teamId.value!!)
         viewModel.getMyTeamUserList(SharedPreferencesUtil.getAccessToken()!!,activityViewModel.teamId.value!!);
@@ -231,6 +230,9 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                 //binding.usePossiblePriceTxt.text = CommonUtils.makeComma(it.dailyPriceLimit-it.usedAmount)
                 viewModel.updatePosition(it.position)
                 inviteCode = (it.teamPassword ?: "초대코드없음").toString()
+                if(it.position==false){
+                    binding.moneyChangeBtn.visibility = View.GONE
+                }
             }.onFailure {
                 Log.d(TAG,"실패하였습니다")
             }

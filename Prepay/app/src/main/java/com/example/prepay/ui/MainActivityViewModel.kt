@@ -21,7 +21,7 @@ class MainActivityViewModel: ViewModel()  {
     private val _storeName = MutableLiveData<String>()
     val storeName : LiveData<String>
         get() = _storeName
-    
+
     private val _userName = MutableLiveData<String>()
     val userName : LiveData<String>
         get() = _userName
