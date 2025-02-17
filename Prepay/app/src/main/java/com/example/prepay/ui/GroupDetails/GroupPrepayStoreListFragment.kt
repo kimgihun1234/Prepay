@@ -103,14 +103,14 @@ class GroupPrepayStoreListFragment: BaseFragment<FragmentGroupPrepayStoreListBin
             restaurantAdapter.notifyDataSetChanged()
         }
         viewModel.teamDetail.observe(viewLifecycleOwner){it->
-            Log.d(TAG,"감지된 데이터입니다"+it.toString())
+            Log.d(TAG,"감지된 데이터입니다입니다"+it.toString())
             binding.dayLimitTxt.text = CommonUtils.makeComma(it.dailyPriceLimit-it.usedAmount)
             binding.groupPriceTxt.text = CommonUtils.makeComma(it.teamBalance)
         }
 
         activityViewModel.moneyValue.observe(viewLifecycleOwner){it->
             Log.d(TAG,"가격변동"+it.toString())
-            viewModel.getTeamDetail(SharedPreferencesUtil.getAccessToken()!!,activityViewModel.teamId.value!!)
+            binding.dayLimitTxt.text = CommonUtils.makeComma(it-viewModel.teamDetail.value!!.usedAmount)
         }
     }
 
