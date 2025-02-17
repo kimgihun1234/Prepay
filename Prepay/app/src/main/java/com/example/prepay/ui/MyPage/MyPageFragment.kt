@@ -49,7 +49,6 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initAdapter()
         initEvent()
     }
@@ -65,7 +64,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
             // 데이터가 있고, 최초 로드일 경우에만 마지막 카드로 이동
             if (teamList.isNotEmpty()) {
                 binding.viewPager.setCurrentItem(cardAdapter.itemCount - 1, false)
-                Log.d(TAG, "${cardAdapter.itemCount - 1}")
+                Log.d(TAG, "뭘까? ${cardAdapter.itemCount - 1}")
             }
 
         }
