@@ -1,31 +1,26 @@
 package com.example.prepay.ui.GroupDetails
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
-import com.example.prepay.RetrofitUtil
 import com.example.prepay.SharedPreferencesUtil
 import com.example.prepay.data.model.dto.OrderHistory
 import com.example.prepay.data.response.OrderHistoryReq
-import com.example.prepay.data.response.OrderHistoryRes
-import com.example.prepay.data.response.TeamIdStoreRes
+import com.example.prepay.databinding.DialogReceiptBinding
 import com.example.prepay.databinding.FragmentGroupPaymentHistoryBinding
-import com.example.prepay.databinding.FragmentLookGroupBinding
-import com.example.prepay.ui.LoginActivity
 import com.example.prepay.ui.MainActivity
 import com.example.prepay.ui.MainActivityViewModel
-import com.example.prepay.ui.RestaurantDetails.RestaurantDetailsViewModel
-import kotlinx.coroutines.launch
+
+import java.text.NumberFormat
+import java.util.Locale
 
 private const val TAG = "GroupPaymentHistoryFrag_클릭"
 class GroupPaymentHistoryFragment: BaseFragment<FragmentGroupPaymentHistoryBinding>(
@@ -35,10 +30,12 @@ class GroupPaymentHistoryFragment: BaseFragment<FragmentGroupPaymentHistoryBindi
     private lateinit var mainActivity: MainActivity
     private lateinit var teamOrderHistoryAdapter: TeamOrderHistoryAdapter
     private lateinit var teamOrderHistoryList: List<OrderHistory>
+    private lateinit var receiptHistoryAdapter : ReceiptHistoryAdapter
 
     //뷰모델
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val viewModel: GroupDetailsFragmentViewModel by viewModels()
+    private val receiptViewModel : ReceiptViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,6 +77,33 @@ class GroupPaymentHistoryFragment: BaseFragment<FragmentGroupPaymentHistoryBindi
 
     override fun onClick(itemView: View, order: OrderHistory, orderHistoryId: Int) {
         Log.d(TAG,"클릭")
+        val dialogBinding = DialogReceiptBinding.inflate(LayoutInflater.from(itemView.context))
+        val dialog = AlertDialog.Builder(itemView.context)
+            .setView(dialogBinding.root)
+            .create()
+
+        dialog.setOnShowListener {
+            val window = dialog.window
+            window?.setLayout(1000, 1600)
+            window?.setBackgroundDrawableResource(R.drawable.receipt_rounded_dialog)
+        }
+
+        receiptHistoryAdapter = ReceiptHistoryAdapter(arrayListOf())
+        dialogBinding.recyclerView.adapter = receiptHistoryAdapter
+
+        receiptViewModel.receiptListInfo.observe(viewLifecycleOwner) {
+                it -> receiptHistoryAdapter.receiptList = it
+            receiptHistoryAdapter.notifyDataSetChanged()
+        }
+        Log.d(TAG, "onClick: $orderHistoryId")
+        receiptViewModel.getAllReceiptList(orderHistoryId, SharedPreferencesUtil.getAccessToken()!!)
+
+        dialogBinding.recyclerView.layoutManager = LinearLayoutManager(itemView.context)
+        dialogBinding.useName.text = order.orderHistoryId.toString()
+        dialogBinding.restaurantAmount.text = NumberFormat.getNumberInstance(Locale.KOREA).format(order.totalPrice)
+        dialogBinding.receiptDate.text = order.orderDate
+        dialogBinding.orderDate.text = "[주문] ${order.orderDate}"
+        dialog.show()
     }
 
 }

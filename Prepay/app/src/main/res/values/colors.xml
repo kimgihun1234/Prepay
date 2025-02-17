@@ -14,7 +14,8 @@
     <color name="plater6">#E26588</color>
     <color name="plater7">#124577</color>
     <color name="plater8">#160E2C</color>
-    <color name="plater9">#000000</color>
+    <color name="plater9">#D72638</color>
+    <color name="plater10">#000000</color>
     <color name="checked_color">#0066CC</color>
     <color name="unchecked_color">#394750</color>
 </resources>
