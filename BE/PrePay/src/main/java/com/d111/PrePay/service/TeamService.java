@@ -446,6 +446,7 @@ public class TeamService {
                     storesRes.setLatitude(teamStore.getStore().getLatitude());
                     storesRes.setLongitude(teamStore.getStore().getLongitude());
                     storesRes.setMyteam(true);
+                    storesRes.setImgUrl(teamStore.getStore().getStoreImgUrl());
                     return storesRes;
                 }).collect(Collectors.toList());
     }
