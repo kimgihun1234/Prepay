@@ -1,5 +1,7 @@
 package com.example.prepay.data.response
 
+import com.example.prepay.ui.GroupSearch.Searchable
+
 data class PublicTeamsDisRes(
     val teamId: Int,
     val teamName: String,
@@ -12,4 +14,8 @@ data class PublicTeamsDisRes(
     val distance: Double,
     val like: Boolean,
     val address: String
-)
+) : Searchable {
+    override val searchableText : String
+        get() = "$teamName"
+}
+
