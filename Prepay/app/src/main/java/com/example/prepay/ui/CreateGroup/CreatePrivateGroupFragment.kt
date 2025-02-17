@@ -35,7 +35,7 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
     private lateinit var mainActivity: MainActivity
     private val fragmentScope = lifecycleScope
     private lateinit var editTexts: List<EditText>
-    private lateinit var colorCard : String
+    private var colorCard : String = "#160E2C"
     private var lastCheckedButton: RadioButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,10 +95,10 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
                     R.id.radio5 -> "#858585"
                     R.id.radio6 -> "#E26588"
                     R.id.radio7 -> "#124577"
-                    R.id.radio8 -> "#160E2C"
+                    R.id.radio8 -> "#FFB3A7"
                     R.id.radio9 -> "#D72638"
                     R.id.radio10 -> "#000000"
-                    else -> "#FFFFFF"
+                    else -> "#160E2C"
                 }
 
                 val colorInt = Color.parseColor(selectedColor)
