@@ -57,6 +57,7 @@ class GroupPrepayStoreListFragment: BaseFragment<FragmentGroupPrepayStoreListBin
     }
 
     fun initEvent(){
+        viewModel.getTeamDetail(SharedPreferencesUtil.getAccessToken()!!,activityViewModel.teamId.value!!)
         viewModel.getMyTeamRestaurantList(SharedPreferencesUtil.getAccessToken()!!,activityViewModel.teamId.value!!)
         binding.addRestaurant.setOnClickListener {
             addRestaurantClick()
@@ -101,6 +102,11 @@ class GroupPrepayStoreListFragment: BaseFragment<FragmentGroupPrepayStoreListBin
             Log.d(TAG,it.toString())
             restaurantAdapter.notifyDataSetChanged()
         }
+        viewModel.teamDetail.observe(viewLifecycleOwner){it->
+            Log.d(TAG,"감지된 데이터입니다"+it.toString())
+            binding.dayLimitTxt.text = CommonUtils.makeComma(it.dailyPriceLimit-it.usedAmount)
+            binding.groupPriceTxt.text = CommonUtils.makeComma(it.teamBalance)
+        }
     }
 
     private fun addRestaurantClick() {
@@ -110,6 +116,12 @@ class GroupPrepayStoreListFragment: BaseFragment<FragmentGroupPrepayStoreListBin
     private fun bringStoreId() {
         mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.ADD_RESTAURANT_FRAGMENT)
     }
+
+    private fun ComputePrice(){
+        viewModel.getTeamDetail(SharedPreferencesUtil.getAccessToken()!!,activityViewModel.teamId.value!!)
+        viewModel.getMyTeamRestaurantList(SharedPreferencesUtil.getAccessToken()!!,activityViewModel.teamId.value!!)
+    }
+
 
     /**
      * QR 코드를 생성하여 다이얼로그로 표시하는 함수
@@ -146,7 +158,8 @@ class GroupPrepayStoreListFragment: BaseFragment<FragmentGroupPrepayStoreListBin
         // 다이얼로그 닫힐 때 타이머 취소
         dialog.setOnDismissListener {
             timer.cancel()
-            //initialView()
+            ComputePrice()
+        //initialView()
         }
 
         // 다이얼로그 표시
@@ -172,7 +185,8 @@ class GroupPrepayStoreListFragment: BaseFragment<FragmentGroupPrepayStoreListBin
                         }
                     }
                     timer.cancel()
-                    //initialView()
+                    ComputePrice()
+                //initialView()
                 }
             }
         }, 1000, 1000)
