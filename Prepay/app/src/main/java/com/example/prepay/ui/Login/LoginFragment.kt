@@ -83,13 +83,13 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
         // SharedPreferences를 통한 자동 로그인 체크
         val (savedId, savedPw) = SharedPreferencesUtil.getUserCredentials()
 
-        // 저장된 아이디와 패스워드가 모두 있으면, 자동으로 로그인 API를 호출하여 자동 로그인 처리
-//        if (!savedId.isNullOrEmpty() && !savedPw.isNullOrEmpty()) {
-//            // 자동 로그인: 저장된 값으로 login() 함수를 호출
-//            Log.d(TAG, "${savedId}")
-////            login(savedId, savedPw)
-//            return
-//        }
+//         저장된 아이디와 패스워드가 모두 있으면, 자동으로 로그인 API를 호출하여 자동 로그인 처리
+        if (!savedId.isNullOrEmpty() && !savedPw.isNullOrEmpty()) {
+            // 자동 로그인: 저장된 값으로 login() 함수를 호출
+            Log.d(TAG, "${savedId}")
+            login(savedId, savedPw)
+            return
+        }
 
         // editView list
         editTexts = listOf(
