@@ -2,6 +2,7 @@ package com.example.prepay.data.remote
 
 import com.example.prepay.data.model.dto.PublicPrivateTeam
 import com.example.prepay.data.response.BanUserReq
+import com.example.prepay.data.response.CodeRes
 import com.example.prepay.data.response.GetUserOfTeamRes
 import com.example.prepay.data.response.LikeTeamsReq
 import com.example.prepay.data.response.MoneyChangeReq
@@ -87,6 +88,9 @@ interface TeamService {
     @GET("/team/public-teams")
     suspend fun getPublicTeams(@Header("access") access: String, @Query("latitude") latitude : Double, @Query("longitude") longitude:Double): List<PublicTeamsRes>
 
+    @POST("/team/code")
+    suspend fun makeCode(@Header("access") access: String,@Body request: TeamIdReq) :CodeRes
+
 
     //특정 키워드로 공개된 팀을 검색합니다.
     @GET("/team/public-teams/{keyword}")
@@ -97,7 +101,6 @@ interface TeamService {
     suspend fun getTeamStore(@Header("access") access: String, @Path("teamId") teamId: Long) : List<StoreLocation>
 
     //공개된 그룹의 좋아요 정보를 보냅니다.
-
 
     @GET("/team/public-team/2km")
     suspend fun getTeamStoreDistance(@Header("access") access : String, @Query("latitude") latitude : Double, @Query("longitude") longitude:Double) : List<PublicTeamsDisRes>

@@ -36,6 +36,7 @@ import com.example.prepay.RetrofitUtil
 import com.example.prepay.SharedPreferencesUtil
 import com.example.prepay.data.model.dto.RestaurantData
 import com.example.prepay.data.response.BanUserReq
+import com.example.prepay.data.response.CodeRes
 import com.example.prepay.data.response.MoneyChangeReq
 import com.example.prepay.data.response.PrivilegeUserReq
 import com.example.prepay.data.response.TeamIdReq
@@ -66,7 +67,9 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.navigation.NavigationView
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.util.Locale
 import java.util.Timer
@@ -85,11 +88,11 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     private lateinit var navigationView: NavigationView
     //activityViewModel
     private val activityViewModel: MainActivityViewModel by activityViewModels()
-    private lateinit var currentLocation: Location
     private val viewModel: GroupDetailsFragmentViewModel by viewModels()
 
 
     private var inviteCode = "0"
+    private var codeMake = CodeRes(0,"")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)  // 부모 클래스의 onCreate 호출 (Fragment의 기본 동작 유지)
@@ -233,6 +236,9 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                 if(it.position==false){
                     binding.moneyChangeBtn.visibility = View.GONE
                 }
+                if(it.position==true){
+                    binding.groupInviteBtn.text = "코드 생성"
+                }
             }.onFailure {
                 Log.d(TAG,"실패하였습니다")
             }
@@ -257,6 +263,21 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             .create()
         Log.d(TAG,"초대코드"+inviteCode)
         binding.etInviteCode.text = inviteCode
+        if(viewModel.userposition.value==false){
+            binding.inviteCodeMakeBtn.visibility = View.GONE
+        }
+        binding.inviteCodeMakeBtn.setOnClickListener {
+            lifecycleScope.launch {
+                val teamIdReq = TeamIdReq(activityViewModel.teamId.value!!.toInt())
+                val response = makeCode(teamIdReq)
+                if (response != null) {
+                    Log.d(TAG, "결과값 성공: ${response.inviteCode}")
+                    binding.etInviteCode.text = response.inviteCode
+                } else {
+                    Log.e(TAG, "초대 코드 생성 실패")
+                }
+            }
+        }
         binding.inviteCodeConfirmBtn.setOnClickListener {
             dialog.dismiss()
         }
@@ -343,6 +364,22 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             dialog.dismiss()
         }
         dialog.show()
+    }
+
+    private suspend fun makeCode(teamIdReq: TeamIdReq): CodeRes? {
+        return withContext(Dispatchers.IO) {
+            runCatching {
+                RetrofitUtil.teamService.makeCode(
+                    SharedPreferencesUtil.getAccessToken()!!,
+                    teamIdReq
+                )
+            }.onSuccess { response ->
+                return@withContext response
+            }.onFailure { e ->
+                Log.e(TAG, "API 호출 실패: ${e.message}", e)
+            }
+            return@withContext null // 실패 시 null 반환
+        }
     }
 
     fun moneyChange(moneychange: MoneyChangeReq){
