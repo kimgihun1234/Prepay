@@ -22,6 +22,10 @@ class MainActivityViewModel: ViewModel()  {
     val storeName : LiveData<String>
         get() = _storeName
 
+    private val _moneyValue = MutableLiveData<Int>()
+    val moneyValue: LiveData<Int> get() = _moneyValue
+
+
     fun setTeamId(teamId: Long) {
         _teamId.postValue(teamId)
     }
@@ -32,5 +36,10 @@ class MainActivityViewModel: ViewModel()  {
 
     fun setStoreName(storeName: String) {
         _storeName.postValue(storeName)
+    }
+
+    // 한도 변경 값 변경
+    fun setMoneyValue(value: Int) {
+        _moneyValue.value = value
     }
 }
