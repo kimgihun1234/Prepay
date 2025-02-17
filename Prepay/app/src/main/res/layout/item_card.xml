@@ -8,7 +8,8 @@
     android:layout_margin="0dp"
     android:id="@+id/cardview"
     app:cardCornerRadius="15dp"
-    android:elevation="10dp">
+    android:elevation="20dp"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -20,9 +21,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_marginStart="34dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="26dp"
             android:fontFamily="@font/samsung_font_2"
-            android:letterSpacing="-0.05"
             android:text="SSAFY"
             android:textColor="#D9ffffff"
             android:textSize="14sp"
@@ -46,10 +46,10 @@
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="40dp"
+            android:layout_width="64dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="54dp"
             android:src="@drawable/card_chip"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
@@ -60,14 +60,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="94dp"
+            android:layout_marginBottom="64dp"
             android:fontFamily="@font/samsung_font_1"
             android:text="사용 가능 금액"
             android:textColor="#BFFFFFFF"
             android:textFontWeight="600"
             android:textSize="10sp"
-            app:layout_constraintStart_toStartOf="@+id/tvTitle"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tvTitle" />
 
         <TextView
             android:id="@+id/card_dummy4"
@@ -75,20 +75,20 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="184dp"
+            android:layout_marginBottom="16dp"
             android:fontFamily="@font/samsung_font_2"
             android:text="* * * *  * * * *"
             android:textColor="@android:color/white"
             android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@+id/tvBalance"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tvBalance" />
 
         <ImageView
             android:id="@+id/card_dummy"
-            android:layout_width="68dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="34dp"
+            android:layout_width="72dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginEnd="32dp"
             android:src="@drawable/card_logo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -98,14 +98,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvTitle"
-            android:layout_marginTop="176dp"
+            android:layout_marginBottom="20dp"
             android:fontFamily="@font/samsung_font_1"
             android:text="Private"
             android:textColor="@android:color/white"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/card_dummy4"
-            app:layout_constraintEnd_toEndOf="@+id/card_dummy"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/card_dummy" />
 
         <TextView
             android:id="@+id/tvBalance"
@@ -113,14 +112,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="152dp"
+            android:layout_marginBottom="32dp"
             android:fontFamily="@font/samsung_font_2"
             android:letterSpacing="0.05"
             android:text="8,000,000"
             android:textColor="#F2ffffff"
             android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
