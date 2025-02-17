@@ -16,6 +16,7 @@ import com.example.prepay.data.response.OrderHistoryReq
 import com.example.prepay.data.response.StoreIdReq
 import com.example.prepay.data.response.StoreIdRes
 import com.example.prepay.data.response.Team
+import com.example.prepay.data.response.TeamDetailRes
 import com.example.prepay.data.response.TeamIdStoreRes
 import com.example.prepay.data.response.TeamUserRes
 import kotlinx.coroutines.launch
@@ -47,6 +48,29 @@ class GroupDetailsFragmentViewModel : ViewModel() {
     val teamOrderListInfo: LiveData<List<OrderHistory>>
         get() = _teamOrderListInfo
 
+
+    private val _teamDetail = MutableLiveData<TeamDetailRes>().apply {
+        value = TeamDetailRes(
+            countLimit = 0,
+            dailyPriceLimit = 0,
+            position = false,
+            publicTeam = false,
+            teamId = 0,
+            usedAmount = 0,
+            teamMessage = "",
+            teamName = "",
+            teamPassword = "",
+            color = "#FFFFFF",
+            teamBalance = 0
+        )
+    }
+
+    val teamDetail: LiveData<TeamDetailRes> get() = _teamDetail
+
+    /** 전체 데이터를 업데이트하는 함수 */
+    fun updateTeamDetail(newDetail: TeamDetailRes) {
+        _teamDetail.value = newDetail
+    }
 
     // 한도 변경 값 변경
     fun setMoneyValue(value: Int) {
@@ -129,4 +153,6 @@ class GroupDetailsFragmentViewModel : ViewModel() {
             }
         }
     }
+
+    fun get
 }
