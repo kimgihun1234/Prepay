@@ -33,8 +33,6 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
     private lateinit var mainActivity: MainActivity
     private val fragmentScope = lifecycleScope
     private lateinit var editTexts: List<EditText>
-    private lateinit var colorAdapter : ColorAdapter
-    private val createGroupViewModel : CreateGroupViewModel by viewModels()
     private lateinit var colorCard : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,9 +77,10 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
                 R.id.radio5 -> "#858585"
                 else -> "#FFFFFF"
             }
+            val colorInt = Color.parseColor(selectedColor)
             Log.d("selectedColor", "selectedColor: $selectedColor")
             colorCard = selectedColor
-            binding.cardView.backgroundTintList = ColorStateList.valueOf(Color.parseColor(selectedColor))
+            binding.card.setBackgroundColor(colorInt)
         }
 
         binding.cancelBtn.setOnClickListener {
