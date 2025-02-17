@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
-    <solid android:color="@color/plater3"/> <!-- 비활성화된 색 -->
+    <solid android:color="@color/plater7"/> <!-- 비활성화된 색 -->
     <size android:width="40dp" android:height="40dp"/>
 </shape>

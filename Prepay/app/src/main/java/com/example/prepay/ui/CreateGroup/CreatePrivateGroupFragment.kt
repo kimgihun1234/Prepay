@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.View
 import android.view.View.*
 import android.widget.EditText
+import android.widget.GridLayout
+import android.widget.RadioButton
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -34,6 +36,7 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
     private val fragmentScope = lifecycleScope
     private lateinit var editTexts: List<EditText>
     private lateinit var colorCard : String
+    private var lastCheckedButton: RadioButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,19 +71,40 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
                 makeTeam(makePrivateTeam)
             }
         }
-        binding.colorSelector.setOnCheckedChangeListener { group, checkedId ->
-            val selectedColor = when (checkedId) {
-                R.id.radio1 -> "#83C4C3"
-                R.id.radio2 -> "#8571BF"
-                R.id.radio3 -> "#EC9B3B"
-                R.id.radio4 -> "#5A8F7B"
-                R.id.radio5 -> "#858585"
-                else -> "#FFFFFF"
+
+        // GridLayout 가져오기
+        val gridLayout = binding.colorSelector.getChildAt(0) as GridLayout
+
+        // 모든 RadioButton에 대해 클릭 리스너 설정
+        for (i in 0 until gridLayout.childCount) {
+            val radioButton = gridLayout.getChildAt(i) as RadioButton
+            radioButton.setOnClickListener { view ->
+                // 이전에 선택된 버튼이 있다면 체크 해제
+                lastCheckedButton?.isChecked = false
+
+                // 현재 버튼 체크
+                (view as RadioButton).isChecked = true
+                lastCheckedButton = view
+
+                // 색상 변경 로직
+                val selectedColor = when (view.id) {
+                    R.id.radio1 -> "#9A5B1C"
+                    R.id.radio2 -> "#CCCC00"
+                    R.id.radio3 -> "#1E4D2B"
+                    R.id.radio4 -> "#3399FF"
+                    R.id.radio5 -> "#858585"
+                    R.id.radio6 -> "#E26588"
+                    R.id.radio7 -> "#124577"
+                    R.id.radio8 -> "#160E2C"
+                    R.id.radio9 -> "#D72638"
+                    R.id.radio10 -> "#000000"
+                    else -> "#FFFFFF"
+                }
+
+                val colorInt = Color.parseColor(selectedColor)
+                colorCard = selectedColor
+                binding.card.setBackgroundColor(colorInt)
             }
-            val colorInt = Color.parseColor(selectedColor)
-            Log.d("selectedColor", "selectedColor: $selectedColor")
-            colorCard = selectedColor
-            binding.card.setBackgroundColor(colorInt)
         }
 
         binding.cancelBtn.setOnClickListener {
