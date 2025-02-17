@@ -29,7 +29,7 @@
         android:layout_marginStart="8dp"
         android:text="내 주변"
         app:layout_constraintStart_toEndOf="@+id/like_sort"
-        app:layout_constraintTop_toBottomOf="@+id/search_text" />
+        app:layout_constraintTop_toBottomOf="@+id/search_restaurant" />
 
     <Button
         android:id="@+id/all"
@@ -38,7 +38,7 @@
         android:layout_marginStart="8dp"
         android:text="전체"
         app:layout_constraintStart_toEndOf="@+id/distance_sort"
-        app:layout_constraintTop_toBottomOf="@+id/search_text" />
+        app:layout_constraintTop_toBottomOf="@+id/search_restaurant" />
 
     <Button
         android:id="@+id/like_sort"
@@ -47,14 +47,22 @@
         android:layout_marginStart="16dp"
         android:text="관심 그룹"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_text" />
+        app:layout_constraintTop_toBottomOf="@+id/search_restaurant" />
 
-    <SearchView
-        android:id="@+id/search_text"
-        android:layout_width="409dp"
-        android:layout_height="70dp"
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_restaurant"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/round_background"
+        android:focusable="true"
+        android:gravity="center"
+        app:iconifiedByDefault="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:queryHint="검색어를 입력하시오"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -55,7 +55,7 @@
             android:gravity="center"
             android:text="일일 한도 설정"
             android:textStyle="bold"
-            android:textColor="#0066CC"
+            android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.107"
             app:layout_constraintStart_toStartOf="parent"
@@ -166,14 +166,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_input_text"
             app:queryHint="검색어를 입력하시오">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/searchResults"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:visibility="gone" />
         </androidx.appcompat.widget.SearchView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchResults"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/search_restaurant"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/textView17"
@@ -182,7 +186,7 @@
             android:layout_marginTop="24dp"
             android:background="@color/white"
             android:text="매장 입력"
-            android:textColor="@color/text_main_color"
+            android:textColor="@color/black"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.098"
@@ -198,12 +202,12 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/round_background"
             android:gravity="center"
-            android:text=""
             android:hint="결제할 금액을 입력해 주세요"
+            android:text=""
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_restaurant" />
+            app:layout_constraintTop_toBottomOf="@+id/searchResults" />
 
         <TextView
             android:id="@+id/textView20"
@@ -214,12 +218,12 @@
             android:background="@color/white"
             android:gravity="center"
             android:text="결제 금액"
+            android:textColor="@color/black"
             android:textStyle="bold"
-            android:textColor="@color/text_main_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.088"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_restaurant" />
+            app:layout_constraintTop_toBottomOf="@+id/searchResults" />
 
         <ImageView
             android:id="@+id/image"
