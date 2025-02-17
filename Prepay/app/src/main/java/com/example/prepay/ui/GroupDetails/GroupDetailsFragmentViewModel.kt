@@ -69,8 +69,17 @@ class GroupDetailsFragmentViewModel : ViewModel() {
     val teamDetail: LiveData<TeamDetailRes> get() = _teamDetail
 
     /** 전체 데이터를 업데이트하는 함수 */
-    fun updateTeamDetail(newDetail: TeamDetailRes) {
-        _teamDetail.value = newDetail
+    fun getTeamDetail(access:String,teamId: Long) {
+        viewModelScope.launch {
+            runCatching {
+                RetrofitUtil.teamService.getTeamDetails(access,teamId)
+            }.onSuccess {
+                Log.d("getMyTeam", "전체 데이터를 업데이트 합니다: $it")
+                _teamDetail.value = it
+            }.onFailure { e ->
+
+            }
+        }
     }
 
     // 한도 변경 값 변경

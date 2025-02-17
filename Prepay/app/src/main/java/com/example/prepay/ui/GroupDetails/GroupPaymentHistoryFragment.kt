@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.prepay.BaseFragment
+import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.SharedPreferencesUtil
@@ -53,6 +54,7 @@ class GroupPaymentHistoryFragment: BaseFragment<FragmentGroupPaymentHistoryBindi
     }
 
     fun initEvent(){
+        viewModel.getTeamDetail(SharedPreferencesUtil.getAccessToken()!!,activityViewModel.teamId.value!!)
         val rq = OrderHistoryReq(activityViewModel.teamId.value!!,0)
         viewModel.getMyTeamOrderHistory(SharedPreferencesUtil.getAccessToken()!!,rq)
     }
@@ -68,6 +70,11 @@ class GroupPaymentHistoryFragment: BaseFragment<FragmentGroupPaymentHistoryBindi
         viewModel.teamOrderListInfo.observe(viewLifecycleOwner){it->
             teamOrderHistoryAdapter.orderHistoryList = it
             teamOrderHistoryAdapter.notifyDataSetChanged()
+        }
+
+        viewModel.teamDetail.observe(viewLifecycleOwner){it->
+            Log.d(TAG,"감지된 데이터입니다"+it.toString())
+            binding.totalAmount.text = CommonUtils.makeComma(it.teamBalance)
         }
     }
 
