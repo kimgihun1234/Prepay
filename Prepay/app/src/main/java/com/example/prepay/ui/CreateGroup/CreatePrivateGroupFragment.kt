@@ -50,7 +50,6 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
         )
 
         initEvent()
-        initAdapter()
         initFocusChangeListener()
     }
 
@@ -71,12 +70,18 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
                 makeTeam(makePrivateTeam)
             }
         }
-        binding.colorButton.setOnClickListener {
-            binding.categoryPaletteRv.isVisible = !binding.categoryPaletteRv.isVisible
-        }
-
-        binding.cardView.setOnClickListener{
-
+        binding.colorSelector.setOnCheckedChangeListener { group, checkedId ->
+            val selectedColor = when (checkedId) {
+                R.id.radio1 -> "#83C4C3"
+                R.id.radio2 -> "#8571BF"
+                R.id.radio3 -> "#EC9B3B"
+                R.id.radio4 -> "#5A8F7B"
+                R.id.radio5 -> "#858585"
+                else -> "#FFFFFF"
+            }
+            Log.d("selectedColor", "selectedColor: $selectedColor")
+            colorCard = selectedColor
+            binding.cardView.backgroundTintList = ColorStateList.valueOf(Color.parseColor(selectedColor))
         }
 
         binding.cancelBtn.setOnClickListener {
@@ -85,26 +90,6 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
 
         // 내비게이션 바 없어지게
         mainActivity.hideBottomNav(true)
-    }
-    private fun initAdapter() {
-        val colorAdapter = ColorAdapter(arrayListOf()) { color ->
-            // onClick 처리
-            colorCard = color
-            val col = Color.parseColor(color)
-            binding.cardView.setBackgroundColor(col)
-        }
-        val colorArray = resources.getStringArray(R.array.categoryColorArr)
-        binding.categoryPaletteRv.adapter = colorAdapter
-        Log.d(TAG, "initAdapter: ${colorArray.size}")
-        Log.d(TAG, "initAdapter: ${colorArray.get(0)}")
-
-        createGroupViewModel.colorList.observe(viewLifecycleOwner) { colorList ->
-            colorAdapter.colorList = colorList
-            colorAdapter.notifyDataSetChanged()
-        }
-
-        createGroupViewModel.setColorList(requireContext(), colorArray)
-
     }
 
     private fun validateInputs(): Boolean {
