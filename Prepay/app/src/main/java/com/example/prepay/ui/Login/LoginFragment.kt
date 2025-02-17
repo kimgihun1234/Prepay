@@ -260,7 +260,7 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
                         SharedPreferencesUtil.saveUserCredentials(userId, userPw)
                         Log.d(TAG, "사용자 정보 저장됨: $userId")
                     }
-                    Toast.makeText(requireContext(), "로그인 성공", Toast.LENGTH_SHORT).show()
+                    showToast("로그인 성공")
                     val intent = Intent(requireContext(), MainActivity::class.java)
                     startActivity(intent)
                     activity?.finish()
