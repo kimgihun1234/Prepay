@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
@@ -36,6 +37,9 @@ class CreateGroupFragment : BaseFragment<FragmentCreateGroupBinding>(
                 binding.publicCheckbox.isChecked = false
                 mainActivity.changeFragmentGroup(CommonUtils.GroupFragmentName.CREATE_PRIVATE_GROUP_FRAGMENT)
             }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
         }
     }
 }
