@@ -42,8 +42,6 @@ class GroupDetailsFragmentViewModel : ViewModel() {
     private val _userposition = MutableLiveData<Boolean>()
     val userposition:LiveData<Boolean> get() = _userposition
 
-    private val _moneyValue = MutableLiveData<Int>()
-    val moneyValue: LiveData<Int> get() = _moneyValue
 
     private val _teamOrderListInfo = MutableLiveData<List<OrderHistory>>()
     val teamOrderListInfo: LiveData<List<OrderHistory>>
@@ -80,11 +78,6 @@ class GroupDetailsFragmentViewModel : ViewModel() {
 
             }
         }
-    }
-
-    // 한도 변경 값 변경
-    fun setMoneyValue(value: Int) {
-        _moneyValue.value = value
     }
 
     //장소 변했을 때 값변경
