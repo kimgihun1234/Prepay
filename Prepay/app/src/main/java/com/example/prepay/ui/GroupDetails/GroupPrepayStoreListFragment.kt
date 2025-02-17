@@ -107,6 +107,11 @@ class GroupPrepayStoreListFragment: BaseFragment<FragmentGroupPrepayStoreListBin
             binding.dayLimitTxt.text = CommonUtils.makeComma(it.dailyPriceLimit-it.usedAmount)
             binding.groupPriceTxt.text = CommonUtils.makeComma(it.teamBalance)
         }
+
+        activityViewModel.moneyValue.observe(viewLifecycleOwner){it->
+            Log.d(TAG,"가격변동"+it.toString())
+            viewModel.getTeamDetail(SharedPreferencesUtil.getAccessToken()!!,activityViewModel.teamId.value!!)
+        }
     }
 
     private fun addRestaurantClick() {

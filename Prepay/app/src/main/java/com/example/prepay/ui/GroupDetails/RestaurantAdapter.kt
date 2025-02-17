@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.prepay.CommonUtils
+import com.example.prepay.R
 import com.example.prepay.data.response.TeamIdStoreRes
 import com.example.prepay.databinding.ItemRestaurantBinding
 import com.example.prepay.ui.MainActivityViewModel
@@ -24,6 +26,12 @@ class RestaurantAdapter(var teamIdStoreResList: List<TeamIdStoreRes>, private va
                 Log.d(TAG, "teamIdStoreRes.storeName: ${teamIdStoreRes.storeName}")
                 listener.onRestaurantClick(teamIdStoreRes.storeName, teamIdStoreRes.storeId)
             }
+            Glide.with(binding.root.context)
+                .load(teamIdStoreRes.imgUrl)
+                // 이미지 로드중 로드 실패시에는 로고 띄워줌
+                .placeholder(R.drawable.logo)
+                .error(R.drawable.logo)
+                .into(binding.groupImage)
         }
     }
 
