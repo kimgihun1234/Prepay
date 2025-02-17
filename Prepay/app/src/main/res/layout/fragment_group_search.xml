@@ -7,9 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".ui.GroupSearch.GroupSearchFragment">
 
-    <!-- 윗 배경 로고 -->
-
-    <!-- 가게 리스트 -->
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="180dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/sunpick_prepay"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -23,38 +29,52 @@
         app:layout_constraintTop_toBottomOf="@+id/distance_sort" />
 
     <Button
+        android:id="@+id/like_sort"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/button_background"
+        android:text="관심 그룹"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:backgroundTint="@null"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_text" />
+
+    <Button
         android:id="@+id/distance_sort"
-        android:layout_width="104dp"
+        android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:background="@drawable/button_background"
         android:text="내 주변"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:backgroundTint="@null"
         app:layout_constraintStart_toEndOf="@+id/like_sort"
-        app:layout_constraintTop_toBottomOf="@+id/search_text" />
+        app:layout_constraintTop_toTopOf="@+id/like_sort" />
 
     <Button
         android:id="@+id/all"
-        android:layout_width="104dp"
+        android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:background="@drawable/button_background"
         android:text="전체"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:backgroundTint="@null"
         app:layout_constraintStart_toEndOf="@+id/distance_sort"
-        app:layout_constraintTop_toBottomOf="@+id/search_text" />
-
-    <Button
-        android:id="@+id/like_sort"
-        android:layout_width="104dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="관심 그룹"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_text" />
+        app:layout_constraintTop_toTopOf="@+id/like_sort" />
 
     <SearchView
         android:id="@+id/search_text"
-        android:layout_width="409dp"
-        android:layout_height="70dp"
+        android:layout_width="390dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/logo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
