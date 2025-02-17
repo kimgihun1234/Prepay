@@ -4,31 +4,34 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="24dp"
+    android:padding="20dp"
     android:gravity="center"
-    android:background="@drawable/dialog_background">
-
-    <!-- QR 코드 이미지 -->
-    <ImageView
-        android:id="@+id/imageViewQrCode"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginBottom="20dp"
-        android:scaleType="fitCenter" />
+    android:background="#CC0066CC">
 
     <!-- QR 코드 인식 안내 -->
     <TextView
         android:id="@+id/qr_instruction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:layout_marginBottom="10dp"
         android:fontFamily="@font/samsung_font_2"
         android:gravity="center"
         android:text="QR 코드를 인식해주세요"
         android:textColor="@android:color/white"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:textStyle="bold" />
+
+
+    <!-- QR 코드 이미지 -->
+    <ImageView
+        android:id="@+id/imageViewQrCode"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="40dp"
+        android:scaleType="fitCenter" />
+
 
     <TextView
         android:id="@+id/qr_timer"
@@ -38,7 +41,7 @@
         android:fontFamily="@font/samsung_font_2"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="30dp"
         android:text="timer" />
 
     <TextView
@@ -47,8 +50,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/samsung_font_2"
         android:gravity="center"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="30dp"
         android:text="리더기와 QR 코드 사이의 거리를 적절히 유지하여\n선명하게 보이도록 조정해주세요"
         android:textColor="@android:color/white"
-        android:textSize="14sp" />
+        android:textSize="13sp" />
 </LinearLayout>
