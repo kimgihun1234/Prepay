@@ -1,54 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@drawable/round_background"
-    android:layout_marginBottom="10dp"
-    android:layout_height="wrap_content">
+    android:layout_height="80dp"
+    android:layout_marginBottom="4dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="@color/white">
 
-    <TextView
-        android:id="@+id/restaurant_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:text="식당 이름"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView18"
-        android:layout_width="63dp"
-        android:layout_height="21dp"
-        android:layout_marginStart="24dp"
-        android:text="현재 잔액"
-        android:textColor="#D9D9D9"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/restaurant_name"
-        app:layout_constraintTop_toTopOf="parent" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardview3"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:clipChildren="true"
+            android:clipToPadding="true"
+            app:cardCornerRadius="25dp"
+            app:cardElevation="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/restaurant_prepay_money"
-        android:layout_width="85dp"
-        android:layout_height="21dp"
-        android:layout_marginStart="3dp"
-        android:text="선결제 잔액"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView18"
-        app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/group_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/dog_logo" />
+        </androidx.cardview.widget.CardView>
 
-    <Button
-        android:id="@+id/restaurant_detail_btn"
-        android:layout_width="60dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="상세"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/restaurant_prepay_money"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/restaurant_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:text="식당 이름"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/cardview3"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView18"
+            android:layout_width="63dp"
+            android:layout_height="21dp"
+            android:layout_marginTop="4dp"
+            android:text="현재 잔액"
+            android:textColor="#BFC9CF"
+            app:layout_constraintStart_toStartOf="@+id/restaurant_name"
+            app:layout_constraintTop_toBottomOf="@+id/restaurant_name" />
+
+        <TextView
+            android:id="@+id/restaurant_prepay_money"
+            android:layout_width="wrap_content"
+            android:layout_height="21dp"
+            android:layout_marginStart="3dp"
+            android:text="선결제 잔액"
+            app:layout_constraintBottom_toBottomOf="@+id/textView18"
+            app:layout_constraintStart_toEndOf="@+id/textView18" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/restaurant_detail_btn"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="상세"
+            android:textStyle="bold"
+            android:textSize="14dp"
+            android:textColor="@color/white"
+            android:background="@drawable/button_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

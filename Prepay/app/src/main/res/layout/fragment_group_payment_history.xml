@@ -52,23 +52,24 @@
 
     <TextView
         android:id="@+id/textView23"
-        android:layout_width="129dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="29dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="20dp"
         android:text="결제 내역"
-        android:textSize="25sp"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textbackground" />
 
     <TextView
         android:id="@+id/textView24"
-        android:layout_width="374dp"
+        android:layout_width="380dp"
         android:layout_height="1dp"
-        android:layout_marginStart="18dp"
         android:layout_marginTop="5dp"
         android:background="@color/black"
         android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView23" />
 
@@ -76,9 +77,7 @@
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

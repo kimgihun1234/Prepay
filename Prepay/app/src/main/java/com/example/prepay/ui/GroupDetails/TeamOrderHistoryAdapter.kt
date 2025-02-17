@@ -1,5 +1,9 @@
 package com.example.prepay.ui.GroupDetails
 
+import android.graphics.Color
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -23,14 +27,16 @@ class TeamOrderHistoryAdapter(var orderHistoryList: List<OrderHistory>,private v
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(order: OrderHistory) {
-            if (order.companyDinner) {
-                binding.root.setBackgroundResource(R.drawable.round_background)
+            // 입금이 진행된 경우에는 색상이 파란색으로 변경
+            if (order.withdraw) {
+                val formattedAmount = NumberFormat.getNumberInstance(Locale.KOREA).format(order.totalPrice)
+                val spannableString = SpannableString(formattedAmount)
+                spannableString.setSpan(ForegroundColorSpan(Color.parseColor("#0066CC")), 0, formattedAmount.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                binding.amount.text = spannableString
             } else {
-                // 다른 색
-                binding.root.setBackgroundResource(R.drawable.round_background)
+                binding.amount.text = NumberFormat.getNumberInstance(Locale.KOREA).format(order.totalPrice)
             }
             binding.name.text = order.orderHistoryId.toString()
-            binding.amount.text = NumberFormat.getNumberInstance(Locale.KOREA).format(order.totalPrice)
             binding.date.text = order.orderDate
 
             // 영수증 버튼 클릭 시 다이얼로그 표시
