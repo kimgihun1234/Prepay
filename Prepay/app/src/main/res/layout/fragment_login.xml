@@ -7,36 +7,10 @@
     android:backgroundTint="@color/white"
     tools:context=".ui.Login.LoginFragment">
 
-    <!-- 뒤로 가기 버튼 -->
-    <ImageButton
-        android:id="@+id/back_btn"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="20dp"
-        android:background="#00ff0000"
-        android:importantForAccessibility="no"
-        android:src="@drawable/arrow_down_sign_to_navigate"
-        app:layout_constraintEnd_toStartOf="@+id/login_title"
-        app:layout_constraintHorizontal_bias="0.205"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- 페이지 타이틀 -->
-    <TextView
-        android:id="@+id/login_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:fontFamily="@font/samsung_font_2"
-        android:text="로그인"
-        android:textColor="#394750"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="HardcodedText" />
-
+    <Button
+        android:layout_width="2dp"
+        android:layout_height="2dp"
+        android:text="test"/>
     <!-- 로고 -->
     <ImageView
         android:id="@+id/logo_image"

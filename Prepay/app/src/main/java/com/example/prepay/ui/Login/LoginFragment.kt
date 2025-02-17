@@ -14,6 +14,7 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.util.Log
 import android.util.TypedValue
+import android.view.KeyEvent
 import android.view.View
 import android.widget.CheckBox
 import android.widget.EditText
@@ -67,6 +68,8 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         loginActivity = context as LoginActivity
         //구글 로그인
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -79,17 +82,6 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // SharedPreferences를 통한 자동 로그인 체크
-        val (savedId, savedPw) = SharedPreferencesUtil.getUserCredentials()
-
-        // 저장된 아이디와 패스워드가 모두 있으면, 자동으로 로그인 API를 호출하여 자동 로그인 처리
-//        if (!savedId.isNullOrEmpty() && !savedPw.isNullOrEmpty()) {
-//            // 자동 로그인: 저장된 값으로 login() 함수를 호출
-//            Log.d(TAG, "${savedId}")
-////            login(savedId, savedPw)
-//            return
-//        }
 
         // editView list
         editTexts = listOf(
@@ -118,13 +110,20 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
         binding.googleLoginBtn.setOnClickListener {
             goSignup()
         }
-        binding.backBtn.setOnClickListener {
-            loginActivity.changeFragmentLogin(CommonUtils.LoginFragmentName.START_LOGIN_FRAGMENT)
-        }
+
         // --- login 관련 기능 ---
+        binding.logInPasswordText.setOnKeyListener { v: View, keyCode: Int, event: KeyEvent ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                login() // 엔터키 입력 시 login() 함수 호출
+                true   // 이벤트를 소비함
+            } else {
+                false  // 이벤트를 소비하지 않음
+            }
+        }
         binding.LoginBtn.setOnClickListener {
             login()
         }
+
         // 카카오 로그인 버튼 클릭 처리 (예: testButton)
         binding.kakaoLoginBtn.setOnClickListener {
             kakaoLogin()

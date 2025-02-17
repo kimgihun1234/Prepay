@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:layout_margin="0dp"
     android:id="@+id/cardview"
-    android:radius="20dp"
+    app:cardCornerRadius="15dp"
     android:elevation="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,25 +19,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="80dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="25dp"
+            android:fontFamily="@font/samsung_font_2"
             android:text="SSAFY"
-            android:textColor="@android:color/white"
-            android:textSize="24sp"
-            android:fontFamily="@font/samsung_font_1"
+            android:textColor="#D9ffffff"
+            android:textSize="16sp"
+            android:letterSpacing="-0.05"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvSubTitle" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/card_dummy2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="8dp"
-            android:text="원"
-            android:textColor="@android:color/white"
-            android:textSize="34sp"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="1dp"
             android:fontFamily="@font/samsung_font_1"
+            android:text="원"
+            android:textColor="#F2ffffff"
+            android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="@+id/tvBalance"
             app:layout_constraintStart_toEndOf="@+id/tvBalance" />
 
@@ -46,13 +49,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="80dp"
-            android:layout_marginTop="24dp"
-            android:text="사용 가능 금액"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
+            android:layout_marginTop="34dp"
             android:fontFamily="@font/samsung_font_1"
-            app:layout_constraintStart_toStartOf="parent"
+            android:text="사용 가능 금액"
+            android:textColor="#BFFFFFFF"
+            android:textFontWeight="600"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/tvTitle"
             app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
         <TextView
@@ -60,40 +63,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="80dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="44dp"
+            android:fontFamily="@font/samsung_font_2"
             android:text="* * * *  * * * *"
             android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:fontFamily="@font/samsung_font_1"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@+id/tvBalance"
             app:layout_constraintTop_toBottomOf="@+id/tvBalance" />
 
-        <TextView
+        <ImageView
             android:id="@+id/card_dummy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginEnd="60dp"
-            android:text="SUNPICK"
-            android:textColor="@android:color/white"
-            android:textSize="24sp"
-            android:fontFamily="@font/samsung_font_1"
+            android:layout_width="80dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="34dp"
+            android:src="@drawable/card_logo"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tvSubTitle" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvSubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvTitle"
-            android:layout_marginStart="80dp"
-            android:layout_marginTop="65dp"
+            android:layout_marginTop="184dp"
             android:fontFamily="@font/samsung_font_1"
             android:text="Private"
             android:textColor="@android:color/white"
             android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/card_dummy"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -101,13 +99,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="80dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="100dp"
+            android:fontFamily="@font/samsung_font_2"
             android:text="8,000,000"
-            android:textSize="34sp"
-            android:fontFamily="@font/samsung_font_1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/card_dummy3" />
+            android:textColor="#F2ffffff"
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="@+id/card_dummy3"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
