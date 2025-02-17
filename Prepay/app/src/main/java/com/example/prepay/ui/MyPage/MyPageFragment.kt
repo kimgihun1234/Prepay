@@ -47,10 +47,9 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
         mainActivity = requireActivity() as MainActivity
     }
 
-    
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initAdapter()
         initEvent()
     }
@@ -58,12 +57,17 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
     private fun initAdapter() {
         cardAdapter = TeamCardAdapter(arrayListOf())
         binding.viewPager.adapter = cardAdapter
+
         viewModel.teamListInfo.observe(viewLifecycleOwner) { teamList ->
             cardAdapter.teamList = teamList
-            if (cardAdapter.teamList.isNotEmpty()) {
-                binding.viewPager.setCurrentItem(cardAdapter.itemCount - 1, false)
-            }
             cardAdapter.notifyDataSetChanged()
+
+            // 데이터가 있고, 최초 로드일 경우에만 마지막 카드로 이동
+            if (teamList.isNotEmpty()) {
+                binding.viewPager.setCurrentItem(cardAdapter.itemCount - 1, false)
+                Log.d(TAG, "${cardAdapter.itemCount - 1}")
+            }
+
         }
         viewModel.getAllTeamList()
 
@@ -76,7 +80,6 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
         // 스택 효과 추가
         binding.viewPager.setPageTransformer(StackPageTransformer())
         binding.viewPager.offscreenPageLimit = 5
-        binding.viewPager.setCurrentItem(0, false)
     }
 
     private fun initEvent() {
@@ -111,8 +114,6 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
 
         mainActivity.hideBottomNav(false)
     }
-
-
 
     fun showQRDialog(url: String = "https://www.naver.com") {
         val context = this@MyPageFragment.requireContext()

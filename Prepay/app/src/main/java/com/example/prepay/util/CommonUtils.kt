@@ -33,7 +33,6 @@ object CommonUtils {
     }
 
     enum class LoginFragmentName(var str: String) {
-        START_LOGIN_FRAGMENT("StartLoginFragment"),
         LOGIN_FRAGMENT("LoginFragment"),
         SIGNIN_FRAGMENT("SignInFragment"),
         FINDPASSWORD_FRAGMENT("FindPasswordFragment"),
