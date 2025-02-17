@@ -5,5 +5,6 @@ data class Team(
     val teamName: String,
     val publicTeam: Boolean,
     val balance: Int,
-    val color : String
+    val color : String,
+    val genDate: Long
 )

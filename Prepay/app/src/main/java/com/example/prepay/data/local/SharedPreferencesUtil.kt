@@ -11,6 +11,7 @@ object SharedPreferencesUtil {
     private const val KEY_USER_ID = "user_id"
     private const val KEY_USER_PW = "user_pw"
     private const val KEY_ACCESS_TOKEN = "access_token"
+    private const val NICKNAME = "nick_name"
 
     private lateinit var preferences: SharedPreferences
 
@@ -43,6 +44,7 @@ object SharedPreferencesUtil {
         }
     }
 
+
     // 액세스 토큰 불러오기
     fun getAccessToken(): String? {
         return preferences.getString(KEY_ACCESS_TOKEN, null)
@@ -52,4 +54,15 @@ object SharedPreferencesUtil {
     fun clearUserData() {
         preferences.edit().clear().apply()
     }
+
+    fun setNickName(nickName: String) {
+        preferences.edit().apply {
+            putString(NICKNAME, nickName)
+            apply()
+        }
+    }
+    fun getNickName() : String? {
+        return preferences.getString(NICKNAME, null)
+    }
+
 }
