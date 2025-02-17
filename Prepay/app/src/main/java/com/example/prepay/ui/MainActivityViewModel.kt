@@ -22,6 +22,10 @@ class MainActivityViewModel: ViewModel()  {
     val storeName : LiveData<String>
         get() = _storeName
 
+    private val _userName = MutableLiveData<String>()
+    val userName : LiveData<String>
+        get() = _userName
+
     fun setTeamId(teamId: Long) {
         _teamId.postValue(teamId)
     }
@@ -32,5 +36,9 @@ class MainActivityViewModel: ViewModel()  {
 
     fun setStoreName(storeName: String) {
         _storeName.postValue(storeName)
+    }
+
+    fun setUserName(userName : String) {
+        _userName.postValue(userName)
     }
 }

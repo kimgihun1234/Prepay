@@ -1,6 +1,7 @@
 package com.example.prepay.ui.MyPage
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Rect
@@ -49,6 +50,8 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "SharedPreferencesUtil.getNickName(): ${SharedPreferencesUtil.getNickName()}")
+        binding.userName.text = SharedPreferencesUtil.getNickName()
         initAdapter()
         initEvent()
     }
@@ -69,7 +72,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
 
         }
         viewModel.getAllTeamList()
-
+        
         cardAdapter.itemClickListener = object : TeamCardAdapter.ItemClickListener {
             override fun onClick(teamId: Int) {
                 activityViewModel.setTeamId(teamId.toLong())
@@ -110,6 +113,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
                 }
             }
         }
+
 
         mainActivity.hideBottomNav(false)
     }
