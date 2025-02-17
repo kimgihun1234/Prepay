@@ -51,7 +51,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "SharedPreferencesUtil.getNickName(): ${SharedPreferencesUtil.getNickName()}")
-        binding.userName.text = SharedPreferencesUtil.getNickName()
+        binding.userName.text = "${SharedPreferencesUtil.getNickName()} 님"
         initAdapter()
         initEvent()
     }
