@@ -214,10 +214,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     override fun onBackPressed() {
         val fragment = supportFragmentManager.findFragmentByTag(MyPageFragment::class.java.simpleName)
         if (fragment != null) {
+            Log.d(TAG, "true: 뒤로가기 처리")
             // MyPageFragment로 돌아가도록 처리
             changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
         } else {
             // 기본적으로 Activity의 뒤로 가기 처리
+            Log.d(TAG, "else: 뒤로가기 처리")
             super.onBackPressed()
         }
     }
