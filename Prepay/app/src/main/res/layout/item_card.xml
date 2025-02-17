@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:layout_margin="0dp"
     android:id="@+id/cardview"
-    app:cardCornerRadius="20dp"
+    app:cardCornerRadius="15dp"
     android:elevation="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,8 +23,8 @@
             android:layout_marginTop="25dp"
             android:fontFamily="@font/samsung_font_2"
             android:text="SSAFY"
-            android:textColor="#F2ffffff"
-            android:textSize="15sp"
+            android:textColor="#D9ffffff"
+            android:textSize="16sp"
             android:letterSpacing="-0.05"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -49,12 +49,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="34dp"
             android:fontFamily="@font/samsung_font_1"
             android:text="사용 가능 금액"
             android:textColor="#BFFFFFFF"
-            android:textSize="12sp"
             android:textFontWeight="600"
+            android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@+id/tvTitle"
             app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="44dp"
             android:fontFamily="@font/samsung_font_2"
             android:text="* * * *  * * * *"
             android:textColor="@android:color/white"
@@ -73,8 +73,8 @@
 
         <ImageView
             android:id="@+id/card_dummy"
-            android:layout_width="68dp"
-            android:layout_height="23dp"
+            android:layout_width="80dp"
+            android:layout_height="24dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="34dp"
             android:src="@drawable/card_logo"
@@ -86,7 +86,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvTitle"
-            android:layout_marginTop="164dp"
+            android:layout_marginTop="184dp"
             android:fontFamily="@font/samsung_font_1"
             android:text="Private"
             android:textColor="@android:color/white"
@@ -99,7 +99,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="92dp"
+            android:layout_marginTop="100dp"
             android:fontFamily="@font/samsung_font_2"
             android:text="8,000,000"
             android:textColor="#F2ffffff"
