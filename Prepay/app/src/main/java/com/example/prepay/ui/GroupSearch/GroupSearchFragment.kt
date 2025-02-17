@@ -130,7 +130,7 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
             binding.recyclerView.adapter = publicGroupAdapter
             getLastLocation()
         }
-        binding.searchText.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        binding.searchRestaurant.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 Log.d(TAG, "onQueryTextSubmit: $query")
                 query?.let { filterSearchResults(it) }
@@ -154,14 +154,17 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
                     1 -> groupSearchFragmentViewModel.getPublicLikeTeams.value?.let {
                         Log.d(TAG, "publicGroupAdapter: $it")
                         publicLikeTeamAdapter.publiclikeList = it
+                        publicLikeTeamAdapter.notifyDataSetChanged()
                     }
                     2 -> groupSearchFragmentViewModel.sortDistancePublicTeams.value?.let{
                         Log.d(TAG, "publicDistanceSearchAdapter: $it")
                         publicDistanceSearchAdapter.publicGroupList = it
+                        publicDistanceSearchAdapter.notifyDataSetChanged()
                     }
                     else -> groupSearchFragmentViewModel.getPublicTeams.value?.let {
                         Log.d(TAG, "publicLikeTeamAdapter: $it")
                         publicGroupAdapter.publicGroupList = it
+                        publicGroupAdapter.notifyDataSetChanged()
                     }
                 }
             }

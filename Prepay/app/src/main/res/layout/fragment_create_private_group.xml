@@ -1,293 +1,299 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.widget.ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card"
-        android:layout_width="331dp"
-        android:layout_height="175dp"
-        android:radius="12dp"
-        app:cardBackgroundColor="@color/black"
-        app:cardElevation="6dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card"
+            android:layout_width="331dp"
+            android:layout_height="175dp"
+            android:radius="12dp"
+            app:cardBackgroundColor="@color/plater11"
+            app:cardElevation="6dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/card_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="싸피 D111"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.135"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/card_brand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="124dp"
+                    android:layout_marginTop="4dp"
+                    android:text="SUNPICK"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/card_view"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/card_balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="35dp"
+                    android:text="1,000,000 원"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.172"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/card_view" />
+
+                <TextView
+                    android:id="@+id/card_expiry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="94dp"
+                    android:text="12/24"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.962"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/card_brand" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <EditText
+            android:id="@+id/group_name_text"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="60dp"
+            android:background="@drawable/round_background"
+            android:ems="10"
+            android:gravity="center"
+            android:inputType="text"
+            android:text=""
+            android:hint="방의 제목을 정해주세요"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/card" />
+
+
+        <EditText
+            android:id="@+id/limit_setting_text"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/round_background"
+            android:ems="10"
+            android:gravity="center"
+            android:inputType="number"
+            android:text=""
+            android:hint="일일 한도를 결정해 주세요"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/group_name_text" />
+
+        <TextView
+            android:id="@+id/limit_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="21dp"
+            android:layout_marginTop="20dp"
+
+            android:gravity="center"
+            android:text="일일 한도 설정"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.082"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/group_name_text" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginTop="32dp"
+            app:layout_constraintTop_toBottomOf="@+id/limit_setting_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/private_register_btn"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="56dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/grouptext_round_backgound"
+            android:text="등록"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/color_selector" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/cancel_btn"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/round_background"
+            android:text="취소"
+            android:textColor="#0066CC"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/private_register_btn" />
+
+
+        <TextView
+            android:id="@+id/color_text"
+            android:layout_width="wrap_content"
+            android:layout_height="21dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintHorizontal_bias="0.082"
+            android:gravity="center"
+            android:text="색깔 설정"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:translationZ="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/limit_setting_text" />
+
+        <RadioGroup
+            android:id="@+id/color_selector"
+            android:layout_width="281dp"
+            android:layout_height="104dp"
+            android:layout_marginTop="8dp"
             android:orientation="vertical"
-            android:padding="16dp">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/color_text">
 
-            <TextView
-                android:id="@+id/card_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="싸피 D111"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.135"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <!-- GridLayout을 사용하여 5개의 열로 두 줄을 구성 -->
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:columnCount="5"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/card_brand"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="124dp"
-                android:layout_marginTop="4dp"
-                android:text="SUNPICK"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/card_view"
-                app:layout_constraintTop_toTopOf="parent" />
+                <!-- 첫 번째 행: 첫 번째 5개의 RadioButton -->
+                <RadioButton
+                    android:id="@+id/radio1"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/radio_selector1"
+                    android:button="@null" />
 
-            <TextView
-                android:id="@+id/card_balance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="35dp"
-                android:text="1,000,000 원"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.172"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/card_view" />
+                <RadioButton
+                    android:id="@+id/radio2"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/radio_selector2"
+                    android:button="@null" />
 
-            <TextView
-                android:id="@+id/card_expiry"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="94dp"
-                android:text="12/24"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.962"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/card_brand" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+                <RadioButton
+                    android:id="@+id/radio3"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/radio_selector3"
+                    android:button="@null" />
 
+                <RadioButton
+                    android:id="@+id/radio4"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/radio_selector4"
+                    android:button="@null" />
 
-    <EditText
-        android:id="@+id/group_name_text"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="60dp"
-        android:background="@drawable/round_background"
-        android:ems="10"
-        android:gravity="center"
-        android:inputType="text"
-        android:text=""
-        android:hint="방의 제목을 정해주세요"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/card" />
+                <RadioButton
+                    android:id="@+id/radio5"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/radio_selector5"
+                    android:button="@null" />
 
+                <!-- 두 번째 행: 나머지 5개의 RadioButton -->
+                <RadioButton
+                    android:id="@+id/radio6"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/radio_selector6"
+                    android:button="@null" />
 
-    <EditText
-        android:id="@+id/limit_setting_text"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/round_background"
-        android:ems="10"
-        android:gravity="center"
-        android:inputType="text"
-        android:text=""
-        android:hint="일일 한도를 결정해 주세요"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/group_name_text" />
+                <RadioButton
+                    android:id="@+id/radio7"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/radio_selector7"
+                    android:button="@null" />
 
-    <TextView
-        android:id="@+id/limit_setting"
-        android:layout_width="wrap_content"
-        android:layout_height="21dp"
-        android:layout_marginTop="20dp"
+                <RadioButton
+                    android:id="@+id/radio8"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/radio_selector8"
+                    android:button="@null" />
 
-        android:gravity="center"
-        android:text="일일 한도 설정"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.082"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/group_name_text" />
+                <RadioButton
+                    android:id="@+id/radio9"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/radio_selector9"
+                    android:button="@null" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_marginTop="32dp"
-        app:layout_constraintTop_toBottomOf="@+id/limit_setting_text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+                <RadioButton
+                    android:id="@+id/radio10"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/radio_selector10"
+                    android:button="@null" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/private_register_btn"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/grouptext_round_backgound"
-        android:text="등록"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/color_selector" />
+            </GridLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/cancel_btn"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/round_background"
-        android:text="취소"
-        android:textColor="#0066CC"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/private_register_btn" />
-
-
-    <TextView
-        android:id="@+id/color_text"
-        android:layout_width="wrap_content"
-        android:layout_height="21dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintHorizontal_bias="0.082"
-        android:gravity="center"
-        android:text="색깔 설정"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:translationZ="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/limit_setting_text" />
-
-    <RadioGroup
-        android:id="@+id/color_selector"
-        android:layout_width="281dp"
-        android:layout_height="104dp"
-        android:layout_marginTop="8dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/color_text">
-
-        <!-- GridLayout을 사용하여 5개의 열로 두 줄을 구성 -->
-        <GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:columnCount="5"
-            android:orientation="horizontal">
-
-            <!-- 첫 번째 행: 첫 번째 5개의 RadioButton -->
-            <RadioButton
-                android:id="@+id/radio1"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/radio_selector1"
-                android:button="@null" />
-
-            <RadioButton
-                android:id="@+id/radio2"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/radio_selector2"
-                android:button="@null" />
-
-            <RadioButton
-                android:id="@+id/radio3"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/radio_selector3"
-                android:button="@null" />
-
-            <RadioButton
-                android:id="@+id/radio4"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/radio_selector4"
-                android:button="@null" />
-
-            <RadioButton
-                android:id="@+id/radio5"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/radio_selector5"
-                android:button="@null" />
-
-            <!-- 두 번째 행: 나머지 5개의 RadioButton -->
-            <RadioButton
-                android:id="@+id/radio6"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/radio_selector6"
-                android:button="@null" />
-
-            <RadioButton
-                android:id="@+id/radio7"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/radio_selector7"
-                android:button="@null" />
-
-            <RadioButton
-                android:id="@+id/radio8"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/radio_selector8"
-                android:button="@null" />
-
-            <RadioButton
-                android:id="@+id/radio9"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/radio_selector9"
-                android:button="@null" />
-
-            <RadioButton
-                android:id="@+id/radio10"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/radio_selector10"
-                android:button="@null" />
-
-        </GridLayout>
-
-    </RadioGroup>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </RadioGroup>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</android.widget.ScrollView>
