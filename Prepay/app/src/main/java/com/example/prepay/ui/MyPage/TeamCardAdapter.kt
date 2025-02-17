@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.prepay.CommonUtils
 import com.example.prepay.data.response.Team
 import com.example.prepay.databinding.ItemCardBinding
 
@@ -26,6 +27,7 @@ class TeamCardAdapter(var teamList: List<Team>) : RecyclerView.Adapter<TeamCardA
             binding.cardview.setOnClickListener {
                 itemClickListener.onClick(teamList[layoutPosition].teamId)
             }
+            binding.tvSubTitle.text = CommonUtils.formatLongToDate(card.genDate)
         }
     }
 

@@ -21,6 +21,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
@@ -32,6 +33,8 @@ import com.example.prepay.response.KakaoLoginRequest
 import com.example.prepay.response.LoginRequest
 import com.example.prepay.ui.LoginActivity
 import com.example.prepay.ui.MainActivity
+import com.example.prepay.ui.MainActivityViewModel
+import com.example.prepay.ui.MyPage.MyPageFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -64,6 +67,7 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
     private val KeyAccessToken = "AccessToken"
 
     private lateinit var editTexts: List<EditText>
+    private val activityViewModel: MainActivityViewModel by activityViewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -246,6 +250,8 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
                     val accessToken = response.headers()["access"]
                     if (accessToken != null) {
                         // Access Token 저장
+                        val nickname = response.body()!!.nickname
+                        SharedPreferencesUtil.setNickName(nickname)
                         SharedPreferencesUtil.saveAccessToken(accessToken)
                         Log.d(TAG, "Access Token 저장됨: $accessToken")
                     }
@@ -255,7 +261,8 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
                         Log.d(TAG, "사용자 정보 저장됨: $userId")
                     }
                     Toast.makeText(requireContext(), "로그인 성공", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(requireContext(), MainActivity::class.java))
+                    val intent = Intent(requireContext(), MainActivity::class.java)
+                    startActivity(intent)
                     activity?.finish()
                 } else {
                     Toast.makeText(
