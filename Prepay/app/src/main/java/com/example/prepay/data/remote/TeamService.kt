@@ -11,6 +11,7 @@ import com.example.prepay.data.response.PublicTeamDetailsRes
 import com.example.prepay.data.response.PublicTeamsDisRes
 import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.data.response.SignInTeamReq
+import com.example.prepay.data.response.StoreDetailRes
 import com.example.prepay.data.response.StoreLocation
 import com.example.prepay.data.response.Team
 import com.example.prepay.data.response.TeamDetailRes
@@ -109,5 +110,9 @@ interface TeamService {
 
     @GET("/team/public/liked")
     suspend fun getlikeTeamList(@Header("access") access: String,@Query("latitude") latitude : Double, @Query("longitude") longitude:Double): List<PublicLikeRes>
+
+    @GET("/team/team/detail")
+    suspend fun getTeamStoreDetail(@Header("access") access: String,@Query("teamId") teamId : Int, @Query("storeId") storeId:Int): StoreDetailRes
+
 
 }
