@@ -210,6 +210,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
     }
 
+    override fun onBackPressed() {
+        val fragment = supportFragmentManager.findFragmentByTag(MyPageFragment::class.java.simpleName)
+        if (fragment != null) {
+            // MyPageFragment로 돌아가도록 처리
+            changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
+        } else {
+            // 기본적으로 Activity의 뒤로 가기 처리
+            super.onBackPressed()
+        }
+    }
+
     fun broadcast(title: String,body: String){
         CoroutineScope(Dispatchers.Main).launch {
             delay(2000) // 10초(10000ms) 대기
