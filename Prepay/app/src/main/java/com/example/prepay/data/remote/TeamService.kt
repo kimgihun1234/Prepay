@@ -99,7 +99,7 @@ interface TeamService {
     //공개된 그룹의 좋아요 정보를 보냅니다.
 
 
-
+    @GET("/team/public-team/2km")
     suspend fun getTeamStoreDistance(@Header("access") access : String, @Query("latitude") latitude : Double, @Query("longitude") longitude:Double) : List<PublicTeamsDisRes>
 
     @POST("/team/like")

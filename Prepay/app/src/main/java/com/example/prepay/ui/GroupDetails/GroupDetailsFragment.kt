@@ -19,6 +19,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.GravityCompat
@@ -130,6 +131,9 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         initViewModel()
         initDrawerLayout()
         initialView()
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
+        }
     }
 
     override fun onPause() {

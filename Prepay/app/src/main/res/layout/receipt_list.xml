@@ -3,62 +3,98 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="50dp">
+    android:layout_height="140dp">
 
     <TextView
         android:id="@+id/food_price"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="44dp"
         android:gravity="center"
         android:text="돈"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/receipt_list_dummy4"
+        app:layout_constraintEnd_toEndOf="@+id/quantity" />
 
     <TextView
         android:id="@+id/food_name"
-        android:layout_width="80dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="싱품명"
+        android:layout_marginEnd="32dp"
+        android:text="상품명"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/food_price"
-        app:layout_constraintHorizontal_bias="0.16"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="@+id/receipt_list_dummy1"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/detailPrice"
-        android:layout_width="50dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="132dp"
         android:gravity="right"
         android:text="단가"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/receipt_list_dummy2"
+        app:layout_constraintEnd_toEndOf="@+id/food_name" />
+
+    <TextView
+        android:id="@+id/quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="수량"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/receipt_list_dummy3"
+        app:layout_constraintEnd_toEndOf="@+id/detailPrice" />
+
+    <TextView
+        android:id="@+id/receipt_list_dummy1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:text="상품명"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/quantity"
-        android:layout_width="41dp"
+        android:id="@+id/receipt_list_dummy2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="120dp"
-        android:gravity="center"
-        android:text="수량"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="8dp"
+        android:text="단가"
+        app:layout_constraintStart_toStartOf="@+id/receipt_list_dummy1"
+        app:layout_constraintTop_toBottomOf="@+id/receipt_list_dummy1" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:background="@drawable/receipt_dashed_line"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <TextView
+        android:id="@+id/receipt_list_dummy3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="수량"
+        app:layout_constraintStart_toStartOf="@+id/receipt_list_dummy1"
+        app:layout_constraintTop_toBottomOf="@+id/receipt_list_dummy2" />
+
+    <TextView
+        android:id="@+id/receipt_list_dummy4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="금액"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/receipt_list_dummy1"
+        app:layout_constraintTop_toBottomOf="@+id/receipt_list_dummy3" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/receipt_list_dummy4"
+        app:srcCompat="@drawable/line_img" />
 </androidx.constraintlayout.widget.ConstraintLayout>
