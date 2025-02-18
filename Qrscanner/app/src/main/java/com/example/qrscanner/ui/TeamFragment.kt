@@ -55,7 +55,7 @@ class TeamFragment : BaseFragment<FragmentTeamBinding>(
         }
         val storeId = mainActivityViewModel.storeId.value!!
         val teamId = mainActivityViewModel.teamId.value!!
-        val storeReq = StoreReq(teamId, storeId)
+        val storeReq = StoreReq(teamId.toLong(), storeId.toLong())
         storeViewModel.getStoreList(storeReq)
     }
 }

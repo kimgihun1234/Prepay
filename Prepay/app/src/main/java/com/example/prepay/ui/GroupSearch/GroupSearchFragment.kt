@@ -36,6 +36,7 @@ import com.example.prepay.data.response.PublicTeamsDisRes
 import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.databinding.FragmentGroupSearchBinding
 import com.example.prepay.ui.MainActivity
+import com.example.prepay.util.KeyboardVisibilityUtils
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -77,6 +78,8 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
     }
     private lateinit var currentLocation: Location
 
+    private lateinit var keyboardVisibilityUtils: KeyboardVisibilityUtils
+
     private var select = 1
 
 
@@ -107,6 +110,19 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
         initViewModel()
         initAdapter()
         initEvent()
+        keyboardVisibilityUtils = KeyboardVisibilityUtils(requireActivity().window,
+            onShowKeyboard = {
+                mainActivity.hideBottomNav(true) // 키보드 올라오면 숨김
+            },
+            onHideKeyboard = {
+                mainActivity.hideBottomNav(false) // 키보드 내려가면 다시 보이게
+            }
+        )
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        keyboardVisibilityUtils.detachKeyboardListeners()
     }
 
     private fun initEvent() {
@@ -134,7 +150,7 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
             getLastLocation()
         }
         
-        binding.searchRestaurant.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+         binding.searchRestaurant.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 Log.d(TAG, "onQueryTextSubmit: $query")
                 query?.let { filterSearchResults(it) }
