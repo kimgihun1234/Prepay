@@ -154,6 +154,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
             binding.publicDetailText.text = teamsRes.teamMessage
             binding.leftMoneyInfo.text =  CommonUtils.makeComma(teamsRes.teamBalance)
             binding.publicDetailLocation.text = teamsRes.address
+            binding.dailyMoneyInfo.text = CommonUtils.makeComma(teamsRes.dailyLimit-teamsRes.usedAmount)
             val imageUrl = teamsRes.imageUrl
             if (!imageUrl.isNullOrEmpty()) {
                 Glide.with(requireContext())
@@ -189,7 +190,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
                 latitude = lat
                 longitude = lon
             }
-            setCurrentLocation(location, "팀 위치", "현재 팀의 위치입니다.")
+            setCurrentLocation(location, teamsRes.storeName, teamsRes.storeDescription)
             val leftMoney = teamsRes.usedAmount
         }
     }
@@ -233,12 +234,12 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
         val currentLatLng = LatLng(lat, lon)
 
         val marker =
-            ResourcesCompat.getDrawable(resources, R.drawable.logo, requireActivity().theme)
+            ResourcesCompat.getDrawable(resources, R.drawable.location_icon, requireActivity().theme)
                 ?.toBitmap(150, 150)
 
         val markerOptions = MarkerOptions().apply {
             position(currentLatLng)
-            title("싸피벅스")
+            title(markerTitle)
             snippet(markerSnippet)
             draggable(true)
             icon(BitmapDescriptorFactory.fromBitmap(marker!!))
