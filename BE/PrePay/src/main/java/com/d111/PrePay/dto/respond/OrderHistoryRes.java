@@ -18,6 +18,7 @@ public class OrderHistoryRes {
     private String storeImgUrl;
     private String storeName;
     private boolean checkPublic;
+    private String nickname;
 
     public OrderHistoryRes(OrderHistory orderHistory) {
         this.orderHistoryId = orderHistory.getId();

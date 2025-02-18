@@ -10,11 +10,13 @@ import com.d111.PrePay.repository.OrderHistoryRepository;
 import com.d111.PrePay.repository.RefundRequestRepository;
 import com.d111.PrePay.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -30,6 +32,7 @@ public class OrderService {
             List<OrderHistoryRes> resultList = new ArrayList<>();
             for (OrderHistory orderHistory : originalList) {
                 OrderHistoryRes result = new OrderHistoryRes(orderHistory);
+                result.setNickname(orderHistory.getUser().getNickname());
                 resultList.add(result);
             }
             return resultList;
@@ -38,6 +41,7 @@ public class OrderService {
             List<OrderHistoryRes> resultList = new ArrayList<>();
             for (OrderHistory orderHistory : originalList) {
                 OrderHistoryRes result = new OrderHistoryRes(orderHistory);
+                result.setNickname(orderHistory.getUser().getNickname());
                 resultList.add(result);
             }
             return resultList;
@@ -46,6 +50,7 @@ public class OrderService {
             List<OrderHistoryRes> resultList = new ArrayList<>();
             for (OrderHistory orderHistory : originalList) {
                 OrderHistoryRes result = new OrderHistoryRes(orderHistory);
+                result.setNickname(orderHistory.getUser().getNickname());
                 resultList.add(result);
             }
             return resultList;
@@ -54,6 +59,7 @@ public class OrderService {
             List<OrderHistoryRes> resultList = new ArrayList<>();
             for (OrderHistory orderHistory : originalList) {
                 OrderHistoryRes result = new OrderHistoryRes(orderHistory);
+                result.setNickname(orderHistory.getUser().getNickname());
                 resultList.add(result);
             }
             return resultList;
