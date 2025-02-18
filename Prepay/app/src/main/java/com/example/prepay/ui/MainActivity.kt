@@ -39,6 +39,7 @@ import com.example.prepay.ui.MyPage.MyPageFragment
 import com.example.prepay.ui.RestaurantDetails.AddDetailRestaurantFragment
 import com.example.prepay.ui.RestaurantDetails.RestaurantDetailsFragment
 import com.example.prepay.ui.Notification.NotificationFragment
+import com.example.prepay.util.KeyboardVisibilityUtils
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.messaging.FirebaseMessaging
@@ -55,6 +56,9 @@ private val prefsName = "user_prefs"
 
 private const val TAG = "MainActivity_싸피"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
+    private lateinit var keyboardVisibilityUtils: KeyboardVisibilityUtils
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initFragment()
@@ -64,6 +68,23 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNav.setBackgroundColor(android.graphics.Color.TRANSPARENT)
+
+        keyboardVisibilityUtils = KeyboardVisibilityUtils(window,
+            onShowKeyboard = {
+                bottomNav.run {
+                    //smoothScrollTo(scrollX, scrollY + keyboardHeight)
+                    //키보드 올라왔을때 원하는 동작
+                    bottomNav.visibility = View.GONE
+                }
+            },
+            onHideKeyboard = {
+                bottomNav.run {
+                    //키보드 내려갔을때 원하는 동작
+                    //smoothScrollTo(scrollX, scrollY + keyboardHeight)
+                    bottomNav.visibility = View.VISIBLE
+                }
+            }
+        )
     }
 
     fun changeFragmentMain(name: CommonUtils.MainFragmentName, num: Int = -1) {
