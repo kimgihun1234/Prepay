@@ -4,8 +4,13 @@ import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.TextPaint
+import android.text.style.TypefaceSpan
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -14,6 +19,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.activity.viewModels
+import androidx.core.content.res.ResourcesCompat
 import com.example.prepay.ApplicationClass
 import com.example.prepay.BaseActivity
 import com.example.prepay.CommonUtils
@@ -68,6 +74,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNav.setBackgroundColor(android.graphics.Color.TRANSPARENT)
+        bottomNav.itemIconSize=resources.getDimensionPixelSize(R.dimen._32dp)
+//        bottomNav.layoutParams.height = resources.getDimensionPixelSize(R.dimen._56dp)
+
 
         keyboardVisibilityUtils = KeyboardVisibilityUtils(window,
             onShowKeyboard = {
