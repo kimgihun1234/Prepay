@@ -16,6 +16,7 @@ class TeamUserAdapter(var teamUserResList: List<TeamUserRes>,
 
         fun bind(teamUserRes: TeamUserRes, isLeader: Boolean) {
             binding.teamUserName.text = teamUserRes.nickname
+            binding.userEmail.text = teamUserRes.email
 
             // 반장일 경우만 버튼 표시
             if (isLeader) {
@@ -24,10 +25,14 @@ class TeamUserAdapter(var teamUserResList: List<TeamUserRes>,
             } else {
                 binding.manageBtn.visibility = View.GONE
                 binding.resignBtn.visibility = View.GONE
+                binding.imageView7.visibility = View.GONE
             }
             if(isLeader==teamUserRes.position){
                 binding.manageBtn.visibility = View.GONE
                 binding.resignBtn.visibility = View.GONE
+            }
+            else{
+                binding.imageView7.visibility = View.VISIBLE
             }
 
             binding.manageBtn.setOnClickListener {

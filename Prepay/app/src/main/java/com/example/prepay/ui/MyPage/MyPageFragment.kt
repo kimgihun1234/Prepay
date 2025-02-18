@@ -89,7 +89,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
         }
         // 스택 효과 추가
         binding.viewPager.setPageTransformer(StackPageTransformer())
-        binding.viewPager.offscreenPageLimit = 2
+        binding.viewPager.offscreenPageLimit = 1
     }
 
     private fun initEvent() {

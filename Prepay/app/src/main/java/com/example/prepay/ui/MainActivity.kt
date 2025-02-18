@@ -68,39 +68,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         initEvent()
         init()
         setupToolbarListener()
-
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNav.setBackgroundColor(android.graphics.Color.TRANSPARENT)
-
-        keyboardVisibilityUtils = KeyboardVisibilityUtils(window,
-            onShowKeyboard = {
-                bottomNav.run {
-                    //smoothScrollTo(scrollX, scrollY + keyboardHeight)
-                    //키보드 올라왔을때 원하는 동작
-                    bottomNav.visibility = View.GONE
-                }
-            },
-            onHideKeyboard = {
-                bottomNav.run {
-                    //키보드 내려갔을때 원하는 동작
-                    //smoothScrollTo(scrollX, scrollY + keyboardHeight)
-                    bottomNav.visibility = View.VISIBLE
-                }
-            }
-        )
     }
 
-    @SuppressLint("ServiceCast")
-    fun hideKeyboard() {
-        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        val view = currentFocus ?: View(this)
-        Log.d(TAG,"키보드를 없앨 생각입니다")
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-    }
 
     fun changeFragmentMain(name: CommonUtils.MainFragmentName, num: Int = -1) {
         val transaction = supportFragmentManager.beginTransaction()
-        hideKeyboard()
         when (name) {
             CommonUtils.MainFragmentName.MYPAGE_FRAGMENT -> {
                 transaction.replace(R.id.main_container, MyPageFragment())
