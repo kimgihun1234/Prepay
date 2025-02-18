@@ -6,12 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.CreateGroup.CreateGroupFragment">
 
+
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/private_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="52dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="60dp"
         android:checked="true"
         android:text="비공개 그룹"
         android:textColor="#0066CC"
@@ -24,8 +25,8 @@
         android:id="@+id/public_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="sans-serif-medium"
         android:text="공개 그룹"
         android:textColor="#0066CC"
@@ -36,26 +37,24 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/create_group_container"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="417dp"
+        android:layout_height="573dp"
         android:background="@drawable/main_page_bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/private_checkbox"
         app:layout_constraintVertical_bias="1.0" />
-
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="44dp"
         android:text="그룹 생성"
         android:textStyle="bold"
         android:fontFamily="@font/samsung_font_1"
-        android:textSize="32sp"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
