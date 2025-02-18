@@ -3,6 +3,7 @@ package com.example.prepay.ui.GroupSearch
 import android.Manifest
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
+import android.graphics.Rect
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -106,6 +107,7 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
         initEvent()
     }
 
+
     private fun initEvent() {
         select = 3
         binding.recyclerView.adapter = publicGroupAdapter
@@ -130,6 +132,24 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
             binding.recyclerView.adapter = publicGroupAdapter
             getLastLocation()
         }
+
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener {
+            val rect = Rect()
+            binding.root.getWindowVisibleDisplayFrame(rect)
+            val screenHeight = binding.root.rootView.height
+            val keypadHeight = screenHeight - rect.bottom
+
+            if (keypadHeight > screenHeight * 0.1) {
+                Log.d(TAG, "키보드가 열림")
+                mainActivity.hideBottomNav(true)
+            } else {
+                Log.d(TAG, "키보드가 닫힘")
+                binding.root.postDelayed({
+                    mainActivity.hideBottomNav(false)
+                }, 100)
+            }
+        }
+        
         binding.searchRestaurant.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 Log.d(TAG, "onQueryTextSubmit: $query")
@@ -462,6 +482,9 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
     /******** 위치서비스 활성화 여부 check *********/
     private val GPS_ENABLE_REQUEST_CODE = 2001
     private var needRequest = false
+
+
+
 
 
 }
