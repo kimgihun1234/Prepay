@@ -57,7 +57,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "SharedPreferencesUtil.getNickName(): ${SharedPreferencesUtil.getNickName()}")
-        binding.userName.text = SharedPreferencesUtil.getNickName()
+        binding.userName.text = "${SharedPreferencesUtil.getNickName()} 님"
         initAdapter()
         initEvent()
         initViewModel()
@@ -99,14 +99,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
         binding.enterGroupBtn.setOnClickListener {
             mainActivity.enterDialog()
         }
-        binding.groupDetailBtn.setOnClickListener {
-            val currentPosition = binding.viewPager.currentItem
-            val selectedTeam = cardAdapter.teamList.getOrNull(currentPosition)
-            selectedTeam?.let {
-                activityViewModel.setTeamId(it.teamId.toLong())
-                mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.GROUP_DETAILS_FRAGMENT)
-            }
-        }
+
 
         binding.payBtn.setOnClickListener {
             val currentPosition = binding.viewPager.currentItem

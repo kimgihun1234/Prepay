@@ -8,7 +8,7 @@
     android:layout_margin="0dp"
     android:id="@+id/cardview"
     app:cardCornerRadius="15dp"
-    android:elevation="20dp"
+    android:elevation="30dp"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,19 +37,20 @@
             android:layout_alignParentStart="true"
             android:layout_marginStart="2dp"
             android:layout_marginBottom="1dp"
-            android:fontFamily="@font/samsung_font_1"
+            android:fontFamily="@font/samsung_font_2"
             android:text="원"
             android:textColor="#F2ffffff"
             android:textSize="23sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/tvBalance"
             app:layout_constraintStart_toEndOf="@+id/tvBalance" />
 
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="64dp"
-            android:layout_height="48dp"
+            android:layout_height="58dp"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="54dp"
+            android:layout_marginTop="42dp"
             android:src="@drawable/card_chip"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
@@ -60,8 +61,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_marginStart="0dp"
-            android:layout_marginBottom="64dp"
-            android:fontFamily="@font/samsung_font_1"
+            android:layout_marginBottom="70dp"
+            android:fontFamily="@font/samsung_font_2"
             android:text="사용 가능 금액"
             android:textColor="#BFFFFFFF"
             android:textFontWeight="600"
@@ -112,14 +113,27 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="32dp"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="36dp"
             android:fontFamily="@font/samsung_font_2"
+            android:textStyle="bold"
             android:letterSpacing="0.05"
             android:text="8,000,000"
             android:textColor="#F2ffffff"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:text="생성일"
+            android:textSize="10sp"
+            android:textColor="#BFFFFFFF"
+            android:textFontWeight="600"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tvSubTitle" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
