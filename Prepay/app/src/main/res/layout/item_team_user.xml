@@ -9,7 +9,7 @@
         android:id="@+id/team_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="16dp"
         android:text="김싸피"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
