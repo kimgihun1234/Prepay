@@ -7,16 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.GroupSearch.GroupSearchFragment">
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="180dp"
-        android:layout_height="54dp"
-        android:layout_marginStart="31dp"
-        android:layout_marginTop="32dp"
-        android:src="@drawable/sunpick_prepay"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
@@ -69,21 +59,47 @@
         app:layout_constraintStart_toEndOf="@+id/distance_sort"
         app:layout_constraintTop_toTopOf="@+id/like_sort" />
 
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/samsung_font_2"
+        android:text="공개 그룹"
+        android:textColor="#394750"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/public_back_btn"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        android:background="#00ff0000"
+        android:contentDescription="뒤로가기"
+        android:src="@drawable/arrow_down_sign_to_navigate"
+        app:layout_constraintEnd_toStartOf="@+id/textView3"
+        app:layout_constraintHorizontal_bias="0.205"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_restaurant"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/round_background"
+        android:layout_width="340dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="92dp"
+        android:background="@drawable/shape_all_round"
         android:focusable="true"
         android:gravity="center"
         app:iconifiedByDefault="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo"
+        app:layout_constraintTop_toTopOf="parent"
         app:queryHint="검색어를 입력하시오" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
