@@ -30,6 +30,9 @@ class PublicSearchLikeAdapter(var publiclikeList: List<PublicLikeRes>, private v
                 .error(R.drawable.logo)
                 .into(binding.groupImage)
 
+
+
+
             isLiked = publiclike.checkLike
             updateHeartIcon()
 

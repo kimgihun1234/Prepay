@@ -31,12 +31,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             android:text="식당이름"
             android:fontFamily="@font/samsung_font_2"
             android:textColor="#000000"
-            android:textSize="17sp"
+            android:textSize="16sp"
             android:textStyle="bold"
+            android:letterSpacing="-0.05"
             app:layout_constraintStart_toEndOf="@+id/group_image"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -72,7 +73,7 @@
             android:fontFamily="@font/samsung_font_2"
             android:text="800,000"
             android:textFontWeight="600"
-            android:textSize="15sp"
+            android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/public_money_name_tag"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -80,8 +81,8 @@
             android:id="@+id/public_distance"
             android:layout_width="wrap_content"
             android:layout_height="18dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="59dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="60dp"
             android:text="10km"
             android:textColor="#807F7F"
             android:textSize="12sp"
@@ -94,8 +95,10 @@
             android:layout_height="72dp"
             android:layout_marginStart="4dp"
             android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
+            android:scaleType="centerCrop"
+            android:background="@drawable/image_round"
             android:src="@drawable/dog_logo"
+            android:elevation="1dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
