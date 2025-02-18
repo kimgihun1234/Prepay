@@ -1,18 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme.Prepay" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <item name="android:statusBarColor">#FBFBFF</item> //Status Bar색 변경
-        <item name="android:windowLightStatusBar">true</item> //글자 색 어둡게 설정
+        <item name="android:statusBarColor">#FBFBFF</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:colorControlHighlight">@android:color/transparent</item>
     </style>
 
     <style name="Theme.Prepay" parent="Base.Theme.Prepay" />
-    
-    <style name="splashScreen" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">#0066CC</item>
-    </style>
-    
-    
+
     <string-array name="categoryColorArr">
         <item>#9A5B1C</item>
         <item>#CCCC00</item>
@@ -24,5 +18,4 @@
         <item>#160E2C</item>
         <item>#000000</item>
     </string-array>
-
 </resources>

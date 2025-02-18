@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item
         android:id="@+id/navigation_mypage"
         android:icon="@drawable/mypage_btn"
-        android:enabled="true"
-        android:title="내 그룹" />
+        android:title="내 그룹"
+        android:background="@android:color/transparent" />
+
+
     <item
         android:id="@+id/navigation_group_search"
         android:icon="@drawable/group_search_btn"
-        android:enabled="true"
-        android:title="공개 그룹" />
+        android:title="공개 그룹"
+        android:background="@android:color/transparent" />
+
     <item
         android:id="@+id/my_payment_history"
         android:icon="@drawable/payment_history_btn"
-        android:enabled="true"
-        android:title="내역 조회" />
+        android:title="내역 조회"
+        android:background="@android:color/transparent" />
+
 </menu>

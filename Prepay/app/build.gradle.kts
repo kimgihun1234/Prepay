@@ -99,8 +99,7 @@ dependencies {
     implementation("androidx.palette:palette:1.0.0")
 
     // splash
-    implementation("androidx.core:core-splashscreen:1.0.0")
-
-
+    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("androidx.appcompat:appcompat:1.6.1")
 
 }
