@@ -43,7 +43,6 @@
             android:text="결제 내역"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/unchecked_color"
             app:layout_constraintBottom_toBottomOf="@+id/prepay_store_list_btn"
             app:layout_constraintStart_toEndOf="@+id/prepay_store_list_btn" />
 
