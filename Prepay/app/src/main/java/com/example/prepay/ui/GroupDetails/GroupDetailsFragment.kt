@@ -20,6 +20,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.appcompat.widget.AppCompatButton
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.GravityCompat
@@ -179,11 +181,14 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     }
 
     private fun initEvent() {
+        setButtonState(binding.prepayStoreListBtn, binding.listBtn)
         binding.prepayStoreListBtn.setOnClickListener {
             mainActivity.changeFragmentGroupDetail(CommonUtils.GroupDetailFragmentName.GROUP_PREPAY_STORE_LIST_FRAGMENT)
+            setButtonState(binding.prepayStoreListBtn, binding.listBtn)
         }
         binding.listBtn.setOnClickListener {
             mainActivity.changeFragmentGroupDetail(CommonUtils.GroupDetailFragmentName.GROUP_PREPAY_HISTORY_FRAGMENT)
+            setButtonState(binding.listBtn, binding.prepayStoreListBtn)
         }
 
         binding.groupInviteBtn.setOnClickListener {
@@ -266,12 +271,12 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         if(viewModel.userposition.value==false){
             binding.inviteCodeMakeBtn.visibility = View.GONE
             lifecycleScope.launch {
-            val response = getCode(activityViewModel.teamId.value!!)
+                val response = getCode(activityViewModel.teamId.value!!)
                 if (response != null) {
                     Log.d(TAG, "결과값 성공: ${response.inviteCode}")
                     binding.etInviteCode.text = response.inviteCode
                 } else {
-                Log.e(TAG, "초대 코드 생성 실패")
+                    Log.e(TAG, "초대 코드 생성 실패")
                 }
             }
         }
@@ -423,7 +428,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     fun privilegeUser(pr:PrivilegeUserReq){
         lifecycleScope.launch {
             runCatching {
-              RetrofitUtil.teamService.privilegeUser(SharedPreferencesUtil.getAccessToken()!!,pr)
+                RetrofitUtil.teamService.privilegeUser(SharedPreferencesUtil.getAccessToken()!!,pr)
             }.onSuccess {
 
             }.onFailure {
@@ -442,6 +447,11 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
 
             }
         }
+    }
+
+    private fun setButtonState(activeButton: AppCompatButton, inactiveButton: AppCompatButton) {
+        activeButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.checked_color))
+        inactiveButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.unchecked_color))
     }
 }
 
