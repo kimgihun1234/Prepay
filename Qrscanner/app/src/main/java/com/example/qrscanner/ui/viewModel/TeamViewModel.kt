@@ -21,10 +21,10 @@ class TeamViewModel : ViewModel() {
                 RetrofitUtil.posService.getTeamList(storeId)
             } .onSuccess {
                 Log.d(TAG, "getTeamList: 성공")
-                _teamList.value = it
+                _teamList.postValue(it)
             } .onFailure { e->
                 Log.d(TAG, "getTeamList: 실패 ${e.message}")
-                _teamList.value = emptyList()
+                _teamList.postValue(emptyList())
             }
         }
     }
