@@ -271,7 +271,7 @@ public class TeamService {
         Store findStore = storeRepository.findById(req.getStoreId()).orElseThrow(() -> new NoSuchElementException("스토어 없음"));
 
 
-        TeamStore teamStore = new TeamStore(findTeam, findStore);
+        TeamStore teamStore = new TeamStore(findTeam, findStore,1000);
         TeamStore savedTeamStore = teamStoreRepository.save(teamStore);
 
         TeamCreateStoreRes teamCreateStoreRes = TeamCreateStoreRes.builder()
@@ -624,8 +624,10 @@ public class TeamService {
                 }
             }
         }
+        List<PublicTeams2kmRes> sortedByDistanceResult = result.stream()
+                .sorted(Comparator.comparingDouble(item -> item.getDistance())).toList();
         log.info("리스트 사이즈 : {}", result.size());
-        return result;
+        return sortedByDistanceResult;
     }
 
     public PrivateStoreDetail getPrivateDetail(String email, long teamId, long storeId) {
