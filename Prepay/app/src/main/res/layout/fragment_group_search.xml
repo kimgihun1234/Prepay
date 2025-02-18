@@ -101,7 +101,7 @@
         android:layout_width="350dp"
         android:layout_height="52dp"
         android:layout_marginTop="92dp"
-        android:background="@drawable/shape_all_round"
+        android:background="@drawable/search_bar_shape"
         android:focusable="true"
         android:gravity="center"
         app:iconifiedByDefault="false"
