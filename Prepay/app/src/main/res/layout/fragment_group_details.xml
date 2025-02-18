@@ -27,7 +27,6 @@
             android:text="선결제 리스트"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/checked_color"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/group_detail_back_btn" />
 
@@ -43,7 +42,6 @@
             android:text="결제 내역"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/unchecked_color"
             app:layout_constraintBottom_toBottomOf="@+id/prepay_store_list_btn"
             app:layout_constraintStart_toEndOf="@+id/prepay_store_list_btn" />
 
