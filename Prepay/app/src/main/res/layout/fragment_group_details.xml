@@ -19,17 +19,17 @@
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="96dp"
             android:background="@null"
             android:drawablePadding="2dp"
             android:fontFamily="@font/samsung_font_2"
             android:scaleX="0.9"
             android:text="선결제 리스트"
+            android:textColor="@color/checked_color"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/checked_color"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/group_detail_back_btn" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/list_btn"
@@ -61,27 +61,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/prepay_store_list_btn" />
 
-        <ImageButton
-            android:id="@+id/group_detail_back_btn"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="48dp"
-            android:src="@drawable/arrow_down_sign_to_navigate"
-            android:background="@null"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/group_detail_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
             android:text="TextView"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/group_detail_back_btn" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/detail_hamburger_btn"

@@ -208,9 +208,6 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
                 drawerLayout.openDrawer(GravityCompat.END)
             }
         }
-        binding.groupDetailBackBtn.setOnClickListener {
-            //mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
-        }
     }
 
     fun changeMoneyView(){
