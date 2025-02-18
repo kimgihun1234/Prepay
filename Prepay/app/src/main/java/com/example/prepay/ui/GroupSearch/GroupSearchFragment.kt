@@ -3,6 +3,7 @@ package com.example.prepay.ui.GroupSearch
 import android.Manifest
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Rect
 import android.location.Address
 import android.location.Geocoder
@@ -106,7 +107,6 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
         initAdapter()
         initEvent()
     }
-
 
     private fun initEvent() {
         select = 3
@@ -465,9 +465,6 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
     /******** 위치서비스 활성화 여부 check *********/
     private val GPS_ENABLE_REQUEST_CODE = 2001
     private var needRequest = false
-
-
-
 
 
 }
