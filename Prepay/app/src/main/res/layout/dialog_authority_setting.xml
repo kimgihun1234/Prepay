@@ -7,39 +7,70 @@
     android:padding="20dp"
     android:background="@android:color/white">
 
-    <!-- 상단 안내 메시지 -->
-    <LinearLayout
+<!--    &lt;!&ndash; 상단 안내 메시지 &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:background="@drawable/round_invite_txt_backgound"-->
+<!--        android:paddingBottom="16dp">-->
+
+<!--        &lt;!&ndash; 이미지 아이콘 &ndash;&gt;-->
+<!--        <ImageView-->
+<!--            android:id="@+id/autority_setting_iv_icon"-->
+<!--            android:layout_width="60dp"-->
+<!--            android:layout_height="60dp"-->
+<!--            android:src="@drawable/dog_logo"-->
+<!--            android:contentDescription="Icon"-->
+<!--            android:layout_marginEnd="8dp" />-->
+
+<!--        &lt;!&ndash; 안내 텍스트 &ndash;&gt;-->
+<!--        <TextView-->
+<!--            android:id="@+id/autority_setting_tv_message"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_marginTop="4dp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:text="회식 결제를 허용하시겠습니까?"-->
+<!--            android:textColor="@android:color/black"-->
+<!--            android:textSize="14sp"-->
+<!--            android:lineSpacingExtra="4dp" />-->
+<!--    </LinearLayout>-->
+
+    <TextView
+        android:id="@+id/authority_setting_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:background="@drawable/round_invite_txt_backgound"
-        android:paddingBottom="16dp">
+        android:fontFamily="@font/samsung_font_2"
+        android:textStyle="bold"
+        android:textSize="16dp"
+        android:text="사용자 이름" />
 
-        <!-- 이미지 아이콘 -->
-        <ImageView
-            android:id="@+id/autority_setting_iv_icon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/dog_logo"
-            android:contentDescription="Icon"
-            android:layout_marginEnd="8dp" />
+    <TextView
+        android:id="@+id/authority_dummy1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/samsung_font_2"
+        android:textStyle="bold"
+        android:textSize="16dp"
+        android:text="회식 결제 권한을 부여하시겠습니까?" />
 
-        <!-- 안내 텍스트 -->
-        <TextView
-            android:id="@+id/autority_setting_tv_message"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginTop="4dp"
-            android:textStyle="bold"
-            android:text="회식 결제를 허용하시겠습니까?"
-            android:textColor="@android:color/black"
-            android:textSize="14sp"
-            android:lineSpacingExtra="4dp" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/authority_dummy2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/samsung_font_2"
+        android:text="권한은 그룹 관리 기능을 통해서" />
 
-    <!-- 하단 버튼 -->
+    <TextView
+        android:id="@+id/authority_dummy3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/samsung_font_2"
+        android:text="다시 수정할 수 있습니다." />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,23 +78,27 @@
         android:gravity="end"
         android:layout_marginTop="16dp">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/autority_setting_confirm_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="확인"
-            android:background="@drawable/grouptext_round_backgound"
-            app:backgroundTint="@null"
-            android:textColor="@android:color/white" />
-        <Button
+            android:text="권한 부여"
+            android:textColor="@color/text_main_color"
+            android:fontFamily="@font/samsung_font_2"
+            app:backgroundTint="@color/checked_color"
+            app:cornerRadius="16dp"/>
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/autority_setting_cancel_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:background="@drawable/round_background"
-            app:backgroundTint="@null"
             android:text="취소"
-            android:textColor="@color/text_main_color" />
+            android:textColor="@color/text_main_color"
+            android:fontFamily="@font/samsung_font_2"
+            app:backgroundTint="@color/nav_unselected_color"
+            app:cornerRadius="16dp"/>
 
     </LinearLayout>
 </LinearLayout>

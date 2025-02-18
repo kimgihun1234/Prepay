@@ -12,10 +12,10 @@
         android:id="@+id/tv_dialog_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="한도 변경칸입니다"
-        android:textColor="#0066CC"
+        android:layout_marginTop="16dp"
+        android:text="변경하실 금액을 입력해주세요"
         android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.099"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,6 +26,7 @@
         android:layout_width="0dp"
         android:layout_height="54dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/round_background"
         android:gravity="center"
@@ -33,32 +34,53 @@
         android:padding="10dp"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_dialog_title" />
+        app:layout_constraintTop_toBottomOf="@+id/money_change_dummy2" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="4dp"
-        android:background="@drawable/round_background"
+        android:layout_marginEnd="16dp"
         android:text="취소"
-        android:textColor="#0066CC"
+        android:textColor="@color/text_main_color"
+        android:fontFamily="@font/samsung_font_2"
+        app:backgroundTint="@color/nav_unselected_color"
+        app:cornerRadius="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_code_input" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/grouptext_round_backgound"
-        android:text="확인"
+        android:text="변경"
         android:textColor="@color/white"
+        app:backgroundTint="@color/checked_color"
+        app:cornerRadius="16dp"
         app:layout_constraintEnd_toStartOf="@+id/btn_cancel"
         app:layout_constraintTop_toBottomOf="@+id/et_code_input" />
 
+    <TextView
+        android:id="@+id/money_change_dummy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="변경된 금액은 즉시 모든 그룹 멤버에게"
+        app:layout_constraintStart_toStartOf="@+id/tv_dialog_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_dialog_title" />
+
+    <TextView
+        android:id="@+id/money_change_dummy2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="일괄 적용됩니다."
+        app:layout_constraintStart_toStartOf="@+id/tv_dialog_title"
+        app:layout_constraintTop_toBottomOf="@+id/money_change_dummy" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
