@@ -271,7 +271,7 @@ public class TeamService {
         Store findStore = storeRepository.findById(req.getStoreId()).orElseThrow(() -> new NoSuchElementException("스토어 없음"));
 
 
-        TeamStore teamStore = new TeamStore(findTeam, findStore,1000);
+        TeamStore teamStore = new TeamStore(findTeam, findStore);
         TeamStore savedTeamStore = teamStoreRepository.save(teamStore);
 
         TeamCreateStoreRes teamCreateStoreRes = TeamCreateStoreRes.builder()
