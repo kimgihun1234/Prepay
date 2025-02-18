@@ -134,9 +134,9 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         initDrawerLayout()
         initialView()
         initAdapter()
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+        /*requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
-        }
+        }*/
         viewModel.getTeamDetail(SharedPreferencesUtil.getAccessToken()!!,activityViewModel.teamId.value!!)
     }
 
@@ -204,7 +204,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             }
         }
         binding.groupDetailBackBtn.setOnClickListener {
-            mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
+            //mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
         }
     }
 
