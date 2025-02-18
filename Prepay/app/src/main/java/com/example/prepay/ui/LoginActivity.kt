@@ -109,6 +109,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
                     val accessToken = response.headers()["access"]
                     if (accessToken != null) {
                         // Access Token 저장
+                        val nickname = response.body()!!.nickname
+                        SharedPreferencesUtil.setNickName(nickname)
                         SharedPreferencesUtil.saveAccessToken(accessToken)
                         Log.d(TAG, "Access Token 저장됨: $accessToken")
                     }

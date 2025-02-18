@@ -6,5 +6,6 @@ data class OrderHistory(
     val totalPrice : Int,
     val refundRequested : Boolean,
     val withdraw : Boolean,
-    val companyDinner: Boolean
+    val companyDinner: Boolean,
+    val nickname: String
 )

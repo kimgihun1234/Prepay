@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
+import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.data.model.dto.OrderHistory
 import com.example.prepay.databinding.RestaurantPayerBinding
@@ -36,8 +37,8 @@ class TeamOrderHistoryAdapter(var orderHistoryList: List<OrderHistory>,private v
             } else {
                 binding.amount.text = NumberFormat.getNumberInstance(Locale.KOREA).format(order.totalPrice)
             }
-            binding.name.text = order.orderHistoryId.toString()
-            binding.date.text = order.orderDate
+            binding.name.text = order.nickname
+            binding.date.text = CommonUtils.formatLongToDate(order.orderDate.toLong())
 
             // 영수증 버튼 클릭 시 다이얼로그 표시
             binding.imageButton.setOnClickListener {
