@@ -162,10 +162,12 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
     private fun initViewModel(){
         viewModel.teamUserListInfo.observe(viewLifecycleOwner){it->
             teamUserAdapter.teamUserResList = it
+            Log.d(TAG,it.toString())
             teamUserAdapter.notifyDataSetChanged()
         }
         viewModel.userposition.observe(viewLifecycleOwner){it->
             teamUserAdapter.updateUserPosition(it)
+            Log.d(TAG,"업데이트가 되었습니다")
         }
         viewModel.getMyTeamRestaurantList(SharedPreferencesUtil.getAccessToken()!!,activityViewModel.teamId.value!!)
         viewModel.getMyTeamUserList(SharedPreferencesUtil.getAccessToken()!!,activityViewModel.teamId.value!!);
