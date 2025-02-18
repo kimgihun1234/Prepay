@@ -49,6 +49,7 @@ import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.ui.GroupSearch.GroupSearchFragmentViewModel
 import com.example.prepay.ui.GroupSearch.PublicSearchAdapter
 import com.example.prepay.ui.MainActivityViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
 //import com.google.zxing.BarcodeFormat
@@ -65,7 +66,7 @@ import java.util.Locale
 import java.util.Timer
 import java.util.TimerTask
 
-private const val TAG = "PublicGroupDetailsFragment"
+private const val TAG = "PublicGroupDetailsFragment_싸피"
 
 class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBinding>(
     FragmentPublicGroupDetailsBinding::bind,
@@ -91,6 +92,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
 
     override fun onResume() {
         super.onResume()
+        Log.d(TAG,"바텀 내비바 숨깁니다")
         mainActivity.hideBottomNav(true)
     }
 
@@ -99,7 +101,6 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
         initViewModel()
         init()
         initEvent()
-
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         val mapFragment =
             childFragmentManager.findFragmentById(R.id.public_detail_map) as SupportMapFragment
@@ -153,6 +154,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
             binding.publicDetailText.text = teamsRes.teamMessage
             binding.leftMoneyInfo.text =  CommonUtils.makeComma(teamsRes.teamBalance)
             binding.publicDetailLocation.text = teamsRes.address
+            binding.dailyMoneyInfo.text = CommonUtils.makeComma(teamsRes.dailyLimit-teamsRes.usedAmount)
             val imageUrl = teamsRes.imageUrl
             if (!imageUrl.isNullOrEmpty()) {
                 Glide.with(requireContext())
@@ -188,7 +190,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
                 latitude = lat
                 longitude = lon
             }
-            setCurrentLocation(location, "팀 위치", "현재 팀의 위치입니다.")
+            setCurrentLocation(location, teamsRes.storeName, teamsRes.storeDescription)
             val leftMoney = teamsRes.usedAmount
         }
     }
@@ -232,12 +234,12 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
         val currentLatLng = LatLng(lat, lon)
 
         val marker =
-            ResourcesCompat.getDrawable(resources, R.drawable.logo, requireActivity().theme)
+            ResourcesCompat.getDrawable(resources, R.drawable.location_icon, requireActivity().theme)
                 ?.toBitmap(150, 150)
 
         val markerOptions = MarkerOptions().apply {
             position(currentLatLng)
-            title("싸피벅스")
+            title(markerTitle)
             snippet(markerSnippet)
             draggable(true)
             icon(BitmapDescriptorFactory.fromBitmap(marker!!))

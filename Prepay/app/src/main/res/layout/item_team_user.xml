@@ -33,7 +33,7 @@
         android:id="@+id/resign_btn"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="8dp"
         android:background="#00FFFFFF"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="@+id/manage_btn"

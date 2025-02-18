@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="38dp"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
             android:background="@drawable/filter_btn"
             android:backgroundTint="#F4F4F8"
             android:elevation="4dp"
@@ -32,8 +32,8 @@
             android:textSize="12sp"
             android:textStyle="bold"
             app:backgroundTint="@null"
-            app:layout_constraintStart_toEndOf="@+id/distance_sort"
-            app:layout_constraintTop_toBottomOf="@+id/search_restaurant" />
+            app:layout_constraintBottom_toBottomOf="@+id/distance_sort"
+            app:layout_constraintStart_toEndOf="@+id/distance_sort" />
 
         <Button
             android:id="@+id/distance_sort"

@@ -21,11 +21,12 @@ class StoreViewModel : ViewModel() {
             runCatching {
                 RetrofitUtil.posService.getStoreList(store)
             } .onSuccess {
-                _storeList.value = it
+                _storeList.postValue(it)
                 Log.d(TAG, "getStoreList: 성공")
                 Log.d(TAG, "getStoreList: $it")
-            } .onFailure {
-                _storeList.value = emptyList()
+            } .onFailure {e ->
+                _storeList.postValue(emptyList())
+                Log.d(TAG, "getStoreList: ${e.message}")
                 Log.d(TAG, "getStoreList: 실패")
             }
         }
