@@ -19,5 +19,6 @@
     <color name="plater11">#160E2C</color>
     <color name="checked_color">#0066CC</color>
     <color name="unchecked_color">#394750</color>
+    <color name="nav_unselected_color">#858585</color>
 </resources>
 
