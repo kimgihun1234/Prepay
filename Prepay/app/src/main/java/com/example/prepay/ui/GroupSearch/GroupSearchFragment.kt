@@ -3,6 +3,8 @@ package com.example.prepay.ui.GroupSearch
 import android.Manifest
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
+import android.content.res.Configuration
+import android.graphics.Rect
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -130,6 +132,7 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
             binding.recyclerView.adapter = publicGroupAdapter
             getLastLocation()
         }
+        
         binding.searchRestaurant.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 Log.d(TAG, "onQueryTextSubmit: $query")
