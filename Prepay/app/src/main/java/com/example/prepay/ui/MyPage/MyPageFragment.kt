@@ -42,37 +42,45 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
     private lateinit var cardAdapter: TeamCardAdapter
     private val viewModel: MyPageFragmentViewModel by viewModels()
     private val activityViewModel: MainActivityViewModel by activityViewModels()
+    private var isInitialLoad = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivity = requireActivity() as MainActivity
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Fragment가 화면에 돌아올 때마다 isInitialLoad를 true로 설정
+        isInitialLoad = true
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "SharedPreferencesUtil.getNickName(): ${SharedPreferencesUtil.getNickName()}")
         binding.userName.text = SharedPreferencesUtil.getNickName()
         initAdapter()
         initEvent()
+        initViewModel()
     }
 
-    private fun initAdapter() {
-        cardAdapter = TeamCardAdapter(arrayListOf())
-        binding.viewPager.adapter = cardAdapter
-
+    fun initViewModel(){
         viewModel.teamListInfo.observe(viewLifecycleOwner) { teamList ->
             cardAdapter.teamList = teamList
             cardAdapter.notifyDataSetChanged()
 
             // 데이터가 있고, 최초 로드일 경우에만 마지막 카드로 이동
-            if (teamList.isNotEmpty()) {
+            if (teamList.isNotEmpty()&&isInitialLoad) {
                 binding.viewPager.setCurrentItem(cardAdapter.itemCount - 1, false)
                 Log.d(TAG, "뭘까? ${cardAdapter.itemCount - 1}")
+                isInitialLoad = false
             }
-
         }
+    }
+    private fun initAdapter() {
+        cardAdapter = TeamCardAdapter(arrayListOf())
+        binding.viewPager.adapter = cardAdapter
         viewModel.getAllTeamList()
-        
+
         cardAdapter.itemClickListener = object : TeamCardAdapter.ItemClickListener {
             override fun onClick(teamId: Int) {
                 activityViewModel.setTeamId(teamId.toLong())
@@ -81,7 +89,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
         }
         // 스택 효과 추가
         binding.viewPager.setPageTransformer(StackPageTransformer())
-        binding.viewPager.offscreenPageLimit = 5
+        binding.viewPager.offscreenPageLimit = 2
     }
 
     private fun initEvent() {
