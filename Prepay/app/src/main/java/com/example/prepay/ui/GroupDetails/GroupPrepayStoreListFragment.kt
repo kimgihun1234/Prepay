@@ -70,7 +70,7 @@ class GroupPrepayStoreListFragment: BaseFragment<FragmentGroupPrepayStoreListBin
                 }.onSuccess {
                     showQRDialog(it.message+":"+ SharedPreferencesUtil.getAccessToken()!!+":"+activityViewModel.teamId.value.toString())
                 }.onFailure {
-                    mainActivity.showToast("qr불러오기가 실패했습니다")
+                    mainActivity.showToast("결제 권한이 없습니다")
                 }
             }
         }
@@ -82,7 +82,7 @@ class GroupPrepayStoreListFragment: BaseFragment<FragmentGroupPrepayStoreListBin
                 }.onSuccess {
                     showQRDialog(it.message+":"+ SharedPreferencesUtil.getAccessToken()!!+":"+activityViewModel.teamId.value.toString())
                 }.onFailure {
-                    mainActivity.showToast("qr불러오기가 실패했습니다")
+                    mainActivity.showToast("가격이 부족합니다")
                 }
             }
             //mainActivity.broadcast("hello","hello")
