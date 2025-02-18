@@ -1,5 +1,7 @@
 package com.example.prepay.ui
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -10,6 +12,7 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
@@ -87,8 +90,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         )
     }
 
+    @SuppressLint("ServiceCast")
+    fun hideKeyboard() {
+        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        val view = currentFocus ?: View(this)
+        Log.d(TAG,"키보드를 없앨 생각입니다")
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
     fun changeFragmentMain(name: CommonUtils.MainFragmentName, num: Int = -1) {
         val transaction = supportFragmentManager.beginTransaction()
+        hideKeyboard()
         when (name) {
             CommonUtils.MainFragmentName.MYPAGE_FRAGMENT -> {
                 transaction.replace(R.id.main_container, MyPageFragment())
