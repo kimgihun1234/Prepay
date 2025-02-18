@@ -236,6 +236,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             }.onSuccess {
                 //binding.usePossiblePriceTxt.text = CommonUtils.makeComma(it.dailyPriceLimit-it.usedAmount)
                 viewModel.updatePosition(it.position)
+                binding.groupTitle.text = it.teamName
                 inviteCode = (it.teamPassword ?: "초대코드없음").toString()
                 if(it.position==false){
                     binding.moneyChangeBtn.visibility = View.GONE
