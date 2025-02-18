@@ -149,7 +149,7 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
             getLastLocation()
         }
         
-        binding.searchRestaurant.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+         binding.searchRestaurant.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 Log.d(TAG, "onQueryTextSubmit: $query")
                 query?.let { filterSearchResults(it) }
