@@ -39,6 +39,7 @@ import com.example.prepay.ui.RestaurantDetails.AddDetailRestaurantFragment
 import com.example.prepay.ui.RestaurantDetails.RestaurantDetailsFragment
 import com.example.prepay.ui.Notification.NotificationFragment
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -60,6 +61,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         initEvent()
         init()
         setupToolbarListener()
+
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav.setBackgroundColor(android.graphics.Color.TRANSPARENT)
     }
 
     fun changeFragmentMain(name: CommonUtils.MainFragmentName, num: Int = -1) {
@@ -173,7 +177,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             val sharedPref = this.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
             val accessToken = sharedPref.getString(KeyAccessToken, "") ?: ""
             Log.d(TAG, "불러온 AccessToken: $accessToken")
-36
             lifecycleScope.launch {
                 try {
                     val response = RetrofitUtil.teamService.signInTeam(

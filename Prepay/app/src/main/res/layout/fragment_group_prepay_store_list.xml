@@ -10,7 +10,7 @@
         android:id="@+id/cardView"
         android:layout_width="170dp"
         android:layout_height="150dp"
-        android:layout_marginStart="18dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="16dp"
         android:elevation="1dp"
         app:cardCornerRadius="20dp"
@@ -21,7 +21,7 @@
             android:id="@+id/textView19"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop" />
     </androidx.cardview.widget.CardView>
 
     <TextView
@@ -55,10 +55,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
-        android:layout_height="380dp"
-        android:layout_marginStart="0dp"
+        android:layout_height="340dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +68,7 @@
         android:layout_width="170dp"
         android:layout_height="150dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="12dp"
         android:elevation="1dp"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
