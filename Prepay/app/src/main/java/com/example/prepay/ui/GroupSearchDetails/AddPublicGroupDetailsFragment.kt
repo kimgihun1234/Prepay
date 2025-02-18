@@ -49,6 +49,7 @@ import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.ui.GroupSearch.GroupSearchFragmentViewModel
 import com.example.prepay.ui.GroupSearch.PublicSearchAdapter
 import com.example.prepay.ui.MainActivityViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
 //import com.google.zxing.BarcodeFormat
@@ -65,7 +66,7 @@ import java.util.Locale
 import java.util.Timer
 import java.util.TimerTask
 
-private const val TAG = "PublicGroupDetailsFragment"
+private const val TAG = "PublicGroupDetailsFragment_싸피"
 
 class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBinding>(
     FragmentPublicGroupDetailsBinding::bind,
@@ -91,6 +92,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
 
     override fun onResume() {
         super.onResume()
+        Log.d(TAG,"바텀 내비바 숨깁니다")
         mainActivity.hideBottomNav(true)
     }
 
@@ -99,7 +101,6 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
         initViewModel()
         init()
         initEvent()
-
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         val mapFragment =
             childFragmentManager.findFragmentById(R.id.public_detail_map) as SupportMapFragment
