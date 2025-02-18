@@ -3,42 +3,59 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="80dp">
+    android:layout_height="60dp">
 
     <TextView
         android:id="@+id/team_user_name"
-        android:layout_width="73dp"
-        android:layout_height="28dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
         android:text="김싸피"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.button.MaterialButton
+    <ImageButton
         android:id="@+id/manage_btn"
-        android:layout_width="90dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:background="@drawable/round_background"
-        android:text="관리자 설정"
-        android:textColor="#0066CC"
-        android:textSize="11dp"
-        app:backgroundTint="@null"
-        app:layout_constraintStart_toEndOf="@+id/team_user_name"
-        app:layout_constraintTop_toTopOf="@+id/team_user_name" />
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="24dp"
+        android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/resign_btn"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.433"
+        app:srcCompat="@drawable/license_btn" />
 
-    <com.google.android.material.button.MaterialButton
+    <ImageButton
         android:id="@+id/resign_btn"
-        android:layout_width="70dp"
-        android:layout_height="40dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="24dp"
+        android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/manage_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/person_remove_btn" />
+
+    <TextView
+        android:id="@+id/user_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:text="TextView"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/team_user_name"
+        app:layout_constraintStart_toEndOf="@+id/team_user_name" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:background="#F44336"
-        android:text="강퇴"
-        android:textColor="@color/white"
-        android:textSize="11dp"
-        app:backgroundTint="@null"
-        app:layout_constraintStart_toEndOf="@+id/manage_btn"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/team_user_name"
+        app:layout_constraintStart_toEndOf="@+id/user_email"
+        app:srcCompat="@drawable/crown_btn" />
 </androidx.constraintlayout.widget.ConstraintLayout>
