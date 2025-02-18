@@ -2,6 +2,7 @@
     <style name="Base.Theme.Prepay" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:statusBarColor">#FBFBFF</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:colorControlHighlight">@android:color/transparent</item>
     </style>
 
     <style name="Theme.Prepay" parent="Base.Theme.Prepay" />
@@ -16,6 +17,5 @@
         <item>#124577</item>
         <item>#160E2C</item>
         <item>#000000</item>
-        <item name="android:colorControlHighlight">@android:color/transparent</item>
     </string-array>
 </resources>
