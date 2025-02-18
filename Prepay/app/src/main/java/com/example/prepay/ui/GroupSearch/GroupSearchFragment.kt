@@ -132,23 +132,6 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
             binding.recyclerView.adapter = publicGroupAdapter
             getLastLocation()
         }
-
-        binding.root.viewTreeObserver.addOnGlobalLayoutListener {
-            val rect = Rect()
-            binding.root.getWindowVisibleDisplayFrame(rect)
-            val screenHeight = binding.root.rootView.height
-            val keypadHeight = screenHeight - rect.bottom
-
-            if (keypadHeight > screenHeight * 0.1) {
-                Log.d(TAG, "키보드가 열림")
-                mainActivity.hideBottomNav(true)
-            } else {
-                Log.d(TAG, "키보드가 닫힘")
-                binding.root.postDelayed({
-                    mainActivity.hideBottomNav(false)
-                }, 100)
-            }
-        }
         
         binding.searchRestaurant.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
