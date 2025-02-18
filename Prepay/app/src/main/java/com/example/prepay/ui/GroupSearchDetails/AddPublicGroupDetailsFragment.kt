@@ -133,7 +133,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
             val checkLike = LikeTeamsReq(activityViewModel.storeId.value!!.toLong(), heartCheck)
             sendlike(checkLike)
         }
-        binding.publicDetailQrBtn.setOnClickListener{
+        /*binding.publicDetailQrBtn.setOnClickListener{
             lifecycleScope.launch {
                 runCatching {
                     RetrofitUtil.qrService.qrPrivateCreate(SharedPreferencesUtil.getAccessToken()!!, activityViewModel.storeId.value!!.toInt())
@@ -145,7 +145,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
                     mainActivity.showToast("qr불러오기가 실패했습니다")
                 }
             }
-        }
+        }*/
         val bottomSheet: View = requireView().findViewById(R.id.bottomSheet) // ✅ onViewCreated()에서 초기화
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         bottomSheet.setOnClickListener {
@@ -155,6 +155,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             }
         }
+        bottomSheetBehavior.setPeekHeight(1100);
     }
 
 
