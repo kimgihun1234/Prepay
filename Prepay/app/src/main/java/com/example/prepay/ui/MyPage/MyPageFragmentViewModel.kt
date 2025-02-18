@@ -22,6 +22,7 @@ class MyPageFragmentViewModel : ViewModel(){
             }.onSuccess {
                 Log.d("MyPageViewModel", "팀 리스트 가져오기 성공: $it")
                 _teamListInfo.value = it
+
             }.onFailure { e ->
                 _teamListInfo.value = emptyList()
             }
