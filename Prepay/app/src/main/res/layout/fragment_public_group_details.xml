@@ -19,18 +19,19 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toBottomOf="@id/public_detail_map">
+        app:layout_constraintTop_toBottomOf="@id/public_detail_map"
+        tools:layout_editor_absoluteX="0dp">
 
         <LinearLayout
             android:id="@+id/bottomSheet"
             android:layout_width="match_parent"
-            android:layout_height="867dp"
+            android:layout_height="800dp"
             android:layout_gravity="bottom"
             android:background="@drawable/white_round_top_border"
             android:orientation="vertical"
             android:padding="16dp"
             app:behavior_hideable="false"
-            app:behavior_peekHeight="300dp"
+            app:behavior_peekHeight="200dp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
             <!-- 드래그 핸들 -->
