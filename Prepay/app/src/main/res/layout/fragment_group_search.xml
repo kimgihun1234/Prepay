@@ -7,60 +7,79 @@
     android:layout_height="match_parent"
     tools:context=".ui.GroupSearch.GroupSearchFragment">
 
-    <!-- 윗 배경 로고 -->
-
-    <!-- 가게 리스트 -->
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="1000dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:background="#FFFFFF"
+        android:elevation="4dp"
+        android:paddingTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/distance_sort" />
+        app:layout_constraintTop_toBottomOf="@+id/search_restaurant">
 
-    <Button
-        android:id="@+id/like_sort"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/button_background"
-        android:text="관심 그룹"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        app:backgroundTint="@null"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_restaurant" />
+        <Button
+            android:id="@+id/like_sort"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/filter_btn"
+            android:backgroundTint="#F4F4F8"
+            android:elevation="4dp"
+            android:fontFamily="@font/samsung_font_2"
+            android:text="관심 그룹"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:backgroundTint="@null"
+            app:layout_constraintStart_toEndOf="@+id/distance_sort"
+            app:layout_constraintTop_toBottomOf="@+id/search_restaurant" />
 
-    <Button
-        android:id="@+id/distance_sort"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:background="@drawable/button_background"
-        android:text="내 주변"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        app:backgroundTint="@null"
-        app:layout_constraintStart_toEndOf="@+id/like_sort"
-        app:layout_constraintTop_toTopOf="@+id/like_sort" />
+        <Button
+            android:id="@+id/distance_sort"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/filter_btn"
+            android:backgroundTint="#F4F4F8"
+            android:elevation="4dp"
+            android:text="내 주변"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:backgroundTint="@null"
+            app:layout_constraintStart_toEndOf="@+id/all"
+            app:layout_constraintTop_toTopOf="@+id/all" />
 
-    <Button
-        android:id="@+id/all"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:background="@drawable/button_background"
-        android:text="전체"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        app:backgroundTint="@null"
-        app:layout_constraintStart_toEndOf="@+id/distance_sort"
-        app:layout_constraintTop_toTopOf="@+id/like_sort" />
+        <Button
+            android:id="@+id/all"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/filter_btn"
+            android:backgroundTint="#F4F4F8"
+            android:elevation="4dp"
+            android:text="전체"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:backgroundTint="@null"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/all" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/textView3"
@@ -77,23 +96,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/public_back_btn"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="20dp"
-        android:background="#00ff0000"
-        android:contentDescription="뒤로가기"
-        android:src="@drawable/arrow_down_sign_to_navigate"
-        app:layout_constraintEnd_toStartOf="@+id/textView3"
-        app:layout_constraintHorizontal_bias="0.205"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_restaurant"
-        android:layout_width="340dp"
-        android:layout_height="58dp"
+        android:layout_width="350dp"
+        android:layout_height="52dp"
         android:layout_marginTop="92dp"
         android:background="@drawable/shape_all_round"
         android:focusable="true"
