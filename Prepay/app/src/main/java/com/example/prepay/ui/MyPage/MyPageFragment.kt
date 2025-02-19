@@ -22,6 +22,10 @@ import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.SharedPreferencesUtil
+import com.example.prepay.data.response.PrivilegeUserReq
+import com.example.prepay.data.response.TeamUserRes
+import com.example.prepay.databinding.DialogAuthoritySettingBinding
+import com.example.prepay.databinding.DialogLogoutBinding
 import com.example.prepay.databinding.FragmentMyPageBinding
 import com.example.prepay.ui.GroupDetails.GroupDetailsFragment
 import com.example.prepay.ui.MainActivity
@@ -100,7 +104,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
             mainActivity.enterDialog()
         }
         binding.logoutBtn.setOnClickListener {
-            mainActivity.logout(requireContext())
+            showLogoutDialog()
         }
 
         binding.payBtn.setOnClickListener {
@@ -178,5 +182,22 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
                 }
             }
         }, 1000, 1000)
+    }
+
+    private fun showLogoutDialog() {
+        val binding = DialogLogoutBinding.inflate(layoutInflater)
+
+        val dialog = android.app.AlertDialog.Builder(requireContext())
+            .setView(binding.root)
+            .create()
+        binding.logoutName.text = SharedPreferencesUtil.getNickName()+" 님"
+        binding.groupLogoutConfirmBtn.setOnClickListener {
+            mainActivity.logout(requireContext())
+        }
+
+        binding.groupLogoutCancelBtn.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
     }
 }

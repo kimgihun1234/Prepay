@@ -32,6 +32,12 @@ object CommonUtils {
         return format.format(Date(longDate))  // Long 값을 Date 객체로 변환 후 포맷 적용
     }
 
+
+    fun cardFormatToDate(longDate: Long): String {
+        val format = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault())  // 원하는 날짜 형식 지정
+        return format.format(Date(longDate))  // Long 값을 Date 객체로 변환 후 포맷 적용
+    }
+
     enum class LoginFragmentName(var str: String) {
         LOGIN_FRAGMENT("LoginFragment"),
         SIGNIN_FRAGMENT("SignInFragment"),
