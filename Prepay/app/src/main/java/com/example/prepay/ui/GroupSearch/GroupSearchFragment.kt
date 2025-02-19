@@ -13,9 +13,11 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.example.prepay.ui.MainActivityViewModel
 import com.example.prepay.SharedPreferencesUtil
@@ -82,6 +84,7 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
 
     private var select = 1
 
+    private var selectedButton: Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,8 +121,21 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
                 mainActivity.hideBottomNav(false) // 키보드 내려가면 다시 보이게
             }
         )
-    }
 
+        // 처음 활성화 버튼
+        selectedButton = binding.all
+
+        // searchBar 클릭 이벤트
+        val searchBar = binding.searchRestaurant
+        searchBar.setOnQueryTextFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                Log.d(TAG, "Focus gained")
+                view.setBackgroundResource(R.drawable.focus_shape_alll_round)
+            } else {
+                view.setBackgroundResource(R.drawable.search_bar_shape)
+            }
+        }
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         keyboardVisibilityUtils.detachKeyboardListeners()
@@ -132,6 +148,7 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
         getLastLocation()
         binding.likeSort.setOnClickListener {
             select = 1
+            handleButtonClick(it as Button)
             //groupSearchFragmentViewModel.getTeamLikeList()
             binding.recyclerView.adapter = publicLikeTeamAdapter
             getLastLocation()
@@ -139,6 +156,7 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
 
         binding.distanceSort.setOnClickListener {
             select = 2
+            handleButtonClick(it as Button)
             binding.recyclerView.adapter = publicDistanceSearchAdapter
             getLastLocation()
             Log.d(TAG, "initEvent: ${groupSearchFragmentViewModel.sortDistancePublicTeams.value}")
@@ -146,6 +164,7 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
 
         binding.all.setOnClickListener {
             select = 3
+            handleButtonClick(it as Button)
             binding.recyclerView.adapter = publicGroupAdapter
             getLastLocation()
         }
@@ -227,6 +246,7 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
 
         })
     }
+
 
     private fun initAdapter(){
         publicLikeTeamAdapter = PublicSearchLikeAdapter(arrayListOf(),this)
@@ -478,6 +498,25 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
             Log.d(TAG, "위치 권한 없음")
         }
     }
+
+    private fun handleButtonClick(clickedButton: Button) {
+        // 이전에 선택된 버튼이 있다면 기본 스타일로 초기화합니다.
+        selectedButton?.apply {
+            setBackgroundResource(R.drawable.filter_btn) // 기본 배경 리소스
+            setTextColor(ContextCompat.getColor(context, R.color.black)) // 기본 텍스트 색상
+        }
+        // 새로 클릭한 버튼에 클릭된 스타일을 적용합니다.
+        clickedButton.apply {
+            Log.d(TAG, "ㅇㅇㅇㅇㅇㅇㅇ${clickedButton}")
+            setBackgroundResource(R.drawable.clicked_filter_btn) // 클릭된 상태의 배경 리소스
+            setTextColor(ContextCompat.getColor(context, R.color.white)) // 클릭된 상태의 텍스트 색상
+        }
+
+        // 선택된 버튼을 업데이트합니다.
+        selectedButton = clickedButton
+    }
+
+
 
     /******** 위치서비스 활성화 여부 check *********/
     private val GPS_ENABLE_REQUEST_CODE = 2001
