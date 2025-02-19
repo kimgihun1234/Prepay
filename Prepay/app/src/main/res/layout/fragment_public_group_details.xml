@@ -10,7 +10,7 @@
         android:id="@+id/public_detail_map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="0dp"
-        android:layout_height="480dp"
+        android:layout_height="600dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +25,7 @@
         <LinearLayout
             android:id="@+id/bottomSheet"
             android:layout_width="match_parent"
-            android:layout_height="800dp"
+            android:layout_height="700dp"
             android:layout_gravity="bottom"
             android:background="@drawable/white_round_top_border"
             android:orientation="vertical"
