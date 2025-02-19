@@ -49,6 +49,7 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
             binding.groupNameText,
             binding.limitSettingText
         )
+        binding.cardView.text = binding.groupNameTitle.text
 
         initEvent()
         initFocusChangeListener()
@@ -88,17 +89,18 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
 
                 // 색상 변경 로직
                 val selectedColor = when (view.id) {
-                    R.id.radio1 -> "#9A5B1C"
-                    R.id.radio2 -> "#CCCC00"
+                    R.id.radio1 -> "#1A237E"
+                    R.id.radio2 -> "#880E4F"
                     R.id.radio3 -> "#1E4D2B"
-                    R.id.radio4 -> "#3399FF"
-                    R.id.radio5 -> "#858585"
+                    R.id.radio4 -> "#B71C1C"
+                    R.id.radio5 -> "#1B5E20"
                     R.id.radio6 -> "#E26588"
-                    R.id.radio7 -> "#124577"
-                    R.id.radio8 -> "#FFB3A7"
-                    R.id.radio9 -> "#D72638"
+                    R.id.radio7 -> "#3399FF"
+                    R.id.radio8 -> "#00695C"
+                    R.id.radio9 -> "#6E2C00"
                     R.id.radio10 -> "#000000"
-                    else -> "#160E2C"
+                    R.id.radio11 -> "#2A2D34"
+                    else -> "#0A3D62"
                 }
 
                 val colorInt = Color.parseColor(selectedColor)
