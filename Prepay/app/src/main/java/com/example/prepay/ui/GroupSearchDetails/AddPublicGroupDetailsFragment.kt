@@ -87,6 +87,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
     var lon = 128.0
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
+    private var isUserDragging = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,10 +123,11 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
     }
 
 
-    private fun initEvent(){
+    private fun initEvent() {
         binding.publicDetailTeamName.text = viewModel.detailInfo.value?.teamName
         Log.d(TAG, "initEvent: ${viewModel.detailInfo.value?.teamName}")
         binding.publicDetailText.text = viewModel.detailInfo.value?.teamMessage
+
         // 클릭 이벤트
         binding.likeBtn.setOnClickListener {
             heartCheck = !heartCheck
@@ -133,32 +135,41 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
             val checkLike = LikeTeamsReq(activityViewModel.storeId.value!!.toLong(), heartCheck)
             sendlike(checkLike)
         }
-        /*binding.publicDetailQrBtn.setOnClickListener{
+
+        binding.qrPaymentBtn.setOnClickListener {
             lifecycleScope.launch {
                 runCatching {
                     RetrofitUtil.qrService.qrPrivateCreate(SharedPreferencesUtil.getAccessToken()!!, activityViewModel.storeId.value!!.toInt())
                 }.onSuccess {
-                    Log.d(TAG,it.message)
-                    showQRDialog(it.message+":"+SharedPreferencesUtil.getAccessToken()!!+":"+activityViewModel.storeId.value.toString())
+                    Log.d(TAG, it.message)
+                    showQRDialog(it.message + ":" + SharedPreferencesUtil.getAccessToken()!! + ":" + activityViewModel.storeId.value.toString())
                 }.onFailure { e ->
                     Log.d(TAG, "qr실패: ${e.message}")
                     mainActivity.showToast("qr불러오기가 실패했습니다")
                 }
             }
-        }*/
-        val bottomSheet: View = requireView().findViewById(R.id.bottomSheet) // ✅ onViewCreated()에서 초기화
+        }
+
+
+        // 바텀시트 초기화 및 드래그만 허용하도록 설정
+        val bottomSheet: View = requireView().findViewById(R.id.bottomSheet)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+
+
+        // 바텀 시트가 드래그 또는 클릭으로 상태가 변경되지 않도록 초기화
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        bottomSheetBehavior.setPeekHeight(
+            400)
+
+        // 바텀 시트를 클릭했을 때 상태를 변경하도록 설정
         bottomSheet.setOnClickListener {
-            if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            } else {
+            if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            } else {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             }
         }
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
-        bottomSheetBehavior.setPeekHeight(900);
     }
-
 
     private fun initViewModel() {
         viewModel.detailInfo.observe(viewLifecycleOwner) { it ->
@@ -166,9 +177,11 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
             Log.d(TAG, "initViewModel: ${it}")
             binding.publicDetailTeamName.text = teamsRes.teamName
             binding.publicDetailText.text = teamsRes.teamMessage
-            binding.leftMoneyInfo.text =  CommonUtils.makeComma(teamsRes.teamBalance)
+            binding.leftMoneyInfo.text =  "현재 잔액: "+CommonUtils.makeComma(teamsRes.teamBalance)
             binding.publicDetailLocation.text = teamsRes.address
-            binding.dailyMoneyInfo.text = CommonUtils.makeComma(teamsRes.dailyLimit-teamsRes.usedAmount)
+            binding.dailyMoneyInfo.text = "개인 한도: "+CommonUtils.makeComma(teamsRes.dailyLimit-teamsRes.usedAmount)
+            binding.storeName.text = teamsRes.storeName
+
             val imageUrl = teamsRes.imageUrl
             if (!imageUrl.isNullOrEmpty()) {
                 Glide.with(requireContext())
@@ -182,18 +195,16 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
 
             Log.d(TAG, "initViewModel: ${teamsRes}")
 
-
+            binding.publicDetailText.text = teamsRes.teamMessage
             val storeImageUrl = teamsRes.storeUrl
             if (!storeImageUrl.isNullOrEmpty()) {
                 Glide.with(requireContext())
                     .load(Uri.parse(storeImageUrl)) // Uri로 변환 후 로드
-                    .into(binding.storeView)
+                    .into(binding.storeImage)
             } else {
-                binding.storeView.setImageResource(R.drawable.logo)
+                binding.storeImage.setImageResource(R.drawable.logo)
                 Log.d(TAG, "initViewModel: ${imageUrl}")
             }
-            binding.storeTitle.text = teamsRes.storeName
-            binding.storeDescription.text = teamsRes.storeDescription
 
             lat = teamsRes.latitude
             lon = teamsRes.longitude
@@ -226,8 +237,8 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
     }
 
     private fun setDefaultLocation() {
-        val defaultLat = 37.56  // 서울 중심 위도
-        val defaultLon = 126.97 // 서울 중심 경도
+        val defaultLat = 36.1026  // 서울 중심 위도
+        val defaultLon = 128.424  // 서울 중심 경도
         val defaultLocation = LatLng(defaultLat, defaultLon)
 
         val markerTitle = "기본 위치"
