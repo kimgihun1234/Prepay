@@ -27,7 +27,7 @@ class TeamCardAdapter(var teamList: List<Team>) : RecyclerView.Adapter<TeamCardA
             binding.cardview.setOnClickListener {
                 itemClickListener.onClick(teamList[layoutPosition].teamId)
             }
-            binding.tvSubTitle.text = CommonUtils.formatLongToDate(card.genDate)
+            binding.tvSubTitle.text = CommonUtils.cardFormatToDate(card.genDate)
         }
     }
 

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@android:color/white">
+
+
+    <TextView
+        android:id="@+id/logout_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/samsung_font_2"
+        android:textStyle="bold"
+        android:textSize="16dp"
+        android:text="사용자 이름" />
+
+    <TextView
+        android:id="@+id/logout_txt1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/samsung_font_2"
+        android:textStyle="bold"
+        android:textSize="16dp"
+        android:text="로그아웃을 하시겠습니까?" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:layout_marginTop="16dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/group_logout_confirm_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="로그아웃"
+            android:textColor="@color/text_main_color"
+            android:fontFamily="@font/samsung_font_2"
+            app:backgroundTint="@color/checked_color"
+            app:cornerRadius="16dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/group_logout_cancel_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="취소"
+            android:textColor="@color/text_main_color"
+            android:fontFamily="@font/samsung_font_2"
+            app:backgroundTint="@color/nav_unselected_color"
+            app:cornerRadius="16dp"/>
+
+    </LinearLayout>
+</LinearLayout>

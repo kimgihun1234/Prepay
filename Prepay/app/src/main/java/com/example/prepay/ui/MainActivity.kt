@@ -6,6 +6,7 @@ import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
@@ -30,6 +31,7 @@ import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.SharedPreferencesUtil
+import com.example.prepay.SharedPreferencesUtil.clearUserData
 import com.example.prepay.data.remote.FirebaseTokenService
 import com.example.prepay.data.response.SignInTeamReq
 import com.example.prepay.data.response.TokenReq
@@ -175,6 +177,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 setHomeAsUpIndicator(R.drawable.ic_menu)
             }
         }
+    }
+
+    fun logout(context: Context) {
+        clearUserData() // 저장된 사용자 데이터 삭제
+        // 로그인 화면으로 이동
+        val intent = Intent(context, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        context.startActivity(intent)
     }
 
     fun enterDialog(){
