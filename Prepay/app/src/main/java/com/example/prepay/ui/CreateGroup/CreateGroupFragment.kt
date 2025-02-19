@@ -47,8 +47,5 @@ class CreateGroupFragment : BaseFragment<FragmentCreateGroupBinding>(
                 mainActivity.changeFragmentGroup(CommonUtils.GroupFragmentName.CREATE_PRIVATE_GROUP_FRAGMENT)
             }
         }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
-        }
     }
 }

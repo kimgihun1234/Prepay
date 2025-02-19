@@ -111,7 +111,7 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
         }
 
         binding.cancelBtn.setOnClickListener {
-            mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
+            requireActivity().onBackPressed()
         }
 
         // 내비게이션 바 없어지게

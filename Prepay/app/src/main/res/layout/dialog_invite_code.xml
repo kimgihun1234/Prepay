@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/samsung_font_2"
         android:text="접속이 불가한 경우 관리자에게 다시 초대코드를 \n요청해 주시기 바랍니다." />
-    
+
     <TextView
         android:id="@+id/invite_code_tv_input_label"
         android:layout_width="match_parent"
