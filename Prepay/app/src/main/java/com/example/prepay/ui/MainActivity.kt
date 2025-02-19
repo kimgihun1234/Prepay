@@ -1,19 +1,29 @@
 package com.example.prepay.ui
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.TextPaint
+import android.text.style.TypefaceSpan
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.activity.viewModels
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.example.prepay.ApplicationClass
 import com.example.prepay.BaseActivity
 import com.example.prepay.CommonUtils
@@ -22,7 +32,6 @@ import com.example.prepay.RetrofitUtil
 import com.example.prepay.SharedPreferencesUtil
 import com.example.prepay.data.remote.FirebaseTokenService
 import com.example.prepay.data.response.SignInTeamReq
-import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.data.response.TokenReq
 import com.example.prepay.databinding.ActivityMainBinding
 import com.example.prepay.databinding.DialogVisitCodeBinding
@@ -31,15 +40,18 @@ import com.example.prepay.ui.CreateGroup.CreatePrivateGroupFragment
 import com.example.prepay.ui.CreateGroup.CreatePublicGroupFragment
 import com.example.prepay.ui.GroupDetails.AddRestaurantFragment
 import com.example.prepay.ui.GroupDetails.GroupDetailsFragment
+import com.example.prepay.ui.GroupDetails.GroupPaymentHistoryFragment
+import com.example.prepay.ui.GroupDetails.GroupPrepayStoreListFragment
 import com.example.prepay.ui.GroupSearch.GroupSearchFragment
 import com.example.prepay.ui.GroupSearch.GroupSearchFragmentViewModel
-import com.example.prepay.ui.GroupSearch.OnPublicClickListener
-import com.example.prepay.ui.GroupSearch.PublicSearchAdapter
 import com.example.prepay.ui.GroupSearchDetails.AddPublicGroupDetailsFragment
 import com.example.prepay.ui.MyPage.MyPageFragment
 import com.example.prepay.ui.RestaurantDetails.AddDetailRestaurantFragment
 import com.example.prepay.ui.RestaurantDetails.RestaurantDetailsFragment
+import com.example.prepay.ui.Notification.NotificationFragment
+import com.example.prepay.util.KeyboardVisibilityUtils
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -54,15 +66,41 @@ private val prefsName = "user_prefs"
 
 private const val TAG = "MainActivity_싸피"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
-    private val groupSearchFragmentViewModel : GroupSearchFragmentViewModel by viewModels()
+    private lateinit var keyboardVisibilityUtils: KeyboardVisibilityUtils
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initFragment()
         initEvent()
         init()
-        setSupportActionBar(binding.toolbar)
         setupToolbarListener()
+
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav.setBackgroundColor(android.graphics.Color.TRANSPARENT)
+        bottomNav.itemIconSize=resources.getDimensionPixelSize(R.dimen._28dp)
+        bottomNav.layoutParams.height = resources.getDimensionPixelSize(R.dimen._70dp)
+        bottomNav.setBackgroundColor(ContextCompat.getColor(this,R.color.white))
+
+
+        keyboardVisibilityUtils = KeyboardVisibilityUtils(window,
+            onShowKeyboard = {
+                bottomNav.run {
+                    //smoothScrollTo(scrollX, scrollY + keyboardHeight)
+                    //키보드 올라왔을때 원하는 동작
+                    bottomNav.visibility = View.GONE
+                }
+            },
+            onHideKeyboard = {
+                bottomNav.run {
+                    //키보드 내려갔을때 원하는 동작
+                    //smoothScrollTo(scrollX, scrollY + keyboardHeight)
+                    bottomNav.visibility = View.VISIBLE
+                }
+            }
+        )
     }
+
 
     fun changeFragmentMain(name: CommonUtils.MainFragmentName, num: Int = -1) {
         val transaction = supportFragmentManager.beginTransaction()
@@ -72,6 +110,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
             CommonUtils.MainFragmentName.GROUP_SEARCH_FRAGMENT -> {
                 transaction.replace(R.id.main_container, GroupSearchFragment())
+            }
+            CommonUtils.MainFragmentName.NOTIFICATION_FRAGMENT -> {
+                transaction.replace(R.id.main_container, NotificationFragment())
             }
             CommonUtils.MainFragmentName.CREATE_GROUP_FRAGMENT -> {
                 transaction.replace(R.id.main_container, CreateGroupFragment())
@@ -88,6 +129,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
             CommonUtils.MainFragmentName.ADD_RESTAURANT_FRAGMENT -> {
                 transaction.replace(R.id.main_container, AddRestaurantFragment())
+                transaction.addToBackStack(null)
             }
             CommonUtils.MainFragmentName.DETAIL_RESTAURANT_FRAGMENT -> {
                 transaction.replace(R.id.main_container, AddDetailRestaurantFragment())
@@ -108,6 +150,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
             CommonUtils.GroupFragmentName.CREATE_PRIVATE_GROUP_FRAGMENT -> {
                 transaction.replace(R.id.create_group_container, CreatePrivateGroupFragment())
+            }
+        }
+        transaction.commit()
+    }
+
+    fun changeFragmentGroupDetail(name: CommonUtils.GroupDetailFragmentName, num: Int = -1) {
+        val transaction = supportFragmentManager.beginTransaction()
+        when (name) {
+            CommonUtils.GroupDetailFragmentName.GROUP_PREPAY_STORE_LIST_FRAGMENT -> {
+                transaction.replace(R.id.group_details_container, GroupPrepayStoreListFragment())
+            }
+            CommonUtils.GroupDetailFragmentName.GROUP_PREPAY_HISTORY_FRAGMENT -> {
+                transaction.replace(R.id.group_details_container,GroupPaymentHistoryFragment())
             }
         }
         transaction.commit()
@@ -158,7 +213,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             val sharedPref = this.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
             val accessToken = sharedPref.getString(KeyAccessToken, "") ?: ""
             Log.d(TAG, "불러온 AccessToken: $accessToken")
-36
             lifecycleScope.launch {
                 try {
                     val response = RetrofitUtil.teamService.signInTeam(
@@ -187,10 +241,27 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     changeFragmentMain(CommonUtils.MainFragmentName.GROUP_SEARCH_FRAGMENT)
                     true
                 }
+                R.id.my_payment_history -> {
+                    changeFragmentMain(CommonUtils.MainFragmentName.NOTIFICATION_FRAGMENT)
+                    true
+                }
                 else -> false
             }
         }
     }
+
+//    override fun onBackPressed() {
+//        val fragment = supportFragmentManager.findFragmentByTag(MyPageFragment::class.java.simpleName)
+//        if (fragment != null) {
+//            Log.d(TAG, "true: 뒤로가기 처리")
+//            // MyPageFragment로 돌아가도록 처리
+//            changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
+//        } else {
+//            // 기본적으로 Activity의 뒤로 가기 처리
+//            Log.d(TAG, "else: 뒤로가기 처리")
+//            super.onBackPressed()
+//        }
+//    }
 
     fun broadcast(title: String,body: String){
         CoroutineScope(Dispatchers.Main).launch {

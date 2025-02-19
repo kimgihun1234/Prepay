@@ -11,12 +11,15 @@ import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
+import com.example.prepay.SharedPreferencesUtil
 import com.example.prepay.data.response.BootPayChargeReq
+import com.example.prepay.data.response.TeamStoreReq
 import com.example.prepay.databinding.FragmentDetailRestaurantBinding
 import com.example.prepay.ui.MainActivity
 import com.example.prepay.ui.MainActivityViewModel
 import com.example.prepay.util.BootPayManager
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -38,6 +41,16 @@ class AddDetailRestaurantFragment: BaseFragment<FragmentDetailRestaurantBinding>
         initEvent()
     }
 
+    override fun onResume() {
+        super.onResume()
+        mainActivity.hideBottomNav(true)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mainActivity.hideBottomNav(false)
+    }
+
     private fun initEvent() {
 
         Log.d(TAG, "restaurantDetailsViewModel: ${restaurantDetailsViewModel.restaurantData.value}")
@@ -51,6 +64,7 @@ class AddDetailRestaurantFragment: BaseFragment<FragmentDetailRestaurantBinding>
             Log.d(TAG, "initEvent: ")
             Log.d(TAG, "teamId: $teamId")
             BootPayManager.startPayment(requireActivity(), restaurantDetailsViewModel.restaurantData.value.toString(), totalPrice) { receiptId, price ->
+
                 lifecycleScope.launch {
                     try {
                         Log.d(TAG, "storeId: $storeId")
@@ -60,13 +74,13 @@ class AddDetailRestaurantFragment: BaseFragment<FragmentDetailRestaurantBinding>
                         val chargeReceipt = storeId?.let { storeId ->
                             teamId?.let { teamId ->
                                 BootPayChargeReq(
-                                    teamId.toInt(),
-                                    storeId, totalPrice.toInt(), receiptId)
+                                    teamId.toInt(), storeId, totalPrice.toInt(), receiptId)
                             }
                         }
                         val response = withContext(Dispatchers.IO) {
+                            delay(1000)
                             chargeReceipt?.let { it ->
-                                RetrofitUtil.bootPayService.getBootPay("user1@gmail.com",
+                                RetrofitUtil.bootPayService.getBootPay(SharedPreferencesUtil.getAccessToken()!!,
                                     it
                                 )
                             }

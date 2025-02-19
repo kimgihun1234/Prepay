@@ -11,7 +11,7 @@ object CommonUtils {
     //천단위 콤마
     fun makeComma(num: Int): String {
         val comma = DecimalFormat("#,###")
-        return "${comma.format(num)} ₩"
+        return "${comma.format(num)} 원"
     }
 
     //날짜 포맷 출력
@@ -33,7 +33,6 @@ object CommonUtils {
     }
 
     enum class LoginFragmentName(var str: String) {
-        START_LOGIN_FRAGMENT("StartLoginFragment"),
         LOGIN_FRAGMENT("LoginFragment"),
         SIGNIN_FRAGMENT("SignInFragment"),
         FINDPASSWORD_FRAGMENT("FindPasswordFragment"),
@@ -49,7 +48,8 @@ object CommonUtils {
         RESTAURANT_DETAILS_FRAGMENT("RestaurantDetailsFragment"),
         ADD_RESTAURANT_FRAGMENT("AddRestaurantFragment"),
         DETAIL_RESTAURANT_FRAGMENT("DetailRestaurantFragment"),
-        PUBLIC_GROUP_DETAILS_FRAGMENT("PublicGroupDetailsFragment")
+        PUBLIC_GROUP_DETAILS_FRAGMENT("PublicGroupDetailsFragment"),
+        NOTIFICATION_FRAGMENT("NotificationFragment")
     }
 
     enum class GroupFragmentName(var str: String) {
@@ -57,4 +57,8 @@ object CommonUtils {
         CREATE_PUBLIC_GROUP_FRAGMENT("CreatePublicGroupFragment"),
     }
 
+    enum class GroupDetailFragmentName(var str: String){
+        GROUP_PREPAY_STORE_LIST_FRAGMENT("GroupPrepayStoreListFragment"),
+        GROUP_PREPAY_HISTORY_FRAGMENT("GroupPrepayHistoryFragment")
+    }
 }

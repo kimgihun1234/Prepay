@@ -6,35 +6,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.Login.StartLoginFragment"
-    android:background="@drawable/start_page_bg">
-
-    <!-- TODO: Update blank fragment layout -->
+    android:background="#0066CC">
 
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/login"
-        android:layout_width="334dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="584dp"
-        android:background="@drawable/submit_button_style"
-        android:fontFamily="@font/samsung_font_2"
-        android:text="로그인"
-        android:textColor="@color/white"
-        android:textSize="17sp"
-        android:textStyle="bold"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="160dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="136dp"
+        android:src="@drawable/logo_lg"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/create_member"
-        android:layout_width="317dp"
-        android:layout_height="67dp"
-        android:layout_marginTop="28dp"
-        android:text="회원가입"
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/samsung_font_2"
+        android:letterSpacing="-0.0125"
+        android:text="선결제의 새로운 바람"
+        android:textColor="#E9EBEA"
+        android:textSize="19sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <ImageView
+        android:layout_width="88dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="52dp"
+        android:src="@drawable/sunpick"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

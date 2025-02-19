@@ -1,18 +1,18 @@
 package com.example.prepay.ui.GroupSearch
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.prepay.databinding.ItemPublicGroupBinding
 import com.bumptech.glide.Glide
+import com.example.prepay.CommonUtils
+import com.example.prepay.DistanceManager
+import com.example.prepay.databinding.ItemPublicGroupBinding
 import com.example.prepay.R
 import com.example.prepay.data.response.LikeTeamsReq
-import com.example.prepay.data.response.PublicTeamsDisRes
 import com.example.prepay.data.response.PublicTeamsRes
 
 private const val TAG = "PublicSearchAdapter_싸피"
-class PublicSearchAdapter(var publicGroupList: List<PublicTeamsDisRes>, private val listener: OnPublicClickListener) :
+class PublicSearchAdapter(var publicGroupList: List<PublicTeamsRes>, private val listener: OnPublicClickListener) :
     RecyclerView.Adapter<PublicSearchAdapter.PublicGroupViewHolder>() {
 
     class PublicGroupViewHolder(private val binding: ItemPublicGroupBinding,private val listener: OnPublicClickListener) :
@@ -20,19 +20,26 @@ class PublicSearchAdapter(var publicGroupList: List<PublicTeamsDisRes>, private 
 
         private var isLiked = false  // 좋아요 상태 저장
 
-        fun bind(publicgroup: PublicTeamsDisRes) {
+        fun bind(publicgroup: PublicTeamsRes) {
             binding.publicName.text = publicgroup.teamName
-            binding.publicMoneyInfo.text = publicgroup.teamBalance.toString()
+            binding.publicMoneyInfo.text = CommonUtils.makeComma(publicgroup.teamBalance)
+            //binding.publicDistance.text = publicgroup.
+            binding.publicAddress.text = publicgroup.address
+            binding.publicDistance.text = DistanceManager.formatDistance(publicgroup.distance)
 
             // 그룹 이미지 불러오기
             Glide.with(binding.root.context)
-                .load(publicgroup.imageUrl)
+                .load(publicgroup.imgUrl)
                 .placeholder(R.drawable.logo)
                 .error(R.drawable.logo)
                 .into(binding.groupImage)
 
+            val groupImage = binding.groupImage
+            groupImage.clipToOutline = true
+
             // ❤️ 초기 하트 상태 설정 (서버 값 반영)
-            Log.d(TAG,publicgroup.like.toString())
+            //Log.d(TAG,publicgroup.like.toString())
+
             isLiked = publicgroup.like
             updateHeartIcon()
 
@@ -63,12 +70,6 @@ class PublicSearchAdapter(var publicGroupList: List<PublicTeamsDisRes>, private 
                 binding.publicSearchLikeBtn.setImageResource(R.drawable.like_heart_empty)  // 빈 하트 이미지
             }
         }
-    }
-
-    // 좋아요 그룹 정렬
-    fun likeUpdateSort(likeGroupList: List<PublicTeamsDisRes>) {
-        publicGroupList = likeGroupList
-        notifyDataSetChanged()
     }
 
     // 뷰홀더 생성

@@ -6,7 +6,7 @@ import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
-import android.net.Uri
+import android.net.Uri 
 import android.os.Bundle
 import android.provider.OpenableColumns
 import android.util.Log
@@ -40,6 +40,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.prepay.CommonUtils
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.SharedPreferencesUtil
 import com.example.prepay.data.response.LikeTeamsReq
@@ -48,6 +49,10 @@ import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.ui.GroupSearch.GroupSearchFragmentViewModel
 import com.example.prepay.ui.GroupSearch.PublicSearchAdapter
 import com.example.prepay.ui.MainActivityViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.zxing.BarcodeFormat
+import com.journeyapps.barcodescanner.BarcodeEncoder
 //import com.google.zxing.BarcodeFormat
 //import com.journeyapps.barcodescanner.BarcodeEncoder
 import kotlinx.coroutines.coroutineScope
@@ -62,7 +67,7 @@ import java.util.Locale
 import java.util.Timer
 import java.util.TimerTask
 
-private const val TAG = "PublicGroupDetailsFragment"
+private const val TAG = "PublicGroupDetailsFragment_싸피"
 
 class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBinding>(
     FragmentPublicGroupDetailsBinding::bind,
@@ -77,7 +82,11 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
     private lateinit var teamsRes: PublicTeamDetailsRes
     private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
     private var selectedImageMultipart: MultipartBody.Part? = null
+    private var heartCheck =false
+    var lat = 36.5
+    var lon = 128.0
 
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,17 +95,15 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
 
     override fun onResume() {
         super.onResume()
+        Log.d(TAG,"바텀 내비바 숨깁니다")
         mainActivity.hideBottomNav(true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        initEvent()
         initViewModel()
-
-
-
+        init()
+        initEvent()
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         val mapFragment =
             childFragmentManager.findFragmentById(R.id.public_detail_map) as SupportMapFragment
@@ -108,6 +115,50 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
         mainActivity.hideBottomNav(false)
     }
 
+    private fun init(){
+        // 좋아요 관련 로직
+        //animateMoneyChange(leftMoney)
+        viewModel.getGroupDetails(SharedPreferencesUtil.getAccessToken()!!, activityViewModel.storeId.value!!.toLong())
+    }
+
+
+    private fun initEvent(){
+        binding.publicDetailTeamName.text = viewModel.detailInfo.value?.teamName
+        Log.d(TAG, "initEvent: ${viewModel.detailInfo.value?.teamName}")
+        binding.publicDetailText.text = viewModel.detailInfo.value?.teamMessage
+        // 클릭 이벤트
+        binding.likeBtn.setOnClickListener {
+            heartCheck = !heartCheck
+            toggle(heartCheck)
+            val checkLike = LikeTeamsReq(activityViewModel.storeId.value!!.toLong(), heartCheck)
+            sendlike(checkLike)
+        }
+        /*binding.publicDetailQrBtn.setOnClickListener{
+            lifecycleScope.launch {
+                runCatching {
+                    RetrofitUtil.qrService.qrPrivateCreate(SharedPreferencesUtil.getAccessToken()!!, activityViewModel.storeId.value!!.toInt())
+                }.onSuccess {
+                    Log.d(TAG,it.message)
+                    showQRDialog(it.message+":"+SharedPreferencesUtil.getAccessToken()!!+":"+activityViewModel.storeId.value.toString())
+                }.onFailure { e ->
+                    Log.d(TAG, "qr실패: ${e.message}")
+                    mainActivity.showToast("qr불러오기가 실패했습니다")
+                }
+            }
+        }*/
+        val bottomSheet: View = requireView().findViewById(R.id.bottomSheet) // ✅ onViewCreated()에서 초기화
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+        bottomSheet.setOnClickListener {
+            if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            } else {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            }
+        }
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+        bottomSheetBehavior.setPeekHeight(900);
+    }
+
 
     private fun initViewModel() {
         viewModel.detailInfo.observe(viewLifecycleOwner) { it ->
@@ -115,10 +166,10 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
             Log.d(TAG, "initViewModel: ${it}")
             binding.publicDetailTeamName.text = teamsRes.teamName
             binding.publicDetailText.text = teamsRes.teamMessage
-            binding.publicDetailText.text = teamsRes.teamMessage
-            binding.leftMoneyInfo.text = teamsRes.balance.toString()
+            binding.leftMoneyInfo.text =  CommonUtils.makeComma(teamsRes.teamBalance)
             binding.publicDetailLocation.text = teamsRes.address
-            val imageUrl = teamsRes.imageURL
+            binding.dailyMoneyInfo.text = CommonUtils.makeComma(teamsRes.dailyLimit-teamsRes.usedAmount)
+            val imageUrl = teamsRes.imageUrl
             if (!imageUrl.isNullOrEmpty()) {
                 Glide.with(requireContext())
                     .load(Uri.parse(imageUrl)) // Uri로 변환 후 로드
@@ -131,62 +182,41 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
 
             Log.d(TAG, "initViewModel: ${teamsRes}")
 
-            val imageURL = teamsRes.imageURL
-            if (!imageURL.isNullOrEmpty()) {
+
+            val storeImageUrl = teamsRes.storeUrl
+            if (!storeImageUrl.isNullOrEmpty()) {
                 Glide.with(requireContext())
-                    .load(imageURL)
-                    .into(binding.publicDetailImage)
+                    .load(Uri.parse(storeImageUrl)) // Uri로 변환 후 로드
+                    .into(binding.storeView)
             } else {
-                binding.publicDetailImage.setImageResource(R.drawable.logo)
+                binding.storeView.setImageResource(R.drawable.logo)
+                Log.d(TAG, "initViewModel: ${imageUrl}")
             }
+            binding.storeTitle.text = teamsRes.storeName
+            binding.storeDescription.text = teamsRes.storeDescription
 
+            lat = teamsRes.latitude
+            lon = teamsRes.longitude
+            heartCheck = teamsRes.checkLike
+            toggle(heartCheck)
             // 숫자 값 관련 로직, 해당 숫자값은 받아올 수 있어야 함.
-            val leftMoney = teamsRes.usedAmount
-            animateMoneyChange(leftMoney)
-
-
-            // 좋아요 관련 로직
-            val checkLike = teamsRes.checkLike
-            if (checkLike) {
-                binding.likeBtn.setImageResource(R.drawable.like_heart_fill)
-            } else {
-                binding.likeBtn.setImageResource(R.drawable.like_heart_empty)
-
-                // 좋아요 초기 상태 반영
-                viewModel.isLiked.observe(viewLifecycleOwner) { isLiked ->
-                    binding.likeBtn.setImageResource(
-                        if (isLiked) R.drawable.like_heart_fill else R.drawable.like_heart_empty
-                    )
-
-                }
-
-                // 클릭 이벤트
-                binding.likeBtn.setOnClickListener {
-
-                    val checkLike =
-                        LikeTeamsReq(activityViewModel.teamId.value!!.toLong(), checkLike)
-                    sendlike(checkLike)
-
-                    val newLikeStatus = !(viewModel.isLiked.value ?: false)
-                    viewModel.toggleLike()
-
-
-                    val likeRequest = LikeTeamsReq(activityViewModel.teamId.value!!, newLikeStatus)
-                    viewModel.sendLikeStatus(SharedPreferencesUtil.getAccessToken()!!, likeRequest)
-                }
+            val location = Location("").apply {
+                latitude = lat
+                longitude = lon
             }
-
-            viewModel.getGroupDetails(SharedPreferencesUtil.getAccessToken()!!, activityViewModel.teamId.value!!.toLong())
+            setCurrentLocation(location, teamsRes.storeName, teamsRes.storeDescription)
+            val leftMoney = teamsRes.usedAmount
         }
     }
 
-
-    private fun initEvent() {
-        binding.publicDetailTeamName.text = viewModel.detailInfo.value?.teamName
-        Log.d(TAG, "initEvent: ${viewModel.detailInfo.value?.teamName}")
-        binding.publicDetailText.text = viewModel.detailInfo.value?.teamMessage
-
+    private fun toggle(heartCheck : Boolean){
+        if (heartCheck) {
+            binding.likeBtn.setImageResource(R.drawable.like_heart_fill)
+        } else {
+            binding.likeBtn.setImageResource(R.drawable.like_heart_empty)
+        }
     }
+
 
     private val readyCallback: OnMapReadyCallback by lazy {
         object : OnMapReadyCallback {
@@ -215,15 +245,15 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
     ) {
         currentMarker?.remove()
 
-        val currentLatLng = LatLng(location.latitude + 0.002, location.longitude + 0.002)
+        val currentLatLng = LatLng(lat, lon)
 
         val marker =
-            ResourcesCompat.getDrawable(resources, R.drawable.logo, requireActivity().theme)
+            ResourcesCompat.getDrawable(resources, R.drawable.location_icon, requireActivity().theme)
                 ?.toBitmap(150, 150)
 
         val markerOptions = MarkerOptions().apply {
             position(currentLatLng)
-            title("싸피벅스")
+            title(markerTitle)
             snippet(markerSnippet)
             draggable(true)
             icon(BitmapDescriptorFactory.fromBitmap(marker!!))
@@ -288,5 +318,65 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
 
             }
         }
+    }
+
+    fun showQRDialog(url: String = "https://www.naver.com") {
+        val context = this@AddPublicGroupDetailsFragment.requireContext()
+
+        // 타이머 생성
+        val timer = Timer()
+
+        // 다이얼로그 레이아웃 인플레이트
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_create_qr, null)
+
+        // QR 코드 생성 및 이미지뷰에 적용
+        try {
+            val barcodeEncoder = BarcodeEncoder()
+            val bitmap = barcodeEncoder.encodeBitmap(url, BarcodeFormat.QR_CODE, 400, 400)
+            val imageViewQrCode = dialogView.findViewById<ImageView>(R.id.imageViewQrCode)
+            imageViewQrCode.setImageBitmap(bitmap)
+        } catch (e: Exception) {
+            Log.e("QRDialog", "QR 코드 생성 실패", e)
+        }
+
+        // AlertDialog 생성
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(context)
+            .setView(dialogView)
+            .setCancelable(true)  // 뒤로 가기 버튼 허용
+            .create()
+
+
+        // 다이얼로그 닫힐 때 타이머 취소
+        dialog.setOnDismissListener {
+            timer.cancel()
+            viewModel.getGroupDetails(SharedPreferencesUtil.getAccessToken()!!, activityViewModel.storeId.value!!.toLong())
+        }
+
+        // 다이얼로그 표시
+        dialog.show()
+
+        // 60초 카운트다운 타이머 시작
+        var seconds = 60
+        val qrTimer = dialogView.findViewById<TextView>(R.id.qr_timer)
+        qrTimer?.text = "남은 시간: 60초"
+
+        timer.scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                seconds--
+                // UI 업데이트는 메인 스레드에서 수행
+                this@AddPublicGroupDetailsFragment.requireActivity().runOnUiThread {
+                    qrTimer?.text = "남은 시간: ${seconds}초"
+                }
+                if (seconds <= 0) {
+                    // 시간이 다 되었으면 다이얼로그를 닫고 타이머 취소
+                    this@AddPublicGroupDetailsFragment.requireActivity().runOnUiThread {
+                        if (dialog.isShowing) {
+                            dialog.dismiss()
+                        }
+                    }
+                    timer.cancel()
+                }
+            }
+        }, 1000, 1000)
     }
 }

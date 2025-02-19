@@ -2,14 +2,17 @@ package com.example.prepay.data.remote
 
 import com.example.prepay.data.model.dto.PublicPrivateTeam
 import com.example.prepay.data.response.BanUserReq
+import com.example.prepay.data.response.CodeRes
 import com.example.prepay.data.response.GetUserOfTeamRes
 import com.example.prepay.data.response.LikeTeamsReq
 import com.example.prepay.data.response.MoneyChangeReq
 import com.example.prepay.data.response.PrivilegeUserReq
+import com.example.prepay.data.response.PublicLikeRes
 import com.example.prepay.data.response.PublicTeamDetailsRes
 import com.example.prepay.data.response.PublicTeamsDisRes
 import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.data.response.SignInTeamReq
+import com.example.prepay.data.response.StoreDetailRes
 import com.example.prepay.data.response.StoreLocation
 import com.example.prepay.data.response.Team
 import com.example.prepay.data.response.TeamDetailRes
@@ -33,11 +36,10 @@ import retrofit2.http.Query
 interface TeamService {
 
     //팀 가맹점 추가
-    @Multipart
     @POST("team/store")
     suspend fun createStore(@Header("access") access: String,
-                            @Part("request") request: TeamStoreReq,
-                            @Part image: MultipartBody.Part?): Response<TeamStoreRes>
+                            @Body request: TeamStoreReq): Response<TeamStoreRes>
+
     //팀을 생성하는 과정
     @Multipart
     @POST("team/signup")
@@ -83,12 +85,14 @@ interface TeamService {
 
     //공개된 모든 팀 목록을 가져옵니다.
 
-//    @GET("/team/public-teams")
-//    suspend fun getPublicTeams(@Header("access") access: String): List<PublicTeamsRes>
+    @GET("/team/public-teams")
+    suspend fun getPublicTeams(@Header("access") access: String, @Query("latitude") latitude : Double, @Query("longitude") longitude:Double): List<PublicTeamsRes>
 
-//    @GET("/team/public-teams")
-//    suspend fun getPublicTeams(@Header("email") email: String): List<PublicTeamsRes>
+    @POST("/team/code")
+    suspend fun makeCode(@Header("access") access: String,@Body request: TeamIdReq) :CodeRes
 
+    @GET("/team/code")
+    suspend fun getCode(@Header("access") access: String,@Query("teamId") teamId: Long) :CodeRes
 
     //특정 키워드로 공개된 팀을 검색합니다.
     @GET("/team/public-teams/{keyword}")
@@ -100,18 +104,20 @@ interface TeamService {
 
     //공개된 그룹의 좋아요 정보를 보냅니다.
 
-
-    @GET("/team/public-team/{teamId}")
-    suspend fun groupDetailInfo(@Header("access") access: String, @Path("teamId") teamId: Long): PublicTeamDetailsRes
-
     @GET("/team/public-team/2km")
     suspend fun getTeamStoreDistance(@Header("access") access : String, @Query("latitude") latitude : Double, @Query("longitude") longitude:Double) : List<PublicTeamsDisRes>
 
     @POST("/team/like")
     suspend fun sendLikeStatus(@Header("access") access: String, @Body request: LikeTeamsReq): Map<String, Int>
 
-
     @GET("/team/public-team/{teamid}")
-    suspend fun groupDetailInfo(@Header("access") access: String, @Path("teamid") teamid: Int): PublicTeamDetailsRes
-    
+    suspend fun groupDetailInfo(@Header("access") access: String, @Path("teamid") teamid: Long): PublicTeamDetailsRes
+
+    @GET("/team/public/liked")
+    suspend fun getlikeTeamList(@Header("access") access: String,@Query("latitude") latitude : Double, @Query("longitude") longitude:Double): List<PublicLikeRes>
+
+    @GET("/team/team/detail")
+    suspend fun getTeamStoreDetail(@Header("access") access: String,@Query("teamId") teamId : Int, @Query("storeId") storeId:Int): StoreDetailRes
+
+
 }

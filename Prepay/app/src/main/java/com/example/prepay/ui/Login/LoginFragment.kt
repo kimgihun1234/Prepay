@@ -14,10 +14,14 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.util.Log
 import android.util.TypedValue
+import android.view.KeyEvent
 import android.view.View
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
@@ -29,6 +33,8 @@ import com.example.prepay.response.KakaoLoginRequest
 import com.example.prepay.response.LoginRequest
 import com.example.prepay.ui.LoginActivity
 import com.example.prepay.ui.MainActivity
+import com.example.prepay.ui.MainActivityViewModel
+import com.example.prepay.ui.MyPage.MyPageFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -61,10 +67,13 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
     private val KeyAccessToken = "AccessToken"
 
     private lateinit var editTexts: List<EditText>
+    private val activityViewModel: MainActivityViewModel by activityViewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         loginActivity = context as LoginActivity
         //구글 로그인
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -78,42 +87,20 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // SharedPreferences를 통한 자동 로그인 체크
-        val sharedPref = requireContext().getSharedPreferences(prefsName, Context.MODE_PRIVATE)
-
-        // 저장된 아이디와 비밀번호 읽어오기 (저장되지 않았다면 기본값은 빈 문자열로)
-//        val savedId = sharedPref.getString(keyUserId, "") ?: ""
-//        val savedPw = sharedPref.getString(keyUserPw, "") ?: ""
-
-//        // 저장된 아이디와 패스워드가 모두 있으면, 자동으로 로그인 API를 호출하여 자동 로그인 처리
-//        if (savedId.isNotEmpty() && savedPw.isNotEmpty()) {
-//            // 자동 로그인: 저장된 값으로 login() 함수를 호출
-//            login(savedId, savedPw)
-//            return
-//        }
-
-        // 카카오 로그인 버튼 클릭 처리 (예: testButton)
-        binding.kakaoLoginBtn.setOnClickListener {
-            kakaoLogin()
-        }
-
-
+        // editView list
         editTexts = listOf(
             view.findViewById(R.id.login_id_text),
             view.findViewById(R.id.log_in_password_text)
         )
 
+        // 이벤트
         initEvent()
 
+        // 스타일 관련 함수
         setStyleCatchphrase(view)
         initFocusChangeListener()
         setUpTextWatcher()
 
-        // --- login 관련 기능 ---
-
-        binding.LoginBtn.setOnClickListener {
-            login()
-        }
     }
 
     fun initEvent(){
@@ -127,8 +114,37 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
         binding.googleLoginBtn.setOnClickListener {
             goSignup()
         }
-        binding.backBtn.setOnClickListener {
-            loginActivity.changeFragmentLogin(CommonUtils.LoginFragmentName.START_LOGIN_FRAGMENT)
+
+        // --- login 관련 기능 ---
+        binding.logInPasswordText.setOnKeyListener { v: View, keyCode: Int, event: KeyEvent ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                login() // 엔터키 입력 시 login() 함수 호출
+                true   // 이벤트를 소비함
+            } else {
+                false  // 이벤트를 소비하지 않음
+            }
+        }
+        binding.LoginBtn.setOnClickListener {
+            login()
+        }
+
+        // 카카오 로그인 버튼 클릭 처리 (예: testButton)
+        binding.kakaoLoginBtn.setOnClickListener {
+            kakaoLogin()
+        }
+        binding.autoIdCheckbox.setOnClickListener { view ->
+            val autoButton = view.findViewById<CheckBox>(R.id.auto_id_checkbox)
+            if (autoButton.isChecked) {
+                // 체크된 상태일 때의 색상 설정
+                autoButton.buttonTintList = ContextCompat.getColorStateList(
+                    requireContext(), R.color.checked_color
+                )
+            } else {
+                // 체크 해제 상태일 때의 색상 설정
+                autoButton.buttonTintList = ContextCompat.getColorStateList(
+                    requireContext(), R.color.unchecked_color
+                )
+            }
         }
     }
 
@@ -167,7 +183,6 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
         val catchphrase: TextView = view.findViewById(R.id.catchphrase)
         catchphrase.text = spannableString
     }
-
     // editView focus 이벤트 설정
     private fun initFocusChangeListener() {
 
@@ -181,7 +196,6 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
             }
         }
     }
-
     // TextView 크기 변환 이벤트
     private fun setUpTextWatcher() {
         editTexts.forEach {
@@ -195,11 +209,28 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
                     }
                 }
                 override fun afterTextChanged(s: Editable?) {
+                    checkSubmitButtonState()
                 }
             })
         }
     }
 
+    // 모든 EditText가 채워졌는지 확인하여 submit 버튼의 색상을 변경하는 함수
+    private fun checkSubmitButtonState() {
+        // 모든 EditText의 텍스트가 비어있지 않은지 체크
+        val isAllFilled = editTexts.all { it.text.toString().trim().isNotEmpty() }
+
+        // 채워졌다면 활성화 색상, 아니라면 비활성화 색상 적용 (예: 활성화 시 #0066CC, 미완료 시 회색)
+        binding.LoginBtn.apply {
+            isEnabled = isAllFilled
+            setBackgroundResource(
+                if (isAllFilled)
+                    R.drawable.submit_button_style
+                else
+                    R.drawable.disable_button_style // 비활성화 색상
+            )
+        }
+    }
     // 로그인 함수
     private fun login(id: String? = null, password: String? = null) {
         // 파라미터가 전달되면 해당 값을 사용하고, 그렇지 않으면 사용자가 입력한 값을 사용
@@ -219,6 +250,8 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
                     val accessToken = response.headers()["access"]
                     if (accessToken != null) {
                         // Access Token 저장
+                        val nickname = response.body()!!.nickname
+                        SharedPreferencesUtil.setNickName(nickname)
                         SharedPreferencesUtil.saveAccessToken(accessToken)
                         Log.d(TAG, "Access Token 저장됨: $accessToken")
                     }
@@ -227,8 +260,9 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
                         SharedPreferencesUtil.saveUserCredentials(userId, userPw)
                         Log.d(TAG, "사용자 정보 저장됨: $userId")
                     }
-                    Toast.makeText(requireContext(), "로그인 성공", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(requireContext(), MainActivity::class.java))
+                    showToast("로그인 성공")
+                    val intent = Intent(requireContext(), MainActivity::class.java)
+                    startActivity(intent)
                     activity?.finish()
                 } else {
                     Toast.makeText(
@@ -296,7 +330,6 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>(
                 performKakaoLogin(token.accessToken)
             }
         }
-
         // 카카오톡이 설치되어 있다면 카카오톡으로 로그인 시도
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(requireContext())) {
             UserApiClient.instance.loginWithKakaoTalk(requireContext()) { token, error ->

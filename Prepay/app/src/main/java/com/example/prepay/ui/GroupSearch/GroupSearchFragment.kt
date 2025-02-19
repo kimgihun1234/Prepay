@@ -3,7 +3,8 @@ package com.example.prepay.ui.GroupSearch
 import android.Manifest
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
-import android.content.SharedPreferences
+import android.content.res.Configuration
+import android.graphics.Rect
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -12,9 +13,12 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.View
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.SearchView
 import android.widget.Toast
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.drawable.toBitmap
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.example.prepay.ui.MainActivityViewModel
 import com.example.prepay.SharedPreferencesUtil
 import com.google.android.gms.location.LocationCallback
@@ -29,34 +33,34 @@ import com.example.prepay.PermissionChecker
 import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.data.response.LikeTeamsReq
+import com.example.prepay.data.response.PublicLikeRes
 import com.example.prepay.data.response.PublicTeamsDisRes
 import com.example.prepay.data.response.PublicTeamsRes
 import com.example.prepay.databinding.FragmentGroupSearchBinding
 import com.example.prepay.ui.MainActivity
+import com.example.prepay.util.KeyboardVisibilityUtils
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.Locale
-import kotlin.math.log
+import java.util.Objects
 
 private const val TAG = "GroupSearchFragment"
 class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
     FragmentGroupSearchBinding::bind,
     R.layout.fragment_group_search
-), PublicSearchDistanceAdpater.OnClickLinstener, OnPublicClickListener {
+), OnPublicKmLimitClickListener,OnPublicLikeClickListener,OnPublicClickListener {
     private lateinit var mainActivity: MainActivity
-    private lateinit var publicSearchAdapter: PublicSearchAdapter
-    private val viewModel: GroupSearchFragmentViewModel by viewModels()
     private val activityViewModel: MainActivityViewModel by activityViewModels()
 
+    //adapter 정보
+    private lateinit var publicDistanceSearchAdapter: PublicSearchDistanceAdapter
+    private lateinit var publicLikeTeamAdapter : PublicSearchLikeAdapter
+    private lateinit var publicGroupAdapter: PublicSearchAdapter
 
     // GPS관련 변수
     private var isUserLocationSet = false
@@ -75,6 +79,12 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
         longitude = 128.416369
     }
     private lateinit var currentLocation: Location
+
+    private lateinit var keyboardVisibilityUtils: KeyboardVisibilityUtils
+
+    private var select = 1
+
+    private var selectedButton: Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,60 +110,181 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
         //GPS 관련 코드
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         requestPermission()
-
-        initEvent()
-        initAdapter()
         initViewModel()
+        initAdapter()
+        initEvent()
+        keyboardVisibilityUtils = KeyboardVisibilityUtils(requireActivity().window,
+            onShowKeyboard = {
+                mainActivity.hideBottomNav(true) // 키보드 올라오면 숨김
+            },
+            onHideKeyboard = {
+                mainActivity.hideBottomNav(false) // 키보드 내려가면 다시 보이게
+            }
+        )
+
+        // 처음 활성화 버튼
+        selectedButton = binding.all
+
+        // searchBar 클릭 이벤트
+        val searchBar = binding.searchRestaurant
+        searchBar.setOnQueryTextFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                Log.d(TAG, "Focus gained")
+                view.setBackgroundResource(R.drawable.focus_shape_alll_round)
+            } else {
+                view.setBackgroundResource(R.drawable.search_bar_shape)
+            }
+        }
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        keyboardVisibilityUtils.detachKeyboardListeners()
     }
 
     private fun initEvent() {
+        select = 3
+        binding.recyclerView.adapter = publicGroupAdapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        getLastLocation()
+        binding.likeSort.setOnClickListener {
+            select = 1
+            handleButtonClick(it as Button)
+            //groupSearchFragmentViewModel.getTeamLikeList()
+            binding.recyclerView.adapter = publicLikeTeamAdapter
+            getLastLocation()
+        }
+
         binding.distanceSort.setOnClickListener {
+            select = 2
+            handleButtonClick(it as Button)
+            binding.recyclerView.adapter = publicDistanceSearchAdapter
+            getLastLocation()
             Log.d(TAG, "initEvent: ${groupSearchFragmentViewModel.sortDistancePublicTeams.value}")
-            groupSearchFragmentViewModel.sortDistancePublicTeams.observe(viewLifecycleOwner) { teams ->
-                val sortedDisTeams = teams.sortedBy { it.distance }
-                Log.d(TAG, "sortedDisTeams: ${sortedDisTeams}")
+        }
+
+        binding.all.setOnClickListener {
+            select = 3
+            handleButtonClick(it as Button)
+            binding.recyclerView.adapter = publicGroupAdapter
+            getLastLocation()
+        }
+        
+         binding.searchRestaurant.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                Log.d(TAG, "onQueryTextSubmit: $query")
+                query?.let { filterSearchResults(it) }
+                return true
             }
 
-//            publicSearchDistanceAdpater = PublicSearchDistanceAdpater(arrayListOf(),this)
-//            binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-//            binding.recyclerView.adapter = publicSearchDistanceAdpater
-//            groupSearchFragmentViewModel.sortDistancePublicTeams.observe(viewLifecycleOwner) { it ->
-//                publicSearchDistanceAdpater.publicGroupList = it
-//                publicSearchDistanceAdpater.notifyDataSetChanged()
-//            }
-//
-//            groupSearchFragmentViewModel.getSortDistancePublicTeamList(groupSearchFragmentViewModel.userLocation.value!!.latitude, groupSearchFragmentViewModel.userLocation.value!!.longitude)
-//            Log.d(TAG, "initEvent: ${groupSearchFragmentViewModel.userLocation.value!!.latitude}")
-//            Log.d(TAG, "initEvent: ${groupSearchFragmentViewModel.userLocation.value!!.longitude}")
-//            Log.d(TAG, "initEvent: ${groupSearchFragmentViewModel.getSortDistancePublicTeamList(groupSearchFragmentViewModel.userLocation.value!!.latitude, groupSearchFragmentViewModel.userLocation.value!!.longitude)}")
-        }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                Log.d(TAG, "onQueryTextChange: $newText")
+                if (newText.isNullOrEmpty() || newText=="") {
+                    binding.recyclerView.isVisible = true
+                    updateAdapterWithOriginalList()
+                } else {
+                    binding.recyclerView.isVisible = true
+                    filterSearchResults(newText)
+                }
+                return false
+            }
+
+            private fun updateAdapterWithOriginalList() {
+                when (select) {
+                    1 -> groupSearchFragmentViewModel.getPublicLikeTeams.value?.let {
+                        Log.d(TAG, "publicGroupAdapter: $it")
+                        publicLikeTeamAdapter.publiclikeList = it
+                        publicLikeTeamAdapter.notifyDataSetChanged()
+                    }
+                    2 -> groupSearchFragmentViewModel.sortDistancePublicTeams.value?.let{
+                        Log.d(TAG, "publicDistanceSearchAdapter: $it")
+                        publicDistanceSearchAdapter.publicGroupList = it
+                        publicDistanceSearchAdapter.notifyDataSetChanged()
+                    }
+                    else -> groupSearchFragmentViewModel.getPublicTeams.value?.let {
+                        Log.d(TAG, "publicLikeTeamAdapter: $it")
+                        publicGroupAdapter.publicGroupList = it
+                        publicGroupAdapter.notifyDataSetChanged()
+                    }
+                }
+            }
+
+
+            private fun filterSearchResults(newText: String) {
+                val originalList = getOriginalList()
+
+                val filterList = originalList.filter { searchable ->
+                    searchable.searchableText.contains(newText, ignoreCase = true)
+                }
+                updateAdapterBasedOnSelection(filterList)
+
+            }
+
+            private fun updateAdapterBasedOnSelection(filterList: List<Searchable>) {
+                when (select) {
+                    1-> {
+                        publicLikeTeamAdapter.publiclikeList = filterList as List<PublicLikeRes>
+                        publicLikeTeamAdapter.notifyDataSetChanged()
+                    }
+                    2-> {
+                        publicDistanceSearchAdapter.publicGroupList = filterList as List<PublicTeamsDisRes>
+                        publicDistanceSearchAdapter.notifyDataSetChanged()
+                    }
+                    else-> {
+                        publicGroupAdapter.publicGroupList = filterList as List<PublicTeamsRes>
+                        publicGroupAdapter.notifyDataSetChanged()
+                    }
+                }
+            }
+
+            private fun getOriginalList(): List<Searchable> {
+                return when(select) {
+                    1 -> groupSearchFragmentViewModel.getPublicLikeTeams.value ?: emptyList()
+                    2 -> groupSearchFragmentViewModel.sortDistancePublicTeams.value ?: emptyList()
+                    else -> groupSearchFragmentViewModel.getPublicTeams.value ?: emptyList()
+                }
+            }
+
+        })
     }
 
-    private fun initAdapter(){
 
-        publicSearchAdapter = PublicSearchAdapter(arrayListOf(),this)
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.adapter = publicSearchAdapter
-        groupSearchFragmentViewModel.sortDistancePublicTeams.observe(viewLifecycleOwner){it->
-            publicSearchAdapter.publicGroupList = it
-            publicSearchAdapter.notifyDataSetChanged()
-        }
+    private fun initAdapter(){
+        publicLikeTeamAdapter = PublicSearchLikeAdapter(arrayListOf(),this)
+        publicDistanceSearchAdapter = PublicSearchDistanceAdapter(arrayListOf(),this)
+        publicGroupAdapter = PublicSearchAdapter(arrayListOf(),this)
     }
 
     private fun initViewModel() {
         groupSearchFragmentViewModel.userLocation.observe(viewLifecycleOwner) { curlocation ->
             // 위치 정보가 변경될 때마다 호출
             Log.d(TAG,"변화"+curlocation.toString())
-            groupSearchFragmentViewModel.getSortDistancePublicTeamList(curlocation.latitude, curlocation.longitude)
+            if(select ==1){
+                groupSearchFragmentViewModel.getTeamLikeList(curlocation.latitude, curlocation.longitude)
+            }
+            else if(select==2){
+                groupSearchFragmentViewModel.getSortDistancePublicTeamList(curlocation.latitude, curlocation.longitude)
+            }
+            else{
+                groupSearchFragmentViewModel.getPublicTeamList(curlocation.latitude, curlocation.longitude)
+            }
+        }
+
+        groupSearchFragmentViewModel.sortDistancePublicTeams.observe(viewLifecycleOwner){it->
+            Log.d(TAG,it.toString())
+            publicDistanceSearchAdapter.publicGroupList = it
+            Log.d(TAG,"결과 값"+it.toString())
+            publicDistanceSearchAdapter.notifyDataSetChanged()
+        }
+        groupSearchFragmentViewModel.getPublicLikeTeams.observe(viewLifecycleOwner){it->
+            publicLikeTeamAdapter.publiclikeList = it
+            Log.d(TAG,"결과 값"+it.toString())
+            publicLikeTeamAdapter.notifyDataSetChanged()
+        }
+        groupSearchFragmentViewModel.getPublicTeams.observe(viewLifecycleOwner){it->
+            publicGroupAdapter.publicGroupList = it
+            publicGroupAdapter.notifyDataSetChanged()
         }
     }
-
-
-    override fun onLikeClick(publicgroup: LikeTeamsReq) {
-        Log.d(TAG,"클릭하였습니다")
-        sendlike(publicgroup)
-    }
-
     fun sendlike(likeTeamsReq: LikeTeamsReq){
         lifecycleScope.launch {
            runCatching {
@@ -167,6 +298,32 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
     }
 
 
+    override fun onKmLimitGroupClick(publicgroup: PublicTeamsDisRes) {
+        activityViewModel.setStoreId(publicgroup.teamId)
+        mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.PUBLIC_GROUP_DETAILS_FRAGMENT)
+    }
+
+    override fun onPublicGroupLikeClick(publicGroupLike: PublicLikeRes) {
+        activityViewModel.setStoreId(publicGroupLike.teamId)
+        mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.PUBLIC_GROUP_DETAILS_FRAGMENT)
+    }
+
+    override fun onGroupClick(publicgroup: PublicTeamsRes) {
+        activityViewModel.setStoreId(publicgroup.teamId)
+        mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.PUBLIC_GROUP_DETAILS_FRAGMENT)
+    }
+
+    override fun onLikeClick(publicgroupLike: LikeTeamsReq) {
+        sendlike(publicgroupLike)
+    }
+
+    override fun onKmLimitLikeGroupClick(likeReq: LikeTeamsReq) {
+        sendlike(likeReq)
+    }
+
+    override fun onPublicGroupLikeLikeClick(publiclike:LikeTeamsReq){
+        sendlike(publiclike)
+    }
 
     private fun requestPermission() {
         /** permission check **/
@@ -180,7 +337,6 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
             startLocationUpdates()
         }
     }
-
 
     private fun startLocationUpdates() {
         // 위치서비스 활성화 여부 check
@@ -323,6 +479,43 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
 
     }
 
+    private fun getLastLocation() {
+        if (checker.checkPermission(requireActivity(), runtimePermissions)) {
+            mFusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                if (location != null) {
+                    Log.d(TAG, "최근 위치 가져오기 성공: ${location.latitude}, ${location.longitude}")
+                    groupSearchFragmentViewModel.updateLocation(location)
+                    //isUserLocationSet = true // 중복 업데이트 방지
+                } else {
+                    Log.d(TAG, "최근 위치 정보가 없음, 새로 요청 필요")
+                    startLocationUpdates() // 최신 위치 요청
+                }
+            }.addOnFailureListener { e ->
+                Log.e(TAG, "최근 위치 가져오기 실패: ${e.message}")
+                startLocationUpdates() // 최신 위치 요청
+            }
+        } else {
+            Log.d(TAG, "위치 권한 없음")
+        }
+    }
+
+    private fun handleButtonClick(clickedButton: Button) {
+        // 이전에 선택된 버튼이 있다면 기본 스타일로 초기화합니다.
+        selectedButton?.apply {
+            setBackgroundResource(R.drawable.filter_btn) // 기본 배경 리소스
+            setTextColor(ContextCompat.getColor(context, R.color.black)) // 기본 텍스트 색상
+        }
+        // 새로 클릭한 버튼에 클릭된 스타일을 적용합니다.
+        clickedButton.apply {
+            Log.d(TAG, "ㅇㅇㅇㅇㅇㅇㅇ${clickedButton}")
+            setBackgroundResource(R.drawable.clicked_filter_btn) // 클릭된 상태의 배경 리소스
+            setTextColor(ContextCompat.getColor(context, R.color.white)) // 클릭된 상태의 텍스트 색상
+        }
+
+        // 선택된 버튼을 업데이트합니다.
+        selectedButton = clickedButton
+    }
+
 
 
     /******** 위치서비스 활성화 여부 check *********/
@@ -330,9 +523,5 @@ class GroupSearchFragment: BaseFragment<FragmentGroupSearchBinding>(
     private var needRequest = false
 
 
-    override fun onGroupClick(publicgroup: PublicTeamsDisRes) {
-        activityViewModel.setTeamId(publicgroup.teamId.toLong())
-        mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.PUBLIC_GROUP_DETAILS_FRAGMENT)
-    }
 }
 

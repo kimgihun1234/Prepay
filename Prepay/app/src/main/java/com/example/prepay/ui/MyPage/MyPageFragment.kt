@@ -1,6 +1,7 @@
 package com.example.prepay.ui.MyPage
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Rect
@@ -15,15 +16,19 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
+import com.example.prepay.RetrofitUtil
+import com.example.prepay.SharedPreferencesUtil
 import com.example.prepay.databinding.FragmentMyPageBinding
 import com.example.prepay.ui.GroupDetails.GroupDetailsFragment
 import com.example.prepay.ui.MainActivity
 import com.example.prepay.ui.MainActivityViewModel
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import kotlinx.coroutines.launch
 import java.util.Timer
 import java.util.TimerTask
 
@@ -37,28 +42,43 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
     private lateinit var cardAdapter: TeamCardAdapter
     private val viewModel: MyPageFragmentViewModel by viewModels()
     private val activityViewModel: MainActivityViewModel by activityViewModels()
+    private var isInitialLoad = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivity = requireActivity() as MainActivity
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Fragment가 화면에 돌아올 때마다 isInitialLoad를 true로 설정
+        isInitialLoad = true
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "SharedPreferencesUtil.getNickName(): ${SharedPreferencesUtil.getNickName()}")
+        binding.userName.text = "${SharedPreferencesUtil.getNickName()} 님"
         initAdapter()
         initEvent()
+        initViewModel()
     }
 
+    fun initViewModel(){
+        viewModel.teamListInfo.observe(viewLifecycleOwner) { teamList ->
+            cardAdapter.teamList = teamList
+            cardAdapter.notifyDataSetChanged()
+
+            // 데이터가 있고, 최초 로드일 경우에만 마지막 카드로 이동
+            if (teamList.isNotEmpty()&&isInitialLoad) {
+                binding.viewPager.setCurrentItem(cardAdapter.itemCount - 1, false)
+                Log.d(TAG, "뭘까? ${cardAdapter.itemCount - 1}")
+                isInitialLoad = false
+            }
+        }
+    }
     private fun initAdapter() {
         cardAdapter = TeamCardAdapter(arrayListOf())
         binding.viewPager.adapter = cardAdapter
-        viewModel.teamListInfo.observe(viewLifecycleOwner) { teamList ->
-            cardAdapter.teamList = teamList
-            if (cardAdapter.teamList.isNotEmpty()) {
-                binding.viewPager.setCurrentItem(cardAdapter.itemCount - 1, false)
-            }
-            cardAdapter.notifyDataSetChanged()
-        }
         viewModel.getAllTeamList()
 
         cardAdapter.itemClickListener = object : TeamCardAdapter.ItemClickListener {
@@ -69,8 +89,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
         }
         // 스택 효과 추가
         binding.viewPager.setPageTransformer(StackPageTransformer())
-        binding.viewPager.offscreenPageLimit = 5
-        binding.viewPager.setCurrentItem(0, false)
+        binding.viewPager.offscreenPageLimit = 1
     }
 
     private fun initEvent() {
@@ -80,10 +99,25 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
         binding.enterGroupBtn.setOnClickListener {
             mainActivity.enterDialog()
         }
+
+
+        binding.payBtn.setOnClickListener {
+            val currentPosition = binding.viewPager.currentItem
+            val selectedTeam = cardAdapter.teamList.getOrNull(currentPosition)
+            lifecycleScope.launch {
+                runCatching {
+                    RetrofitUtil.qrService.qrPrivateCreate(SharedPreferencesUtil.getAccessToken()!!,selectedTeam!!.teamId)
+                }.onSuccess {
+                    showQRDialog(it.message+":"+ SharedPreferencesUtil.getAccessToken()!!+":"+selectedTeam!!.teamId.toString())
+                }.onFailure {
+                    mainActivity.showToast("qr불러오기가 실패했습니다")
+                }
+            }
+        }
+
+
         mainActivity.hideBottomNav(false)
     }
-
-
 
     fun showQRDialog(url: String = "https://www.naver.com") {
         val context = this@MyPageFragment.requireContext()
