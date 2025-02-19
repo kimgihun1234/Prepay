@@ -87,8 +87,6 @@ class AddDetailRestaurantFragment: BaseFragment<FragmentDetailRestaurantBinding>
                         }
 
                         if (response?.isSuccessful == true) {
-                            Toast.makeText(requireContext(), "영수증이 성공적으로 들어갔습니다.", Toast.LENGTH_SHORT).show()
-                            // 영수증 올리고 그다음 프레그먼트 이동
                             mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
 
                         } else {
