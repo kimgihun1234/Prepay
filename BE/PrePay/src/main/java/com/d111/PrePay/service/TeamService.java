@@ -22,6 +22,7 @@ import com.d111.PrePay.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -176,17 +177,16 @@ public class TeamService {
     @Transactional
     public GetUserOfTeamRes signInTeam(Long userId, SignInTeamReq req) {
         Team findTeam = teamRepository.findByTeamPassword(req.getTeamPassword())
-                .orElseThrow(() -> new RuntimeException("일치하는 팀이 없습니다."));
+                .orElseThrow(() -> new NoSuchElementException("일치하는 팀이 없습니다."));
 
         User findUser = userRepository.findById(userId).orElseThrow();
 
         if (userTeamRepository.existsByUserAndTeam(findUser, findTeam)) {
-            log.error("이미 가입된 팀입니다.");
-            throw new RuntimeException();
+            throw new DuplicateKeyException("이미 가입된 팀입니다.");
         }
 
         if (findTeam.getCodeGenDate() < System.currentTimeMillis() - 1000 * 60 * 60 * 3) {
-            throw new RuntimeException("초대 코드 시간 만료");
+            throw new NoSuchElementException("초대 코드 시간 만료");
         }
         UserTeam userTeam = UserTeam.builder()
                 .team(findTeam)
@@ -265,24 +265,13 @@ public class TeamService {
     // 팀 가맹점 추가
     // 확인
     @Transactional
-    public TeamCreateStoreRes createStore(TeamCreateStoreReq req, MultipartFile image) {
-        log.info("팀아이디 : {}, 스토어아이디 : {}, 돈 : {}", req.getTeamId(), req.getStoreId(), req.getBalance());
-        Team findTeam = teamRepository.findById(req.getTeamId()).orElseThrow();
-        Store findStore = storeRepository.findById(req.getStoreId()).orElseThrow();
+    public TeamCreateStoreRes createStore(TeamCreateStoreReq req) {
+        log.info("팀아이디 : {}, 스토어아이디 : {}", req.getTeamId(), req.getStoreId());
+        Team findTeam = teamRepository.findById(req.getTeamId()).orElseThrow(() -> new NoSuchElementException("팀 없음"));
+        Store findStore = storeRepository.findById(req.getStoreId()).orElseThrow(() -> new NoSuchElementException("스토어 없음"));
 
-        if (image != null && !image.isEmpty()) {
-            String imgUrl = null;
-            try {
-                imgUrl = imageService.uploadImage(image);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
 
-            findStore.setStoreImgUrl(imgUrl);
-            storeRepository.save(findStore);
-        }
-
-        TeamStore teamStore = new TeamStore(findTeam, findStore, req.getBalance());
+        TeamStore teamStore = new TeamStore(findTeam, findStore);
         TeamStore savedTeamStore = teamStoreRepository.save(teamStore);
 
         TeamCreateStoreRes teamCreateStoreRes = TeamCreateStoreRes.builder()
@@ -329,7 +318,11 @@ public class TeamService {
 //                .orElseThrow(() -> new RuntimeException("유저팀을 찾을 수 없습니다."));
         UserTeam findUserTeam = userTeamRepository.findUserTeamByTeamIdAndUserIdWithTeam(teamId, userId);
         Team findTeam = findUserTeam.getTeam();
-
+        List<TeamStore> teamStores = findTeam.getTeamStores();
+        int sum = 0;
+        for (TeamStore teamStore : teamStores) {
+            sum += teamStore.getTeamStoreBalance();
+        }
         TeamDetailRes res = TeamDetailRes.builder()
                 .teamId(teamId)
                 .teamName(findTeam.getTeamName())
@@ -340,6 +333,7 @@ public class TeamService {
                 .position(findUserTeam.isPosition())
                 .teamPassword(findTeam.getTeamPassword())
                 .usedAmount(findUserTeam.getUsedAmount())
+                .teamBalance(sum)
                 .color(findTeam.getColor())
                 .build();
 
@@ -368,7 +362,7 @@ public class TeamService {
                 .countLimit(request.getCountLimit())
                 .teamMessage(request.getTeamMessage())
                 .color(teamColor)
-
+                .genDate(System.currentTimeMillis())
                 .teamInitializer(userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("유저를 찾을 수 없습니다.")))
                 .build();
 
@@ -417,6 +411,7 @@ public class TeamService {
         List<UserTeam> userTeams = userTeamRepository.findUserTeamsByUserId(userId);
         List<TeamRes> resultList = new ArrayList<>();
         for (UserTeam userTeam : userTeams) {
+            if (userTeam.getTeam().isPublicTeam()) continue;
             int sumTeamBalance = 0;
             TeamRes teamRes = new TeamRes(userTeam, sumTeamBalance);
             List<TeamStore> teamStores = userTeam.getTeam().getTeamStores();
@@ -451,6 +446,7 @@ public class TeamService {
                     storesRes.setLatitude(teamStore.getStore().getLatitude());
                     storesRes.setLongitude(teamStore.getStore().getLongitude());
                     storesRes.setMyteam(true);
+                    storesRes.setImgUrl(teamStore.getStore().getStoreImgUrl());
                     return storesRes;
                 }).collect(Collectors.toList());
     }
@@ -485,7 +481,7 @@ public class TeamService {
 
     //퍼블릭 팀 리스트 조회
     // 완료
-    public List<PublicTeamsRes> getPublicTeams(String email) {
+    public List<PublicTeamsRes> getPublicTeams(String email, float latitude, float longitude) {
         List<Team> teams = teamRepository.findTeamsWithUserByPublicTeam(true);
         List<PublicTeamsRes> resultList = new ArrayList<>();
         for (Team team : teams) {
@@ -497,6 +493,10 @@ public class TeamService {
             } else {
                 publicTeamsRes.setLike(false);
             }
+            Store store = team.getTeamStores().get(0).getStore();
+            float distance = storeService.calDistance(store.getLongitude(), store.getLatitude(), longitude, latitude);
+            publicTeamsRes.setDistance(distance);
+            publicTeamsRes.setAddress(store.getAddress());
             resultList.add(publicTeamsRes);
         }
         return resultList;
@@ -527,7 +527,7 @@ public class TeamService {
         Team team = teamRepository.findById(teamId).orElseThrow();
         String teamPassword = team.getTeamPassword();
         if (teamPassword == null || System.currentTimeMillis() - (1000 * 60 * 60 * 3) > team.getCodeGenDate()) {
-            throw new RuntimeException("코드 시간 만료 재발급 문의");
+            throw new NoSuchElementException("코드 시간 만료 재발급 문의");
         }
 
         return new InviteCodeRes(teamPassword, team.getCodeGenDate());
@@ -564,7 +564,7 @@ public class TeamService {
         UserTeam userTeam;
         if (opUserTeam.isEmpty()) {
             User user = userRepository.findUserByEmail(email);
-            Team team = teamRepository.findById(teamId).orElseThrow(() -> new RuntimeException("팀 없음"));
+            Team team = teamRepository.findById(teamId).orElseThrow(() -> new NoSuchElementException("팀 없음"));
             userTeam = UserTeam.builder()
                     .team(team)
                     .user(user)
@@ -584,12 +584,14 @@ public class TeamService {
     public List<PublicTeams2kmRes> get2kmPublicTeams(String email, float latitude, float longitude) {
         List<Store> stores = storeRepository.findAll();
         List<Store> in2Km = new ArrayList<>();
-        HashMap<Long, Double> map = new HashMap<>();
+        HashMap<Long, Double> disMap = new HashMap<>();
+        HashMap<Long, String> addMap = new HashMap<>();
         for (Store store : stores) {
             double dis = storeService.calDistance(store.getLongitude(), store.getLatitude(), longitude, latitude);
             if (storeService.calDistance(store.getLongitude(), store.getLatitude(), longitude, latitude) < 2L) {
                 in2Km.add(store);
-                map.put(store.getId(), dis);
+                addMap.put(store.getId(), store.getAddress());
+                disMap.put(store.getId(), dis);
             }
         }
 
@@ -616,12 +618,21 @@ public class TeamService {
                     if (opUserTeam.isPresent()) {
                         res.setLike(opUserTeam.get().isLike());
                     }
-                    res.setDistance(map.get(store.getId()));
+                    res.setAddress(addMap.get(store.getId()));
+                    res.setDistance(disMap.get(store.getId()));
                     result.add(res);
                 }
             }
         }
+        List<PublicTeams2kmRes> sortedByDistanceResult = result.stream()
+                .sorted(Comparator.comparingDouble(item -> item.getDistance())).toList();
         log.info("리스트 사이즈 : {}", result.size());
-        return result;
+        return sortedByDistanceResult;
+    }
+
+    public PrivateStoreDetail getPrivateDetail(String email, long teamId, long storeId) {
+        TeamStore teamStore = teamStoreRepository.findByTeamIdAndStoreId(teamId, storeId).orElseThrow(()->new NoSuchElementException("teamStore 없음"));
+        Store store = teamStore.getStore();
+        return new PrivateStoreDetail(teamStore,store);
     }
 }

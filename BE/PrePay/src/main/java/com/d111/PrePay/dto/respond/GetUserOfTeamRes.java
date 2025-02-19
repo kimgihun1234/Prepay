@@ -13,6 +13,7 @@ public class GetUserOfTeamRes {
     private Long teamId;
     private String email;
     private String nickname;
+    private String teamName;
     private boolean position;
     private boolean privilege;
 
@@ -22,6 +23,7 @@ public class GetUserOfTeamRes {
         this.email = user.getEmail();
         this.position = userTeam.isPosition();
         this.privilege = userTeam.isPrivilege();
+        this.teamName = userTeam.getTeam().getTeamName();
         this.teamId = team.getId();
         this.nickname = user.getNickname();
     }

@@ -27,9 +27,8 @@ public class TeamStore {
 
     private int teamStoreBalance;
 
-    public TeamStore(Team team, Store store, int balance) {
+    public TeamStore(Team team, Store store) {
         this.team = team;
         this.store = store;
-        this.teamStoreBalance = balance;
     }
 }

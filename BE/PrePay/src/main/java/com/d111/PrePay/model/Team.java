@@ -35,17 +35,23 @@ public class Team {
 
     private String color;
 
+    private long genDate;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User teamInitializer;
 
     @OneToMany(mappedBy = "team")
+    @Builder.Default
     private List<UserTeam> userTeams = new ArrayList<>();
 
     @OneToMany(mappedBy = "team")
+    @Builder.Default
     private List<TeamStore> teamStores = new ArrayList<>();
 
+
     @OneToMany(mappedBy = "team")
+    @Builder.Default
     private List<OrderHistory> orderHistories = new ArrayList<>();
 
 }

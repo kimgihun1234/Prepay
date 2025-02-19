@@ -1,6 +1,7 @@
 package com.d111.PrePay.model;
 
 
+import com.d111.PrePay.dto.request.BootChargeReq;
 import com.d111.PrePay.dto.request.DetailHistoryReq;
 import com.d111.PrePay.dto.request.OrderCreateReq;
 import jakarta.persistence.*;
@@ -55,5 +56,12 @@ public class OrderHistory {
         for (DetailHistoryReq detailHistoryReq : orderCreateReq.getDetails()) {
             this.totalPrice += detailHistoryReq.getDetailPrice() * detailHistoryReq.getQuantity();
         }
+    }
+
+    public OrderHistory(BootChargeReq bootChargeReq) {
+        this.orderDate = System.currentTimeMillis();
+        this.withDraw = false;
+        this.totalPrice = bootChargeReq.getAmount();
+        this.refundRequested = false;
     }
 }

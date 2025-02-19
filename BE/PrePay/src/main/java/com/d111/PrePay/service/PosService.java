@@ -2,6 +2,7 @@ package com.d111.PrePay.service;
 
 import com.d111.PrePay.dto.request.DetailHistoryReq;
 import com.d111.PrePay.dto.request.OrderCreateReq;
+import com.d111.PrePay.exception.FcmException;
 import com.d111.PrePay.exception.NoQrException;
 import com.d111.PrePay.exception.NotEnoughBalanceException;
 import com.d111.PrePay.model.*;
@@ -34,13 +35,13 @@ public class PosService {
     public Long makeOrder(OrderCreateReq orderReq, String email) {
         Qr qr = qrRepository.findByUuid(orderReq.getQrUUID()).orElseThrow(() -> {
             log.error("qr uuid : {}", orderReq.getQrUUID());
-            throw new NoQrException("존재하지 않는 qr");
+            return new NoQrException("존재하지 않는 qr");
         });
 
         if (qr.getGenDate() < System.currentTimeMillis() - 1000 * 60) {
-            throw new RuntimeException("시간 초과");
+            throw new NoQrException("시간 초과");
         } else if (qr.isUsed()) {
-            throw new RuntimeException("사용된 QR");
+            throw new NoQrException("사용된 QR");
         }
         qr.setUsed(true);
         OrderHistory orderHistory = new OrderHistory(orderReq);
@@ -53,19 +54,18 @@ public class PosService {
         UserTeam userTeam = userTeamRepository.findByTeamIdAndUser_Email(orderReq.getTeamId(), email).orElseThrow(() ->
         {
             log.error("팀 아아디 : {}, 이메일 : {}", orderReq.getTeamId(), email);
-            return new RuntimeException("userTeam 찾기 실패");
+            return new NoSuchElementException("userTeam 찾기 실패");
         });
 
         Team team = userTeam.getTeam();
         User user = userTeam.getUser();
         TeamStore teamStore = teamStoreRepository.findTeamStoreByTeamAndStore(team, store);
-
         log.info("총 주문 금액 : {}", orderHistory.getTotalPrice());
         if (teamStore.getTeamStoreBalance() - orderHistory.getTotalPrice() < 0) {
             log.error("주문자 : {}", user.getEmail());
             log.error("팀 잔액 : {},현재주문 금액 : {}", teamStore.getTeamStoreBalance(), orderHistory.getTotalPrice());
             throw new NotEnoughBalanceException("팀 잔액이 부족합니다,");
-        } else if (qr.getType() == QrType.PRIVATE || team.getDailyPriceLimit() - userTeam.getUsedAmount() < orderHistory.getTotalPrice()) {
+        } else if (qr.getType() == QrType.PRIVATE && team.getDailyPriceLimit() - userTeam.getUsedAmount() < orderHistory.getTotalPrice()) {
             log.error("일일한도 잔액 : {},현재주문 금액 : {}", team.getDailyPriceLimit() - userTeam.getUsedAmount(), orderHistory.getTotalPrice());
             throw new NotEnoughBalanceException("일일 한도 잔액이 부족합니다,");
         }
@@ -87,7 +87,7 @@ public class PosService {
             fcmService.sendDataMessageTo(user.getFcmToken(), "완료", "주문이 완료되었습니다.");
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("fcm 오류 발생");
+            throw new FcmException("fcm 오류 발생");
         }
 
         return orderHistory.getId();

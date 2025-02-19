@@ -35,7 +35,10 @@ public class TeamController {
     // 좋아요 한 퍼블릭 팀 보기
     @GetMapping("/public/liked")
     @Operation(summary = "좋아요 한 퍼블릭 팀")
-    public ResponseEntity<List<PublicTeamLikedRes>> showPublicLiked(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam float latitude, @RequestParam float longitude) {
+    public ResponseEntity<List<PublicTeamLikedRes>> showPublicLiked(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @RequestParam(defaultValue = "36.1015719197493") float latitude,
+            @RequestParam(defaultValue = "128.422009486894") float longitude) {
         Long userId = userDetails.getUserId();
         return ResponseEntity.ok(teamService.showPublicLiked(userId,latitude,longitude));
     }
@@ -183,21 +186,18 @@ public class TeamController {
         return ResponseEntity.ok(teamService.getTeamInviteCode(email, teamId));
     }
 
-    @PostMapping(value = "/store", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/store")
     @Operation(summary = "팀 가맹점 추가")
     public ResponseEntity<TeamCreateStoreRes> createStore(
-            @RequestPart("request") TeamCreateStoreReq req,
-            @RequestPart(value = "image", required = false) MultipartFile image,
-            @RequestHeader String access,
+            @RequestBody TeamCreateStoreReq req,
             @AuthenticationPrincipal CustomUserDetails userDetails) throws IOException {
-        return ResponseEntity.ok(teamService.createStore(req, image));
+        return ResponseEntity.ok(teamService.createStore(req));
     }
 
 
     @GetMapping("/{teamId}/user")
     @Operation(summary = "팀 유저 조회")
     public List<GetUserOfTeamRes> getUserOfTeam(@PathVariable Long teamId,
-                                                @RequestHeader String access,
                                                 @AuthenticationPrincipal CustomUserDetails userDetails) {
 //        Long userId = accessToken.getUserId();
         Long userId = userDetails.getUserId();
@@ -208,7 +208,6 @@ public class TeamController {
     @GetMapping("/{teamId}")
     @Operation(summary = "팀 상세 정보 조회")
     public ResponseEntity<TeamDetailRes> getTeamDetails(@PathVariable Long teamId,
-                                                        @RequestHeader String access,
                                                         @AuthenticationPrincipal CustomUserDetails userDetails) {
 //        Long userId = accessToken.getUserId();
         Long userId = userDetails.getUserId();
@@ -220,7 +219,6 @@ public class TeamController {
     @Operation(summary = "팀 생성")
     public ResponseEntity<TeamCreateRes> createTeam(@RequestPart("request") TeamCreateReq request,
                                                     @RequestPart(value = "image", required = false) MultipartFile image,
-                                                    @RequestHeader String access,
                                                     @AuthenticationPrincipal CustomUserDetails userDetails) throws IOException {
         Long userId = userDetails.getUserId();
         return ResponseEntity.ok(teamService.createTeam(request, userId, image));
@@ -248,9 +246,9 @@ public class TeamController {
 
     @GetMapping("/public-teams")
     @Operation(summary = "<b>퍼블릭 팀 리스트 조회")
-    public ResponseEntity<List<PublicTeamsRes>> getPublicTeams(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<List<PublicTeamsRes>> getPublicTeams(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam(defaultValue = "36.1015719197493") float latitude, @RequestParam(defaultValue = "128.422009486894") float longitude) {
         String email = userDetails.getUsername();
-        return ResponseEntity.ok(teamService.getPublicTeams(email));
+        return ResponseEntity.ok(teamService.getPublicTeams(email,latitude,longitude));
     }
 
     @GetMapping("/public-teams/{keyword}")
@@ -268,8 +266,14 @@ public class TeamController {
 
     @GetMapping("/public-team/2km")
     @Operation(summary = "2km 이내의 퍼블릭 팀 조회")
-    public ResponseEntity<List<PublicTeams2kmRes>> get2kmPublicTeams(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam float latitude, @RequestParam float longitude) {
+    public ResponseEntity<List<PublicTeams2kmRes>> get2kmPublicTeams(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam(defaultValue = "36.1015719197493") float latitude, @RequestParam(defaultValue = "128.422009486894") float longitude) {
         String email = userDetails.getUsername();
         return ResponseEntity.ok(teamService.get2kmPublicTeams(email, latitude, longitude));
+    }
+
+    @GetMapping("/team/detail")
+    @Operation(summary = "프라이빗 팀 상점 상세 조회")
+    public ResponseEntity<PrivateStoreDetail> getPrivateDetail(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam long teamId, @RequestParam long storeId) {
+        return ResponseEntity.ok(teamService.getPrivateDetail(userDetails.getUsername(),teamId, storeId));
     }
 }

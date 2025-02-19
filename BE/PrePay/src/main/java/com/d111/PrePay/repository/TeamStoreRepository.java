@@ -19,7 +19,6 @@ public interface TeamStoreRepository extends JpaRepository<TeamStore,Long> {
     @Query("SELECT t FROM Team t join FETCH t.teamStores ts join FETCH ts.store WHERE t.id=:teamId")
     Team findTeamWithTeamStoreAndStoreByTeamId(Long teamId);
 
-    List<TeamStore> findByTeamId(Long teamId);
 
     TeamStore findTeamStoreByTeamAndStore(Team team, Store store);
 

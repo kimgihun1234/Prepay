@@ -5,7 +5,6 @@ import com.d111.PrePay.dto.request.OrderHistoryReq;
 import com.d111.PrePay.dto.respond.DetailHistoryRes;
 import com.d111.PrePay.dto.respond.GetPrepaidTeamsRes;
 import com.d111.PrePay.dto.respond.OrderHistoryRes;
-import com.d111.PrePay.service.OrderService;
 import com.d111.PrePay.service.OwnerService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,6 @@ import java.util.List;
 public class OwnerController {
 
     private final OwnerService ownerService;
-    private final OrderService orderService;
 
     @PostMapping("/teams")
     @Operation(summary = "가게에 선결제 한 팀 리스트 조회")

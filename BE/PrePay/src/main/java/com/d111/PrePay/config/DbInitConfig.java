@@ -22,19 +22,12 @@ import java.util.Optional;
 
 @Component
 @Profile({"local","prod"})
-
 @RequiredArgsConstructor
 @Slf4j
 public class DbInitConfig implements ApplicationRunner {
 
     private final UserService userService;
-    private final TeamService teamService;
     private final UserRepository userRepository;
-    private final StoreService storeService;
-    private final OrderHistoryRepository orderHistoryRepository;
-    private final StoreRepository storeRepository;
-    private final TeamRepository teamRepository;
-    private final DetailHistoryRepository detailHistoryRepository;
 
     @Override
     @Transactional
