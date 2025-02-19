@@ -90,7 +90,7 @@
         android:fontFamily="@font/samsung_font_2"
         android:text="공개 그룹"
         android:textColor="#394750"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
