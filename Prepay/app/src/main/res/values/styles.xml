@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="BottomNavTextStyle" parent="TextAppearance.AppCompat.Medium">
-        <item name="android:fontFamily">@font/samsung_font_1</item>
-        <item name="android:textSize">14sp</item>
+    <style name="BottomNavTextStyle" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:fontFamily">@font/samsung_font_2_bold</item>
+        <item name="fontWeight">600</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textColor">#0066CC</item>
     </style>
 </resources>

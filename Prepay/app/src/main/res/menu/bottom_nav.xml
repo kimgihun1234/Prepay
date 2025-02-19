@@ -3,20 +3,20 @@
 
     <item
         android:id="@+id/navigation_mypage"
-        android:icon="@drawable/mypage_btn"
+        android:icon="@drawable/wallet_48px"
         android:title="내 그룹"
         android:background="@android:color/transparent" />
 
 
     <item
         android:id="@+id/navigation_group_search"
-        android:icon="@drawable/group_search_btn"
+        android:icon="@drawable/group_48px"
         android:title="공개 그룹"
         android:background="@android:color/transparent" />
 
     <item
         android:id="@+id/my_payment_history"
-        android:icon="@drawable/payment_history_btn"
+        android:icon="@drawable/manage_search_48px"
         android:title="내역 조회"
         android:background="@android:color/transparent" />
 
