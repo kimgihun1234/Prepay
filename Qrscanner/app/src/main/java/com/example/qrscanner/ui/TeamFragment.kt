@@ -17,12 +17,13 @@ import com.example.qrscanner.databinding.FragmentTeamBinding
 import com.example.qrscanner.response.StoreReq
 import com.example.qrscanner.ui.adapter.StoreAdapter
 import com.example.qrscanner.ui.viewModel.StoreViewModel
+import com.example.qrscanner.util.CommonUtils
 
 private const val TAG = "TeamFragment"
 class TeamFragment : BaseFragment<FragmentTeamBinding>(
     FragmentTeamBinding::bind,
     R.layout.fragment_team
-) {
+), StoreAdapter.OnStoreBtnClick{
     private lateinit var storeAdapter : StoreAdapter
     private lateinit var mainActivity: MainActivity
     private val mainActivityViewModel : MainActivityViewModel by activityViewModels()
@@ -46,7 +47,7 @@ class TeamFragment : BaseFragment<FragmentTeamBinding>(
 
     private fun initAdapt() {
         binding.recyclerView.layoutManager = LinearLayoutManager(binding.root.context)
-        storeAdapter = StoreAdapter(arrayListOf())
+        storeAdapter = StoreAdapter(arrayListOf(), onBtnClicked = this )
         binding.recyclerView.adapter = storeAdapter
         storeViewModel.storeList.observe(viewLifecycleOwner) {
             storeAdapter.storeList = it
@@ -57,5 +58,10 @@ class TeamFragment : BaseFragment<FragmentTeamBinding>(
         val teamId = mainActivityViewModel.teamId.value!!
         val storeReq = StoreReq(teamId.toLong(), storeId.toLong())
         storeViewModel.getStoreList(storeReq)
+    }
+
+    override fun onStoreBtnClicked(orderId: Long) {
+        mainActivityViewModel.setOrderId(orderId)
+        mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.ORDER_DETAIL_FRAGMENT)
     }
 }

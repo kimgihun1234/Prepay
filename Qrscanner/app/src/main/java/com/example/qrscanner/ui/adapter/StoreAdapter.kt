@@ -10,9 +10,11 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class StoreAdapter  (var storeList: List<StoreRes>) : RecyclerView.Adapter<StoreAdapter.StoreViewHolder>() {
+class StoreAdapter(var storeList: List<StoreRes>, private val onBtnClicked: OnStoreBtnClick) :
+    RecyclerView.Adapter<StoreAdapter.StoreViewHolder>() {
 
-    inner class StoreViewHolder(private val binding: StoreRowBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class StoreViewHolder(private val binding: StoreRowBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(storeRes: StoreRes) {
             val timestamp: Long = storeRes.orderDate.toLong()
             val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
@@ -20,9 +22,14 @@ class StoreAdapter  (var storeList: List<StoreRes>) : RecyclerView.Adapter<Store
 
             binding.date.text = dateString
             binding.price.text = storeRes.totalPrice.toString()
-            binding.refundChip.visibility = if (storeRes.refundRequested) View.GONE else View.VISIBLE
+            binding.refundChip.visibility =
+                if (storeRes.refundRequested) View.GONE else View.VISIBLE
             binding.withdrawChip.visibility = if (storeRes.withdraw) View.GONE else View.VISIBLE
-            binding.companyDinnerChip.visibility = if (storeRes.companyDinner) View.GONE else View.VISIBLE
+            binding.companyDinnerChip.visibility =
+                if (storeRes.companyDinner) View.GONE else View.VISIBLE
+            binding.root.setOnClickListener{
+                onBtnClicked.onStoreBtnClicked(storeRes.orderHistoryId.toLong())
+            }
         }
     }
 
@@ -36,5 +43,9 @@ class StoreAdapter  (var storeList: List<StoreRes>) : RecyclerView.Adapter<Store
 
     override fun onBindViewHolder(holder: StoreViewHolder, position: Int) {
         holder.bind(storeList[position])
+    }
+
+    interface OnStoreBtnClick {
+        fun onStoreBtnClicked(orderId: Long)
     }
 }
