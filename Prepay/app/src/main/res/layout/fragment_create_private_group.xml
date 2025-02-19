@@ -29,7 +29,6 @@
 
             app:cardBackgroundColor="@color/plater11"
             app:cardCornerRadius="15dp"
-            app:cardElevation="6dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -37,6 +36,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="224dp"
+                android:background="@drawable/card_page_box"
 
                 android:backgroundTint="@color/black"
                 android:padding="16dp">
@@ -181,7 +181,7 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/private_register_btn"
                 android:layout_width="340dp"
-                android:layout_height="59dp"
+                android:layout_height="54dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="16dp"
@@ -197,7 +197,7 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/cancel_btn"
                 android:layout_width="340dp"
-                android:layout_height="59dp"
+                android:layout_height="54dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"

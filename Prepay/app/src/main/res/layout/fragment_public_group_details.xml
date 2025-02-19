@@ -139,17 +139,43 @@
         app:strokeColor="#CCCCCC"
         app:strokeWidth="2dp" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/payment_history_btn"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:elevation="6dp"
+        android:text="결제내역"
+        android:textColor="#394759"
+        android:textSize="15sp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:minHeight="48dp"
+        android:gravity="center|center_vertical"
+        app:backgroundTint="@color/white"
+        app:cornerRadius="8dp"
+        app:icon="@drawable/money_change_btn"
+        app:iconGravity="start"
+        app:iconPadding="0dp"
+        app:iconSize="18dp"
+        app:iconTint="#394759"
+        app:layout_constraintStart_toEndOf="@+id/qr_payment_btn"
+        app:layout_constraintTop_toBottomOf="@+id/daily_dummy"
+        app:strokeColor="#CCCCCC"
+        app:strokeWidth="2dp" />
 
     <ImageButton
         android:id="@+id/like_btn"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="59dp"
         android:background="#00FFFFFF"
         android:scaleType="fitCenter"
         android:src="@drawable/like_heart_empty"
-        app:layout_constraintStart_toEndOf="@+id/qr_payment_btn"
-        app:layout_constraintTop_toBottomOf="@+id/daily_dummy" />
+        app:layout_constraintStart_toEndOf="@+id/daily_money_info"
+        app:layout_constraintTop_toBottomOf="@+id/public_detail_location" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
