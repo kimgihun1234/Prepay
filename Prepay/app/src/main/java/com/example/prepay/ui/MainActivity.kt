@@ -74,8 +74,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNav.setBackgroundColor(android.graphics.Color.TRANSPARENT)
-        bottomNav.itemIconSize=resources.getDimensionPixelSize(R.dimen._32dp)
-//        bottomNav.layoutParams.height = resources.getDimensionPixelSize(R.dimen._56dp)
+        bottomNav.itemIconSize=resources.getDimensionPixelSize(R.dimen._28dp)
+        bottomNav.layoutParams.height = resources.getDimensionPixelSize(R.dimen._70dp)
 
 
         keyboardVisibilityUtils = KeyboardVisibilityUtils(window,

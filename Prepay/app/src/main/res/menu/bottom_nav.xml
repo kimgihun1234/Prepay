@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/navigation_mypage"
-        android:icon="@drawable/mypage_btn_2"
+        android:icon="@drawable/wallet_48px"
         android:title="내 그룹"
         android:background="@android:color/transparent" />
 
