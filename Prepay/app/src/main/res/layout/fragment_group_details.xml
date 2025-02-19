@@ -16,7 +16,7 @@
             android:id="@+id/prepay_store_list_btn"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="44dp"
             android:layout_marginTop="96dp"
             android:background="@null"
             android:drawablePadding="2dp"
@@ -33,16 +33,17 @@
             android:id="@+id/list_btn"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginTop="96dp"
             android:background="@null"
             android:drawablePadding="2dp"
+            android:layout_marginEnd="72dp"
             android:fontFamily="@font/samsung_font_2"
             android:scaleX="0.9"
             android:text="결제 내역"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/prepay_store_list_btn"
-            app:layout_constraintStart_toEndOf="@+id/prepay_store_list_btn" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/group_details_container"
