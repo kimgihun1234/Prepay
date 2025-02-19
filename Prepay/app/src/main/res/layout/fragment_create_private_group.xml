@@ -7,141 +7,161 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <!-- 카드뷰는 스크롤뷰 밖에 위치 -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card"
-        android:layout_width="332dp"
-        android:layout_height="226dp"
-        android:layout_marginTop="0dp"
-        app:cardBackgroundColor="@color/plater11"
-        app:cardCornerRadius="15dp"
-        app:cardElevation="6dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="224dp"
-            android:padding="16dp">
-
-            <TextView
-                android:id="@+id/card_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="6dp"
-                android:fontFamily="@font/samsung_font_2"
-                android:text="싸피 D111"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.056"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
-                android:src="@drawable/card_chip"
-                app:layout_constraintStart_toStartOf="@+id/card_view"
-                app:layout_constraintTop_toBottomOf="@+id/card_view" />
-
-            <ImageView
-                android:id="@+id/card_brand"
-                android:layout_width="58dp"
-                android:layout_height="17dp"
-                android:layout_marginTop="6dp"
-                android:layout_marginEnd="5dp"
-                android:src="@drawable/card_logo"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/card_balance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="108dp"
-                android:text="1,000,000 원"
-                android:textColor="@color/white"
-                android:textSize="19sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/card_view"
-                app:layout_constraintTop_toBottomOf="@+id/card_view" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="0dp"
-                android:text="**** ****"
-                android:textColor="@color/white"
-                app:layout_constraintStart_toStartOf="@+id/card_balance"
-                app:layout_constraintTop_toBottomOf="@+id/card_balance" />
-
-            <TextView
-                android:id="@+id/card_expiry"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="136dp"
-                android:text="YYYY-MM-DD"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="@+id/card_brand"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/card_brand" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
     <!-- 스크롤 가능한 나머지 콘텐츠 -->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/card_view_outbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/main_page_box"
+        android:elevation="4dp"
+        android:padding="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <!-- 카드뷰는 스크롤뷰 밖에 위치 -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card"
+            android:layout_width="320dp"
+            android:layout_height="206dp"
+            android:elevation="4dp"
+            app:cardBackgroundColor="@color/plater11"
+            app:cardCornerRadius="15dp"
+            app:cardElevation="6dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="224dp"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/card_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="6dp"
+                    android:fontFamily="@font/samsung_font_2"
+                    android:text="싸피 D111"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.056"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="48dp"
+                    android:src="@drawable/card_chip"
+                    app:layout_constraintStart_toStartOf="@+id/card_view"
+                    app:layout_constraintTop_toBottomOf="@+id/card_view" />
+
+                <ImageView
+                    android:id="@+id/card_brand"
+                    android:layout_width="58dp"
+                    android:layout_height="17dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="5dp"
+                    android:src="@drawable/card_logo"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/card_balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="108dp"
+                    android:text="1,000,000 원"
+                    android:textColor="@color/white"
+                    android:textSize="19sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/card_view"
+                    app:layout_constraintTop_toBottomOf="@+id/card_view" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="0dp"
+                    android:text="**** ****"
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toStartOf="@+id/card_balance"
+                    app:layout_constraintTop_toBottomOf="@+id/card_balance" />
+
+                <TextView
+                    android:id="@+id/card_expiry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="136dp"
+                    android:text="YYYY-MM-DD"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="@+id/card_brand"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/card_brand" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <ScrollView
         android:id="@+id/scroll_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/card"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card_view_outbox">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:elevation="4dp">
 
             <EditText
                 android:id="@+id/group_name_text"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_width="340dp"
+                android:layout_height="58dp"
                 android:layout_marginStart="60dp"
-                android:layout_marginTop="44dp"
+                android:layout_marginTop="32dp"
                 android:layout_marginEnd="60dp"
-                android:background="@drawable/round_background"
+                android:background="@drawable/shape_all_round"
                 android:ems="10"
-                android:gravity="center"
                 android:hint="방의 제목을 정해주세요"
                 android:inputType="text"
+                android:paddingStart="24dp"
                 android:text=""
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.489"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/limit_setting_text"
-                android:layout_width="291dp"
-                android:layout_height="46dp"
+                android:layout_width="340dp"
+                android:layout_height="58dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="40dp"
                 android:layout_marginEnd="16dp"
-                android:background="@drawable/round_background"
+                android:background="@drawable/shape_all_round"
                 android:ems="10"
-                android:gravity="center"
                 android:hint="일일 한도를 결정해 주세요"
                 android:inputType="number"
+                android:paddingStart="24dp"
                 android:text=""
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.512"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/group_name_text" />
 
@@ -149,31 +169,32 @@
                 android:id="@+id/progressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:layout_marginTop="32dp"
-                app:layout_constraintTop_toBottomOf="@+id/limit_setting_text"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/limit_setting_text" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/private_register_btn"
-                android:layout_width="274dp"
-                android:layout_height="44dp"
+                android:layout_width="340dp"
+                android:layout_height="54dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="16dp"
-                android:background="@drawable/grouptext_round_backgound"
+                android:background="@drawable/button_background"
                 android:text="등록"
                 android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.495"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/color_selector" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/cancel_btn"
-                android:layout_width="274dp"
-                android:layout_height="35dp"
+                android:layout_width="340dp"
+                android:layout_height="54dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
@@ -181,6 +202,8 @@
                 android:background="@drawable/round_background"
                 android:text="취소"
                 android:textColor="#0066CC"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.495"
@@ -188,41 +211,31 @@
                 app:layout_constraintTop_toBottomOf="@+id/private_register_btn"
                 app:layout_constraintVertical_bias="0.0" />
 
-            <TextView
-                android:id="@+id/color_text"
-                android:layout_width="wrap_content"
-                android:layout_height="21dp"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:text="색깔 설정"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:translationZ="5dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/limit_setting_text" />
-
             <RadioGroup
                 android:id="@+id/color_selector"
-                android:layout_width="281dp"
-                android:layout_height="104dp"
-                android:layout_marginTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="49dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.24"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/color_text">
+                app:layout_constraintTop_toBottomOf="@+id/limit_setting_text">
 
                 <GridLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:columnCount="5"
+                    android:columnCount="7"
                     android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/radio1"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:layout_marginEnd="20dp"
+                        android:layout_row="0"
+                        android:layout_column="0"
+                        android:layout_marginEnd="10dp"
                         android:background="@drawable/radio_selector1"
                         android:button="@null" />
 
@@ -230,7 +243,9 @@
                         android:id="@+id/radio2"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:layout_marginEnd="20dp"
+                        android:layout_row="0"
+                        android:layout_column="1"
+                        android:layout_marginEnd="10dp"
                         android:background="@drawable/radio_selector2"
                         android:button="@null" />
 
@@ -238,7 +253,9 @@
                         android:id="@+id/radio3"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:layout_marginEnd="20dp"
+                        android:layout_row="0"
+                        android:layout_column="2"
+                        android:layout_marginEnd="10dp"
                         android:background="@drawable/radio_selector3"
                         android:button="@null" />
 
@@ -246,7 +263,9 @@
                         android:id="@+id/radio4"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:layout_marginEnd="20dp"
+                        android:layout_row="0"
+                        android:layout_column="3"
+                        android:layout_marginEnd="10dp"
                         android:background="@drawable/radio_selector4"
                         android:button="@null" />
 
@@ -254,7 +273,9 @@
                         android:id="@+id/radio5"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:layout_marginEnd="20dp"
+                        android:layout_row="0"
+                        android:layout_column="4"
+                        android:layout_marginEnd="10dp"
                         android:background="@drawable/radio_selector5"
                         android:button="@null" />
 
@@ -262,7 +283,9 @@
                         android:id="@+id/radio6"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_row="0"
+                        android:layout_column="5"
+                        android:layout_marginEnd="10dp"
                         android:background="@drawable/radio_selector6"
                         android:button="@null" />
 
@@ -270,7 +293,9 @@
                         android:id="@+id/radio7"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_row="1"
+                        android:layout_column="5"
+                        android:layout_marginTop="10dp"
                         android:background="@drawable/radio_selector7"
                         android:button="@null" />
 
@@ -278,7 +303,9 @@
                         android:id="@+id/radio8"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_row="1"
+                        android:layout_column="0"
+                        android:layout_marginTop="10dp"
                         android:background="@drawable/radio_selector8"
                         android:button="@null" />
 
@@ -286,7 +313,9 @@
                         android:id="@+id/radio9"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_row="1"
+                        android:layout_column="1"
+                        android:layout_marginTop="10dp"
                         android:background="@drawable/radio_selector9"
                         android:button="@null" />
 
@@ -294,11 +323,76 @@
                         android:id="@+id/radio10"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_row="1"
+                        android:layout_column="2"
+                        android:layout_marginTop="10dp"
                         android:background="@drawable/radio_selector10"
                         android:button="@null" />
+
+                    <RadioButton
+                        android:id="@+id/radio11"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_row="1"
+                        android:layout_column="3"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/radio_selector10"
+                        android:button="@null" />
+
+                    <RadioButton
+                        android:id="@+id/radio12"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_row="1"
+                        android:layout_column="4"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/radio_selector10"
+                        android:button="@null" />
+
                 </GridLayout>
             </RadioGroup>
+
+            <TextView
+                android:id="@+id/group_name_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="4dp"
+                android:fontFamily="@font/samsung_font_2"
+                android:text="방 제목"
+                android:textColor="#394750"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/group_name_text"
+                app:layout_constraintStart_toStartOf="@+id/group_name_text" />
+
+            <TextView
+                android:id="@+id/limit_setting_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="4dp"
+                android:fontFamily="@font/samsung_font_2"
+                android:text="일일 한도 설정"
+                android:textColor="#394750"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/limit_setting_text"
+                app:layout_constraintStart_toStartOf="@+id/limit_setting_text" />
+
+            <TextView
+                android:id="@+id/select_color_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/samsung_font_2"
+                android:text="카드의 색을 선택해주세요"
+                android:textColor="#394750"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/color_selector"
+                app:layout_constraintStart_toStartOf="@+id/color_selector" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

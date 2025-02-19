@@ -119,7 +119,6 @@ class AddRestaurantFragment : BaseFragment<FragmentAddRestaurantBinding>(
                             }
 
                             if (response?.isSuccessful == true) {
-                                Toast.makeText(requireContext(), "영수증이 성공적으로 들어갔습니다.", Toast.LENGTH_SHORT).show()
                                 mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
                             } else {
                                 Log.e(TAG, "영수증 올리기 실패: ${response}")
@@ -142,7 +141,6 @@ class AddRestaurantFragment : BaseFragment<FragmentAddRestaurantBinding>(
                 Log.d("registerStore", "teamId: $teamId")
 
                 if (teamId == null || storeId == null) {
-                    Toast.makeText(requireContext(), "팀 ID 또는 스토어 ID가 없습니다.", Toast.LENGTH_SHORT).show()
                     return@launch
                 }
                 val request = TeamStoreReq(storeId, teamId.toInt())
@@ -153,7 +151,6 @@ class AddRestaurantFragment : BaseFragment<FragmentAddRestaurantBinding>(
                 Log.d(TAG, "response: $response")
 
                 if (response.isSuccessful) {
-                    Toast.makeText(requireContext(), "스토어가 성공적으로 연결되었습니다.", Toast.LENGTH_SHORT).show()
                 } else {
                     Log.e(TAG, "스토어 연결 실패: ${response?.errorBody()?.string()}")
                 }
