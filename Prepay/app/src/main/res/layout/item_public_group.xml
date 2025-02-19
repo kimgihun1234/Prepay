@@ -82,12 +82,12 @@
             android:layout_width="wrap_content"
             android:layout_height="18dp"
             android:layout_marginStart="6dp"
-            android:layout_marginTop="60dp"
             android:text="10km"
             android:textColor="#807F7F"
             android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/public_address"
             app:layout_constraintStart_toEndOf="@+id/public_address"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/public_address" />
 
         <ImageView
             android:id="@+id/group_image"

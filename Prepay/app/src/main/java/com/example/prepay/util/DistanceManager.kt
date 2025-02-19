@@ -25,9 +25,9 @@ object DistanceManager {
 
     fun formatDistance(distance: Double): String {
         return if (distance >= 1.0) {
-            String.format("%.1fkm", distance)
+            String.format("%.0fkm", distance)
         } else {
-            String.format("%.1fm", distance * 1000)
+            String.format("%.0fm", distance * 1000)
         }
     }
 }
