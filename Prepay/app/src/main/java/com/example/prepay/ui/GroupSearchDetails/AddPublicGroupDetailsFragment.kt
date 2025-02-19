@@ -87,6 +87,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
     var lon = 128.0
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
+    private var isUserDragging = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,10 +123,11 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
     }
 
 
-    private fun initEvent(){
+    private fun initEvent() {
         binding.publicDetailTeamName.text = viewModel.detailInfo.value?.teamName
         Log.d(TAG, "initEvent: ${viewModel.detailInfo.value?.teamName}")
         binding.publicDetailText.text = viewModel.detailInfo.value?.teamMessage
+
         // 클릭 이벤트
         binding.likeBtn.setOnClickListener {
             heartCheck = !heartCheck
@@ -133,32 +135,41 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
             val checkLike = LikeTeamsReq(activityViewModel.storeId.value!!.toLong(), heartCheck)
             sendlike(checkLike)
         }
-        /*binding.publicDetailQrBtn.setOnClickListener{
+
+        binding.qrPaymentBtn.setOnClickListener {
             lifecycleScope.launch {
                 runCatching {
                     RetrofitUtil.qrService.qrPrivateCreate(SharedPreferencesUtil.getAccessToken()!!, activityViewModel.storeId.value!!.toInt())
                 }.onSuccess {
-                    Log.d(TAG,it.message)
-                    showQRDialog(it.message+":"+SharedPreferencesUtil.getAccessToken()!!+":"+activityViewModel.storeId.value.toString())
+                    Log.d(TAG, it.message)
+                    showQRDialog(it.message + ":" + SharedPreferencesUtil.getAccessToken()!! + ":" + activityViewModel.storeId.value.toString())
                 }.onFailure { e ->
                     Log.d(TAG, "qr실패: ${e.message}")
                     mainActivity.showToast("qr불러오기가 실패했습니다")
                 }
             }
-        }*/
-        val bottomSheet: View = requireView().findViewById(R.id.bottomSheet) // ✅ onViewCreated()에서 초기화
+        }
+
+
+        // 바텀시트 초기화 및 드래그만 허용하도록 설정
+        val bottomSheet: View = requireView().findViewById(R.id.bottomSheet)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+
+
+        // 바텀 시트가 드래그 또는 클릭으로 상태가 변경되지 않도록 초기화
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        bottomSheetBehavior.setPeekHeight(
+            400)
+
+        // 바텀 시트를 클릭했을 때 상태를 변경하도록 설정
         bottomSheet.setOnClickListener {
-            if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            } else {
+            if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            } else {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             }
         }
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
-        bottomSheetBehavior.setPeekHeight(900);
     }
-
 
     private fun initViewModel() {
         viewModel.detailInfo.observe(viewLifecycleOwner) { it ->
@@ -166,9 +177,11 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
             Log.d(TAG, "initViewModel: ${it}")
             binding.publicDetailTeamName.text = teamsRes.teamName
             binding.publicDetailText.text = teamsRes.teamMessage
-            binding.leftMoneyInfo.text =  CommonUtils.makeComma(teamsRes.teamBalance)
+            binding.leftMoneyInfo.text =  "현재 잔액: "+CommonUtils.makeComma(teamsRes.teamBalance)
             binding.publicDetailLocation.text = teamsRes.address
-            binding.dailyMoneyInfo.text = CommonUtils.makeComma(teamsRes.dailyLimit-teamsRes.usedAmount)
+            binding.dailyMoneyInfo.text = "개인 한도: "+CommonUtils.makeComma(teamsRes.dailyLimit-teamsRes.usedAmount)
+            binding.storeName.text = teamsRes.storeName
+
             val imageUrl = teamsRes.imageUrl
             if (!imageUrl.isNullOrEmpty()) {
                 Glide.with(requireContext())
@@ -182,28 +195,24 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
 
             Log.d(TAG, "initViewModel: ${teamsRes}")
 
-
+            binding.publicDetailText.text = teamsRes.teamMessage
             val storeImageUrl = teamsRes.storeUrl
             if (!storeImageUrl.isNullOrEmpty()) {
                 Glide.with(requireContext())
                     .load(Uri.parse(storeImageUrl)) // Uri로 변환 후 로드
-                    .into(binding.storeView)
+                    .into(binding.storeImage)
             } else {
-                binding.storeView.setImageResource(R.drawable.logo)
+                binding.storeImage.setImageResource(R.drawable.logo)
                 Log.d(TAG, "initViewModel: ${imageUrl}")
             }
-            binding.storeTitle.text = teamsRes.storeName
-            binding.storeDescription.text = teamsRes.storeDescription
 
             lat = teamsRes.latitude
             lon = teamsRes.longitude
             heartCheck = teamsRes.checkLike
             toggle(heartCheck)
             // 숫자 값 관련 로직, 해당 숫자값은 받아올 수 있어야 함.
-            val location = Location("").apply {
-                latitude = lat
-                longitude = lon
-            }
+            val location = LatLng(lat, lon) // Location 대신 LatLng 사용
+            Log.d(TAG,"위치 받아옵니다"+location.toString())
             setCurrentLocation(location, teamsRes.storeName, teamsRes.storeDescription)
             val leftMoney = teamsRes.usedAmount
         }
@@ -220,39 +229,41 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
 
     private val readyCallback: OnMapReadyCallback by lazy {
         object : OnMapReadyCallback {
-            override fun onMapReady(p0: GoogleMap) {
-                mMap = p0
-                setDefaultLocation()
+            override fun onMapReady(googleMap: GoogleMap) {
+                mMap = googleMap
+                setDefaultLocation() // 초기 위치 설정
             }
         }
     }
 
     private fun setDefaultLocation() {
-        val location = Location("")
-        location.latitude = 37.56  // 서울 중심의 위도
-        location.longitude = 126.97 // 서울 중심의 경도
+        val defaultLat = 36.1026  // 서울 중심 위도
+        val defaultLon = 128.424  // 서울 중심 경도
+        val defaultLocation = LatLng(defaultLat, defaultLon)
 
-        val markerTitle = "위치 정보 가져올 수 없음"
-        val markerSnippet = "위치 퍼미션과 GPS 활성 여부 확인 필요"
+        val markerTitle = "기본 위치"
+        val markerSnippet = "서울 중심"
 
-        setCurrentLocation(location, markerTitle, markerSnippet)
+        setCurrentLocation(defaultLocation, markerTitle, markerSnippet)
+
+        // **초기 카메라 위치 설정**
+        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(defaultLocation, 15f)
+        mMap?.moveCamera(cameraUpdate)  // 즉시 이동
     }
 
     private fun setCurrentLocation(
-        location: Location,
+        latLng: LatLng,
         markerTitle: String?,
         markerSnippet: String?
     ) {
         currentMarker?.remove()
-
-        val currentLatLng = LatLng(lat, lon)
 
         val marker =
             ResourcesCompat.getDrawable(resources, R.drawable.location_icon, requireActivity().theme)
                 ?.toBitmap(150, 150)
 
         val markerOptions = MarkerOptions().apply {
-            position(currentLatLng)
+            position(latLng)
             title(markerTitle)
             snippet(markerSnippet)
             draggable(true)
@@ -260,32 +271,8 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
         }
 
         currentMarker = mMap?.addMarker(markerOptions)
-
-        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f)
-        mMap?.animateCamera(cameraUpdate)
-    }
-
-
-    private fun getCurrentAddress(location: Location): String {
-        val geocoder = Geocoder(requireActivity(), Locale.getDefault())
-        val addresses: List<Address>?
-
-        try {
-            addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
-        } catch (e: IOException) {
-            Toast.makeText(requireActivity(), "지오코더 서비스 사용불가", Toast.LENGTH_LONG).show()
-            return "지오코더 사용불가"
-        } catch (e: IllegalArgumentException) {
-            Toast.makeText(requireActivity(), "잘못된 GPS 좌표", Toast.LENGTH_LONG).show()
-            return "잘못된 GPS 좌표"
-        }
-
-        return if (addresses.isNullOrEmpty()) {
-            Toast.makeText(requireActivity(), "주소 발견 불가", Toast.LENGTH_LONG).show()
-            "주소 발견 불가"
-        } else {
-            addresses[0].getAddressLine(0).toString()
-        }
+        val cameraUpdate = CameraUpdateFactory.newLatLng(latLng)
+        mMap?.moveCamera(cameraUpdate)
     }
 
     // 숫자 증가 애니메이션

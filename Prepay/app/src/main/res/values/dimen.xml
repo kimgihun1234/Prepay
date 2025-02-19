@@ -3,8 +3,15 @@
 
     <dimen name="_8dp">8dp</dimen>
     <dimen name="_16dp">16dp</dimen>
+    <dimen name="_24dp">24dp</dimen>
+    <dimen name="_28dp">28dp</dimen>
     <dimen name="_32dp">32dp</dimen>
+    <dimen name="_48dp">48dp</dimen>
     <dimen name="_56dp">56dp</dimen>
+
+    <dimen name="_64dp">64dp</dimen>
+
+    <dimen name="_70dp">70dp</dimen>
 
     <!-- dot view -->
     <dimen name="dot_view_size">12dp</dimen>
