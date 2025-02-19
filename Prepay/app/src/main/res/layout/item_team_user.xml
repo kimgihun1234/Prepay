@@ -36,8 +36,19 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/resign_btn"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.433"
             app:srcCompat="@drawable/license_btn" />
+
+        <ImageButton
+            android:id="@+id/authority"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="24dp"
+            android:background="#00FFFFFF"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/resign_btn"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/authoritylogo" />
 
         <ImageButton
             android:id="@+id/resign_btn"
@@ -48,6 +59,7 @@
             android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="@+id/manage_btn"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/manage_btn"
             app:srcCompat="@drawable/person_remove_btn" />
 
         <TextView

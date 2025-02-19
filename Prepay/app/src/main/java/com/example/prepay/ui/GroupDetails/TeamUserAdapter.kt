@@ -36,12 +36,22 @@ class TeamUserAdapter(var teamUserResList: List<TeamUserRes>,
                 binding.imageView7.visibility = View.GONE
             }
 
+            if(teamUserRes.privilege==true){
+                binding.manageBtn.visibility = View.GONE
+                binding.authority.visibility = View.VISIBLE
+            }
+            else{
+                binding.manageBtn.visibility = View.VISIBLE
+                binding.authority.visibility = View.GONE
+            }
             // 첫 번째 아이템만 imageView7을 보이게 설정
             if (isFirst) {
                 binding.imageView7.visibility = View.VISIBLE
+                binding.authority.visibility = View.GONE
             } else {
                 binding.imageView7.visibility = View.GONE
             }
+
 
             binding.manageBtn.setOnClickListener {
                 actionListener.onManageClick(teamUserRes)

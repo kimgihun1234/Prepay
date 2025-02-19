@@ -126,7 +126,9 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
             registerTeam()
         }
 
-        binding.cancelBtn.setOnClickListener { mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT) }
+        binding.cancelBtn.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
         mainActivity.hideBottomNav(true)
     }
 

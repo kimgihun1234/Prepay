@@ -374,6 +374,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             privilegeUser(pr)
             showToast(privilege.nickname+"님에게 권한을 부여하였습니다.")
             dialog.dismiss()
+            viewModel.getMyTeamUserList(SharedPreferencesUtil.getAccessToken()!!,activityViewModel.teamId.value!!)
         }
 
         binding.autoritySettingCancelBtn.setOnClickListener {
