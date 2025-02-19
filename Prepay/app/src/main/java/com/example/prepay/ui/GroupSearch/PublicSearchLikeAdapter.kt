@@ -30,6 +30,8 @@ class PublicSearchLikeAdapter(var publiclikeList: List<PublicLikeRes>, private v
                 .error(R.drawable.logo)
                 .into(binding.groupImage)
 
+            val groupImage = binding.groupImage
+            groupImage.clipToOutline = true
 
 
 
