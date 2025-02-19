@@ -16,7 +16,7 @@ class StoreAdapter(var storeList: List<StoreRes>, private val onBtnClicked: OnSt
     inner class StoreViewHolder(private val binding: StoreRowBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(storeRes: StoreRes) {
-            val timestamp: Long = storeRes.orderDate.toLong()
+            val timestamp: Long = storeRes.orderDate
             val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
             val dateString: String = dateFormat.format(Date(timestamp))
 

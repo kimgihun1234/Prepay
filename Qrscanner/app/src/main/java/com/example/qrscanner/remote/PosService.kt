@@ -22,6 +22,6 @@ interface PosService {
     @POST("/owner/history")
     suspend fun getStoreList(@Body request: StoreReq) : List<StoreRes>
 
-    @GET("/order/history/{orderDetailId}")
+    @GET("/owner/history/{orderDetailId}")
     suspend fun getDetailHistories(@Path("orderDetailId") orderDetailId: Long): Response<List<OrderDetailRes>>
 }

@@ -13,9 +13,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="주문번호"
+        android:layout_marginEnd="4dp"
+        android:text="주문번호 : "
+        android:textSize="36sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/orderIdNumTextView"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,15 +27,16 @@
         android:id="@+id/orderIdNumTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="4dp"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/orderDetailRecyclerView"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/orderIdTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toEndOf="@+id/orderIdTextView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintTop_toTopOf="@+id/orderIdTextView" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/orderDetailRecyclerView"

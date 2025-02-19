@@ -11,9 +11,9 @@ class OrderDetailAdapter(var orderDetailList: List<OrderDetailRes>) :
     inner class OrderDetailViewHolder(private val binding: OrderdetailRowBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(orderDetailRes: OrderDetailRes) {
-            binding.detailMoneyTextView.setText(orderDetailRes.detailPrice)
+            binding.detailMoneyTextView.setText(orderDetailRes.detailPrice.toString())
             binding.productNameTextView.setText(orderDetailRes.product)
-            binding.detailQuantityTextView.setText(orderDetailRes.quantity)
+            binding.detailQuantityNumTextView.setText(orderDetailRes.quantity.toString())
         }
     }
 
