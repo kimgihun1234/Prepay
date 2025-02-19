@@ -82,23 +82,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         bottomNav.layoutParams.height = resources.getDimensionPixelSize(R.dimen._70dp)
         bottomNav.setBackgroundColor(ContextCompat.getColor(this,R.color.white))
 
-
-        keyboardVisibilityUtils = KeyboardVisibilityUtils(window,
-            onShowKeyboard = {
-                bottomNav.run {
-                    //smoothScrollTo(scrollX, scrollY + keyboardHeight)
-                    //키보드 올라왔을때 원하는 동작
-                    bottomNav.visibility = View.GONE
-                }
-            },
-            onHideKeyboard = {
-                bottomNav.run {
-                    //키보드 내려갔을때 원하는 동작
-                    //smoothScrollTo(scrollX, scrollY + keyboardHeight)
-                    bottomNav.visibility = View.VISIBLE
-                }
-            }
-        )
     }
 
 
