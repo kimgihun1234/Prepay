@@ -101,8 +101,8 @@ class GroupPaymentHistoryFragment: BaseFragment<FragmentGroupPaymentHistoryBindi
         dialogBinding.recyclerView.layoutManager = LinearLayoutManager(itemView.context)
         dialogBinding.useName.text = order.orderHistoryId.toString()
         dialogBinding.restaurantAmount.text = NumberFormat.getNumberInstance(Locale.KOREA).format(order.totalPrice)
-        dialogBinding.receiptDate.text = order.orderDate
-        dialogBinding.orderDate.text = "[주문] ${order.orderDate}"
+        dialogBinding.receiptDate.text = CommonUtils.formatLongToDate(order.orderDate.toLong())
+        dialogBinding.orderDate.text = "[주문] ${order.nickname}"
         dialog.show()
     }
 
