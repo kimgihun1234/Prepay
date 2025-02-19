@@ -22,6 +22,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.example.prepay.ApplicationClass
 import com.example.prepay.BaseActivity
@@ -79,6 +80,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         bottomNav.setBackgroundColor(android.graphics.Color.TRANSPARENT)
         bottomNav.itemIconSize=resources.getDimensionPixelSize(R.dimen._28dp)
         bottomNav.layoutParams.height = resources.getDimensionPixelSize(R.dimen._70dp)
+        bottomNav.setBackgroundColor(ContextCompat.getColor(this,R.color.white))
 
 
         keyboardVisibilityUtils = KeyboardVisibilityUtils(window,
