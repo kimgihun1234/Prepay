@@ -356,7 +356,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
             dialog.dismiss()
         }
 
-        binding.groupResignCancelBtn.setOnClickListener {
+        binding.cancel.setOnClickListener {
             dialog.dismiss()
         }
         dialog.show()

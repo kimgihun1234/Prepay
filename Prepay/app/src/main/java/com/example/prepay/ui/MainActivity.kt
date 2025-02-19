@@ -1,30 +1,19 @@
 package com.example.prepay.ui
 
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.TextPaint
-import android.text.style.TypefaceSpan
 import android.util.Log
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
-import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import com.example.prepay.ApplicationClass
 import com.example.prepay.BaseActivity
 import com.example.prepay.CommonUtils
@@ -40,12 +29,10 @@ import com.example.prepay.databinding.DialogVisitCodeBinding
 import com.example.prepay.ui.CreateGroup.CreateGroupFragment
 import com.example.prepay.ui.CreateGroup.CreatePrivateGroupFragment
 import com.example.prepay.ui.CreateGroup.CreatePublicGroupFragment
-import com.example.prepay.ui.GroupDetails.AddRestaurantFragment
 import com.example.prepay.ui.GroupDetails.GroupDetailsFragment
 import com.example.prepay.ui.GroupDetails.GroupPaymentHistoryFragment
 import com.example.prepay.ui.GroupDetails.GroupPrepayStoreListFragment
 import com.example.prepay.ui.GroupSearch.GroupSearchFragment
-import com.example.prepay.ui.GroupSearch.GroupSearchFragmentViewModel
 import com.example.prepay.ui.GroupSearchDetails.AddPublicGroupDetailsFragment
 import com.example.prepay.ui.MyPage.MyPageFragment
 import com.example.prepay.ui.RestaurantDetails.AddDetailRestaurantFragment
@@ -110,10 +97,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             CommonUtils.MainFragmentName.LOOK_GROUP_FRAGMENT -> TODO()
             CommonUtils.MainFragmentName.RESTAURANT_DETAILS_FRAGMENT -> {
                 transaction.replace(R.id.main_container, RestaurantDetailsFragment())
-                transaction.addToBackStack(null)
-            }
-            CommonUtils.MainFragmentName.ADD_RESTAURANT_FRAGMENT -> {
-                transaction.replace(R.id.main_container, AddRestaurantFragment())
                 transaction.addToBackStack(null)
             }
             CommonUtils.MainFragmentName.DETAIL_RESTAURANT_FRAGMENT -> {
