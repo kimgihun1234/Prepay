@@ -200,10 +200,8 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
             heartCheck = teamsRes.checkLike
             toggle(heartCheck)
             // 숫자 값 관련 로직, 해당 숫자값은 받아올 수 있어야 함.
-            val location = Location("").apply {
-                latitude = lat
-                longitude = lon
-            }
+            val location = LatLng(lat, lon) // Location 대신 LatLng 사용
+            Log.d(TAG,"위치 받아옵니다"+location.toString())
             setCurrentLocation(location, teamsRes.storeName, teamsRes.storeDescription)
             val leftMoney = teamsRes.usedAmount
         }
@@ -220,39 +218,41 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
 
     private val readyCallback: OnMapReadyCallback by lazy {
         object : OnMapReadyCallback {
-            override fun onMapReady(p0: GoogleMap) {
-                mMap = p0
-                setDefaultLocation()
+            override fun onMapReady(googleMap: GoogleMap) {
+                mMap = googleMap
+                setDefaultLocation() // 초기 위치 설정
             }
         }
     }
 
     private fun setDefaultLocation() {
-        val location = Location("")
-        location.latitude = 37.56  // 서울 중심의 위도
-        location.longitude = 126.97 // 서울 중심의 경도
+        val defaultLat = 37.56  // 서울 중심 위도
+        val defaultLon = 126.97 // 서울 중심 경도
+        val defaultLocation = LatLng(defaultLat, defaultLon)
 
-        val markerTitle = "위치 정보 가져올 수 없음"
-        val markerSnippet = "위치 퍼미션과 GPS 활성 여부 확인 필요"
+        val markerTitle = "기본 위치"
+        val markerSnippet = "서울 중심"
 
-        setCurrentLocation(location, markerTitle, markerSnippet)
+        setCurrentLocation(defaultLocation, markerTitle, markerSnippet)
+
+        // **초기 카메라 위치 설정**
+        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(defaultLocation, 15f)
+        mMap?.moveCamera(cameraUpdate)  // 즉시 이동
     }
 
     private fun setCurrentLocation(
-        location: Location,
+        latLng: LatLng,
         markerTitle: String?,
         markerSnippet: String?
     ) {
         currentMarker?.remove()
-
-        val currentLatLng = LatLng(lat, lon)
 
         val marker =
             ResourcesCompat.getDrawable(resources, R.drawable.location_icon, requireActivity().theme)
                 ?.toBitmap(150, 150)
 
         val markerOptions = MarkerOptions().apply {
-            position(currentLatLng)
+            position(latLng)
             title(markerTitle)
             snippet(markerSnippet)
             draggable(true)
@@ -260,32 +260,8 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
         }
 
         currentMarker = mMap?.addMarker(markerOptions)
-
-        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f)
-        mMap?.animateCamera(cameraUpdate)
-    }
-
-
-    private fun getCurrentAddress(location: Location): String {
-        val geocoder = Geocoder(requireActivity(), Locale.getDefault())
-        val addresses: List<Address>?
-
-        try {
-            addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
-        } catch (e: IOException) {
-            Toast.makeText(requireActivity(), "지오코더 서비스 사용불가", Toast.LENGTH_LONG).show()
-            return "지오코더 사용불가"
-        } catch (e: IllegalArgumentException) {
-            Toast.makeText(requireActivity(), "잘못된 GPS 좌표", Toast.LENGTH_LONG).show()
-            return "잘못된 GPS 좌표"
-        }
-
-        return if (addresses.isNullOrEmpty()) {
-            Toast.makeText(requireActivity(), "주소 발견 불가", Toast.LENGTH_LONG).show()
-            "주소 발견 불가"
-        } else {
-            addresses[0].getAddressLine(0).toString()
-        }
+        val cameraUpdate = CameraUpdateFactory.newLatLng(latLng)
+        mMap?.moveCamera(cameraUpdate)
     }
 
     // 숫자 증가 애니메이션
