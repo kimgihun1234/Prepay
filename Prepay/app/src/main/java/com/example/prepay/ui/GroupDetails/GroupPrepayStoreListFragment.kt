@@ -1,5 +1,6 @@
 package com.example.prepay.ui.GroupDetails
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -17,16 +19,25 @@ import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.SharedPreferencesUtil
+import com.example.prepay.data.model.dto.Restaurant
 import com.example.prepay.data.model.dto.RestaurantData
+import com.example.prepay.data.response.BootPayChargeReq
 import com.example.prepay.data.response.TeamIdStoreRes
+import com.example.prepay.data.response.TeamStoreReq
+import com.example.prepay.databinding.DialogBootpaySearchRequestBinding
 import com.example.prepay.databinding.FragmentGroupPaymentHistoryBinding
 import com.example.prepay.databinding.FragmentGroupPrepayStoreListBinding
+import com.example.prepay.ui.CreateGroup.CreateGroupViewModel
 import com.example.prepay.ui.MainActivity
 import com.example.prepay.ui.MainActivityViewModel
 import com.example.prepay.ui.RestaurantDetails.RestaurantDetailsViewModel
+import com.example.prepay.util.BootPayManager
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Timer
 import java.util.TimerTask
 
@@ -43,6 +54,11 @@ class GroupPrepayStoreListFragment: BaseFragment<FragmentGroupPrepayStoreListBin
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val restaurantDetailsViewModel : RestaurantDetailsViewModel by viewModels()
     private val viewModel: GroupDetailsFragmentViewModel by viewModels()
+
+    private lateinit var searchAdapter: RestaurantSearchAdapter
+    private lateinit var bootPayDialog : DialogBootpaySearchRequestBinding
+    private var selectedRestaurantName: String = ""
+    private val createGroupViewModel: CreateGroupViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,11 +131,63 @@ class GroupPrepayStoreListFragment: BaseFragment<FragmentGroupPrepayStoreListBin
     }
 
     private fun addRestaurantClick() {
-        bringStoreId()
-    }
+        bootPayDialog = DialogBootpaySearchRequestBinding.inflate(LayoutInflater.from(requireContext()))
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(bootPayDialog.root)
+            .create()
 
-    private fun bringStoreId() {
-        mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.ADD_RESTAURANT_FRAGMENT)
+        dialog.show()
+        viewModel.getStoreId(SharedPreferencesUtil.getAccessToken()!!, activityViewModel.teamId.value!!.toString().toLong())
+        initRecyclerView()
+        setOnQueryTextListener()
+        observeStoresListInfo()
+
+        bootPayDialog.cancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        bootPayDialog.confirm.setOnClickListener {
+            val storeId = createGroupViewModel.storeId.value
+            val totalPrice = bootPayDialog.totalPrice.text.toString()
+            val teamId : Long? = activityViewModel.teamId.value
+            Log.d(TAG, "selectedRestaurantName: $selectedRestaurantName")
+            Log.d(TAG, "totalPrice: $totalPrice")
+            if (selectedRestaurantName.isNotEmpty() && totalPrice.isNotEmpty()) {
+                BootPayManager.startPayment(requireActivity(), selectedRestaurantName, totalPrice) { receiptId, price ->
+
+                    Log.d(TAG, "storeId: $storeId")
+                    Log.d(TAG, "teamId: $teamId, price: ${price}")
+                    Log.d(TAG, "receiptId: $receiptId")
+
+                    registerStore(storeId,teamId)
+                    lifecycleScope.launch {
+                        try {
+                            val chargeReceipt = teamId?.let { teamId -> storeId?.let { storeId ->
+                                BootPayChargeReq(
+                                    teamId.toInt(),storeId, totalPrice.toInt(), receiptId)
+                            } }
+                            val response = withContext(Dispatchers.IO) {
+                                delay(1000)
+                                chargeReceipt?.let { it ->
+                                    RetrofitUtil.bootPayService.getBootPay(SharedPreferencesUtil.getAccessToken()!!,
+                                        it
+                                    )
+                                }
+                            }
+
+                            if (response?.isSuccessful == true) {
+                                mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
+                            } else {
+                                Log.e(TAG, "영수증 올리기 실패: ${response}")
+                            }
+                        } catch (e: Exception) {
+                            Log.e(TAG, "네트워크 요청 실패: ${e.localizedMessage}", e)
+                        }
+                    }
+                }
+            } else {
+                showError("식당 이름과 결제금액을 모두 입력해주세요.")
+            }
+        }
     }
 
     private fun ComputePrice(){
@@ -203,5 +271,109 @@ class GroupPrepayStoreListFragment: BaseFragment<FragmentGroupPrepayStoreListBin
         val restaurantData = RestaurantData(storeName, teamIdStoreResId)
         restaurantDetailsViewModel.setRestaurantData(restaurantData)
         mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.RESTAURANT_DETAILS_FRAGMENT)
+    }
+
+    private fun registerStore(storeId: Int?, teamId: Long?) {
+        lifecycleScope.launch {
+            try {
+                Log.d("registerStore", "storeId: $storeId")
+                Log.d("registerStore", "teamId: $teamId")
+
+                if (teamId == null || storeId == null) {
+                    return@launch
+                }
+                val request = TeamStoreReq(storeId, teamId.toInt())
+                val response = withContext(Dispatchers.IO) {
+                    RetrofitUtil.teamService.createStore(SharedPreferencesUtil.getAccessToken()!!, request)
+                }
+
+                Log.d(TAG, "response: $response")
+
+                if (response.isSuccessful) {
+                } else {
+                    Log.e(TAG, "스토어 연결 실패: ${response?.errorBody()?.string()}")
+                }
+
+            } catch (e: Exception) {
+                Log.e(TAG, "네트워크 요청 실패: ${e.localizedMessage}", e)
+            } finally {
+
+            }
+        }
+    }
+
+
+    private fun setOnQueryTextListener() {
+        bootPayDialog.addRestaurantName.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrEmpty()) {
+                    bootPayDialog.searchResults.visibility = View.GONE
+                } else {
+                    filterSearchResults(newText)
+                    bootPayDialog.searchResults.visibility = View.VISIBLE
+                }
+                return true
+            }
+        })
+    }
+
+    private fun showError(message: String) {
+        androidx.appcompat.app.AlertDialog.Builder(requireContext())
+            .setMessage(message)
+            .setPositiveButton("확인", null)
+            .show()
+    }
+
+    private fun initRecyclerView() {
+        searchAdapter = RestaurantSearchAdapter ({ selectedRestaurant ->
+            bootPayDialog.addRestaurantName.setQuery(selectedRestaurant.name, false)
+            selectedRestaurantName = selectedRestaurant.name
+            bootPayDialog.searchResults.visibility = View.GONE
+        }, createGroupViewModel)
+
+        bootPayDialog.searchResults.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = searchAdapter
+        }
+    }
+
+    private fun filterSearchResults(query: String) {
+        val storeList = viewModel.storesListInfo.value
+        if (storeList == null) {
+            Log.e(TAG, "storesListInfo is null, cannot filter results.")
+            return
+        }
+
+        val filteredList = getSearchResults(query)
+        Log.d(TAG, "filterSearchResults: $filteredList")
+        searchAdapter.submitList(filteredList)
+    }
+
+    private fun getSearchResults(query: String): List<Restaurant> {
+        // 여기에 식당 검색 로직 추가
+        val storeList = viewModel.storesListInfo.value
+        Log.d(TAG, "getSearchResults: ${viewModel.storesListInfo.value}")
+        return storeList?.map { store ->
+            Restaurant(store.storeId, store.storeName)
+        }?.filter { it.name.contains(query, ignoreCase = true) } ?: emptyList()
+
+    }
+    private fun observeStoresListInfo() {
+        viewModel.storesListInfo.observe(viewLifecycleOwner) { stores ->
+            val queryText = bootPayDialog.addRestaurantName.query.toString()
+
+            if (stores.isNotEmpty() && queryText.isNotEmpty()) {
+                val restaurantList = stores.map { Restaurant(it.storeId, it.storeName) }
+                searchAdapter.submitList(restaurantList)
+                bootPayDialog.searchResults.visibility = View.VISIBLE
+            } else {
+                searchAdapter.submitList(emptyList())
+                bootPayDialog.searchResults.visibility = View.GONE
+            }
+        }
     }
 }
