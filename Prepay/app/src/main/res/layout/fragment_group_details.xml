@@ -8,8 +8,6 @@
     android:background="@color/white"
     tools:context=".ui.GroupDetails.GroupDetailsFragment">
 
-    <!-- 메인 콘텐츠 영역 -->
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -98,45 +96,56 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/group_title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginTop="64dp"
-                android:background="@drawable/round_invite_txt_backgound"
-                android:padding="4dp"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_marginRight="4dp"
-                    android:src="@drawable/dog_logo" />
-
-                <TextView
-                    android:layout_width="180dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
-                    android:textSize="13dp"
-                    android:text="초대 코드는 생성시마다 초기화 되며 보안을 위해 3 시간후 자동 폐기됩니다."
-                    />
-            </LinearLayout>
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="0dp"
+                android:text="group_title"
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/group_invite_btn"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/round_invite_background"
-                app:backgroundTint="@null"
                 android:text="초대 코드"
+                android:textColor="#394759"
+                android:textSize="18sp"
                 android:layout_marginTop="32dp"
-                android:textColor="#0066CC"
-                android:textSize="16sp"
                 android:layout_gravity="center_horizontal"
+                android:elevation="6dp"
+                app:cornerRadius="16dp"
+                app:backgroundTint="@color/white"
+                app:strokeWidth="2dp"
+                app:strokeColor="#CCCCCC"
                 app:icon="?attr/actionModeShareDrawable"
-                app:iconTint="@color/black"
+                app:iconTint="#394759"
                 app:iconGravity="start"
-                app:iconPadding="4dp"/>
+                app:iconPadding="2dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/money_change_btn"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                android:text="한도 변경"
+                android:textColor="#394759"
+                android:textSize="18sp"
+                android:elevation="6dp"
+                app:backgroundTint="@color/white"
+                app:strokeWidth="2dp"
+                app:strokeColor="#CCCCCC"
+                app:icon="@drawable/money_change_btn"
+                app:iconTint="#394759"
+                app:iconGravity="start"
+                app:iconPadding="2dp"
+                app:cornerRadius="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/group_invite_btn"
+                app:layout_constraintStart_toStartOf="@+id/group_invite_btn" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -151,21 +160,11 @@
                     android:layout_marginTop="8dp"
                     android:text="그룹 멤버"
                     android:textColor="@android:color/black"
-                    android:textSize="18sp" />
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/money_change_btn"
-                    android:layout_width="100dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/round_invite_background"
-                    app:backgroundTint="@null"
-                    android:text="한도 변경"
-                    android:layout_marginLeft="80sp"
-                    android:layout_marginTop="8dp"
-                    android:textColor="#0066CC"
-                    android:textSize="12sp"
-                    android:layout_gravity="center_horizontal"
-                    app:iconPadding="2dp"/>
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
             </LinearLayout>
+
 
             <TextView
                 android:layout_width="match_parent"
@@ -194,10 +193,10 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
-                app:icon="?attr/homeAsUpIndicator"
+                app:icon="@drawable/door_open_btn"
                 app:iconTint="@color/black"
                 app:iconGravity="start"
-                app:iconPadding="8dp"/>
+                app:iconPadding="2dp"/>
         </LinearLayout>
     </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

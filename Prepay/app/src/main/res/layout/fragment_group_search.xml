@@ -22,9 +22,8 @@
             android:layout_width="wrap_content"
             android:layout_height="38dp"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
             android:background="@drawable/filter_btn"
-            android:backgroundTint="#F4F4F8"
             android:elevation="4dp"
             android:fontFamily="@font/samsung_font_2"
             android:text="관심 그룹"
@@ -32,8 +31,8 @@
             android:textSize="12sp"
             android:textStyle="bold"
             app:backgroundTint="@null"
-            app:layout_constraintStart_toEndOf="@+id/distance_sort"
-            app:layout_constraintTop_toBottomOf="@+id/search_restaurant" />
+            app:layout_constraintBottom_toBottomOf="@+id/distance_sort"
+            app:layout_constraintStart_toEndOf="@+id/distance_sort" />
 
         <Button
             android:id="@+id/distance_sort"
@@ -41,7 +40,6 @@
             android:layout_height="38dp"
             android:layout_marginStart="4dp"
             android:background="@drawable/filter_btn"
-            android:backgroundTint="#F4F4F8"
             android:elevation="4dp"
             android:text="내 주변"
             android:textColor="@color/black"
@@ -53,14 +51,14 @@
 
         <Button
             android:id="@+id/all"
-            android:layout_width="wrap_content"
+            android:layout_width="75dp"
             android:layout_height="38dp"
             android:layout_marginStart="20dp"
-            android:background="@drawable/filter_btn"
-            android:backgroundTint="#F4F4F8"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/clicked_filter_btn"
             android:elevation="4dp"
             android:text="전체"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="12sp"
             android:textStyle="bold"
             app:backgroundTint="@null"
@@ -71,10 +69,11 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="10dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/all" />
 
@@ -98,10 +97,11 @@
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_restaurant"
-        android:layout_width="350dp"
-        android:layout_height="52dp"
+        android:layout_width="360dp"
+        android:layout_height="54dp"
         android:layout_marginTop="92dp"
-        android:background="@drawable/shape_all_round"
+        android:maxHeight="10sp"
+        android:background="@drawable/search_bar_shape"
         android:focusable="true"
         android:gravity="center"
         app:iconifiedByDefault="false"

@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.data.response.OrderHistoryRes
 import com.example.prepay.databinding.ItemMyhistoryBinding
@@ -11,8 +12,8 @@ import com.example.prepay.databinding.ItemMyhistoryBinding
 class NotificationAdapter(var orderHistoryList : List<OrderHistoryRes>) : RecyclerView.Adapter<NotificationAdapter.NotiViewHolder>() {
     inner class NotiViewHolder (private val binding: ItemMyhistoryBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(orderHistoryRes: OrderHistoryRes) {
-            binding.orderDate.text = orderHistoryRes.orderDate.toString()
-            binding.orderAmount.text = orderHistoryRes.totalPrice.toString()
+            binding.orderDate.text = CommonUtils.formatLongToDate(orderHistoryRes.orderDate)
+            binding.orderAmount.text = CommonUtils.makeComma(orderHistoryRes.totalPrice)
             binding.orderStoreName.text = orderHistoryRes.storeName
             Glide.with(binding.root.context)
                 .load(orderHistoryRes.storeImgUrl)

@@ -58,6 +58,7 @@ class GroupSearchFragmentViewModel : ViewModel(){
     }
 
 
+
     fun getSortDistancePublicTeamList(latitude : Double, longitude : Double) {
         viewModelScope.launch {
             runCatching {

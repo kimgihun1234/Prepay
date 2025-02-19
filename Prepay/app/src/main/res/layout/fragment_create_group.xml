@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".ui.CreateGroup.CreateGroupFragment">
 
 
@@ -11,11 +12,13 @@
         android:id="@+id/private_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="58dp"
+        android:button="@null"
         android:checked="true"
+        android:fontFamily="@font/samsung_font_2"
         android:text="비공개 그룹"
-        android:textColor="#0066CC"
+        android:textColor="#D9D9D9"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,11 +28,12 @@
         android:id="@+id/public_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="74dp"
+        android:layout_marginTop="28dp"
+        android:button="@null"
         android:fontFamily="sans-serif-medium"
         android:text="공개 그룹"
-        android:textColor="#0066CC"
+        android:textColor="#D9D9D9"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,17 +48,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/private_checkbox"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.384" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="32dp"
         android:text="그룹 생성"
+        android:textColor="#394750"
         android:textStyle="bold"
-        android:fontFamily="@font/samsung_font_1"
-        android:textSize="20dp"
+        android:fontFamily="@font/samsung_font_2"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

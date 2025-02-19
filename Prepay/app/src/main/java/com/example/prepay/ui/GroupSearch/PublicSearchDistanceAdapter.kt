@@ -30,6 +30,9 @@ class PublicSearchDistanceAdapter(var publicGroupList: List<PublicTeamsDisRes>, 
                 .error(R.drawable.logo)
                 .into(binding.groupImage)
 
+            val groupImage = binding.groupImage
+            groupImage.clipToOutline = true
+
             // ❤️ 초기 하트 상태 설정 (서버 값 반영)
             isLiked = publicgroup.like
             updateHeartIcon()

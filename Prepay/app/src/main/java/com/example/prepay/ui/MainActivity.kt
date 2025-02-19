@@ -1,5 +1,7 @@
 package com.example.prepay.ui
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -15,6 +17,7 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
@@ -95,6 +98,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
         )
     }
+
 
     fun changeFragmentMain(name: CommonUtils.MainFragmentName, num: Int = -1) {
         val transaction = supportFragmentManager.beginTransaction()

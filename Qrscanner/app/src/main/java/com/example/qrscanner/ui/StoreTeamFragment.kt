@@ -111,6 +111,7 @@ class StoreTeamFragment : BaseFragment<FragmentStoreTeamBinding>(
                 posReq?.let { RetrofitUtil.posService.posTransfer(parts[1], it) }
             }.onSuccess {
                 Log.d("QR_SCAN","아이디어가 작동하였습니다")
+                teamViewModel.getTeamList(activityViewModel.storeId.value!!)
             }.onFailure {error ->
                 Log.e("QR_SCAN","아이디어가 실패하였습니다: ${error.localizedMessage}", error)
             }
