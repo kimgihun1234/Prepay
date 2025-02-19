@@ -50,6 +50,7 @@ import com.example.prepay.ui.GroupSearch.GroupSearchFragmentViewModel
 import com.example.prepay.ui.GroupSearch.PublicSearchAdapter
 import com.example.prepay.ui.MainActivityViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
 //import com.google.zxing.BarcodeFormat
@@ -84,6 +85,8 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
     private var heartCheck =false
     var lat = 36.5
     var lon = 128.0
+
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -130,7 +133,7 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
             val checkLike = LikeTeamsReq(activityViewModel.storeId.value!!.toLong(), heartCheck)
             sendlike(checkLike)
         }
-        binding.publicDetailQrBtn.setOnClickListener{
+        /*binding.publicDetailQrBtn.setOnClickListener{
             lifecycleScope.launch {
                 runCatching {
                     RetrofitUtil.qrService.qrPrivateCreate(SharedPreferencesUtil.getAccessToken()!!, activityViewModel.storeId.value!!.toInt())
@@ -142,7 +145,18 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
                     mainActivity.showToast("qr불러오기가 실패했습니다")
                 }
             }
+        }*/
+        val bottomSheet: View = requireView().findViewById(R.id.bottomSheet) // ✅ onViewCreated()에서 초기화
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+        bottomSheet.setOnClickListener {
+            if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            } else {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            }
         }
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+        bottomSheetBehavior.setPeekHeight(900);
     }
 
 

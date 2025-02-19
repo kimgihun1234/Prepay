@@ -6,210 +6,221 @@
     android:layout_height="match_parent"
     tools:context=".ui.GroupSearch.GroupSearchFragment">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/public_detail_qr_btn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/grouptext_round_backgound"
-        android:fontFamily="@font/samsung_font_1"
-        android:text="결제 요청"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/daily_dummy" />
-
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/public_detail_map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="0dp"
-        android:layout_height="480dp"
+        android:layout_height="600dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/public_detail_team_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:fontFamily="@font/samsung_font_1"
-        android:text="Public_group_name"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/public_detail_image"
-        app:layout_constraintTop_toTopOf="@+id/public_detail_image" />
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/public_detail_map"
+        tools:layout_editor_absoluteX="0dp">
 
-    <TextView
-        android:id="@+id/left_money_tag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:fontFamily="@font/samsung_font_1"
-        android:text="현재 잔액 :"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/public_detail_team_name"
-        app:layout_constraintTop_toBottomOf="@+id/public_detail_team_name" />
-
-    <TextView
-        android:id="@+id/left_money_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:fontFamily="@font/samsung_font_1"
-        android:text="0"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/left_money_tag"
-        app:layout_constraintStart_toEndOf="@+id/left_money_tag" />
-
-    <TextView
-        android:id="@+id/public_detail_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:background="#1A000000"
-        android:fontFamily="@font/samsung_font_1"
-        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/cardView2"
-        app:layout_constraintTop_toBottomOf="@+id/storeDescription" />
-
-    <TextView
-        android:id="@+id/public_detail_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:text="group_address"
-        android:textSize="12sp"
-        android:fontFamily="@font/samsung_font_1"
-        app:layout_constraintStart_toStartOf="@+id/storeTitle"
-        app:layout_constraintTop_toBottomOf="@+id/storeTitle" />
-
-    <ImageView
-        android:id="@+id/public_detail_image"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="@+id/cardView2"
-        app:layout_constraintTop_toBottomOf="@+id/public_detail_map"
-        tools:src="@tools:sample/avatars" />
-
-    <ImageButton
-        android:id="@+id/like_btn"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="16dp"
-        android:background="#00FFFFFF"
-        android:scaleType="fitCenter"
-        android:src="@drawable/like_heart_empty"
-        app:layout_constraintBottom_toBottomOf="@+id/public_detail_team_name"
-        app:layout_constraintStart_toEndOf="@+id/public_detail_team_name" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView2"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:clipChildren="true"
-        android:clipToPadding="true"
-        app:cardCornerRadius="25dp"
-        app:cardElevation="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detail_dummy">
-
-        <ImageView
-            android:id="@+id/storeView"
+        <LinearLayout
+            android:id="@+id/bottomSheet"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            tools:src="@tools:sample/avatars" />
-    </androidx.cardview.widget.CardView>
+            android:layout_height="700dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/white_round_top_border"
+            android:orientation="vertical"
+            android:padding="16dp"
+            app:behavior_hideable="false"
+            app:behavior_peekHeight="200dp"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-    <TextView
-        android:id="@+id/storeTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:fontFamily="@font/samsung_font_1"
-        android:text="TextView"
-        android:textSize="14dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/cardView2"
-        app:layout_constraintTop_toTopOf="@+id/cardView2" />
+            <!-- 드래그 핸들 -->
+            <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+                android:id="@+id/drag_handle_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/storeDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:text="TextView"
-        android:fontFamily="@font/samsung_font_1"
-        app:layout_constraintStart_toStartOf="@+id/public_detail_location"
-        app:layout_constraintTop_toBottomOf="@+id/public_detail_location" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/daily_money_tag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:fontFamily="@font/samsung_font_1"
-        android:text="개인 한도 :"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/left_money_tag"
-        app:layout_constraintTop_toBottomOf="@+id/left_money_tag" />
+                <ImageView
+                    android:id="@+id/public_detail_image"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginEnd="8dp"
+                    tools:src="@tools:sample/avatars" />
 
-    <TextView
-        android:id="@+id/daily_dummy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:fontFamily="@font/samsung_font_1"
-        android:text="※ 개인 한도는 새벽 2시에 갱신됩니다"
-        android:textColor="#939191"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="@+id/daily_money_tag"
-        app:layout_constraintTop_toBottomOf="@+id/daily_money_tag" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/daily_money_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:fontFamily="@font/samsung_font_1"
-        android:text="0"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/daily_money_tag"
-        app:layout_constraintStart_toEndOf="@+id/daily_money_tag" />
+                    <TextView
+                        android:id="@+id/public_detail_team_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/samsung_font_1"
+                        android:text="Public_group_name"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/detail_dummy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="선결제 매장 정보"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+                    <TextView
+                        android:id="@+id/left_money_tag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/samsung_font_1"
+                        android:text="현재 잔액 :"
+                        android:textSize="16sp" />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:src="@drawable/line_img"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/public_detail_qr_btn" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
+                        <TextView
+                            android:id="@+id/left_money_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:fontFamily="@font/samsung_font_1"
+                            android:text="0"
+                            android:textSize="16sp" />
+
+                        <ImageButton
+                            android:id="@+id/like_btn"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_marginStart="16dp"
+                            android:background="#00FFFFFF"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/like_heart_empty" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/public_detail_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="#1A000000"
+                android:fontFamily="@font/samsung_font_1"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/public_detail_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/samsung_font_1"
+                android:text="group_address"
+                android:textSize="12sp" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView2"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:id="@+id/storeView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    tools:src="@tools:sample/avatars" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/storeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/samsung_font_1"
+                android:text="TextView"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/storeDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/samsung_font_1"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/daily_money_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/samsung_font_1"
+                android:text="개인 한도 :"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/daily_money_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/samsung_font_1"
+                android:text="0"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/daily_dummy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/samsung_font_1"
+                android:text="※ 개인 한도는 새벽 2시에 갱신됩니다"
+                android:textColor="#939191"
+                android:textSize="12sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/public_detail_qr_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/grouptext_round_backgound"
+                android:fontFamily="@font/samsung_font_1"
+                android:text="결제 요청"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/detail_dummy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/samsung_font_1"
+                android:text="선결제 매장 정보"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/line_img" />
+
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
