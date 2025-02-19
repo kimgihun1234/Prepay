@@ -349,6 +349,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         val dialog = AlertDialog.Builder(requireContext())
             .setView(binding.root)
             .create()
+        binding.resignName.text = ban.nickname+"님을"
         binding.groupResignConfirmBtn.setOnClickListener {
             val banUser = BanUserReq(ban.email,ban.teamId)
             viewModel.TeamResign(SharedPreferencesUtil.getAccessToken()!!,banUser)
@@ -367,6 +368,7 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         val dialog = AlertDialog.Builder(requireContext())
             .setView(binding.root)
             .create()
+        binding.authoritySettingName.text = privilege.nickname+"님에게"
         binding.autoritySettingConfirmBtn.setOnClickListener {
             val pr = PrivilegeUserReq(privilege.email,true,privilege.teamId)
             privilegeUser(pr)
