@@ -99,7 +99,9 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
         binding.enterGroupBtn.setOnClickListener {
             mainActivity.enterDialog()
         }
-
+        binding.logoutBtn.setOnClickListener {
+            mainActivity.logout(requireContext())
+        }
 
         binding.payBtn.setOnClickListener {
             val currentPosition = binding.viewPager.currentItem
