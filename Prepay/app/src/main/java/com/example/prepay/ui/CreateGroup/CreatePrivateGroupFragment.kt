@@ -105,7 +105,8 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
 
                 val colorInt = Color.parseColor(selectedColor)
                 colorCard = selectedColor
-                binding.card.setBackgroundColor(colorInt)
+                binding.card.setCardBackgroundColor(colorInt)
+
             }
         }
 
