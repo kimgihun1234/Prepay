@@ -13,8 +13,9 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/samsung_font_1"
         android:text="Public_group_name"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textStyle="bold"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

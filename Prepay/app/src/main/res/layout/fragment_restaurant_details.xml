@@ -104,7 +104,7 @@
         android:layout_marginEnd="16dp"
         android:background="@drawable/grouptext_round_backgound"
         android:fontFamily="@font/samsung_font_1"
-        android:text="선결제 충천"
+        android:text="선결제 충전"
         android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"

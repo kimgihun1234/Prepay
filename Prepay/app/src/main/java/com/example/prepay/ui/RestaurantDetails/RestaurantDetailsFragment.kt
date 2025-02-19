@@ -129,9 +129,7 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
                 .placeholder(R.drawable.logo)
                 .error(R.drawable.logo)
                 .into(binding.restaurantImage)
-            val location = Location("")
-            location.latitude = it.latitude
-            location.longitude = it.longitude
+            val location = LatLng(it.latitude, it.longitude)
             setCurrentLocation(location,it.storeName,it.storeDescription)
         }
     }
@@ -222,24 +220,28 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
     }
 
     private fun setDefaultLocation() {
-        val location = Location("")
-        location.latitude = 37.56  // 서울 중심의 위도
-        location.longitude = 126.97 // 서울 중심의 경도
+        val defaultLat = 36.1026  // 서울 중심 위도
+        val defaultLon = 128.424  // 서울 중심 경도
+        val defaultLocation = LatLng(defaultLat, defaultLon)
 
-        val markerTitle = "위치 정보 가져올 수 없음"
-        val markerSnippet = "위치 퍼미션과 GPS 활성 여부 확인 필요"
+        val markerTitle = "기본 위치"
+        val markerSnippet = "서울 중심"
 
-        setCurrentLocation(location, markerTitle, markerSnippet)
+        setCurrentLocation(defaultLocation, markerTitle, markerSnippet)
+
+        // **초기 카메라 위치 설정**
+        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(defaultLocation, 15f)
+        mMap?.moveCamera(cameraUpdate)  // 즉시 이동
     }
 
     private fun setCurrentLocation(
-        location: Location,
+        latLng: LatLng,
         markerTitle: String?,
         markerSnippet: String?
     ) {
         currentMarker?.remove()
 
-        val currentLatLng = LatLng(location.latitude, location.longitude)
+        val currentLatLng = LatLng( latLng.latitude,  latLng.longitude)
 
         val marker =
             ResourcesCompat.getDrawable(resources, R.drawable.location_icon, requireActivity().theme)
@@ -254,9 +256,8 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
         }
 
         currentMarker = mMap?.addMarker(markerOptions)
-
-        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f)
-        mMap?.animateCamera(cameraUpdate)
+        val cameraUpdate = CameraUpdateFactory.newLatLng(latLng)
+        mMap?.moveCamera(cameraUpdate)
     }
 
 

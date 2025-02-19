@@ -28,7 +28,7 @@ object CommonUtils {
     }
 
     fun formatLongToDate(longDate: Long): String {
-        val format = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault())  // 원하는 날짜 형식 지정
+        val format = SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.getDefault())  // 원하는 날짜 형식 지정
         return format.format(Date(longDate))  // Long 값을 Date 객체로 변환 후 포맷 적용
     }
 
