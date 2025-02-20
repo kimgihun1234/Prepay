@@ -150,6 +150,9 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
             }
         }
 
+        binding.paymentHistoryBtn.setOnClickListener {
+            mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.PUBLIC_RECEIPT_LIST_FRAGMENT)
+        }
         // 바텀 시트 View 가져오기
         val bottomSheet: View = requireView().findViewById(R.id.bottomSheet)
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
