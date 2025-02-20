@@ -36,8 +36,6 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="224dp"
-                android:background="@drawable/card_page_box"
-
                 android:backgroundTint="@color/black"
                 android:padding="16dp">
 
@@ -339,7 +337,7 @@
                         android:layout_row="1"
                         android:layout_column="3"
                         android:layout_marginTop="10dp"
-                        android:background="@drawable/radio_selector10"
+                        android:background="@drawable/radio_unchecked11"
                         android:button="@null" />
 
                     <RadioButton
@@ -349,7 +347,7 @@
                         android:layout_row="1"
                         android:layout_column="4"
                         android:layout_marginTop="10dp"
-                        android:background="@drawable/radio_selector10"
+                        android:background="@drawable/radio_unchecked11"
                         android:button="@null" />
 
                 </GridLayout>

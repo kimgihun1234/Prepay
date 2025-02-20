@@ -150,17 +150,25 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
             }
         }
 
-
-        // 바텀시트 초기화 및 드래그만 허용하도록 설정
+        // 바텀 시트 View 가져오기
         val bottomSheet: View = requireView().findViewById(R.id.bottomSheet)
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+        val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
 
+// 기기 높이를 가져와서 화면 높이의 50%를 peekHeight로 설정
+        val displayMetrics = resources.displayMetrics
+        val deviceHeight = displayMetrics.heightPixels
+        val calculatedPeekHeight = (deviceHeight * 0.05).toInt()  // 필요에 따라 비율 조절 가능
 
-        // 바텀 시트가 드래그 또는 클릭으로 상태가 변경되지 않도록 초기화
+// 바텀시트 상태 및 peekHeight 설정
+        bottomSheetBehavior.peekHeight = calculatedPeekHeight
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        bottomSheetBehavior.setPeekHeight(
-            150)
 
+        /*val maxHeight = (deviceHeight * 0.4).toInt()
+        bottomSheet.post {
+            // 레이아웃 파라미터를 통해 최대 높이 지정
+            bottomSheet.layoutParams.height = maxHeight
+            bottomSheet.requestLayout()
+        }*/
         // 바텀 시트를 클릭했을 때 상태를 변경하도록 설정
         bottomSheet.setOnClickListener {
             if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {

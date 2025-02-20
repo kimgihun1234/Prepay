@@ -53,7 +53,8 @@ object CommonUtils {
         LOOK_GROUP_FRAGMENT("LookGroupFragment"),
         RESTAURANT_DETAILS_FRAGMENT("RestaurantDetailsFragment"),
         PUBLIC_GROUP_DETAILS_FRAGMENT("PublicGroupDetailsFragment"),
-        NOTIFICATION_FRAGMENT("NotificationFragment")
+        NOTIFICATION_FRAGMENT("NotificationFragment"),
+        PUBLIC_RECEIPT_LIST_FRAGMENT("PublicReceiptListFragment")
     }
 
     enum class GroupFragmentName(var str: String) {

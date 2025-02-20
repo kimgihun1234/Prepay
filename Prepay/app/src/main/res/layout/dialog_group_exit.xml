@@ -46,7 +46,8 @@
         android:fontFamily="@font/samsung_font_2"
         android:layout_gravity="center"
         android:textStyle="bold"
-        android:textSize="16dp"
+        android:textSize="18dp"
+        android:layout_marginBottom="6dp"
         android:text="그룹에서 나가시겠습니까?" />
 
     <TextView
@@ -69,18 +70,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="end"
+        android:gravity="center"
         android:layout_marginTop="16dp">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/group_exit_confirm_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/samsung_font_2"
+            android:layout_marginEnd="4dp"
             android:text="나가기"
             android:textColor="@color/text_main_color"
-            android:fontFamily="@font/samsung_font_2"
             app:backgroundTint="@color/checked_color"
-            app:cornerRadius="16dp"/>
+            app:cornerRadius="12dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/group_exit_cancel_btn"
@@ -92,7 +94,7 @@
             android:textColor="@color/text_main_color"
             android:fontFamily="@font/samsung_font_2"
             app:backgroundTint="@color/nav_unselected_color"
-            app:cornerRadius="16dp"/>
+            app:cornerRadius="12dp"/>
 
     </LinearLayout>
 </LinearLayout>

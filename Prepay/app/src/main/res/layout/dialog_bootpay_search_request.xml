@@ -19,20 +19,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
 
-    <TextView
-        android:id="@+id/search_result_text"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="50dp"
-        android:background="?attr/selectableItemBackground"
-        android:padding="10dp"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/searchResults"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/search_result_text"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="50dp"
+            android:background="?attr/selectableItemBackground"
+            android:padding="10dp"
+            android:textSize="16sp" />
+    </androidx.appcompat.widget.SearchView>
+
     <!-- 검색 결과 리스트 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchResults"
@@ -70,16 +68,20 @@
         android:id="@+id/confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
+        android:layout_marginStart="64dp"
         android:layout_marginTop="20dp"
-        android:fontFamily="@font/samsung_font_2"
         android:layout_marginBottom="8dp"
+        android:fontFamily="@font/samsung_font_2"
         android:text="결제하러 가기"
         android:textColor="@color/text_main_color"
+        android:textSize="16dp"
+        android:textStyle="bold"
         app:backgroundTint="@color/checked_color"
+        app:cornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/total_price" />
+        app:layout_constraintTop_toBottomOf="@id/total_price"
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/cancel"
@@ -92,7 +94,7 @@
         android:layout_marginBottom="8dp"
         android:textColor="@color/text_main_color"
         app:backgroundTint="@color/nav_unselected_color"
-        app:cornerRadius="16dp"
+        app:cornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/confirm"
         app:layout_constraintTop_toBottomOf="@+id/total_price" />

@@ -44,9 +44,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/samsung_font_2"
-        android:textStyle="bold"
-        android:textSize="16dp"
-        android:text="사용자 이름" />
+        android:text="사용자 이름"
+        android:textSize="18dp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/authority_dummy1"
@@ -54,7 +54,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/samsung_font_2"
         android:textStyle="bold"
-        android:textSize="16dp"
+        android:textSize="18dp"
+        android:layout_marginBottom="4dp"
         android:text="회식 결제 권한을 부여하시겠습니까?" />
 
     <TextView
@@ -62,20 +63,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/samsung_font_2"
-        android:text="권한은 그룹 관리 기능을 통해서" />
+        android:textColor="@color/black"
+        android:text="권한은 그룹 관리 기능을 통해서 다시 수정할 수 있습니다." />
 
-    <TextView
-        android:id="@+id/authority_dummy3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/samsung_font_2"
-        android:text="다시 수정할 수 있습니다." />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="end"
+        android:gravity="center"
         android:layout_marginTop="16dp">
 
         <com.google.android.material.button.MaterialButton
@@ -86,7 +82,8 @@
             android:textColor="@color/text_main_color"
             android:fontFamily="@font/samsung_font_2"
             app:backgroundTint="@color/checked_color"
-            app:cornerRadius="16dp"/>
+            android:layout_marginEnd="4dp"
+            app:cornerRadius="12dp"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/autority_setting_cancel_btn"
@@ -98,7 +95,7 @@
             android:textColor="@color/text_main_color"
             android:fontFamily="@font/samsung_font_2"
             app:backgroundTint="@color/nav_unselected_color"
-            app:cornerRadius="16dp"/>
+            app:cornerRadius="12dp"/>
 
     </LinearLayout>
 </LinearLayout>
