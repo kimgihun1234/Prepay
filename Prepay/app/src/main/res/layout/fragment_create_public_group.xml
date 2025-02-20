@@ -194,6 +194,7 @@
         </androidx.appcompat.widget.SearchView>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:background="@color/white"
             android:id="@+id/searchResults"
             android:layout_width="0dp"
             android:layout_height="50dp"
@@ -209,7 +210,6 @@
             android:layout_width="340dp"
             android:layout_height="58dp"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="40dp"
             android:layout_marginEnd="32dp"
             android:autofillHints=""
             android:background="@drawable/shape_all_round"
@@ -222,7 +222,7 @@
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_restaurant" />
+            app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
         <ImageView
             android:id="@+id/image"
@@ -293,12 +293,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginTop="21dp"
             android:fontFamily="@font/samsung_font_2"
-            android:textStyle="bold"
             android:text="결제 금액"
-            app:layout_constraintBottom_toTopOf="@+id/bootpay_amount"
-            app:layout_constraintStart_toStartOf="@+id/bootpay_amount" />
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/bootpay_amount"
+            app:layout_constraintTop_toBottomOf="@+id/searchResults" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </android.widget.ScrollView>
