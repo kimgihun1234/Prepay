@@ -100,7 +100,7 @@ class PublicReceiptListFragment : BaseFragment<FragmentPublicReceiptListBinding>
             receiptHistoryAdapter.notifyDataSetChanged()
         }
         receiptViewModel.getAllReceiptList(orderHistoryId, SharedPreferencesUtil.getAccessToken()!!)
-
+        dialogBinding.restaurantName.text = order.storeName
         dialogBinding.recyclerView.layoutManager = LinearLayoutManager(itemView.context)
         dialogBinding.useName.text = order.orderHistoryId.toString()
         dialogBinding.restaurantAmount.text = NumberFormat.getNumberInstance(Locale.KOREA).format(order.totalPrice)
