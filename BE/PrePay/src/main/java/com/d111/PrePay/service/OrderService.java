@@ -37,7 +37,7 @@ public class OrderService {
             }
             return resultList;
         } else if (req.getTeamId() == 0) {
-            List<OrderHistory> originalList = orderHistoryRepository.findOrderHistoriesByStoreIdEquals(req.getStoreId());
+            List<OrderHistory> originalList = orderHistoryRepository.findOrderHistoriesByStoreIdEqualsOrderByOrderDateDesc(req.getStoreId());
             List<OrderHistoryRes> resultList = new ArrayList<>();
             for (OrderHistory orderHistory : originalList) {
                 OrderHistoryRes result = new OrderHistoryRes(orderHistory);
@@ -46,7 +46,7 @@ public class OrderService {
             }
             return resultList;
         } else if (req.getStoreId() == 0) {
-            List<OrderHistory> originalList = orderHistoryRepository.findOrderHistoriesByTeamIdEquals(req.getTeamId());
+            List<OrderHistory> originalList = orderHistoryRepository.findOrderHistoriesByTeamIdEqualsOrderByOrderDateDesc(req.getTeamId());
             List<OrderHistoryRes> resultList = new ArrayList<>();
             for (OrderHistory orderHistory : originalList) {
                 OrderHistoryRes result = new OrderHistoryRes(orderHistory);
@@ -55,7 +55,7 @@ public class OrderService {
             }
             return resultList;
         } else {
-            List<OrderHistory> originalList = orderHistoryRepository.findOrderHistoriesByTeamIdEqualsAndStoreIdEquals(req.getTeamId(), req.getStoreId());
+            List<OrderHistory> originalList = orderHistoryRepository.findOrderHistoriesByTeamIdEqualsAndStoreIdEqualsOrderByOrderDateDesc(req.getTeamId(), req.getStoreId());
             List<OrderHistoryRes> resultList = new ArrayList<>();
             for (OrderHistory orderHistory : originalList) {
                 OrderHistoryRes result = new OrderHistoryRes(orderHistory);
