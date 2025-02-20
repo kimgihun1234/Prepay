@@ -19,9 +19,7 @@
             android:layout_height="60dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:clipChildren="true"
-            android:clipToPadding="true"
-            app:cardCornerRadius="16dp"
+            app:cardCornerRadius="15dp"
             app:cardElevation="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -31,7 +29,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:padding="4dp"
                 android:adjustViewBounds="true"
                 android:src="@drawable/dog_logo" />
         </androidx.cardview.widget.CardView>
