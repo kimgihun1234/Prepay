@@ -103,10 +103,11 @@ class CreatePrivateGroupFragment: BaseFragment<FragmentCreatePrivateGroupBinding
                     else -> "#0A3D62"
                 }
 
-                val colorInt = Color.parseColor(selectedColor)
                 colorCard = selectedColor
+                val colorInt = Color.parseColor(colorCard)
                 binding.card.setCardBackgroundColor(colorInt)
-
+                Log.d(TAG,"colorInt : ${colorInt.toString()}")
+                Log.d(TAG, "colorCard : $colorCard")
             }
         }
 
