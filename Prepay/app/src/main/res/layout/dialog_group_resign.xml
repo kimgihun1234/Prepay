@@ -86,7 +86,7 @@
             android:textColor="@color/text_main_color"
             android:fontFamily="@font/samsung_font_2"
             app:backgroundTint="@color/checked_color"
-            app:cornerRadius="16dp"/>
+            app:cornerRadius="12dp"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/cancel"
@@ -98,7 +98,7 @@
             android:textColor="@color/text_main_color"
             android:fontFamily="@font/samsung_font_2"
             app:backgroundTint="@color/nav_unselected_color"
-            app:cornerRadius="16dp"/>
+            app:cornerRadius="12dp"/>
 
     </LinearLayout>
 </LinearLayout>

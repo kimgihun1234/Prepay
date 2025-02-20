@@ -76,7 +76,7 @@
             android:textStyle="bold"
             android:textSize="14dp"
             android:textColor="@color/white"
-            android:background="@drawable/button_background"
+            android:background="@drawable/submit_button_style"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

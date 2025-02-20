@@ -154,17 +154,17 @@
 
     <ImageButton
         android:id="@+id/logout_btn"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="42dp"
-        android:layout_marginEnd="25dp"
-        android:src="@drawable/logout_24px"
-        app:tint="@null"
-        android:scaleType="fitCenter"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="28dp"
         android:background="@null"
         android:enabled="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/logout_24px"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@null" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

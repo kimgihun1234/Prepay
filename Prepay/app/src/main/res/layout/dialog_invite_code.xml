@@ -45,7 +45,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/samsung_font_2"
         android:textStyle="bold"
-        android:textSize="16dp"
+        android:textSize="18dp"
+        android:layout_marginBottom="4dp"
         android:text="초대 코드는 3시간 후 자동 폐기됩니다." />
 
     <TextView
@@ -70,10 +71,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/round_background"
-        android:padding="12dp"
-        android:textSize="14sp"
+        android:fontFamily="@font/samsung_font_2"
         android:inputType="text"
-        android:fontFamily="@font/samsung_font_2" />
+        android:padding="12dp"
+        android:textSize="14sp" />
 
     <!-- 하단 버튼 -->
     <LinearLayout
