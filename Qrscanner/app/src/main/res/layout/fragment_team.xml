@@ -25,7 +25,7 @@
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/team_id"
+                android:id="@+id/teamNameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -35,7 +35,7 @@
                 tools:text="Team A" />
 
             <TextView
-                android:id="@+id/store_id"
+                android:id="@+id/storeNameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

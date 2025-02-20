@@ -145,8 +145,9 @@ class StoreTeamFragment : BaseFragment<FragmentStoreTeamBinding>(
         }
     }
 
-    override fun onClick(teamId : Int) {
+    override fun onClick(teamId : Int, teamName:String) {
         activityViewModel.setTeamId(teamId)
+        activityViewModel.setTeamName(teamName)
         mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.TEAM_FRAGMENT)
     }
 }
