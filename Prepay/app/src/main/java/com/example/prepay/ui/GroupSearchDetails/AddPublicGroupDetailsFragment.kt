@@ -205,14 +205,14 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
 
             binding.publicDetailText.text = teamsRes.teamMessage
             val storeImageUrl = teamsRes.storeUrl
-            if (!storeImageUrl.isNullOrEmpty()) {
-                Glide.with(requireContext())
-                    .load(Uri.parse(storeImageUrl)) // Uri로 변환 후 로드
-                    .into(binding.storeImage)
-            } else {
-                binding.storeImage.setImageResource(R.drawable.logo)
-                Log.d(TAG, "initViewModel: ${imageUrl}")
-            }
+//            if (!storeImageUrl.isNullOrEmpty()) {
+//                Glide.with(requireContext())
+//                    .load(Uri.parse(storeImageUrl)) // Uri로 변환 후 로드
+//                    .into(binding.storeImage)
+//            } else {
+//                binding.storeImage.setImageResource(R.drawable.logo)
+//                Log.d(TAG, "initViewModel: ${imageUrl}")
+//            }
 
             lat = teamsRes.latitude
             lon = teamsRes.longitude
