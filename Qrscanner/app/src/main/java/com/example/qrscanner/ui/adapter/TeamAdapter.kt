@@ -18,7 +18,7 @@ class TeamAdapter (var teamList: List<TeamRes>, private val onButtonClick: OnBut
             Log.d(TAG, "bind: ${binding.teamId.text}")
 
             binding.teamBtn.setOnClickListener {
-                onButtonClick.onClick(teamRes.teamId)
+                onButtonClick.onClick(teamRes.teamId,teamRes.teamName)
             }
         }
     }
@@ -35,6 +35,6 @@ class TeamAdapter (var teamList: List<TeamRes>, private val onButtonClick: OnBut
         holder.bind(teamList[position])
     }
     interface OnButtonClick {
-        fun onClick(teamId : Int)
+        fun onClick(teamId : Int,teamName:String)
     }
 }
