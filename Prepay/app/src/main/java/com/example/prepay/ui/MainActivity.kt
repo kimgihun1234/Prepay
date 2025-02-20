@@ -38,6 +38,7 @@ import com.example.prepay.ui.MyPage.MyPageFragment
 import com.example.prepay.ui.RestaurantDetails.AddDetailRestaurantFragment
 import com.example.prepay.ui.RestaurantDetails.RestaurantDetailsFragment
 import com.example.prepay.ui.Notification.NotificationFragment
+import com.example.prepay.ui.PublicReceiptList.PublicReceiptListFragment
 import com.example.prepay.util.KeyboardVisibilityUtils
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -104,6 +105,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
             CommonUtils.MainFragmentName.PUBLIC_GROUP_DETAILS_FRAGMENT -> {
                 transaction.replace(R.id.main_container, AddPublicGroupDetailsFragment())
+                transaction.addToBackStack(null)
+            }
+            CommonUtils.MainFragmentName.PUBLIC_RECEIPT_LIST_FRAGMENT -> {
+                transaction.replace(R.id.main_container, PublicReceiptListFragment())
                 transaction.addToBackStack(null)
             }
         }
@@ -298,6 +303,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         fun uploadToken(token: TokenReq) {
             // 새로운 토큰 수신 시 서버로 전송
             val storeService = ApplicationClass.retrofit.create(FirebaseTokenService::class.java)
+            Log.d(TAG,"말"+SharedPreferencesUtil.getAccessToken().toString())
             storeService.uploadToken(SharedPreferencesUtil.getAccessToken()!!,token).enqueue(object : Callback<String> {
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     if (response.isSuccessful) {
