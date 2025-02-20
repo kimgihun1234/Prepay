@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.example.prepay.SharedPreferencesUtil
 import com.example.prepay.data.response.TokenReq
 import com.example.prepay.ui.LoginActivity
 import com.example.prepay.ui.MainActivity
@@ -14,8 +15,18 @@ class MyFirebaseMessageService : com.google.firebase.messaging.FirebaseMessaging
     // 새로운 토큰이 생성될 때 마다 해당 콜백이 호출된다.
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        // 새로운 토큰 수신 시 서버로 전송
-        // TokenReq 객체 생성 후 전달
+        if (token.isNullOrEmpty()) {
+            Log.e("FirebaseMessaging", "New token is null or empty")
+            return
+        }
+
+        // ⭐ 로그인 상태 확인 (AccessToken 존재 여부)
+        val accessToken = SharedPreferencesUtil.getAccessToken()
+        if (accessToken.isNullOrEmpty()) {
+            Log.w("FirebaseMessaging", "User is not logged in. Token will not be uploaded yet.")
+            return
+        }
+        // 로그인된 상태라면 토큰 업로드
         val tokenReq = TokenReq(token)
         MainActivity.uploadToken(tokenReq)
     }

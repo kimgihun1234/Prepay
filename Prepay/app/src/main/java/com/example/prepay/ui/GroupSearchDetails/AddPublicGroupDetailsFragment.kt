@@ -150,6 +150,9 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
             }
         }
 
+        binding.paymentHistoryBtn.setOnClickListener {
+            mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.PUBLIC_RECEIPT_LIST_FRAGMENT)
+        }
 
         // 바텀시트 초기화 및 드래그만 허용하도록 설정
         val bottomSheet: View = requireView().findViewById(R.id.bottomSheet)
@@ -160,6 +163,8 @@ class AddPublicGroupDetailsFragment : BaseFragment<FragmentPublicGroupDetailsBin
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         bottomSheetBehavior.setPeekHeight(
             150)
+
+        binding.
 
         // 바텀 시트를 클릭했을 때 상태를 변경하도록 설정
         bottomSheet.setOnClickListener {
