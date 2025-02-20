@@ -7,37 +7,54 @@
     android:padding="20dp"
     android:background="@android:color/white">
 
-    <!-- 상단 안내 메시지 -->
-    <LinearLayout
-        android:layout_width="match_parent"
+<!--    &lt;!&ndash; 상단 안내 메시지 &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:background="@drawable/round_invite_txt_backgound"-->
+<!--        android:paddingBottom="16dp">-->
+
+<!--        &lt;!&ndash; 이미지 아이콘 &ndash;&gt;-->
+<!--        <ImageView-->
+<!--            android:id="@+id/invite_code_iv_icon"-->
+<!--            android:layout_width="60dp"-->
+<!--            android:layout_height="60dp"-->
+<!--            android:src="@drawable/dog_logo"-->
+<!--            android:contentDescription="Icon"-->
+<!--            android:layout_marginEnd="8dp" />-->
+
+<!--        &lt;!&ndash; 안내 텍스트 &ndash;&gt;-->
+<!--        <TextView-->
+<!--            android:id="@+id/invite_code_tv_message"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_marginTop="4dp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:text="초대 코드는 3시간 후 자동 폐기됩니다\n접속이 안 될 경우 관리자에게 다시 요청해주세요"-->
+<!--            android:textColor="@android:color/black"-->
+<!--            android:textSize="14sp"-->
+<!--            android:lineSpacingExtra="4dp" />-->
+<!--    </LinearLayout>-->
+
+    <TextView
+        android:id="@+id/authority_dummy1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:background="@drawable/round_invite_txt_backgound"
-        android:paddingBottom="16dp">
+        android:fontFamily="@font/samsung_font_2"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:layout_marginBottom="4dp"
+        android:text="초대 코드는 3시간 후 자동 폐기됩니다." />
 
-        <!-- 이미지 아이콘 -->
-        <ImageView
-            android:id="@+id/invite_code_iv_icon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/dog_logo"
-            android:contentDescription="Icon"
-            android:layout_marginEnd="8dp" />
-
-        <!-- 안내 텍스트 -->
-        <TextView
-            android:id="@+id/invite_code_tv_message"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginTop="4dp"
-            android:textStyle="bold"
-            android:text="초대 코드는 3시간 후 자동 폐기됩니다\n접속이 안 될 경우 관리자에게 다시 요청해주세요"
-            android:textColor="@android:color/black"
-            android:textSize="14sp"
-            android:lineSpacingExtra="4dp" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/authority_dummy2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/samsung_font_2"
+        android:text="접속이 불가한 경우 관리자에게 다시 초대코드를 \n요청해 주시기 바랍니다." />
 
     <TextView
         android:id="@+id/invite_code_tv_input_label"
@@ -54,10 +71,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/round_background"
-        android:padding="12dp"
-        android:textSize="14sp"
+        android:fontFamily="@font/samsung_font_2"
         android:inputType="text"
-        android:fontFamily="sans-serif" />
+        android:padding="12dp"
+        android:textSize="14sp" />
 
     <!-- 하단 버튼 -->
     <LinearLayout
@@ -66,23 +83,28 @@
         android:orientation="horizontal"
         android:gravity="end"
         android:layout_marginTop="16dp">
-        <Button
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/invite_code_make_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="코드생성"
-            android:background="@drawable/grouptext_round_backgound"
-            app:backgroundTint="@null"
-            android:layout_marginRight="15dp"
-            android:textColor="@android:color/white" />
-        <Button
+            android:text="코드 생성"
+            android:textColor="@color/text_main_color"
+            android:fontFamily="@font/samsung_font_2"
+            app:backgroundTint="@color/checked_color"
+            app:cornerRadius="16dp"/>
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/invite_code_confirm_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:text="확인"
-            android:background="@drawable/grouptext_round_backgound"
-            app:backgroundTint="@null"
-            android:textColor="@android:color/white" />
+            android:textColor="@color/text_main_color"
+            android:fontFamily="@font/samsung_font_2"
+            app:backgroundTint="@color/checked_color"
+            app:cornerRadius="16dp"/>
 
     </LinearLayout>
 </LinearLayout>

@@ -28,6 +28,12 @@ object CommonUtils {
     }
 
     fun formatLongToDate(longDate: Long): String {
+        val format = SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.getDefault())  // 원하는 날짜 형식 지정
+        return format.format(Date(longDate))  // Long 값을 Date 객체로 변환 후 포맷 적용
+    }
+
+
+    fun cardFormatToDate(longDate: Long): String {
         val format = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault())  // 원하는 날짜 형식 지정
         return format.format(Date(longDate))  // Long 값을 Date 객체로 변환 후 포맷 적용
     }
@@ -46,10 +52,9 @@ object CommonUtils {
         GROUP_DETAILS_FRAGMENT("GroupDetailsFragment"),
         LOOK_GROUP_FRAGMENT("LookGroupFragment"),
         RESTAURANT_DETAILS_FRAGMENT("RestaurantDetailsFragment"),
-        ADD_RESTAURANT_FRAGMENT("AddRestaurantFragment"),
-        DETAIL_RESTAURANT_FRAGMENT("DetailRestaurantFragment"),
         PUBLIC_GROUP_DETAILS_FRAGMENT("PublicGroupDetailsFragment"),
-        NOTIFICATION_FRAGMENT("NotificationFragment")
+        NOTIFICATION_FRAGMENT("NotificationFragment"),
+        PUBLIC_RECEIPT_LIST_FRAGMENT("PublicReceiptListFragment")
     }
 
     enum class GroupFragmentName(var str: String) {

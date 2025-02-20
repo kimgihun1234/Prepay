@@ -13,8 +13,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="초대 코드 압력"
-        android:textColor="#0066CC"
+        android:text="초대 코드 입력"
+        android:textStyle="bold"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.099"
@@ -27,8 +27,8 @@
         android:layout_height="54dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/round_background"
-        android:gravity="center"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/shape_all_round"
         android:hint="초대 코드를 입력해주세요"
         android:padding="10dp"
         android:textSize="14sp"
@@ -36,28 +36,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_dialog_title" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="4dp"
-        android:background="@drawable/round_background"
+        android:fontFamily="@font/samsung_font_2"
         android:text="취소"
-        android:textColor="#0066CC"
+        android:textColor="@color/text_main_color"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:backgroundTint="@color/nav_unselected_color"
+        app:cornerRadius="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_code_input" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="86dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/grouptext_round_backgound"
+        android:layout_marginEnd="4dp"
+        android:fontFamily="@font/samsung_font_2"
         android:text="확인"
+        android:textSize="16sp"
         android:textColor="@color/white"
+        app:backgroundTint="@color/checked_color"
+        app:cornerRadius="12dp"
         app:layout_constraintEnd_toStartOf="@+id/btn_cancel"
+        app:layout_constraintHorizontal_bias="0.853"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_code_input" />
 
 

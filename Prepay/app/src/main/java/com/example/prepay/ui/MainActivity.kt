@@ -1,35 +1,26 @@
 package com.example.prepay.ui
 
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.graphics.Typeface
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.TextPaint
-import android.text.style.TypefaceSpan
 import android.util.Log
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
-import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import com.example.prepay.ApplicationClass
 import com.example.prepay.BaseActivity
 import com.example.prepay.CommonUtils
 import com.example.prepay.R
 import com.example.prepay.RetrofitUtil
 import com.example.prepay.SharedPreferencesUtil
+import com.example.prepay.SharedPreferencesUtil.clearUserData
 import com.example.prepay.data.remote.FirebaseTokenService
 import com.example.prepay.data.response.SignInTeamReq
 import com.example.prepay.data.response.TokenReq
@@ -38,17 +29,15 @@ import com.example.prepay.databinding.DialogVisitCodeBinding
 import com.example.prepay.ui.CreateGroup.CreateGroupFragment
 import com.example.prepay.ui.CreateGroup.CreatePrivateGroupFragment
 import com.example.prepay.ui.CreateGroup.CreatePublicGroupFragment
-import com.example.prepay.ui.GroupDetails.AddRestaurantFragment
 import com.example.prepay.ui.GroupDetails.GroupDetailsFragment
 import com.example.prepay.ui.GroupDetails.GroupPaymentHistoryFragment
 import com.example.prepay.ui.GroupDetails.GroupPrepayStoreListFragment
 import com.example.prepay.ui.GroupSearch.GroupSearchFragment
-import com.example.prepay.ui.GroupSearch.GroupSearchFragmentViewModel
 import com.example.prepay.ui.GroupSearchDetails.AddPublicGroupDetailsFragment
 import com.example.prepay.ui.MyPage.MyPageFragment
-import com.example.prepay.ui.RestaurantDetails.AddDetailRestaurantFragment
 import com.example.prepay.ui.RestaurantDetails.RestaurantDetailsFragment
 import com.example.prepay.ui.Notification.NotificationFragment
+import com.example.prepay.ui.PublicReceiptList.PublicReceiptListFragment
 import com.example.prepay.util.KeyboardVisibilityUtils
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -82,23 +71,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         bottomNav.layoutParams.height = resources.getDimensionPixelSize(R.dimen._70dp)
         bottomNav.setBackgroundColor(ContextCompat.getColor(this,R.color.white))
 
-
-        keyboardVisibilityUtils = KeyboardVisibilityUtils(window,
-            onShowKeyboard = {
-                bottomNav.run {
-                    //smoothScrollTo(scrollX, scrollY + keyboardHeight)
-                    //키보드 올라왔을때 원하는 동작
-                    bottomNav.visibility = View.GONE
-                }
-            },
-            onHideKeyboard = {
-                bottomNav.run {
-                    //키보드 내려갔을때 원하는 동작
-                    //smoothScrollTo(scrollX, scrollY + keyboardHeight)
-                    bottomNav.visibility = View.VISIBLE
-                }
-            }
-        )
     }
 
 
@@ -127,15 +99,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 transaction.replace(R.id.main_container, RestaurantDetailsFragment())
                 transaction.addToBackStack(null)
             }
-            CommonUtils.MainFragmentName.ADD_RESTAURANT_FRAGMENT -> {
-                transaction.replace(R.id.main_container, AddRestaurantFragment())
-                transaction.addToBackStack(null)
-            }
-            CommonUtils.MainFragmentName.DETAIL_RESTAURANT_FRAGMENT -> {
-                transaction.replace(R.id.main_container, AddDetailRestaurantFragment())
-            }
             CommonUtils.MainFragmentName.PUBLIC_GROUP_DETAILS_FRAGMENT -> {
                 transaction.replace(R.id.main_container, AddPublicGroupDetailsFragment())
+                transaction.addToBackStack(null)
+            }
+            CommonUtils.MainFragmentName.PUBLIC_RECEIPT_LIST_FRAGMENT -> {
+                transaction.replace(R.id.main_container, PublicReceiptListFragment())
                 transaction.addToBackStack(null)
             }
         }
@@ -192,6 +161,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 setHomeAsUpIndicator(R.drawable.ic_menu)
             }
         }
+    }
+
+    fun logout(context: Context) {
+        clearUserData() // 저장된 사용자 데이터 삭제
+        // 로그인 화면으로 이동
+        val intent = Intent(context, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        context.startActivity(intent)
     }
 
     fun enterDialog(){
@@ -322,6 +299,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         fun uploadToken(token: TokenReq) {
             // 새로운 토큰 수신 시 서버로 전송
             val storeService = ApplicationClass.retrofit.create(FirebaseTokenService::class.java)
+            Log.d(TAG,"말"+SharedPreferencesUtil.getAccessToken().toString())
             storeService.uploadToken(SharedPreferencesUtil.getAccessToken()!!,token).enqueue(object : Callback<String> {
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     if (response.isSuccessful) {

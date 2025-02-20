@@ -4,10 +4,7 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -18,8 +15,8 @@ import com.example.qrscanner.MainActivityViewModel
 import com.example.qrscanner.R
 import com.example.qrscanner.base.BaseFragment
 import com.example.qrscanner.databinding.FragmentStoreTeamBinding
+import com.example.qrscanner.response.OrderDetail
 import com.example.qrscanner.response.PosReq
-import com.example.qrscanner.response.orderDetail
 import com.example.qrscanner.ui.adapter.TeamAdapter
 import com.example.qrscanner.ui.viewModel.TeamViewModel
 import com.example.qrscanner.util.CommonUtils
@@ -90,8 +87,8 @@ class StoreTeamFragment : BaseFragment<FragmentStoreTeamBinding>(
         Log.d(TAG, "parts: ${parts[1]}")
         // 주문 상세 정보 리스트 생성
         val orderDetails = listOf(
-            orderDetail(detailPrice = 1000, product = "커피", quantity = 2),
-            orderDetail(detailPrice = 500, product = "샌드위치", quantity = 1)
+            OrderDetail(detailPrice = 1000, product = "커피", quantity = 2),
+            OrderDetail(detailPrice = 500, product = "샌드위치", quantity = 1)
         )
         //숫자 입력
         var num = activityViewModel.storeId.value
@@ -148,8 +145,9 @@ class StoreTeamFragment : BaseFragment<FragmentStoreTeamBinding>(
         }
     }
 
-    override fun onClick(teamId : Int) {
+    override fun onClick(teamId : Int, teamName:String) {
         activityViewModel.setTeamId(teamId)
+        activityViewModel.setTeamName(teamName)
         mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.TEAM_FRAGMENT)
     }
 }

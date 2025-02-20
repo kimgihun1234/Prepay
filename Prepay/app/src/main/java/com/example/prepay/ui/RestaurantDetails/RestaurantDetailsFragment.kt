@@ -19,18 +19,24 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.prepay.BaseFragment
 import com.example.prepay.CommonUtils
 import com.example.prepay.PermissionChecker
 import com.example.prepay.R
+import com.example.prepay.RetrofitUtil
 import com.example.prepay.SharedPreferencesUtil
 import com.example.prepay.data.model.dto.OrderHistory
+import com.example.prepay.data.response.BootPayChargeReq
+import com.example.prepay.databinding.DialogBootpayRequestBinding
+import com.example.prepay.databinding.DialogBootpaySearchRequestBinding
 import com.example.prepay.databinding.DialogReceiptBinding
 import com.example.prepay.databinding.FragmentRestaurantDetailsBinding
 import com.example.prepay.ui.MainActivity
 import com.example.prepay.ui.MainActivityViewModel
+import com.example.prepay.util.BootPayManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -44,6 +50,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.text.NumberFormat
 import java.util.Locale
@@ -110,10 +120,58 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
         binding.restaurantNameBootpay.text = activityViewModel.storeName.value
         viewModel.getTeamStoreDetail(SharedPreferencesUtil.getAccessToken()!!,activityViewModel.teamId.value!!.toInt(),activityViewModel.storeId.value!!)
         binding.payBootpay.setOnClickListener {
-            val storeId = activityViewModel.storeId
-            val storeName = activityViewModel.storeName
-            Log.d(TAG, "storeId, storeName : $storeId, $storeName")
-            mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.DETAIL_RESTAURANT_FRAGMENT)
+
+            val storeId = activityViewModel.storeId.value
+            val storeName = binding.restaurantNameBootpay.text
+            val bootPayDialog = DialogBootpayRequestBinding.inflate(LayoutInflater.from(requireContext()))
+            val dialog = AlertDialog.Builder(requireContext())
+                .setView(bootPayDialog.root)
+                .create()
+            dialog.show()
+            bootPayDialog.requestRestaurantName.text = binding.restaurantNameBootpay.text
+            bootPayDialog.concelRequest.setOnClickListener {
+                dialog.dismiss()
+            }
+            bootPayDialog.confirmRequest.setOnClickListener {
+                val totalPrice = bootPayDialog.totalPrice.text.toString()
+                val teamId : Long? = activityViewModel.teamId.value
+                Log.d(TAG, "initEvent: ")
+                Log.d(TAG, "teamId: $teamId")
+                BootPayManager.startPayment(requireActivity(), storeName.toString(), totalPrice) { receiptId, price ->
+
+                    lifecycleScope.launch {
+                        try {
+                            Log.d(TAG, "storeId: $storeId")
+                            Log.d(TAG, "teamId: $teamId, price: ${price}}")
+                            Log.d(TAG, "receiptId: $receiptId")
+
+                            val chargeReceipt = storeId?.let { storeId ->
+                                teamId?.let { teamId ->
+                                    BootPayChargeReq(
+                                        teamId.toInt(), storeId, totalPrice.toInt(), receiptId)
+                                }
+                            }
+                            val response = withContext(Dispatchers.IO) {
+                                delay(1000)
+                                chargeReceipt?.let { it ->
+                                    RetrofitUtil.bootPayService.getBootPay(SharedPreferencesUtil.getAccessToken()!!,
+                                        it
+                                    )
+                                }
+                            }
+                            if (response?.isSuccessful == true) {
+                                dialog.dismiss()
+                                mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
+
+                            } else {
+                                Log.e(TAG, "영수증 올리기 실패: ${response}")
+                            }
+                        } catch (e: Exception) {
+                            Log.e(TAG, "네트워크 요청 실패: ${e.localizedMessage}", e)
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -129,9 +187,7 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
                 .placeholder(R.drawable.logo)
                 .error(R.drawable.logo)
                 .into(binding.restaurantImage)
-            val location = Location("")
-            location.latitude = it.latitude
-            location.longitude = it.longitude
+            val location = LatLng(it.latitude, it.longitude)
             setCurrentLocation(location,it.storeName,it.storeDescription)
         }
     }
@@ -222,24 +278,28 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
     }
 
     private fun setDefaultLocation() {
-        val location = Location("")
-        location.latitude = 37.56  // 서울 중심의 위도
-        location.longitude = 126.97 // 서울 중심의 경도
+        val defaultLat = 36.1026  // 서울 중심 위도
+        val defaultLon = 128.424  // 서울 중심 경도
+        val defaultLocation = LatLng(defaultLat, defaultLon)
 
-        val markerTitle = "위치 정보 가져올 수 없음"
-        val markerSnippet = "위치 퍼미션과 GPS 활성 여부 확인 필요"
+        val markerTitle = "기본 위치"
+        val markerSnippet = "서울 중심"
 
-        setCurrentLocation(location, markerTitle, markerSnippet)
+        setCurrentLocation(defaultLocation, markerTitle, markerSnippet)
+
+        // **초기 카메라 위치 설정**
+        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(defaultLocation, 15f)
+        mMap?.moveCamera(cameraUpdate)  // 즉시 이동
     }
 
     private fun setCurrentLocation(
-        location: Location,
+        latLng: LatLng,
         markerTitle: String?,
         markerSnippet: String?
     ) {
         currentMarker?.remove()
 
-        val currentLatLng = LatLng(location.latitude, location.longitude)
+        val currentLatLng = LatLng( latLng.latitude,  latLng.longitude)
 
         val marker =
             ResourcesCompat.getDrawable(resources, R.drawable.location_icon, requireActivity().theme)
@@ -254,9 +314,8 @@ class RestaurantDetailsFragment: BaseFragment<FragmentRestaurantDetailsBinding>(
         }
 
         currentMarker = mMap?.addMarker(markerOptions)
-
-        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f)
-        mMap?.animateCamera(cameraUpdate)
+        val cameraUpdate = CameraUpdateFactory.newLatLng(latLng)
+        mMap?.moveCamera(cameraUpdate)
     }
 
 

@@ -349,13 +349,14 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         val dialog = AlertDialog.Builder(requireContext())
             .setView(binding.root)
             .create()
+        binding.resignName.text = ban.nickname+"님을"
         binding.groupResignConfirmBtn.setOnClickListener {
             val banUser = BanUserReq(ban.email,ban.teamId)
             viewModel.TeamResign(SharedPreferencesUtil.getAccessToken()!!,banUser)
             dialog.dismiss()
         }
 
-        binding.groupResignCancelBtn.setOnClickListener {
+        binding.cancel.setOnClickListener {
             dialog.dismiss()
         }
         dialog.show()
@@ -367,11 +368,13 @@ class GroupDetailsFragment: BaseFragment<FragmentGroupDetailsBinding>(
         val dialog = AlertDialog.Builder(requireContext())
             .setView(binding.root)
             .create()
+        binding.authoritySettingName.text = privilege.nickname+"님에게"
         binding.autoritySettingConfirmBtn.setOnClickListener {
             val pr = PrivilegeUserReq(privilege.email,true,privilege.teamId)
             privilegeUser(pr)
             showToast(privilege.nickname+"님에게 권한을 부여하였습니다.")
             dialog.dismiss()
+            viewModel.getMyTeamUserList(SharedPreferencesUtil.getAccessToken()!!,activityViewModel.teamId.value!!)
         }
 
         binding.autoritySettingCancelBtn.setOnClickListener {

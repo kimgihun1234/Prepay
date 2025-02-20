@@ -10,108 +10,127 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <EditText
             android:id="@+id/group_name_text"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginEnd="60dp"
-            android:background="@drawable/round_background"
+            android:layout_width="340dp"
+            android:layout_height="58dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="32dp"
+            android:autofillHints=""
+            android:background="@drawable/shape_all_round"
             android:ems="10"
-            android:gravity="center"
-            android:hint="방의 제목을 정해주세요"
+            android:fontFamily="@font/samsung_font_2"
+            android:hint="그룹의 이름을 정해주세요"
             android:inputType="text"
+            android:paddingStart="24dp"
             android:text=""
+            android:textColorHint="#9E9E9E"
+            android:textFontWeight="400"
+            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/image" />
 
         <EditText
             android:id="@+id/limit_setting_text"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="44dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/round_background"
+            android:layout_width="340dp"
+            android:layout_height="58dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="32dp"
+            android:autofillHints=""
+            android:background="@drawable/shape_all_round"
             android:ems="10"
-            android:gravity="center"
-            android:inputType="number"
-            android:text=""
+            android:fontFamily="@font/samsung_font_2"
             android:hint="일일 한도를 결정해 주세요"
+            android:inputType="number"
+            android:paddingStart="24dp"
+            android:text=""
+            android:textColorHint="#9E9E9E"
+            android:textFontWeight="400"
+            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bootpay_amount" />
+            app:layout_constraintTop_toBottomOf="@+id/group_name_text" />
 
         <TextView
             android:id="@+id/limit_setting"
             android:layout_width="wrap_content"
             android:layout_height="21dp"
-            android:layout_marginTop="24dp"
             android:background="@color/white"
-            android:gravity="center"
+            android:fontFamily="@font/samsung_font_2"
             android:text="일일 한도 설정"
-            android:textStyle="bold"
             android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toTopOf="@+id/limit_setting_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.107"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bootpay_amount" />
+            app:layout_constraintStart_toStartOf="parent" />
 
 
         <!-- 검색 결과 리스트 -->
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/register_btn"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_width="340dp"
+            android:layout_height="58dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/grouptext_round_backgound"
+            android:background="@drawable/submit_button_style"
             android:text="등록"
             android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/possible" />
 
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/cancel_btn"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_width="340dp"
+            android:layout_height="58dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="12dp"
             android:background="@drawable/round_background"
             android:text="취소"
             android:textColor="#0066CC"
-            android:layout_marginBottom="12dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/register_btn" />
+            app:layout_constraintTop_toBottomOf="@+id/register_btn"
+            app:layout_constraintVertical_bias="1.0" />
 
         <EditText
             android:id="@+id/text_input_text"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="17dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/round_background"
+            android:layout_width="340dp"
+            android:layout_height="58dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="32dp"
+            android:autofillHints=""
+            android:background="@drawable/shape_all_round"
             android:ems="10"
-            android:gravity="center"
+            android:fontFamily="@font/samsung_font_2"
             android:hint="방에 대한 설명을 적어주세요"
             android:inputType="text"
+            android:paddingStart="24dp"
             android:text=""
-            android:textSize="16sp"
+            android:textColorHint="#9E9E9E"
+            android:textFontWeight="400"
+            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/group_name_text" />
-
+            app:layout_constraintTop_toBottomOf="@+id/bootpay_amount" />
 
         <CheckBox
             android:id="@+id/impossible"
@@ -128,16 +147,16 @@
             android:id="@+id/repeat"
             android:layout_width="wrap_content"
             android:layout_height="21dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="44dp"
             android:background="@color/white"
             android:gravity="center"
             android:text="반복 사용이 가능하게 하시겠습니까?"
+            android:textColor="@color/black"
             android:textStyle="bold"
-            android:textColor="#0066CC"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/limit_setting_text" />
+            app:layout_constraintTop_toBottomOf="@+id/text_input_text" />
 
         <CheckBox
             android:id="@+id/possible"
@@ -152,23 +171,30 @@
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_restaurant"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="44dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/round_background"
+            android:layout_width="340dp"
+            android:layout_height="58dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="32dp"
+            android:autofillHints=""
+            android:background="@drawable/shape_all_round"
+            android:ems="10"
             android:focusable="true"
-            android:gravity="center"
+            android:fontFamily="@font/samsung_font_2"
+            android:inputType="text"
+            android:textColorHint="#9E9E9E"
+            android:textSize="15sp"
             app:iconifiedByDefault="false"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_input_text"
+            app:layout_constraintTop_toBottomOf="@+id/limit_setting_text"
             app:queryHint="검색어를 입력하시오">
+
         </androidx.appcompat.widget.SearchView>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:background="@color/white"
             android:id="@+id/searchResults"
             android:layout_width="0dp"
             android:layout_height="50dp"
@@ -179,62 +205,100 @@
             app:layout_constraintTop_toBottomOf="@+id/search_restaurant"
             android:visibility="gone"/>
 
-        <TextView
-            android:id="@+id/textView17"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:background="@color/white"
-            android:text="매장 입력"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.098"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_input_text" />
-
         <EditText
             android:id="@+id/bootpay_amount"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="44dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/round_background"
-            android:gravity="center"
+            android:layout_width="340dp"
+            android:layout_height="58dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:autofillHints=""
+            android:background="@drawable/shape_all_round"
+            android:focusable="true"
+            android:fontFamily="@font/samsung_font_2"
             android:hint="결제할 금액을 입력해 주세요"
-            android:text=""
             android:inputType="number"
+            android:paddingStart="24dp"
+            android:textColorHint="#9E9E9E"
+            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchResults" />
-
-        <TextView
-            android:id="@+id/textView20"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="24dp"
-            android:background="@color/white"
-            android:gravity="center"
-            android:text="결제 금액"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.088"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchResults" />
+            app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
         <ImageView
             android:id="@+id/image"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:layout_marginTop="28dp"
-            android:src="@drawable/dog_logo"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/image_round_gray"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:textSize="10sp"
+            android:text="클릭해서 이미지 넣어주세요"
+            android:fontFamily="@font/samsung_font_2"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image" />
+
+        <TextView
+            android:id="@+id/group_name_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/samsung_font_2"
+            android:layout_marginBottom="4dp"
+            android:text="그룹명"
+            android:textColor="#394750"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/group_name_text"
+            app:layout_constraintStart_toStartOf="@+id/group_name_text" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="4dp"
+            android:text="설명"
+            android:textColor="#394750"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/text_input_text"
+            app:layout_constraintStart_toStartOf="@+id/text_input_text" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="선결제 장소 입력"
+            android:textColor="@color/black"
+            android:fontFamily="@font/samsung_font_2"
+            android:textStyle="bold"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toTopOf="@+id/search_restaurant"
+            app:layout_constraintStart_toStartOf="@+id/search_restaurant" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="21dp"
+            android:fontFamily="@font/samsung_font_2"
+            android:text="결제 금액"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/bootpay_amount"
+            app:layout_constraintTop_toBottomOf="@+id/searchResults" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </android.widget.ScrollView>

@@ -6,19 +6,20 @@
     <color name="text_main_color">#FFFFFF</color>
     <color name="errorMessage">#CF0401</color>
     <color name="successMessage">#20B03D</color>
-    <color name="plater1">#9A5B1C</color>
-    <color name="plater2">#CCCC00</color>
+    <color name="plater1">#1A237E</color>
+    <color name="plater2">#880E4F</color>
     <color name="plater3">#1E4D2B</color>
-    <color name="plater4">#3399FF</color>
-    <color name="plater5">#858585</color>
+    <color name="plater4">#B71C1C</color>
+    <color name="plater5">#1B5E20</color>
     <color name="plater6">#E26588</color>
-    <color name="plater7">#124577</color>
-    <color name="plater8">#FFB3A7</color>
-    <color name="plater9">#D72638</color>
+    <color name="plater7">#3399FF</color>
+    <color name="plater8">#00695C</color>
+    <color name="plater9">#6E2C00</color>
     <color name="plater10">#000000</color>
-    <color name="plater11">#160E2C</color>
+    <color name="plater11">#2A2D34</color>
+    <color name="plater12">#0A3D62</color>
     <color name="checked_color">#0066CC</color>
-    <color name="unchecked_color">#394750</color>
-    <color name="nav_unselected_color">#858585</color>
+    <color name="unchecked_color">#D9D9D9</color>
+    <color name="nav_unselected_color">#D9D9D9</color>
 </resources>
 

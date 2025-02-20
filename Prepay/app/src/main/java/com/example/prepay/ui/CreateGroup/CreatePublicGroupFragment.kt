@@ -126,7 +126,9 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
             registerTeam()
         }
 
-        binding.cancelBtn.setOnClickListener { mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT) }
+        binding.cancelBtn.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
         mainActivity.hideBottomNav(true)
     }
 
@@ -187,7 +189,6 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
                 val storeId = createGroupViewModel.storeId.value
 
                 if (teamId == null || storeId == null) {
-                    Toast.makeText(requireContext(), "팀 ID 또는 스토어 ID가 없습니다.", Toast.LENGTH_SHORT).show()
                     return@launch
                 }
                 Log.d(TAG, "storeId: $storeId")
@@ -201,7 +202,7 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
                 Log.d(TAG, "response: $response")
 
                 if (response.isSuccessful) {
-                    Toast.makeText(requireContext(), "스토어가 성공적으로 연결되었습니다.", Toast.LENGTH_SHORT).show()
+
                 } else {
                     Log.e(TAG, "스토어 연결 실패: ${response?.errorBody()?.string()}")
                 }
@@ -236,8 +237,6 @@ class CreatePublicGroupFragment : BaseFragment<FragmentCreatePublicGroupBinding>
                     }
                 }
                 if (response?.isSuccessful == true) {
-                    Toast.makeText(requireContext(), "영수증이 성공적으로 들어갔습니다.", Toast.LENGTH_SHORT).show()
-                    // 영수증 올리고 그다음 프레그먼트 이동
                     mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
 
                 } else {

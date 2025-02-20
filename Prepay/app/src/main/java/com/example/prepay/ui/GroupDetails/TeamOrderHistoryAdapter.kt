@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prepay.CommonUtils
@@ -29,11 +30,12 @@ class TeamOrderHistoryAdapter(var orderHistoryList: List<OrderHistory>,private v
 
         fun bind(order: OrderHistory) {
             // 입금이 진행된 경우에는 색상이 파란색으로 변경
-            if (order.withdraw) {
+            if (!order.withdraw) {
                 val formattedAmount = NumberFormat.getNumberInstance(Locale.KOREA).format(order.totalPrice)
                 val spannableString = SpannableString(formattedAmount)
                 spannableString.setSpan(ForegroundColorSpan(Color.parseColor("#0066CC")), 0, formattedAmount.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 binding.amount.text = spannableString
+                binding.imageButton.setVisibility(View.INVISIBLE);
             } else {
                 binding.amount.text = NumberFormat.getNumberInstance(Locale.KOREA).format(order.totalPrice)
             }
