@@ -15,24 +15,19 @@
         android:layout_margin="4dp"
         android:layout_marginStart="16dp"
         app:cardCornerRadius="15dp"
-        app:cardElevation="2dp"
         app:cardPreventCornerOverlap="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/order_image"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:background="@drawable/image_round"
-            android:elevation="1dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/dog_logo"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:scaleType="fitCenter"
+            android:src="@drawable/dog_logo" />
+
     </androidx.cardview.widget.CardView>
 
     <TextView
