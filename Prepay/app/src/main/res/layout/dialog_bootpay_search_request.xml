@@ -3,23 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="300dp">
     <!-- 식당 검색 입력 -->
 
+
+    <!-- 검색 결과 리스트 -->
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/add_restaurant_name"
         android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/samsung_font_2"
+        android:background="@drawable/round_background"
         android:queryHint="식당을 입력하시오"
         app:iconifiedByDefault="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/search_result_text"
@@ -31,7 +35,6 @@
             android:textSize="16sp" />
     </androidx.appcompat.widget.SearchView>
 
-    <!-- 검색 결과 리스트 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchResults"
         android:layout_width="0dp"
@@ -51,25 +54,25 @@
     <EditText
         android:id="@+id/total_price"
         android:layout_width="0dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="16dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="24dp"
         android:background="@drawable/round_background"
-        android:gravity="center"
+        android:fontFamily="@font/samsung_font_2"
+        android:paddingStart="40dp"
         android:hint="결제금액을 입력하시오"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/searchResults" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/confirm"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
+        android:layout_height="52dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="12dp"
         android:layout_marginBottom="8dp"
         android:fontFamily="@font/samsung_font_2"
         android:text="결제하러 가기"
@@ -79,24 +82,26 @@
         app:backgroundTint="@color/checked_color"
         app:cornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/cancel"
         app:layout_constraintTop_toBottomOf="@id/total_price"
         app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_width="92dp"
+        android:layout_height="52dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="30dp"
         android:fontFamily="@font/samsung_font_2"
         android:text="취소"
-        android:layout_marginBottom="8dp"
         android:textColor="@color/text_main_color"
         app:backgroundTint="@color/nav_unselected_color"
         app:cornerRadius="12dp"
+        android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/confirm"
-        app:layout_constraintTop_toBottomOf="@+id/total_price" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/total_price"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
