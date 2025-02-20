@@ -44,7 +44,7 @@
             android:ems="10"
             android:fontFamily="@font/samsung_font_2"
             android:hint="일일 한도를 결정해 주세요"
-            android:inputType="text"
+            android:inputType="number"
             android:paddingStart="24dp"
             android:text=""
             android:textColorHint="#9E9E9E"
