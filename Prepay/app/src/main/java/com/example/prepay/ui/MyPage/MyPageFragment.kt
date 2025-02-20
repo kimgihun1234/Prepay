@@ -153,6 +153,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
 
         // 다이얼로그 닫힐 때 타이머 취소
         dialog.setOnDismissListener {
+            viewModel.getAllTeamList()
             timer.cancel()
         }
 
@@ -175,6 +176,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
                     // 시간이 다 되었으면 다이얼로그를 닫고 타이머 취소
                     this@MyPageFragment.requireActivity().runOnUiThread {
                         if (dialog.isShowing) {
+                            viewModel.getAllTeamList()
                             dialog.dismiss()
                         }
                     }
