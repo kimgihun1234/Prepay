@@ -5,6 +5,7 @@ import android.util.Log
 import com.example.qrscanner.base.BaseActivity
 import com.example.qrscanner.databinding.ActivityMainBinding
 import com.example.qrscanner.ui.LoginFragment
+import com.example.qrscanner.ui.OrderDetailFragment
 import com.example.qrscanner.ui.StoreTeamFragment
 import com.example.qrscanner.ui.TeamFragment
 import com.example.qrscanner.util.CommonUtils
@@ -30,6 +31,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
             CommonUtils.MainFragmentName.TEAM_FRAGMENT -> {
                 transaction.replace(R.id.main, TeamFragment())
+                transaction.addToBackStack(null)
+            }
+            CommonUtils.MainFragmentName.ORDER_DETAIL_FRAGMENT -> {
+                transaction.replace(R.id.main, OrderDetailFragment())
                 transaction.addToBackStack(null)
             }
         }

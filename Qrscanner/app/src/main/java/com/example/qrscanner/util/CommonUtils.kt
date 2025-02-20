@@ -11,5 +11,6 @@ object CommonUtils {
         LOGIN_FRAGMENT("LoginFragment"),
         STORE_TEAM_FRAGMENT("StoreTeamFragment"),
         TEAM_FRAGMENT("TeamFragment"),
+        ORDER_DETAIL_FRAGMENT("OrderDetailFragment")
     }
 }

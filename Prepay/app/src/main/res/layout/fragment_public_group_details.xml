@@ -187,13 +187,13 @@
         <LinearLayout
             android:id="@+id/bottomSheet"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:background="@drawable/white_round_top_border"
             android:orientation="vertical"
             android:padding="16dp"
             app:behavior_hideable="false"
-            app:behavior_peekHeight="400dp"
+            app:behavior_peekHeight="150dp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
             <!-- 드래그 핸들 -->

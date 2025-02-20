@@ -6,6 +6,7 @@ import android.Manifest
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
@@ -21,10 +22,13 @@ class ApplicationClass : Application() {
     override fun onCreate() {
         super.onCreate()
 
-
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
         val okHttpClient = OkHttpClient.Builder()
             .readTimeout(5000, TimeUnit.MILLISECONDS) // 읽기 시간 초과
             .connectTimeout(5000, TimeUnit.MILLISECONDS) // 연결 시간 초과
+            .addInterceptor(loggingInterceptor) //api log 추가
             .build()
 
 

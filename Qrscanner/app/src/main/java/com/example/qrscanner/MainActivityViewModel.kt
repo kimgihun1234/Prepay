@@ -13,6 +13,11 @@ class MainActivityViewModel : ViewModel() {
     val storeId: LiveData<Int>
         get() = _storeId
 
+    private val _orderId = MutableLiveData<Long>()
+    val orderId: LiveData<Long>
+        get() = _orderId
+
+
     fun setStoreId(storeId: Int) {
         _storeId.value = storeId
     }
@@ -21,4 +26,7 @@ class MainActivityViewModel : ViewModel() {
         _teamId.value = teamId
     }
 
+    fun setOrderId(orderId : Long){
+        _orderId.value = orderId
+    }
 }
