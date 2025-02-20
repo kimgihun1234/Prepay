@@ -85,7 +85,7 @@ public class OrderService {
     }
 
     public List<OrderHistoryRes> getMyOrderHistory(String email) {
-        List<OrderHistory> orderList = orderHistoryRepository.findByUser_Email(email);
+        List<OrderHistory> orderList = orderHistoryRepository.findByUser_EmailOrderByOrderDateDesc(email);
         List<OrderHistoryRes> result = new ArrayList<>();
         for (OrderHistory orderHistory : orderList) {
             result.add(new OrderHistoryRes(orderHistory));

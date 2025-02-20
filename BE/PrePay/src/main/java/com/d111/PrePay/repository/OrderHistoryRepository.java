@@ -19,5 +19,5 @@ public interface OrderHistoryRepository extends JpaRepository<OrderHistory,Long>
 
     List<OrderHistory> findOrderHistoriesByTeamIdEqualsAndStoreIdEqualsOrderByOrderDateDesc(long team_id,long store_id);
 
-    List<OrderHistory> findByUser_Email(String userEmail);
+    List<OrderHistory> findByUser_EmailOrderByOrderDateDesc(String userEmail);
 }
