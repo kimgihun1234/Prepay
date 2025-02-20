@@ -175,6 +175,7 @@ class GroupPrepayStoreListFragment: BaseFragment<FragmentGroupPrepayStoreListBin
                             }
 
                             if (response?.isSuccessful == true) {
+                                dialog.dismiss()
                                 mainActivity.changeFragmentMain(CommonUtils.MainFragmentName.MYPAGE_FRAGMENT)
                             } else {
                                 Log.e(TAG, "영수증 올리기 실패: ${response}")
