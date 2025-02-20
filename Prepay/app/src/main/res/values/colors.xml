@@ -19,7 +19,7 @@
     <color name="plater11">#2A2D34</color>
     <color name="plater12">#0A3D62</color>
     <color name="checked_color">#0066CC</color>
-    <color name="unchecked_color">#394750</color>
+    <color name="unchecked_color">#D9D9D9</color>
     <color name="nav_unselected_color">#858585</color>
 </resources>
 

@@ -9,12 +9,15 @@
     android:background="#CC0066CC">
 
     <!-- QR 코드 인식 안내 -->
+
+
+    <!-- QR 코드 이미지 -->
     <TextView
         android:id="@+id/qr_instruction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="30dp"
         android:fontFamily="@font/samsung_font_2"
         android:gravity="center"
         android:text="QR 코드를 인식해주세요"
@@ -22,8 +25,6 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
-
-    <!-- QR 코드 이미지 -->
     <ImageView
         android:id="@+id/imageViewQrCode"
         android:layout_width="250dp"

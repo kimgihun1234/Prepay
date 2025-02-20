@@ -8,26 +8,26 @@
 
     <View
         android:id="@+id/textbackground"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_width="340dp"
+        android:layout_height="58dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="36dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/round_background"
+        android:background="@drawable/focus_shape_alll_round"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/totalAmount"
-        android:layout_width="223dp"
+        android:layout_width="wrap_content"
         android:layout_height="37dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="5dp"
-        android:gravity="center"
+        android:fontFamily="@font/samsung_font_2"
         android:text="500,000 원"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -40,24 +40,23 @@
         android:id="@+id/textView"
         android:layout_width="82dp"
         android:layout_height="18dp"
-        android:layout_marginTop="24dp"
-        android:background="@color/white"
-        android:gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="4dp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/samsung_font_2"
         android:text="선결제 잔액"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.139"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/textbackground"
+        app:layout_constraintStart_toStartOf="@+id/textbackground" />
 
     <TextView
         android:id="@+id/textView23"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:text="결제 내역"
-        android:textSize="20sp"
+        android:textSize="17sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textbackground" />
@@ -70,6 +69,7 @@
         android:background="@color/black"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.774"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView23" />
 
