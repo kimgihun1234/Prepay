@@ -21,12 +21,12 @@ class StoreAdapter(var storeList: List<StoreRes>, private val onBtnClicked: OnSt
             val dateString: String = dateFormat.format(Date(timestamp))
 
             binding.date.text = dateString
-            binding.price.text = storeRes.totalPrice.toString()
+            binding.price.text = storeRes.totalPrice.toString()+"원"
             binding.refundChip.visibility =
                 if (storeRes.refundRequested) View.GONE else View.VISIBLE
             binding.withdrawChip.visibility = if (storeRes.withdraw) View.GONE else View.VISIBLE
             binding.companyDinnerChip.visibility =
-                if (storeRes.companyDinner) View.GONE else View.VISIBLE
+                if (!storeRes.companyDinner) View.GONE else View.VISIBLE
             binding.root.setOnClickListener{
                 onBtnClicked.onStoreBtnClicked(storeRes.orderHistoryId.toLong())
             }
