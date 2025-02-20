@@ -304,7 +304,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             // 새로운 토큰 수신 시 서버로 전송
             val storeService = ApplicationClass.retrofit.create(FirebaseTokenService::class.java)
             Log.d(TAG,"말"+SharedPreferencesUtil.getAccessToken().toString())
-            /*storeService.uploadToken(SharedPreferencesUtil.getAccessToken()!!,token).enqueue(object : Callback<String> {
+            storeService.uploadToken(SharedPreferencesUtil.getAccessToken()!!,token).enqueue(object : Callback<String> {
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     if (response.isSuccessful) {
                         val res = response.body()
@@ -317,7 +317,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 override fun onFailure(call: Call<String>, t: Throwable) {
                     Log.d(TAG, t.message ?: "토큰 정보 등록 중 통신오류")
                 }
-            })*/
+            })
         }
     }
 }
