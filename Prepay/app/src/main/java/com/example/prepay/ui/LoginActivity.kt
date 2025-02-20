@@ -55,8 +55,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
         if (!savedId.isNullOrEmpty() && !savedPw.isNullOrEmpty()) {
             // 자동 로그인: 저장된 값으로 login() 함수를 호출
             Log.d(TAG, "${savedId}")
-//            autoLogin(savedId, savedPw)
-//            return
+            autoLogin(savedId, savedPw)
+            return
         }
 
         Log.d(TAG, "onCreate: START_LOGIN_FRAGMENT")

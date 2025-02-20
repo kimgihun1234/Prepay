@@ -120,8 +120,8 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="2dp"
             android:background="@null"
-            android:drawableLeft="@drawable/group_join"
-            android:drawablePadding="1dp"
+            android:drawableLeft="@drawable/door_open_48px"
+            android:drawablePadding="-4dp"
             android:fontFamily="@font/samsung_font_2"
             android:letterSpacing="-0.04"
             android:scaleX="0.9"
@@ -129,6 +129,7 @@
             android:textColor="#9CA4AB"
             android:textSize="15sp"
             android:textStyle="bold"
+            android:drawableTint="#9CA4AB"
             app:layout_constraintBottom_toTopOf="@+id/main_innor_box"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -153,11 +154,11 @@
 
     <ImageButton
         android:id="@+id/logout_btn"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginTop="42dp"
         android:layout_marginEnd="25dp"
-        android:src="@drawable/door_open_btn"
+        android:src="@drawable/logout_24px"
         app:tint="@null"
         android:scaleType="fitCenter"
         android:background="@null"
