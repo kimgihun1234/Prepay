@@ -41,7 +41,6 @@ class TeamUserAdapter(var teamUserResList: List<TeamUserRes>,
                 binding.authority.visibility = View.VISIBLE
             }
             else{
-                binding.manageBtn.visibility = View.VISIBLE
                 binding.authority.visibility = View.GONE
             }
             // 첫 번째 아이템만 imageView7을 보이게 설정

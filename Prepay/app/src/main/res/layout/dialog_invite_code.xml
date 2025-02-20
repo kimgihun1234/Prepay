@@ -100,10 +100,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:text="취소"
+            android:text="확인"
             android:textColor="@color/text_main_color"
             android:fontFamily="@font/samsung_font_2"
-            app:backgroundTint="@color/nav_unselected_color"
+            app:backgroundTint="@color/checked_color"
             app:cornerRadius="16dp"/>
 
     </LinearLayout>
