@@ -35,7 +35,6 @@ import com.example.prepay.ui.GroupDetails.GroupPrepayStoreListFragment
 import com.example.prepay.ui.GroupSearch.GroupSearchFragment
 import com.example.prepay.ui.GroupSearchDetails.AddPublicGroupDetailsFragment
 import com.example.prepay.ui.MyPage.MyPageFragment
-import com.example.prepay.ui.RestaurantDetails.AddDetailRestaurantFragment
 import com.example.prepay.ui.RestaurantDetails.RestaurantDetailsFragment
 import com.example.prepay.ui.Notification.NotificationFragment
 import com.example.prepay.util.KeyboardVisibilityUtils
@@ -98,9 +97,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             CommonUtils.MainFragmentName.RESTAURANT_DETAILS_FRAGMENT -> {
                 transaction.replace(R.id.main_container, RestaurantDetailsFragment())
                 transaction.addToBackStack(null)
-            }
-            CommonUtils.MainFragmentName.DETAIL_RESTAURANT_FRAGMENT -> {
-                transaction.replace(R.id.main_container, AddDetailRestaurantFragment())
             }
             CommonUtils.MainFragmentName.PUBLIC_GROUP_DETAILS_FRAGMENT -> {
                 transaction.replace(R.id.main_container, AddPublicGroupDetailsFragment())
