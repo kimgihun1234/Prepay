@@ -337,7 +337,7 @@
                         android:layout_row="1"
                         android:layout_column="3"
                         android:layout_marginTop="10dp"
-                        android:background="@drawable/radio_unchecked11"
+                        android:background="@drawable/radio_selector11"
                         android:button="@null" />
 
                     <RadioButton
@@ -347,7 +347,7 @@
                         android:layout_row="1"
                         android:layout_column="4"
                         android:layout_marginTop="10dp"
-                        android:background="@drawable/radio_unchecked11"
+                        android:background="@drawable/radio_selector12"
                         android:button="@null" />
 
                 </GridLayout>
