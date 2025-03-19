@@ -54,22 +54,22 @@
   <tr>
     <td align="center">
       <a href="https://github.com/kimgihun1234" target="_blank">
-        김기훈<br />(Front-end & 팀장)
+        김기훈<br />(Android & 팀장)
       </a>
     </td>
     <td align="center">
       <a href="https://github.com/SWisdom1108" target="_blank">
-        차현우<br />(Front-end)
+        차현우<br />(Android)
       </a>
     </td>
     <td align="center">
       <a href="https://github.com/SeongyunGit" target="_blank">
-        조성윤<br />(Front-end)
+        조성윤<br />(Android)
       </a>
     </td>
     <td align="center">
       <a href="https://github.com/jacob4824" target="_blank">
-        서현석<br />(Front-end)
+        서현석<br />(Android)
       </a>
     </td>
     <td align="center">
@@ -238,7 +238,7 @@ C:.
 
 ## 3. 역할 분담
 
-![Image](https://github.com/user-attachments/assets/83ea3d0d-2e77-4f1f-b01c-d1c48ad31301)
+![Image](https://github.com/user-attachments/assets/e9d65ce7-a773-4140-b11f-12c01a5f0017)
 
 ## 4. 핵심 기능 소개
 
